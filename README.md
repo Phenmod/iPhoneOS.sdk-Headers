@@ -5,6 +5,7 @@ ignored file types:
 
 ```
 *.a
+*.bitstream
 *.tbd
 *.swiftdoc
 *.swiftinterface
@@ -14,3 +15,4 @@ ignored file types:
 update for every system version.
 
 ^[ \t\S]+.h$\n
+^[ \t\S]+c\+\++[ \t\S]+\n

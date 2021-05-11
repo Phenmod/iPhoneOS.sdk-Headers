@@ -32,6 +32,7 @@ DerivedData
 *.swiftdoc
 *.swiftinterface
 *.swiftoverlay
+*.bitstream
 # *.sb
 # *.apinotes
 # *.plist
