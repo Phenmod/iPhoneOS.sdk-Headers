@@ -1,6 +1,6 @@
 /**
  *
- *    Copyright (c) 2020 Project CHIP Authors
+ *    Copyright (c) 2021 Project CHIP Authors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,22 +16,31 @@
  */
 
 #import <Foundation/Foundation.h>
+#import <Security/Security.h>
 
 NS_ASSUME_NONNULL_BEGIN
-FOUNDATION_EXPORT NSErrorDomain const CHIPErrorDomain;
 
-typedef NS_ERROR_ENUM(CHIPErrorDomain, CHIPErrorCode){
-    CHIPSuccess                       = 0,
-    CHIPErrorCodeUndefinedError       = 1,
-    CHIPErrorCodeInvalidStringLength  = 2,
-    CHIPErrorCodeInvalidIntegerValue  = 3,
-    CHIPErrorCodeInvalidArgument      = 4,
-    CHIPErrorCodeInvalidMessageLength = 5,
-    CHIPErrorCodeInvalidState         = 6,
-    CHIPErrorCodeWrongAddressType     = 7,
-    CHIPErrorCodeIntegrityCheckFailed = 8,
-    CHIPErrorCodeDuplicateExists      = 9,
-    CHIPErrorCodeUnsupportedAttribute = 10,
-};
+@protocol CHIPKeypair <NSObject>
+@required
+
+/**
+ * @brief Initialize the keypair.
+ * @return Should return whether or not the keypair was successfully initialized
+ **/
+- (BOOL)initialize;
+
+/**
+ * @brief A function to sign a hash using ECDSA
+ * @param hash Hash that needs to be signed
+ *
+ * @return Returns A signature that consists of: 2 EC elements (r and s), in raw <r,s> point form (see SEC1).
+ **/
+- (NSData *)ECDSA_sign_hash:(NSData *)hash;
+
+/** @brief Return public key for the keypair.
+ **/
+- (SecKeyRef)pubkey;
+
+@end
 
 NS_ASSUME_NONNULL_END
