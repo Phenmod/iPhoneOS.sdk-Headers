@@ -1,20 +1,27 @@
 {
-    "DisplayName": "iOS 15.5",
+    "DisplayName": "iOS 16.0",
     "DefaultProperties":
     {
-        "DEFAULT_COMPILER": "com.apple.compilers.llvm.clang.1_0",
-        "AD_HOC_CODE_SIGNING_ALLOWED": "NO",
+        "CODE_SIGN_ENTITLEMENTS": "",
+        "ENTITLEMENTS_REQUIRED": "YES",
+        "KASAN_DEFAULT_CFLAGS": "$(KASAN_CFLAGS_CLASSIC)",
+        "KASAN_DEFAULT_CFLAGS[arch=arm64]": "$(KASAN_CFLAGS_TBI)",
+        "KASAN_DEFAULT_CFLAGS[arch=arm64e]": "$(KASAN_CFLAGS_TBI)",
+        "DEAD_CODE_STRIPPING": "YES",
+        "GCC_THUMB_SUPPORT": "YES",
         "TEST_LIBRARY_SEARCH_PATHS": "$(inherited) $(PLATFORM_DIR)/Developer/$(TEST_FRAMEWORK_DEVELOPER_VARIANT_SUBPATH)usr/lib",
+        "SUPPORTED_DEVICE_FAMILIES": "1,2",
+        "PLATFORM_NAME": "iphoneos",
+        "KASAN_CFLAGS_CLASSIC": "-DKASAN=1 -DKASAN_CLASSIC=1 -fsanitize=address -mllvm -asan-globals-live-support -mllvm -asan-force-dynamic-shadow",
+        "CODE_SIGNING_REQUIRED": "YES",
+        "IPHONEOS_DEPLOYMENT_TARGET": "16.0",
+        "TEST_FRAMEWORK_SEARCH_PATHS": "$(inherited) $(PLATFORM_DIR)/Developer/$(TEST_FRAMEWORK_DEVELOPER_VARIANT_SUBPATH)Library/Frameworks $(SDKROOT)/Developer/Library/Frameworks",
+        "CODE_SIGN_IDENTITY": "Apple Development",
+        "KASAN_CFLAGS_TBI": "-DKASAN=1 -DKASAN_TBI=1 -fsanitize=kernel-hwaddress -mllvm -hwasan-recover=0 -mllvm -hwasan-instrument-atomics=0 -mllvm -hwasan-instrument-stack=1 -mllvm -hwasan-uar-retag-to-zero=1 -mllvm -hwasan-generate-tags-with-calls=1 -mllvm -hwasan-instrument-with-calls=1 -mllvm -hwasan-use-short-granules=0  -mllvm -hwasan-memory-access-callback-prefix=__asan_",
+        "ENTITLEMENTS_DESTINATION": "Signature",
+        "DEFAULT_COMPILER": "com.apple.compilers.llvm.clang.1_0",
         "DEPLOYMENT_TARGET_SUGGESTED_VALUES":
         [
-            "9.0",
-            "9.1",
-            "9.2",
-            "9.3",
-            "10.0",
-            "10.1",
-            "10.2",
-            "10.3",
             "11.0",
             "11.1",
             "11.2",
@@ -45,23 +52,14 @@
             "15.2",
             "15.3",
             "15.4",
-            "15.5"
+            "15.5",
+            "15.6",
+            "16.0"
         ],
-        "GCC_THUMB_SUPPORT": "YES",
-        "TEST_FRAMEWORK_SEARCH_PATHS": "$(inherited) $(PLATFORM_DIR)/Developer/$(TEST_FRAMEWORK_DEVELOPER_VARIANT_SUBPATH)Library/Frameworks $(SDKROOT)/Developer/Library/Frameworks",
-        "CODE_SIGN_IDENTITY": "Apple Development",
-        "CODE_SIGNING_REQUIRED": "YES",
-        "SUPPORTED_DEVICE_FAMILIES": "1,2",
-        "ENTITLEMENTS_DESTINATION": "Signature",
-        "PLATFORM_NAME": "iphoneos",
-        "ENTITLEMENTS_REQUIRED": "YES",
-        "CODE_SIGN_ENTITLEMENTS": "",
-        "IPHONEOS_DEPLOYMENT_TARGET": "15.5",
-        "KASAN_DEFAULT_CFLAGS": "-DKASAN=1 -fsanitize=address -mllvm -asan-globals-live-support -mllvm -asan-force-dynamic-shadow",
-        "DEAD_CODE_STRIPPING": "YES"
+        "AD_HOC_CODE_SIGNING_ALLOWED": "NO"
     },
-    "MinimalDisplayName": "15.5",
-    "Version": "15.5",
+    "MinimalDisplayName": "16.0",
+    "Version": "16.0",
     "IsBaseSDK": "YES",
     "SupportedTargets":
     {
@@ -76,10 +74,10 @@
                 "arm64"
             ],
             "LLVMTargetTripleEnvironment": "",
-            "DefaultDeploymentTarget": "15.5",
-            "MaximumDeploymentTarget": "15.5.99",
-            "BuildVersionPlatformID": "2",
             "ClangRuntimeLibraryPlatformName": "ios",
+            "MaximumDeploymentTarget": "16.0.99",
+            "BuildVersionPlatformID": "2",
+            "DefaultDeploymentTarget": "16.0",
             "LLVMTargetTripleSys": "ios",
             "DeviceFamilies":
             [
@@ -94,19 +92,12 @@
                     "DisplayName": "iPad"
                 }
             ],
-            "MinimumDeploymentTarget": "9.0",
+            "MinimumDeploymentTarget": "11.0",
             "SwiftOSRuntimeMinimumDeploymentTarget": "12.2",
+            "RecommendedDeploymentTarget": "12.5",
             "PlatformFamilyName": "iOS",
             "ValidDeploymentTargets":
             [
-                "9.0",
-                "9.1",
-                "9.2",
-                "9.3",
-                "10.0",
-                "10.1",
-                "10.2",
-                "10.3",
                 "11.0",
                 "11.1",
                 "11.2",
@@ -137,21 +128,24 @@
                 "15.2",
                 "15.3",
                 "15.4",
-                "15.5"
-            ]
+                "15.5",
+                "15.6",
+                "16.0"
+            ],
+            "SystemPrefix": ""
         }
     },
     "PropertyConditionFallbackNames":
     [
         "embedded"
     ],
-    "DefaultDeploymentTarget": "15.5",
-    "MaximumDeploymentTarget": "15.5.99",
+    "DefaultDeploymentTarget": "16.0",
+    "MaximumDeploymentTarget": "16.0.99",
     "DebuggerOptions":
     {
         "SupportsViewDebugging": "YES"
     },
-    "CanonicalName": "iphoneos15.5",
+    "CanonicalName": "iphoneos16.0",
     "CustomProperties":
     {}
 }
