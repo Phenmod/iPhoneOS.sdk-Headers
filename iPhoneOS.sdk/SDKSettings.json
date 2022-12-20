@@ -1,5 +1,5 @@
 {
-    "DisplayName": "iOS 16.1",
+    "DisplayName": "iOS 16.2",
     "DefaultProperties":
     {
         "CODE_SIGN_ENTITLEMENTS": "",
@@ -14,7 +14,7 @@
         "PLATFORM_NAME": "iphoneos",
         "KASAN_CFLAGS_CLASSIC": "-DKASAN=1 -DKASAN_CLASSIC=1 -fsanitize=address -mllvm -asan-globals-live-support -mllvm -asan-force-dynamic-shadow",
         "CODE_SIGNING_REQUIRED": "YES",
-        "IPHONEOS_DEPLOYMENT_TARGET": "16.1",
+        "IPHONEOS_DEPLOYMENT_TARGET": "16.2",
         "TEST_FRAMEWORK_SEARCH_PATHS": "$(inherited) $(PLATFORM_DIR)/Developer/$(TEST_FRAMEWORK_DEVELOPER_VARIANT_SUBPATH)Library/Frameworks $(SDKROOT)/Developer/Library/Frameworks",
         "CODE_SIGN_IDENTITY": "Apple Development",
         "KASAN_CFLAGS_TBI": "-DKASAN=1 -DKASAN_TBI=1 -fsanitize=kernel-hwaddress -mllvm -hwasan-recover=0 -mllvm -hwasan-instrument-atomics=0 -mllvm -hwasan-instrument-stack=1 -mllvm -hwasan-uar-retag-to-zero=1 -mllvm -hwasan-generate-tags-with-calls=1 -mllvm -hwasan-instrument-with-calls=1 -mllvm -hwasan-use-short-granules=0  -mllvm -hwasan-memory-access-callback-prefix=__asan_",
@@ -55,12 +55,13 @@
             "15.5",
             "15.6",
             "16.0",
-            "16.1"
+            "16.1",
+            "16.2"
         ],
         "AD_HOC_CODE_SIGNING_ALLOWED": "NO"
     },
-    "MinimalDisplayName": "16.1",
-    "Version": "16.1",
+    "MinimalDisplayName": "16.2",
+    "Version": "16.2",
     "IsBaseSDK": "YES",
     "SupportedTargets":
     {
@@ -76,9 +77,9 @@
             ],
             "LLVMTargetTripleEnvironment": "",
             "ClangRuntimeLibraryPlatformName": "ios",
-            "MaximumDeploymentTarget": "16.1.99",
+            "MaximumDeploymentTarget": "16.2.99",
             "BuildVersionPlatformID": "2",
-            "DefaultDeploymentTarget": "16.1",
+            "DefaultDeploymentTarget": "16.2",
             "LLVMTargetTripleSys": "ios",
             "DeviceFamilies":
             [
@@ -132,7 +133,8 @@
                 "15.5",
                 "15.6",
                 "16.0",
-                "16.1"
+                "16.1",
+                "16.2"
             ],
             "SystemPrefix": ""
         }
@@ -141,13 +143,13 @@
     [
         "embedded"
     ],
-    "DefaultDeploymentTarget": "16.1",
-    "MaximumDeploymentTarget": "16.1.99",
+    "DefaultDeploymentTarget": "16.2",
+    "MaximumDeploymentTarget": "16.2.99",
     "DebuggerOptions":
     {
         "SupportsViewDebugging": "YES"
     },
-    "CanonicalName": "iphoneos16.1",
+    "CanonicalName": "iphoneos16.2",
     "CustomProperties":
     {}
 }
