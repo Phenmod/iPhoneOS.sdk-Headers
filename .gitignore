@@ -33,6 +33,8 @@ DerivedData
 *.swiftinterface
 *.swiftoverlay
 *.bitstream
+*.metallib
+*.dylib
 # *.sb
 # *.apinotes
 # *.plist

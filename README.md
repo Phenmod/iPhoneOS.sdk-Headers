@@ -21,3 +21,6 @@ update for every system version.
 ^[ \t\S]+(.h|.modulemap|.json|.apinotes|.plist)$\n
 ^[ \t\S]+c\+\++[ \t\S]+\n
 ```
+
+- [iOS & iPadOS Release Notes](https://developer.apple.com/documentation/ios-ipados-release-notes)
+- [Xcode Release Notes](https://developer.apple.com/documentation/xcode-release-notes)
