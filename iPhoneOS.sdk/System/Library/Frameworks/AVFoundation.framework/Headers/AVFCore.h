@@ -57,6 +57,7 @@
 #import <AVFoundation/AVOutputSettingsAssistant.h>
 #import <AVFoundation/AVPlaybackCoordinator.h>
 #import <AVFoundation/AVPlayer.h>
+#import <AVFoundation/AVPlayerOutput.h>
 #import <AVFoundation/AVPlayerItem.h>
 #import <AVFoundation/AVPlayerItemMediaDataCollector.h>
 #import <AVFoundation/AVPlayerItemOutput.h>
@@ -83,6 +84,7 @@
 #import <AVFoundation/AVUtilities.h>
 #import <AVFoundation/AVVideoCompositing.h>
 #import <AVFoundation/AVVideoComposition.h>
+#import <AVFoundation/AVVideoPerformanceMetrics.h>
 #import <AVFoundation/AVVideoSettings.h>
 #if TARGET_OS_IPHONE && ! TARGET_OS_MACCATALYST
 #import <AVFoundation/AVDisplayCriteria.h>

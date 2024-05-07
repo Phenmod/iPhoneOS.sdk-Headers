@@ -80,7 +80,7 @@ NS_SWIFT_UI_ACTOR
  *
  * @return Return a UIAction to be performed when the text item is interacted with. Return @c nil to prevent the action from being performed.
  */
-- (nullable UIAction *)textView:(UITextView *)textView primaryActionForTextItem:(UITextItem *)textItem defaultAction:(UIAction *)defaultAction API_AVAILABLE(ios(17.0)) API_UNAVAILABLE(watchos, tvos);
+- (nullable UIAction *)textView:(UITextView *)textView primaryActionForTextItem:(UITextItem *)textItem defaultAction:(UIAction *)defaultAction API_AVAILABLE(ios(17.0)) API_UNAVAILABLE(tvos, watchos);
 
 /**
  * Asks the delegate for the menu configuration to be performed when interacting with a text item.
@@ -155,7 +155,7 @@ UIKIT_EXTERN API_AVAILABLE(ios(2.0)) NS_SWIFT_UI_ACTOR
 // Presented when object becomes first responder.  If set to nil, reverts to following responder chain.  If
 // set while first responder, will not take effect until reloadInputViews is called.
 @property (nullable, readwrite, strong) UIView *inputView;             
-@property (nullable, readwrite, strong) UIView *inputAccessoryView;
+@property (nullable, readwrite, strong) UIView *inputAccessoryView API_UNAVAILABLE(visionos);
 
 @property(nonatomic) BOOL clearsOnInsertion API_AVAILABLE(ios(6.0)); // defaults to NO. if YES, the selection UI is hidden, and inserting text will replace the contents of the field. changing the selection will automatically set this to NO.
 

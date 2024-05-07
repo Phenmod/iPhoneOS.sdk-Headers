@@ -118,6 +118,7 @@
 #import <UIKit/UIFocusDebugger.h>
 #import <UIKit/UIFocusMovementHint.h>
 #import <UIKit/UIHoverEffect.h>
+#import <UIKit/UIHoverEffectLayer.h>
 #import <UIKit/UIHoverStyle.h>
 #import <UIKit/UIShape.h>
 #import <UIKit/UIHoverGestureRecognizer.h>
@@ -162,6 +163,7 @@
 #import <UIKit/UISegmentedControl.h>
 #import <UIKit/UISlider.h>
 #import <UIKit/UISplitViewController.h>
+#import <UIKit/UIStandardTextCursorView.h>
 #import <UIKit/UIStepper.h>
 #import <UIKit/UIStoryboard.h>
 #import <UIKit/UIStoryboardPopoverSegue.h>
@@ -179,6 +181,7 @@
 #import <UIKit/UITableViewController.h>
 #import <UIKit/UITapGestureRecognizer.h>
 #import <UIKit/UITextChecker.h>
+#import <UIKit/UITextCursorDropPositionAnimator.h>
 #import <UIKit/UITextCursorView.h>
 #import <UIKit/UITextField.h>
 #import <UIKit/UITextInput.h>
@@ -305,9 +308,6 @@
 #import <UIKit/UIWindowSceneGeometryPreferencesMac.h>
 #import <UIKit/UIWindowSceneGeometryPreferencesIOS.h>
 #import <UIKit/UIWindowSceneGeometryPreferencesVision.h>
-#if __has_include(<UIKit/UIWindowSceneGeometryPreferencesReality.h>)
-#import <UIKit/UIWindowSceneGeometryPreferencesReality.h>
-#endif
 #import <UIKit/UIWindowScenePlacement.h>
 #import <UIKit/UIWindowSceneStandardPlacement.h>
 #import <UIKit/UIWindowSceneProminentPlacement.h>
@@ -319,6 +319,7 @@
 #import <UIKit/UNNotificationResponse+UIKitAdditions.h>
 #import <UIKit/UIAction.h>
 #import <UIKit/UIMenu.h>
+#import <UIKit/UIMenuDisplayPreferences.h>
 #import <UIKit/UIMenuLeaf.h>
 #import <UIKit/UIMenuBuilder.h>
 #import <UIKit/UIMenuElement.h>
