@@ -26,7 +26,7 @@ extern "C" {
  */
 #pragma pack(push,4)
 
-#define   EISPLIBVERS   "Eisp-84.0.28"
+#define   EISPLIBVERS   "Eisp-85.0.33"
 /**
  * Debug Info Definition version number
   */
@@ -1180,7 +1180,7 @@ typedef struct _sEispLibDbgInfoFwPde {
   double  ppdSoftScores[32];
   uint32_t numOfValidSoftScores;
   uint32_t fpd_psb;
-  uint8_t ppdHistoryBuffer[10*1024];
+  uint8_t ppdHistoryBuffer[CEISPLIB_PPD_HISTORY_BUFFER_SIZE];
   uint32_t irCrC;
 #endif
 } sEispLibDbgInfoFwPde;
