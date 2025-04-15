@@ -707,7 +707,8 @@ struct dylib_command {
 
 /*
  * An alternate encoding for: LC_LOAD_DYLIB.
- * The flags field contains independent flags DYLIB_USE_*.
+ * The flags field contains independent flags DYLIB_USE_*
+ * First supported in macOS 15, iOS 18.
  */
 struct dylib_use_command {
     uint32_t    cmd;                     /* LC_LOAD_DYLIB or LC_LOAD_WEAK_DYLIB */
@@ -1324,6 +1325,10 @@ struct build_tool_version {
 
 #define PLATFORM_FIRMWARE 13
 #define PLATFORM_SEPOS 14
+
+#ifndef __OPEN_SOURCE__
+
+#endif /* __OPEN_SOURCE__ */
 
 #ifndef __OPEN_SOURCE__
 

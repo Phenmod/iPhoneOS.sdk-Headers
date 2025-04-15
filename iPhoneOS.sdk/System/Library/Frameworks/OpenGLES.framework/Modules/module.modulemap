@@ -1,4 +1,4 @@
-framework module OpenGLES [extern_c] {
+framework module OpenGLES {
   umbrella "Headers"
   module * { export * }
 
