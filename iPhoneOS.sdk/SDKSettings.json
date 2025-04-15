@@ -1,5 +1,5 @@
 {
-    "DisplayName": "iOS 18.2",
+    "DisplayName": "iOS 18.4",
     "DefaultProperties":
     {
         "CODE_SIGN_ENTITLEMENTS": "",
@@ -15,7 +15,7 @@
         "PLATFORM_NAME": "iphoneos",
         "KASAN_CFLAGS_CLASSIC": "-DKASAN=1 -DKASAN_CLASSIC=1 -fsanitize=address -mllvm -asan-globals-live-support -mllvm -asan-force-dynamic-shadow",
         "CODE_SIGNING_REQUIRED": "YES",
-        "IPHONEOS_DEPLOYMENT_TARGET": "18.2",
+        "IPHONEOS_DEPLOYMENT_TARGET": "18.4",
         "CODE_SIGN_IDENTITY": "Apple Development",
         "KASAN_CFLAGS_TBI": "-DKASAN=1 -DKASAN_TBI=1 -fsanitize=kernel-hwaddress -mllvm -hwasan-recover=0 -mllvm -hwasan-instrument-atomics=0 -mllvm -hwasan-instrument-stack=1 -mllvm -hwasan-generate-tags-with-calls=1 -mllvm -hwasan-instrument-with-calls=1 -mllvm -hwasan-use-short-granules=0 -mllvm -hwasan-memory-access-callback-prefix=__asan_",
         "TEST_FRAMEWORK_SEARCH_PATHS": "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks $(SDKROOT)/Developer/Library/Frameworks",
@@ -67,12 +67,14 @@
             "17.6",
             "18.0",
             "18.1",
-            "18.2"
+            "18.2",
+            "18.3",
+            "18.4"
         ],
         "AD_HOC_CODE_SIGNING_ALLOWED": "NO"
     },
-    "MinimalDisplayName": "18.2",
-    "Version": "18.2",
+    "MinimalDisplayName": "18.4",
+    "Version": "18.4",
     "IsBaseSDK": "YES",
     "SupportedTargets":
     {
@@ -88,9 +90,9 @@
             ],
             "LLVMTargetTripleEnvironment": "",
             "ClangRuntimeLibraryPlatformName": "ios",
-            "MaximumDeploymentTarget": "18.2.99",
+            "MaximumDeploymentTarget": "18.4.99",
             "BuildVersionPlatformID": "2",
-            "DefaultDeploymentTarget": "18.2",
+            "DefaultDeploymentTarget": "18.4",
             "LLVMTargetTripleSys": "ios",
             "DeviceFamilies":
             [
@@ -155,7 +157,9 @@
                 "17.6",
                 "18.0",
                 "18.1",
-                "18.2"
+                "18.2",
+                "18.3",
+                "18.4"
             ],
             "SystemPrefix": ""
         }
@@ -164,13 +168,13 @@
     [
         "embedded"
     ],
-    "DefaultDeploymentTarget": "18.2",
-    "MaximumDeploymentTarget": "18.2.99",
+    "DefaultDeploymentTarget": "18.4",
+    "MaximumDeploymentTarget": "18.4.99",
     "DebuggerOptions":
     {
         "SupportsViewDebugging": "YES"
     },
-    "CanonicalName": "iphoneos18.2",
+    "CanonicalName": "iphoneos18.4",
     "CustomProperties":
     {}
 }

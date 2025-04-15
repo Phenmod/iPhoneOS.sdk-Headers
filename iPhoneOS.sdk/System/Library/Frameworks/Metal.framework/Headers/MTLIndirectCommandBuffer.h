@@ -72,6 +72,7 @@ MTL_EXPORT API_AVAILABLE(macos(10.14), ios(12.0))
  */
 @property (readwrite, nonatomic) BOOL inheritBuffers;
 
+
 /*!
  @abstract
  The maximum bind index of vertex argument buffers that can be set per command.

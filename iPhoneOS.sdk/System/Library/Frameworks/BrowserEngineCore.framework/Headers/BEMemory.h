@@ -121,7 +121,7 @@ void be_memory_inline_jit_restrict_rwx_to_rw_with_witness(void)
 #ifdef __arm64e__
     ".arch_extension pauth" "\n"
 #endif
-    "adr x0, %=f" "\n"
+    "adr x0, %=2f" "\n"
 
     "movz x1, #" _BE_STRINGIZE_VALUE_OF(((BE_JIT_WRITE_PROTECT_TAG >>  0) & 0xFFFF)) ", lsl #0 \n"
     "movk x1, #" _BE_STRINGIZE_VALUE_OF(((BE_JIT_WRITE_PROTECT_TAG >> 16) & 0xFFFF)) ", lsl #16\n"
@@ -132,13 +132,13 @@ void be_memory_inline_jit_restrict_rwx_to_rw_with_witness(void)
     "mov x30, x1" "\n"
     _BE_INST_PACIBZ "\n"
     "cmp x30, x1" "\n"
-    "beq 1f" "\n"
+    "beq %=1f" "\n"
     _BE_INST_PACIB_X0_X1 "\n"
-    "1:" "\n"
+    "%=1:" "\n"
 #endif // !__arm64e__
 
     "bl " _BE_SYMBOL_STRING(be_memory_inline_jit_restrict_rwx_to_rw_with_witness_impl) "\n"
-    "%=:" "\n"
+    "%=2:" "\n"
     "nop" "\n"
     : /* no output */
     : /* no input */
