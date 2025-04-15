@@ -4,6 +4,33 @@
    All rights reserved. */
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #ifdef __OBJC__
 
 #import <QuartzCore/CABase.h>
@@ -21,6 +48,19 @@ API_AVAILABLE(macos(10.5), ios(2.0), tvos(9.0)) API_UNAVAILABLE(watchos)
 @private
   struct CARendererPriv *_priv;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* Create a new renderer object. Its render target is the specified

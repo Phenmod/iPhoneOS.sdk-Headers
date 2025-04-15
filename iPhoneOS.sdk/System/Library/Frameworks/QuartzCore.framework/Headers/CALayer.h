@@ -15,12 +15,30 @@
 @class NSEnumerator, CAAnimation, CALayerArray;
 @protocol CAAction, CALayerDelegate;
 
+
+
+
 NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 typedef NSString * CALayerContentsGravity NS_TYPED_ENUM API_AVAILABLE(macos(10.5), ios(2.0), tvos(9.0)) API_UNAVAILABLE(watchos);
 typedef NSString * CALayerContentsFormat NS_TYPED_ENUM API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0)) API_UNAVAILABLE(watchos);
 typedef NSString * CALayerContentsFilter NS_TYPED_ENUM API_AVAILABLE(macos(10.5), ios(2.0), tvos(9.0)) API_UNAVAILABLE(watchos);
 typedef NSString * CALayerCornerCurve NS_TYPED_ENUM API_AVAILABLE(macos(10.15), ios(13.0), tvos(13.0)) API_UNAVAILABLE(watchos);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* Options that control when to tone map CALayer contents and
@@ -110,6 +128,7 @@ API_AVAILABLE(macos(10.5), ios(2.0), tvos(9.0)) API_UNAVAILABLE(watchos)
 
 /** Property methods. **/
 
+
 /* CALayer implements the standard NSKeyValueCoding protocol for all
  * Objective C properties defined by the class and its subclasses. It
  * dynamically implements missing accessor methods for properties
@@ -126,6 +145,24 @@ API_AVAILABLE(macos(10.5), ios(2.0), tvos(9.0)) API_UNAVAILABLE(watchos)
  *      CGRect                  NSValue
  *      CGAffineTransform       NSValue
  *      CATransform3D           NSValue  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Returns the default value of the named property, or nil if no
  * default value is known. Subclasses that override this method to
@@ -385,6 +422,7 @@ API_AVAILABLE(macos(10.5), ios(2.0), tvos(9.0)) API_UNAVAILABLE(watchos)
 @property(copy) CALayerContentsFormat contentsFormat
   API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0)) API_UNAVAILABLE(watchos);
 
+
 /* If YES, contents of the layer can be displayed up to its NSScreen's
  * maximumExtendedDynamicRangeColorComponentValue or UIScreen's
  * currentEDRHeadroom. If NO, contents are clipped or tonemapped to 1.0 (SDR).
@@ -396,10 +434,20 @@ API_AVAILABLE(macos(10.5), ios(2.0), tvos(9.0)) API_UNAVAILABLE(watchos)
 @property BOOL wantsExtendedDynamicRangeContent
   API_AVAILABLE(macos(14.0), ios(17.0), macCatalyst(17.0)) API_UNAVAILABLE(tvos, watchos);
 
+
 /* Options that control when to tone map CALayer contents and
    CAMetalLayer drawables. */
 @property(copy) CAToneMapMode toneMapMode
 API_AVAILABLE(macos(15.0), ios(18.0), tvos(18.0), visionos(2.0)) API_UNAVAILABLE(watchos);
+
+
+
+
+
+
+
+
+
 
 
 
@@ -487,12 +535,23 @@ API_AVAILABLE(macos(15.0), ios(18.0), tvos(18.0), visionos(2.0)) API_UNAVAILABLE
 
 @property CAEdgeAntialiasingMask edgeAntialiasingMask;
 
+
 /* When true this layer is allowed to antialias its edges, as requested
  * by the value of the edgeAntialiasingMask property.
  *
  * The default value is read from the boolean UIViewEdgeAntialiasing
  * property in the main bundle's Info.plist. If no value is found in
  * the Info.plist the default value is NO. */
+
+
+
+
+
+
+
+
+
+
 
 @property BOOL allowsEdgeAntialiasing
     API_AVAILABLE(macos(10.10), ios(2.0), tvos(9.0)) API_UNAVAILABLE(watchos);
@@ -544,6 +603,7 @@ API_AVAILABLE(macos(15.0), ios(18.0), tvos(18.0), visionos(2.0)) API_UNAVAILABLE
 
 @property float opacity;
 
+
 /* When true, and the layer's opacity property is less than one, the
  * layer is allowed to composite itself as a group separate from its
  * parent. This gives the correct results when the layer contains
@@ -554,6 +614,18 @@ API_AVAILABLE(macos(15.0), ios(18.0), tvos(18.0), visionos(2.0)) API_UNAVAILABLE
  * value is found in the Info.plist the default value is YES for
  * applications linked against the iOS 7 SDK or later and NO for
  * applications linked against an earlier SDK. */
+
+
+
+
+
+
+
+
+
+
+
+
 
 @property BOOL allowsGroupOpacity
     API_AVAILABLE(macos(10.10), ios(2.0), tvos(9.0)) API_UNAVAILABLE(watchos);
@@ -637,6 +709,23 @@ API_AVAILABLE(macos(15.0), ios(18.0), tvos(18.0), visionos(2.0)) API_UNAVAILABLE
 
 /** Layout methods. **/
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Returns the preferred frame size of the layer in the coordinate
  * space of the superlayer. The default implementation calls the layout
  * manager if one exists and it implements the -preferredSizeOfLayer:
@@ -674,6 +763,17 @@ API_AVAILABLE(macos(15.0), ios(18.0), tvos(18.0), visionos(2.0)) API_UNAVAILABLE
  * each sublayer. */
 
 - (void)layoutSublayers;
+
+
+
+
+
+
+
+
+
+
+
 
 /** Action methods. **/
 
@@ -798,6 +898,32 @@ API_AVAILABLE(macos(15.0), ios(18.0), tvos(18.0), visionos(2.0)) API_UNAVAILABLE
 @property(nullable, copy) NSDictionary *style;
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /** Action (event handler) protocol. **/
 

@@ -6,6 +6,7 @@
 //
 
 #import <SafariServices/SFAddToHomeScreenActivityItem.h>
+#import <SafariServices/SFAddToHomeScreenInfo.h>
 #import <SafariServices/SFAuthenticationSession.h>
 #import <SafariServices/SFContentBlockerManager.h>
 #import <SafariServices/SFContentBlockerState.h>

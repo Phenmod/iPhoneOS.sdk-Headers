@@ -7,6 +7,16 @@
 #define QUARTZCORE_H
 
 
+
+
+
+
+
+
+
+
+
+
 #include <QuartzCore/CoreAnimation.h>
 
 #endif /* QUARTZCORE_H */

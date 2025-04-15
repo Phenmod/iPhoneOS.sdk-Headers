@@ -342,6 +342,17 @@ API_AVAILABLE(macos(10.5), ios(2.0), tvos(9.0)) API_UNAVAILABLE(watchos)
 @property float startProgress;
 @property float endProgress;
 
+
+
+
+
+
+
+
+
+
+
+
 @end
 
 /* Common transition types. */
