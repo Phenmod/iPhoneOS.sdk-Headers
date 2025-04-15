@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class PKDrawing, PKTool, PKCanvasView;
+@class PKDrawing, PKTool, PKCanvasView, PKStroke;
 
 /// The optional methods a delegate can receive from editing-related changes
 /// to a PKCanvasView.
@@ -54,6 +54,8 @@ NS_SWIFT_UI_ACTOR
 ///
 /// @param canvasView The canvas view that the user ended interacting with.
 - (void)canvasViewDidEndUsingTool:(PKCanvasView *)canvasView NS_SWIFT_NAME(canvasViewDidEndUsingTool(_:));
+
+- (void)canvasView:(PKCanvasView *)canvasView didRefineStrokes:(NSArray<PKStroke *> *)strokes withNewStrokes:(NSArray *)newStrokes NS_SWIFT_NAME(canvasView(_:didRefine:with:));
 @end
 
 

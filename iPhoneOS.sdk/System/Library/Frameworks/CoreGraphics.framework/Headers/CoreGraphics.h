@@ -37,6 +37,7 @@
 #include <CoreGraphics/CGPath.h>
 #include <CoreGraphics/CGPattern.h>
 #include <CoreGraphics/CGShading.h>
+#include <CoreGraphics/CGToneMapping.h>
 
 
 #endif  /* COREGRAPHICS_H_ */
