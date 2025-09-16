@@ -119,12 +119,6 @@ module Darwin.sys {
     export *
   }
 
-  // Deprecated, use signal_h
-  module signal {
-    header "_modules/_sys_signal.h"
-    export *
-  }
-
   module socketvar {
     header "sys/socketvar.h"
     export *
@@ -173,6 +167,12 @@ module Darwin.sys {
 
   module vm {
     header "sys/vm.h"
+    export *
+  }
+
+  // Deprecated, use signal_h
+  module signal {
+    header "_modules/_darwin_sys_signal.h"
     export *
   }
 }

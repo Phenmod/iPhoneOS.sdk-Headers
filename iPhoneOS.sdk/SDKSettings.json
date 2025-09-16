@@ -1,8 +1,9 @@
 {
-    "DisplayName": "iOS 18.5",
+    "DisplayName": "iOS 26.0",
     "DefaultProperties":
     {
         "CODE_SIGN_ENTITLEMENTS": "",
+        "SWIFT_ENABLE_EXPLICIT_MODULES": "$(SWIFT_USE_INTEGRATED_DRIVER)",
         "ENTITLEMENTS_REQUIRED": "YES",
         "KASAN_DEFAULT_CFLAGS": "$(KASAN_CFLAGS_CLASSIC)",
         "KASAN_DEFAULT_CFLAGS[arch=arm64]": "$(KASAN_CFLAGS_TBI)",
@@ -15,7 +16,7 @@
         "PLATFORM_NAME": "iphoneos",
         "KASAN_CFLAGS_CLASSIC": "-DKASAN=1 -DKASAN_CLASSIC=1 -fsanitize=address -mllvm -asan-globals-live-support -mllvm -asan-force-dynamic-shadow",
         "CODE_SIGNING_REQUIRED": "YES",
-        "IPHONEOS_DEPLOYMENT_TARGET": "18.5",
+        "IPHONEOS_DEPLOYMENT_TARGET": "26.0",
         "CODE_SIGN_IDENTITY": "Apple Development",
         "KASAN_CFLAGS_TBI": "-DKASAN=1 -DKASAN_TBI=1 -fsanitize=kernel-hwaddress -mllvm -hwasan-recover=0 -mllvm -hwasan-instrument-atomics=0 -mllvm -hwasan-instrument-stack=1 -mllvm -hwasan-generate-tags-with-calls=1 -mllvm -hwasan-instrument-with-calls=1 -mllvm -hwasan-use-short-granules=0 -mllvm -hwasan-memory-access-callback-prefix=__asan_",
         "TEST_FRAMEWORK_SEARCH_PATHS": "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks $(SDKROOT)/Developer/Library/Frameworks",
@@ -70,30 +71,32 @@
             "18.2",
             "18.3",
             "18.4",
-            "18.5"
+            "18.5",
+            "18.6",
+            "26.0"
         ],
         "AD_HOC_CODE_SIGNING_ALLOWED": "NO"
     },
-    "MinimalDisplayName": "18.5",
-    "Version": "18.5",
+    "MinimalDisplayName": "26.0",
+    "Version": "26.0",
     "IsBaseSDK": "YES",
     "SupportedTargets":
     {
         "iphoneos":
         {
-            "LLVMTargetTripleVendor": "apple",
-            "DeploymentTargetSettingName": "IPHONEOS_DEPLOYMENT_TARGET",
-            "SwiftConcurrencyMinimumDeploymentTarget": "15.0",
-            "Archs":
-            [
-                "arm64e",
-                "arm64"
-            ],
-            "LLVMTargetTripleEnvironment": "",
+            "SystemPrefix": "",
             "ClangRuntimeLibraryPlatformName": "ios",
-            "MaximumDeploymentTarget": "18.5.99",
             "BuildVersionPlatformID": "2",
-            "DefaultDeploymentTarget": "18.5",
+            "SwiftSpanMinimumDeploymentTarget": "26.0",
+            "LLVMTargetTripleVendor": "apple",
+            "MaximumDeploymentTarget": "26.0.99",
+            "SwiftCompatibilityLibraryNotNeededStartingIn":
+            {
+                "libswiftCompatibilitySpan.dylib": "26.0",
+                "libswift_Concurrency.dylib": "15.0"
+            },
+            "SwiftConcurrencyMinimumDeploymentTarget": "15.0",
+            "SwiftOSRuntimeMinimumDeploymentTarget": "12.2",
             "LLVMTargetTripleSys": "ios",
             "DeviceFamilies":
             [
@@ -108,11 +111,8 @@
                     "DisplayName": "iPad"
                 }
             ],
-            "MinimumDeploymentTarget": "12.0",
-            "SwiftOSRuntimeMinimumDeploymentTarget": "12.2",
             "PlatformFamilyDisplayName": "iOS",
-            "RecommendedDeploymentTarget": "15.0",
-            "PlatformFamilyName": "iOS",
+            "LLVMTargetTripleEnvironment": "",
             "ValidDeploymentTargets":
             [
                 "12.0",
@@ -161,22 +161,33 @@
                 "18.2",
                 "18.3",
                 "18.4",
-                "18.5"
+                "18.5",
+                "18.6",
+                "26.0"
             ],
-            "SystemPrefix": ""
+            "DefaultDeploymentTarget": "26.0",
+            "MinimumDeploymentTarget": "12.0",
+            "DeploymentTargetSettingName": "IPHONEOS_DEPLOYMENT_TARGET",
+            "Archs":
+            [
+                "arm64e",
+                "arm64"
+            ],
+            "RecommendedDeploymentTarget": "15.0",
+            "PlatformFamilyName": "iOS"
         }
     },
     "PropertyConditionFallbackNames":
     [
         "embedded"
     ],
-    "DefaultDeploymentTarget": "18.5",
-    "MaximumDeploymentTarget": "18.5.99",
+    "DefaultDeploymentTarget": "26.0",
+    "MaximumDeploymentTarget": "26.0.99",
     "DebuggerOptions":
     {
         "SupportsViewDebugging": "YES"
     },
-    "CanonicalName": "iphoneos18.5",
+    "CanonicalName": "iphoneos26.0",
     "CustomProperties":
     {}
 }

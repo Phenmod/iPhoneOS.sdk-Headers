@@ -68,6 +68,7 @@ AS_EXTERN API_AVAILABLE(ios(12.0), macCatalyst(14.0), macos(11.0)) API_UNAVAILAB
  */
 - (void)completeRequestWithTextToInsert:(NSString *)text completionHandler:(void(^ _Nullable)(BOOL expired))completionHandler NS_SWIFT_NAME(completeRequest(withTextToInsert:completionHandler:)) API_AVAILABLE(ios(18.0)) API_UNAVAILABLE(macos, macCatalyst, visionos, watchos, tvos);
 
+
 /*! @abstract Complete the request to configure the extension.
  @discussion Calling this method will eventually dismiss the associated view controller.
  */
