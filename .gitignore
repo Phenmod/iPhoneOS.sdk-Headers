@@ -30,8 +30,8 @@ DerivedData
 *.a
 *.tbd
 *.swiftdoc
-*.swiftinterface
-*.swiftoverlay
+# *.swiftinterface
+# *.swiftoverlay
 *.bitstream
 *.metallib
 *.dylib
