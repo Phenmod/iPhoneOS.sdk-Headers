@@ -48,7 +48,7 @@ SK_EXTERN_CLASS API_AVAILABLE(ios(14.0), macos(11.0), tvos(14.0), watchos(7.0), 
 @property (nonatomic, assign) BOOL disableDialogs;
 
 // Default to NO
-@property (nonatomic, assign) BOOL failTransactionsEnabled API_DEPRECATED("No longer supported. Use simulatedError(forAPI:)", ios(14.0, 17.0), macos(11.0, 14.0), tvos(14.0, 17.0), watchos(7.0, 10.0)) API_UNAVAILABLE(visionos);
+@property (nonatomic, assign) BOOL failTransactionsEnabled API_DEPRECATED("No longer supported. Use simulatedError(forAPI:).", ios(14.0, 17.0), macos(11.0, 14.0), tvos(14.0, 17.0), watchos(7.0, 10.0)) API_UNAVAILABLE(visionos);
 
 // Default to NO
 @property (nonatomic, assign) BOOL interruptedPurchasesEnabled;
@@ -73,7 +73,7 @@ SK_EXTERN_CLASS API_AVAILABLE(ios(14.0), macos(11.0), tvos(14.0), watchos(7.0), 
      SKErrorMissingOfferParams
      SKErrorInvalidOfferPrice
  */
-@property (nonatomic, assign) SKErrorCode failureError API_DEPRECATED("No longer supported. Use simulatedError(forAPI:)", ios(14.0, 17.0), macos(11.0, 14.0), tvos(14.0, 17.0), watchos(7.0, 10.0)) API_UNAVAILABLE(visionos);
+@property (nonatomic, assign) SKErrorCode failureError API_DEPRECATED("No longer supported. Use simulatedError(forAPI:).", ios(14.0, 17.0), macos(11.0, 14.0), tvos(14.0, 17.0), watchos(7.0, 10.0)) API_UNAVAILABLE(visionos);
 
 // ISO 3166-1 Alpha-3 country code representation, default to USA
 @property (nonatomic, copy) NSString *storefront;
