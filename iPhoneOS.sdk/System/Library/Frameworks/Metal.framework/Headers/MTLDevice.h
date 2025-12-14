@@ -1194,6 +1194,13 @@ typedef uint64_t MTLTimestamp;
 @property (readonly) BOOL supportsPrimitiveMotionBlur API_AVAILABLE(macos(11.0), ios(14.0), tvos(16.0));
 
 
+/*!
+ @property maximumConcurrentCompilationTaskCount
+ @abstract Returns the maximum count of concurrent executing compilation tasks.
+ @discussion The property returns a different value depending on the value of the property `shouldMaximizeConcurrentCompilation`.
+ */
+@property (readonly) NSUInteger maximumConcurrentCompilationTaskCount
+        API_AVAILABLE(macos(13.3), ios(26.0));
 
 /*!
  @method newResidencySetWithDescriptor

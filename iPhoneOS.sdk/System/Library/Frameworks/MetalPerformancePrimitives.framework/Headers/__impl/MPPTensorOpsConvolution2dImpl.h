@@ -4257,7 +4257,10 @@ __tensorops_impl_conv2d_cooperative_destination_tensor_is_valid_element(
     const thread convolution2d_descriptor &,
     __tensor_ops_detail::__thread_void_t, uint16_t,
     __tensor_ops_detail::__tensor_ops_datatype, int threads);
-
+extern "C" TENSOROPS_EXPORT EXTERNALLY_DEFINED_ATTR uint16_t
+__tensorops_impl_conv2d_cooperative_destination_tensor_get_element_index(
+    const thread convolution2d_descriptor &, __tensor_ops_detail::__thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t, __tensor_ops_detail::__tensor_ops_datatype, int threads);
 extern "C" EXTERNALLY_DEFINED_ATTR void
 __tensorops_impl_convolution2d_op_cooperative_destination_tensor_load_dv_f32(
     thread convolution2d_descriptor &desc, thread void *storage,
@@ -4701,20 +4704,7 @@ struct __operand_layout
   {
     metal::execution_threads t = scope();
     int threads = t.size();
-    __tensor_ops_detail::__tensor_ops_datatype dataType;
-    if constexpr (__tensor_ops_detail::__is_same_v<element_t, int32_t>)
-      dataType = __tensor_ops_detail::__tensor_ops_datatype_float32;
-    else if constexpr (__tensor_ops_detail::__is_same_v<element_t, float>)
-      dataType = __tensor_ops_detail::__tensor_ops_datatype_float32;
-    else if constexpr (__tensor_ops_detail::__is_same_v<element_t, half>)
-      dataType = __tensor_ops_detail::__tensor_ops_datatype_float16;
-#if __HAVE_BFLOAT__
-    else if constexpr (__tensor_ops_detail::__is_same_v<element_t, bfloat>)
-      dataType = __tensor_ops_detail::__tensor_ops_datatype_bfloat16;
-#endif
-    else
-      static_assert(__tensor_ops_detail::__assert_false_v<element_type>,
-                    "unsupported data type");
+    __tensor_ops_detail::__tensor_ops_datatype dataType = __tensor_ops_detail::__type_to_tensor_ops_datatype<element_t>::value;
 
     return (thread element_t *)
         __tensorops_impl_conv2d_cooperative_destination_tensor_elements(
@@ -4722,28 +4712,19 @@ struct __operand_layout
   }
 
   static index_t get_element_index(thread_storage_t storage,
-                                   const thread element_type *) {
-    // TODO
+                                   const thread element_type *element) {
+      
+    metal::execution_threads t = scope();
+    int threads = t.size();
+    __tensor_ops_detail::__tensor_ops_datatype dataType = __tensor_ops_detail::__type_to_tensor_ops_datatype<element_t>::value;
+    return __tensorops_impl_conv2d_cooperative_destination_tensor_get_element_index(descriptor, (__tensor_ops_detail::__thread_void_t)storage, (const thread void*)element, dataType, threads);
   }
 
   static bool is_valid_element(const_thread_storage_t storage, index_t idx)
   {
     metal::execution_threads t = scope();
     int threads = t.size();
-    __tensor_ops_detail::__tensor_ops_datatype dataType;
-    if constexpr (__tensor_ops_detail::__is_same_v<element_t, int32_t>)
-      dataType = __tensor_ops_detail::__tensor_ops_datatype_float32;
-    else if constexpr (__tensor_ops_detail::__is_same_v<element_t, float>)
-      dataType = __tensor_ops_detail::__tensor_ops_datatype_float32;
-    else if constexpr (__tensor_ops_detail::__is_same_v<element_t, half>)
-      dataType = __tensor_ops_detail::__tensor_ops_datatype_float16;
-#if __HAVE_BFLOAT__
-    else if constexpr (__tensor_ops_detail::__is_same_v<element_t, bfloat>)
-      dataType = __tensor_ops_detail::__tensor_ops_datatype_bfloat16;
-#endif
-    else
-      static_assert(__tensor_ops_detail::__assert_false_v<element_type>,
-                    "unsupported data type");
+    __tensor_ops_detail::__tensor_ops_datatype dataType = __tensor_ops_detail::__type_to_tensor_ops_datatype<element_t>::value;
 
     return __tensorops_impl_conv2d_cooperative_destination_tensor_is_valid_element(
         descriptor, (__tensor_ops_detail::__thread_void_t)storage, idx,
@@ -4760,21 +4741,7 @@ struct __operand_layout
 
     static_assert(rank == 4, "multidimensional_indices returns 4D indices");
 
-    __tensor_ops_detail::__tensor_ops_datatype dataType;
-    if constexpr (__tensor_ops_detail::__is_same_v<element_t, int32_t>)
-      dataType = __tensor_ops_detail::__tensor_ops_datatype_float32;
-    else if constexpr (__tensor_ops_detail::__is_same_v<element_t, float>)
-      dataType = __tensor_ops_detail::__tensor_ops_datatype_float32;
-    else if constexpr (__tensor_ops_detail::__is_same_v<element_t, half>)
-      dataType = __tensor_ops_detail::__tensor_ops_datatype_float16;
-#if __HAVE_BFLOAT__
-    else if constexpr (__tensor_ops_detail::__is_same_v<element_t, bfloat>)
-      dataType = __tensor_ops_detail::__tensor_ops_datatype_bfloat16;
-#endif
-    else
-      static_assert(__tensor_ops_detail::__assert_false_v<element_type>,
-                    "unsupported data type");
-
+    __tensor_ops_detail::__tensor_ops_datatype dataType = __tensor_ops_detail::__type_to_tensor_ops_datatype<element_t>::value;
     if constexpr (__tensor_ops_detail::__is_same_v<coord_t, ushort>)
     {
       ushort coords[4];

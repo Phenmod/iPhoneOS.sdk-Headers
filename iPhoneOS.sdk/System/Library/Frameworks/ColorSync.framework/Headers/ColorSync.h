@@ -11,8 +11,8 @@
 #include <ColorSync/ColorSyncProfile.h>
 #include <ColorSync/ColorSyncTransform.h>
 
-#define COLORSYNC_API_VERSION 0x10000000L
-// 16.0.0.0 BCD; uint32_t BCD = ((uint32_t)majorOS (=  << 24) | (minorOS << 16) | (dotOS << 8) | (API version & 0xFF);
+#define COLORSYNC_API_VERSION 0x1A010000L
+// 26.1.0.0 BCD; uint32_t BCD = (uint32_t)((majorOS << 24) | (minorOS << 16) | (dotOS << 8) | (API version & 0xFF));
 
 CSEXTERN uint32_t ColorSyncAPIVersion(void);
 

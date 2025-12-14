@@ -33,6 +33,8 @@ T __MAX(T x, T y)
 template <typename T>
 struct __type_to_tensor_ops_datatype
 {
+    static_assert(__tensor_ops_detail::__assert_false_v<T>,
+                  "unsupported data type");
 };
 template <>
 struct __type_to_tensor_ops_datatype<float>

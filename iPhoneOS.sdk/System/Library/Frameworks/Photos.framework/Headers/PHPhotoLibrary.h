@@ -68,6 +68,21 @@ NS_SWIFT_SENDABLE
 + (PHAuthorizationStatus)authorizationStatus API_DEPRECATED_WITH_REPLACEMENT("+authorizationStatusForAccessLevel:", ios(8, API_TO_BE_DEPRECATED), macos(10.13, API_TO_BE_DEPRECATED), tvos(10, API_TO_BE_DEPRECATED));
 + (void)requestAuthorization:(void(^)(PHAuthorizationStatus status))handler API_DEPRECATED_WITH_REPLACEMENT("+requestAuthorizationForAccessLevel:handler:", ios(8, API_TO_BE_DEPRECATED), macos(10.13, API_TO_BE_DEPRECATED), tvos(10, API_TO_BE_DEPRECATED));
 
+#if TARGET_OS_IOS && !TARGET_OS_VISION
+#pragma mark - Background Upload Jobs
+
+@property (readonly, getter=isUploadJobExtensionEnabled) BOOL uploadJobExtensionEnabled API_AVAILABLE(ios(26.1)) API_UNAVAILABLE(macos, macCatalyst, tvos, visionos) NS_SWIFT_NAME(uploadJobExtensionEnabled); /// Returns `YES` if the extension is enabled and active, otherwise `NO`. This is used by the extension's host application to determine the background processing status.
+
+/// Enables or disables the background asset resource upload job processing. This must be called before creating `PHAssetResourceUploadJob`, by the extension's host application.
+///
+/// Enabling BackgroundUploadJobs requires full library access and the extension registered to the extension point: "com.apple.photos.background-upload".
+///
+/// - Parameters:
+///     - enable: YES to enable the upload job extension processing and allow the creation of PHAssetResourceUploadJobs. NO to disable processing the host application's extension.
+///     - error: If enabling or disabling was unsuccessful, `NO` is returned and an error is set on the `error` parameter.
+- (BOOL)setUploadJobExtensionEnabled:(BOOL)enable error:(NSError * __autoreleasing *)error API_AVAILABLE(ios(26.1)) API_UNAVAILABLE(macos, macCatalyst, tvos, visionos);
+#endif
+
 #pragma mark - Library availability
 
 @property (readonly, atomic, nullable, strong) NSError *unavailabilityReason API_AVAILABLE(macos(10.15), ios(13), tvos(13));
