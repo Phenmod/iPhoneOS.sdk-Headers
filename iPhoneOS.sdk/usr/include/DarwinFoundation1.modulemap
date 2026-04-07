@@ -85,8 +85,8 @@ module _DarwinFoundation1 [system] {
 
   explicit module cdefs {
     header "sys/cdefs.h"
-    textual header "sys/_posix_availability.h"
-    textual header "sys/_symbol_aliasing.h"
+    private textual header "sys/_posix_availability.h"
+    private textual header "sys/_symbol_aliasing.h"
 
     export *
   }
@@ -243,6 +243,9 @@ module _DarwinFoundation1 [system] {
     }
 
     module machine__limits {
+      header "machine/_limits.h"
+      export *
+
       module arm {
         header "arm/_limits.h"
         export *

@@ -1,7 +1,7 @@
 /*
     NSPersistentStoreCoordinator.h
     Core Data
-    Copyright (c) 2004-2025, Apple Inc.
+    Copyright (c) 2004-2026, Apple Inc.
     All rights reserved.
 */
 
@@ -249,6 +249,11 @@ API_AVAILABLE(macosx(10.4),ios(3.0)) NS_SWIFT_SENDABLE
  */
 + (nullable NSDictionary<NSString *, id> *)metadataForPersistentStoreOfType:(NSString*)storeType URL:(NSURL *)url options:(nullable NSDictionary *)options error:(NSError **)error API_AVAILABLE(macosx(10.9),ios(7.0));
 + (BOOL)setMetadata:(nullable NSDictionary<NSString *, id> *)metadata forPersistentStoreOfType:(NSString*)storeType URL:(NSURL*)url options:(nullable NSDictionary*)options error:(NSError**)error API_AVAILABLE(macosx(10.9),ios(7.0));
+
+/* Allows to access the cached NSManagedObjectModel stored in a persistent store without warming
+   up a CoreData stack, will return an error if the store type does not support model caching.
+*/
++ (nullable NSManagedObjectModel *)cachedModelForPersistentStoreAtURL:(NSURL *)url options:(nullable NSDictionary *)options error:(NSError **)error API_AVAILABLE(macosx(26.4),ios(26.4),watchos(26.4),tvos(26.4),visionos(26.4));
 
     
 /* Used for save as - performance may vary depending on the type of old and new store; the old store is usually removed from the coordinator by the migration operation, and therefore is no longer a useful reference after invoking this method 

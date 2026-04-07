@@ -1,4 +1,4 @@
-module Darwin.netinet6 [system] {
+module Darwin.netinet6 {
   module ipsec {
     header "netinet6/ipsec.h"
     export *

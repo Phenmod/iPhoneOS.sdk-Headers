@@ -25,12 +25,12 @@ static NSErrorDomain const SALRegistrationErrorDomain NS_SWIFT_NAME(Registration
 typedef NS_ERROR_ENUM(SALRegistrationErrorDomain, SALRegistrationError) {
     /// The application is not registered as an authorized partner.
     ///
-    /// Contact Apple about the channel partnership program to resolve.
+    /// Contact the Apple channel partnership program to resolve.
     SALRegistrationErrorNotEligible = 0,
 
     /// Registration failed.
     ///
-    /// This may indicate the user is not signed into an iTunes account
+    /// This may indicate the user is not signed into an Apple Media & Purchases account
     /// or another system error occurred. Implement retry logic with appropriate user messaging.
     SALRegistrationErrorFailed = 1
 } NS_SWIFT_NAME(RegistrationError);

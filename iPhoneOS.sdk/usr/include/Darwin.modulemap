@@ -56,22 +56,36 @@ module Darwin [system] {
   extern module device "device.modulemap"
 
   module libkern {
-    export *
-
     module OSAtomic {
       header "libkern/OSAtomic.h"
+      export *
+    }
+
+    module OSAtomicDeprecated {
       header "libkern/OSAtomicDeprecated.h"
+      export *
+    }
+
+    module OSSpinLockDeprecated {
       header "libkern/OSSpinLockDeprecated.h"
+      export *
+    }
+
+    module OSAtomicQueue {
       header "libkern/OSAtomicQueue.h"
       export *
     }
 
     module OSByteOrder {
       header "libkern/OSByteOrder.h"
-
-      header "libkern/arm/OSByteOrder.h"
-
       export *
+
+      module machine_OSByteOrder {
+        module arm {
+          header "libkern/arm/OSByteOrder.h"
+          export *
+        }
+      }
     }
   }
 
