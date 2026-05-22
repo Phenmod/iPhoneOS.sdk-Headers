@@ -10,6 +10,8 @@
 
 #if defined(__METAL_VERSION__) && defined(__HAVE_TENSOR__)
 
+#include "MPPTensorOpsAvailability.h"
+
 namespace __mutmul2d_detail
 {
 
@@ -42,6 +44,15 @@ constexpr bool matmul2d_descriptor_is_equal(matmul2d_descriptor a, matmul2d_desc
          a.matmul_mode == b.matmul_mode;
 }
 
+#if !__TENSOR_OPS_SUPPORT_DEPLOYMENT_TARGET_26_2
+extern "C" EXTERNALLY_DEFINED_ATTR size_t
+__tensorops_impl_matmul2d_op_cooperative_destination_data_size(
+    __matmul2d_descriptor descriptor,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int);
+#else
 extern "C" EXTERNALLY_DEFINED_ATTR size_t
 __tensorops_impl_matmul2d_op_cooperative_tensor_data_size(
     __matmul2d_cooperative_operand_index,
@@ -50,6 +61,16 @@ __tensorops_impl_matmul2d_op_cooperative_tensor_data_size(
     __tensor_ops_detail::__tensor_ops_datatype,
     __tensor_ops_detail::__tensor_ops_datatype,
     int);
+#endif
+#if !__TENSOR_OPS_SUPPORT_DEPLOYMENT_TARGET_26_2
+extern "C" EXTERNALLY_DEFINED_ATTR uint16_t
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_num_elements(
+    __matmul2d_descriptor descriptor,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int);
+#else
 extern "C" EXTERNALLY_DEFINED_ATTR uint16_t
 __tensorops_impl_matmul2d_op_cooperative_tensor_num_elements(
     __matmul2d_cooperative_operand_index,
@@ -58,6 +79,17 @@ __tensorops_impl_matmul2d_op_cooperative_tensor_num_elements(
     __tensor_ops_detail::__tensor_ops_datatype,
     __tensor_ops_detail::__tensor_ops_datatype,
     int);
+#endif
+#if !__TENSOR_OPS_SUPPORT_DEPLOYMENT_TARGET_26_2
+extern "C" EXTERNALLY_DEFINED_ATTR thread void *
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_get_element_pointer(
+    __matmul2d_descriptor descriptor,
+    __tensor_ops_detail::__thread_void_t,
+    uint16_t,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype);
+#else
 extern "C" EXTERNALLY_DEFINED_ATTR thread void *
 __tensorops_impl_matmul2d_op_cooperative_tensor_get_element_pointer(
     __matmul2d_cooperative_operand_index,
@@ -67,7 +99,18 @@ __tensorops_impl_matmul2d_op_cooperative_tensor_get_element_pointer(
     __tensor_ops_detail::__tensor_ops_datatype,
     __tensor_ops_detail::__tensor_ops_datatype,
     __tensor_ops_detail::__tensor_ops_datatype);
-extern "C" EXTERNALLY_DEFINED_ATTR thread uint16_t
+#endif
+#if !__TENSOR_OPS_SUPPORT_DEPLOYMENT_TARGET_26_2
+extern "C" EXTERNALLY_DEFINED_ATTR uint16_t
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_get_element_index(
+    __matmul2d_descriptor descriptor,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype);
+#else
+extern "C" EXTERNALLY_DEFINED_ATTR uint16_t
 __tensorops_impl_matmul2d_op_cooperative_tensor_get_element_index(
     __matmul2d_cooperative_operand_index,
     __matmul2d_descriptor descriptor,
@@ -76,10 +119,11 @@ __tensorops_impl_matmul2d_op_cooperative_tensor_get_element_index(
     __tensor_ops_detail::__tensor_ops_datatype,
     __tensor_ops_detail::__tensor_ops_datatype,
     __tensor_ops_detail::__tensor_ops_datatype);
+#endif
+#if !__TENSOR_OPS_SUPPORT_DEPLOYMENT_TARGET_26_2
 extern "C" EXTERNALLY_DEFINED_ATTR void
-__tensorops_impl_matmul2d_op_cooperative_tensor_get_coordinate(
-    __matmul2d_cooperative_operand_index,
-    __matmul2d_descriptor descriptor,
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_get_coordinate(
+    __matmul2d_descriptor,
     __tensor_ops_detail::__const_thread_void_t,
     uint16_t,
     __tensor_ops_detail::__thread_void_t,
@@ -88,6 +132,30 @@ __tensorops_impl_matmul2d_op_cooperative_tensor_get_coordinate(
     __tensor_ops_detail::__tensor_ops_datatype,
     __tensor_ops_detail::__tensor_ops_datatype,
     __tensor_ops_detail::__tensor_ops_datatype);
+#else
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_tensor_get_coordinate(
+    __matmul2d_cooperative_operand_index,
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__const_thread_void_t,
+    uint16_t,
+    __tensor_ops_detail::__thread_void_t,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype);
+#endif
+#if !__TENSOR_OPS_SUPPORT_DEPLOYMENT_TARGET_26_2
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_init(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__thread_void_t,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int);
+#else
 extern "C" EXTERNALLY_DEFINED_ATTR void
 __tensorops_impl_matmul2d_op_cooperative_tensor_init(
     __matmul2d_cooperative_operand_index,
@@ -97,6 +165,18 @@ __tensorops_impl_matmul2d_op_cooperative_tensor_init(
     __tensor_ops_detail::__tensor_ops_datatype,
     __tensor_ops_detail::__tensor_ops_datatype,
     int);
+#endif
+#if !__TENSOR_OPS_SUPPORT_DEPLOYMENT_TARGET_26_2
+extern "C" EXTERNALLY_DEFINED_ATTR bool
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_is_valid_element(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__const_thread_void_t,
+    uint16_t,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int);
+#else
 extern "C" EXTERNALLY_DEFINED_ATTR bool
 __tensorops_impl_matmul2d_op_cooperative_tensor_is_valid_element(
     __matmul2d_cooperative_operand_index,
@@ -107,6 +187,7 @@ __tensorops_impl_matmul2d_op_cooperative_tensor_is_valid_element(
     __tensor_ops_detail::__tensor_ops_datatype,
     __tensor_ops_detail::__tensor_ops_datatype,
     int);
+#endif
 extern "C" EXTERNALLY_DEFINED_ATTR void
 __tensorops_impl_matmul2d_op_cooperative_tensor_copy(
     __matmul2d_cooperative_operand_index,
@@ -135,6 +216,199 @@ __tensorops_impl_matmul2d_op_cooperative_tensor_is_compatible_as_input(
     __tensor_ops_detail::__tensor_ops_datatype,
     int);
 
+#if !__TENSOR_OPS_SUPPORT_DEPLOYMENT_TARGET_26_2
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_load_dv_f16(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_tensor_descriptor_type,
+    int,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int);
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_load_tg_f16(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_tensor_descriptor_type,
+    int,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int);
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_load_dv_i32(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_tensor_descriptor_type,
+    int,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int);
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_load_tg_i32(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_tensor_descriptor_type,
+    int,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int);
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_load_dv_i8(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_tensor_descriptor_type,
+    int,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int);
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_load_tg_i8(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_tensor_descriptor_type,
+    int,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int);
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_load_dv_f32(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_tensor_descriptor_type,
+    int,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int);
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_load_tg_f32(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_tensor_descriptor_type,
+    int,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int);
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_load_dv_b16(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_tensor_descriptor_type,
+    int,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int);
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_load_tg_b16(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_tensor_descriptor_type,
+    int,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int);
+
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_store_dv_f16(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_tensor_descriptor_type,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int threads);
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_store_tg_f16(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_tensor_descriptor_type,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int threads);
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_store_dv_i32(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_tensor_descriptor_type,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int threads);
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_store_tg_i32(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_tensor_descriptor_type,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int threads);
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_store_dv_i8(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_tensor_descriptor_type,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int threads);
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_store_tg_i8(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_tensor_descriptor_type,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int threads);
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_store_dv_f32(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_tensor_descriptor_type,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int threads);
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_store_tg_f32(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_tensor_descriptor_type,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int threads);
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_store_dv_b16(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_tensor_descriptor_type,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int threads);
+extern "C" EXTERNALLY_DEFINED_ATTR void
+__tensorops_impl_matmul2d_op_cooperative_destination_tensor_store_tg_b16(
+    __matmul2d_descriptor,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__const_thread_void_t,
+    __tensor_ops_detail::__tensor_ops_tensor_descriptor_type,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    __tensor_ops_detail::__tensor_ops_datatype,
+    int threads);
+#else
 extern "C" EXTERNALLY_DEFINED_ATTR void
 __tensorops_impl_matmul2d_op_cooperative_tensor_load_dv_f16(
     __matmul2d_cooperative_operand_index,
@@ -413,6 +687,7 @@ __tensorops_impl_matmul2d_op_cooperative_tensor_store_tg_b16(
     __tensor_ops_detail::__tensor_ops_datatype,
     __tensor_ops_detail::__tensor_ops_datatype,
     int threads);
+#endif
 
 extern "C" EXTERNALLY_DEFINED_ATTR size_t
 __tensorops_impl_matmul2d_op_cooperative_reduction_destination_data_size(
@@ -2346,8 +2621,13 @@ struct __operand_layout
     __tensor_ops_detail::__tensor_ops_datatype destinationDataType =
         __tensor_ops_detail::__type_to_tensor_ops_datatype<destination_element_t>::value;
 
+#if !__TENSOR_OPS_SUPPORT_DEPLOYMENT_TARGET_26_2
+    return __tensorops_impl_matmul2d_op_cooperative_destination_data_size(
+        descriptor, leftDataType, rightDataType, destinationDataType, threads);
+#else
     return __tensorops_impl_matmul2d_op_cooperative_tensor_data_size(
         operand_index, descriptor, leftDataType, rightDataType, destinationDataType, threads);
+#endif
   }
 
   template <class ElemType, class Extents, class Descriptor, class... Tags>
@@ -2386,6 +2666,86 @@ struct __operand_layout
     __tensor_ops_detail::__tensor_ops_datatype destinationDataType =
         __tensor_ops_detail::__type_to_tensor_ops_datatype<destination_element_t>::value;
 
+#if !__TENSOR_OPS_SUPPORT_DEPLOYMENT_TARGET_26_2
+    if constexpr (__tensor_ops_detail::__is_same_v<elem_t, half>)
+    {
+      if constexpr (__tensor_ops_detail::__is_device_addrspace_v<sourcePtrType>)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_load_dv_f16(
+            desc, storage, source, sourceDescType, sourceRank, leftDataType,
+            rightDataType, threads);
+      else if constexpr (__tensor_ops_detail::__is_threadgroup_addrspace_v<
+                             sourcePtrType>)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_load_tg_f16(
+            desc, storage, source, sourceDescType, sourceRank, leftDataType,
+            rightDataType, threads);
+      else
+        static_assert(__tensor_ops_detail::__assert_false_v<sourcePtrType>,
+                      "Unsupported address space");
+    }
+    else if constexpr (__tensor_ops_detail::__is_same_v<elem_t, int32_t>)
+    {
+      if constexpr (__tensor_ops_detail::__is_device_addrspace_v<sourcePtrType>)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_load_dv_i32(
+            desc, storage, source, sourceDescType, sourceRank, leftDataType,
+            rightDataType, threads);
+      else if constexpr (__tensor_ops_detail::__is_threadgroup_addrspace_v<
+                             sourcePtrType>)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_load_tg_i32(
+            desc, storage, source, sourceDescType, sourceRank, leftDataType,
+            rightDataType, threads);
+      else
+        static_assert(__tensor_ops_detail::__assert_false_v<sourcePtrType>,
+                      "Unsupported address space");
+    }
+    else if constexpr (__tensor_ops_detail::__is_same_v<elem_t, float>)
+    {
+      if constexpr (__tensor_ops_detail::__is_device_addrspace_v<sourcePtrType>)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_load_dv_f32(
+            desc, storage, source, sourceDescType, sourceRank, leftDataType,
+            rightDataType, threads);
+      else if constexpr (__tensor_ops_detail::__is_threadgroup_addrspace_v<
+                             sourcePtrType>)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_load_tg_f32(
+            desc, storage, source, sourceDescType, sourceRank, leftDataType,
+            rightDataType, threads);
+      else
+        static_assert(__tensor_ops_detail::__assert_false_v<sourcePtrType>,
+                      "Unsupported address space");
+    }
+    else if constexpr (__tensor_ops_detail::__is_same_v<elem_t, bfloat>)
+    {
+      if constexpr (__tensor_ops_detail::__is_device_addrspace_v<sourcePtrType>)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_load_dv_b16(
+            desc, storage, source, sourceDescType, sourceRank, leftDataType,
+            rightDataType, threads);
+      else if constexpr (__tensor_ops_detail::__is_threadgroup_addrspace_v<
+                             sourcePtrType>)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_load_tg_b16(
+            desc, storage, source, sourceDescType, sourceRank, leftDataType,
+            rightDataType, threads);
+      else
+        static_assert(__tensor_ops_detail::__assert_false_v<sourcePtrType>,
+                      "Unsupported address space");
+    }
+    else if constexpr (__tensor_ops_detail::__is_same_v<elem_t, int8_t>)
+    {
+      if constexpr (__tensor_ops_detail::__is_device_addrspace_v<sourcePtrType>)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_load_dv_i8(
+            desc, storage, source, sourceDescType, sourceRank, leftDataType,
+            rightDataType, threads);
+      else if constexpr (__tensor_ops_detail::__is_threadgroup_addrspace_v<
+                             sourcePtrType>)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_load_tg_i8(
+            desc, storage, source, sourceDescType, sourceRank, leftDataType,
+            rightDataType, threads);
+      else
+        static_assert(__tensor_ops_detail::__assert_false_v<sourcePtrType>,
+                      "Unsupported address space");
+    }
+    else
+      static_assert(__tensor_ops_detail::__assert_false_v<elem_t>,
+                    "Unsupported type");
+#else
     if constexpr (__tensor_ops_detail::__is_same_v<elem_t, half>)
     {
       if constexpr (__tensor_ops_detail::__is_device_addrspace_v<sourcePtrType>)
@@ -2479,6 +2839,7 @@ struct __operand_layout
     else
       static_assert(__tensor_ops_detail::__assert_false_v<elem_t>,
                     "Unsupported type");
+#endif
   };
 
   template <class ElemType, class Extents, class Descriptor, class... Tags>
@@ -2516,6 +2877,91 @@ struct __operand_layout
     __tensor_ops_detail::__tensor_ops_datatype destinationDataType =
         __tensor_ops_detail::__type_to_tensor_ops_datatype<destination_element_t>::value;
 
+#if !__TENSOR_OPS_SUPPORT_DEPLOYMENT_TARGET_26_2
+    if constexpr (__tensor_ops_detail::__is_same_v<elem_t, half>)
+    {
+      if constexpr (__tensor_ops_detail::__is_device_addrspace_v<
+                        destinationPtrType>)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_store_dv_f16(
+            desc, storage, destination, destinationDescType, leftDataType,
+            rightDataType, threads);
+      else if constexpr (__tensor_ops_detail::__is_threadgroup_addrspace_v<
+                             destinationPtrType>)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_store_tg_f16(
+            desc, storage, destination, destinationDescType, leftDataType,
+            rightDataType, threads);
+      else
+        static_assert(__tensor_ops_detail::__assert_false_v<destinationPtrType>,
+                      "Unsupported address space");
+    }
+    else if constexpr (__tensor_ops_detail::__is_same_v<elem_t, int32_t>)
+    {
+      if constexpr (__tensor_ops_detail::__is_device_addrspace_v<
+                        destinationPtrType>)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_store_dv_i32(
+            desc, storage, destination, destinationDescType, leftDataType,
+            rightDataType, threads);
+      else if constexpr (__tensor_ops_detail::__is_threadgroup_addrspace_v<
+                             destinationPtrType>)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_store_tg_i32(
+            desc, storage, destination, destinationDescType, leftDataType,
+            rightDataType, threads);
+      else
+        static_assert(__tensor_ops_detail::__assert_false_v<destinationPtrType>,
+                      "Unsupported address space");
+    }
+    else if constexpr (__tensor_ops_detail::__is_same_v<elem_t, float>)
+    {
+      if constexpr (__tensor_ops_detail::__is_device_addrspace_v<
+                        destinationPtrType>)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_store_dv_f32(
+            desc, storage, destination, destinationDescType, leftDataType,
+            rightDataType, threads);
+      else if constexpr (__tensor_ops_detail::__is_threadgroup_addrspace_v<
+                             destinationPtrType>)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_store_tg_f32(
+            desc, storage, destination, destinationDescType, leftDataType,
+            rightDataType, threads);
+      else
+        static_assert(__tensor_ops_detail::__assert_false_v<destinationPtrType>,
+                      "Unsupported address space");
+    }
+    else if constexpr (__tensor_ops_detail::__is_same_v<elem_t, bfloat>)
+    {
+      if constexpr (__tensor_ops_detail::__is_device_addrspace_v<
+                        destinationPtrType>)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_store_dv_b16(
+            desc, storage, destination, destinationDescType, leftDataType,
+            rightDataType, threads);
+      else if constexpr (__tensor_ops_detail::__is_threadgroup_addrspace_v<
+                             destinationPtrType>)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_store_tg_b16(
+            desc, storage, destination, destinationDescType, leftDataType,
+            rightDataType, threads);
+      else
+        static_assert(__tensor_ops_detail::__assert_false_v<destinationPtrType>,
+                      "Unsupported address space");
+    }
+    else if constexpr (__tensor_ops_detail::__is_same_v<elem_t, int8_t>)
+    {
+      if constexpr (__tensor_ops_detail::__is_device_addrspace_v<
+                        destinationPtrType>)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_store_dv_i8(
+            desc, storage, destination, destinationDescType, leftDataType,
+            rightDataType, threads);
+      else if constexpr (__tensor_ops_detail::__is_threadgroup_addrspace_v<
+                             destinationPtrType>)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_store_tg_i8(
+            desc, storage, destination, destinationDescType, leftDataType,
+            rightDataType, threads);
+      else
+        static_assert(__tensor_ops_detail::__assert_false_v<destinationPtrType>,
+                      "Unsupported address space");
+    }
+    else
+      static_assert(__tensor_ops_detail::__assert_false_v<elem_t>,
+                    "Unsupported type");
+#else
     if constexpr (__tensor_ops_detail::__is_same_v<elem_t, half>)
     {
       if constexpr (__tensor_ops_detail::__is_device_addrspace_v<
@@ -2615,6 +3061,7 @@ struct __operand_layout
     else
       static_assert(__tensor_ops_detail::__assert_false_v<elem_t>,
                     "Unsupported type");
+#endif
   };
 
   static uint16_t get_capacity(const_thread_storage_t storage)
@@ -2627,8 +3074,13 @@ struct __operand_layout
     __tensor_ops_detail::__tensor_ops_datatype rightDataType =
         __tensor_ops_detail::__type_to_tensor_ops_datatype<right_element_t>::value;
 
+#if !__TENSOR_OPS_SUPPORT_DEPLOYMENT_TARGET_26_2
+    return __tensorops_impl_matmul2d_op_cooperative_destination_tensor_num_elements(
+        descriptor, storage, leftDataType, rightDataType, threads);
+#else
     return __tensorops_impl_matmul2d_op_cooperative_tensor_num_elements(
         operand_index, descriptor, storage, leftDataType, rightDataType, threads);
+#endif
   }
 
   static thread element_t *get_element_pointer(const_thread_storage_t storage,
@@ -2641,10 +3093,17 @@ struct __operand_layout
     __tensor_ops_detail::__tensor_ops_datatype destinationDataType =
         __tensor_ops_detail::__type_to_tensor_ops_datatype<destination_element_t>::value;
 
+#if !__TENSOR_OPS_SUPPORT_DEPLOYMENT_TARGET_26_2
+    return (thread element_t *)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_get_element_pointer(
+            descriptor, (thread_storage_t)storage, idx, leftDataType,
+            rightDataType, destinationDataType);
+#else
     return (thread element_t *)
         __tensorops_impl_matmul2d_op_cooperative_tensor_get_element_pointer(
             operand_index, descriptor, (thread_storage_t)storage, idx, leftDataType,
             rightDataType, destinationDataType);
+#endif
   }
 
   static index_t get_element_index(const_thread_storage_t storage,
@@ -2657,10 +3116,17 @@ struct __operand_layout
     __tensor_ops_detail::__tensor_ops_datatype destinationDataType =
         __tensor_ops_detail::__type_to_tensor_ops_datatype<destination_element_t>::value;
 
+#if !__TENSOR_OPS_SUPPORT_DEPLOYMENT_TARGET_26_2
+    return (index_t)
+        __tensorops_impl_matmul2d_op_cooperative_destination_tensor_get_element_index(
+            descriptor, (thread_storage_t)storage, element, leftDataType,
+            rightDataType, destinationDataType);
+#else
     return (index_t)
         __tensorops_impl_matmul2d_op_cooperative_tensor_get_element_index(
             operand_index, descriptor, (thread_storage_t)storage, element, leftDataType,
             rightDataType, destinationDataType);
+#endif
   }
 
   static bool is_valid_element(const_thread_storage_t storage, index_t idx)
@@ -2675,9 +3141,15 @@ struct __operand_layout
     __tensor_ops_detail::__tensor_ops_datatype destinationDataType =
         __tensor_ops_detail::__type_to_tensor_ops_datatype<destination_element_t>::value;
 
+#if !__TENSOR_OPS_SUPPORT_DEPLOYMENT_TARGET_26_2
+    return __tensorops_impl_matmul2d_op_cooperative_destination_tensor_is_valid_element(
+        descriptor, (__tensor_ops_detail::__thread_void_t)storage, idx,
+        leftDataType, rightDataType, destinationDataType, threads);
+#else
     return __tensorops_impl_matmul2d_op_cooperative_tensor_is_valid_element(
         operand_index, descriptor, (__tensor_ops_detail::__thread_void_t)storage, idx,
         leftDataType, rightDataType, destinationDataType, threads);
+#endif
   }
 
   template <typename index_t, __tensor_ops_detail::__rank_t rank = 2>
@@ -2697,8 +3169,12 @@ struct __operand_layout
     if constexpr (__tensor_ops_detail::__is_same_v<coord_t, ushort>)
     {
       ushort coords[2];
-      __tensorops_impl_matmul2d_op_cooperative_tensor_get_coordinate(
-          operand_index, descriptor, (__tensor_ops_detail::__const_thread_void_t)storage, idx,
+#if !__TENSOR_OPS_SUPPORT_DEPLOYMENT_TARGET_26_2
+      __tensorops_impl_matmul2d_op_cooperative_destination_tensor_get_coordinate(
+#else
+      __tensorops_impl_matmul2d_op_cooperative_tensor_get_coordinate(operand_index, 
+#endif
+          descriptor, (__tensor_ops_detail::__const_thread_void_t)storage, idx,
           coords, __tensor_ops_detail::__tensor_ops_datatype_uint16,
           threads, leftDataType, rightDataType, destinationDataType);
       return {coords[0], coords[1]};
@@ -2706,8 +3182,12 @@ struct __operand_layout
     else if constexpr (__tensor_ops_detail::__is_same_v<coord_t, short>)
     {
       short coords[2];
-      __tensorops_impl_matmul2d_op_cooperative_tensor_get_coordinate(
-          operand_index, descriptor, (__tensor_ops_detail::__const_thread_void_t)storage, idx,
+#if !__TENSOR_OPS_SUPPORT_DEPLOYMENT_TARGET_26_2
+      __tensorops_impl_matmul2d_op_cooperative_destination_tensor_get_coordinate(
+#else
+      __tensorops_impl_matmul2d_op_cooperative_tensor_get_coordinate(operand_index, 
+#endif
+          descriptor, (__tensor_ops_detail::__const_thread_void_t)storage, idx,
           coords, __tensor_ops_detail::__tensor_ops_datatype_int16,
           threads, leftDataType, rightDataType, destinationDataType);
       return {coords[0], coords[1]};
@@ -2715,8 +3195,12 @@ struct __operand_layout
     else if constexpr (__tensor_ops_detail::__is_same_v<coord_t, uint>)
     {
       uint coords[2];
-      __tensorops_impl_matmul2d_op_cooperative_tensor_get_coordinate(
-          operand_index, descriptor, (__tensor_ops_detail::__const_thread_void_t)storage, idx,
+#if !__TENSOR_OPS_SUPPORT_DEPLOYMENT_TARGET_26_2
+      __tensorops_impl_matmul2d_op_cooperative_destination_tensor_get_coordinate(
+#else
+      __tensorops_impl_matmul2d_op_cooperative_tensor_get_coordinate(operand_index, 
+#endif
+          descriptor, (__tensor_ops_detail::__const_thread_void_t)storage, idx,
           coords, __tensor_ops_detail::__tensor_ops_datatype_uint32,
           threads, leftDataType, rightDataType, destinationDataType);
       return {coords[0], coords[1]};
@@ -2724,8 +3208,12 @@ struct __operand_layout
     else if constexpr (__tensor_ops_detail::__is_same_v<coord_t, int>)
     {
       int coords[2];
-      __tensorops_impl_matmul2d_op_cooperative_tensor_get_coordinate(
-          operand_index, descriptor, (__tensor_ops_detail::__const_thread_void_t)storage, idx,
+#if !__TENSOR_OPS_SUPPORT_DEPLOYMENT_TARGET_26_2
+      __tensorops_impl_matmul2d_op_cooperative_destination_tensor_get_coordinate(
+#else
+      __tensorops_impl_matmul2d_op_cooperative_tensor_get_coordinate(operand_index, 
+#endif
+          descriptor, (__tensor_ops_detail::__const_thread_void_t)storage, idx,
           coords, __tensor_ops_detail::__tensor_ops_datatype_int32,
           threads, leftDataType, rightDataType, destinationDataType);
       return {coords[0], coords[1]};
@@ -2748,9 +3236,15 @@ struct __operand_layout
     __tensor_ops_detail::__tensor_ops_datatype destinationDataType =
         __tensor_ops_detail::__type_to_tensor_ops_datatype<destination_element_t>::value;
 
+#if !__TENSOR_OPS_SUPPORT_DEPLOYMENT_TARGET_26_2
+    __tensorops_impl_matmul2d_op_cooperative_destination_tensor_init(
+        descriptor, (__tensor_ops_detail::__thread_void_t)storage, leftDataType,
+        rightDataType, destinationDataType, threads);
+#else
     __tensorops_impl_matmul2d_op_cooperative_tensor_init(
         operand_index, descriptor, (__tensor_ops_detail::__thread_void_t)storage, leftDataType,
         rightDataType, destinationDataType, threads);
+#endif
   }
 };
 

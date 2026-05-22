@@ -90,6 +90,13 @@ module Darwin [system] {
   }
 
   module os {
+    module arch {
+       module arm64 {
+         header "os/arch/arm64.h"
+         export *
+       }
+    }
+
     module base {
       header "os/base.h"
       export *

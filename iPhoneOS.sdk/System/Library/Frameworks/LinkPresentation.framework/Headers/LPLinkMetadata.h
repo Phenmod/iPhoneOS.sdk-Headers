@@ -105,8 +105,7 @@ LP_EXTERN API_AVAILABLE(macos(10.15), ios(13.0), visionos(1.0), tvos(13.0), watc
 /// A remote URL corresponding to a representative video for the URL.
 ///
 /// This may reference a remote video file that
-/// <doc://com.apple.documentation/documentation/avfoundation> can stream,
-/// or a YouTube video URL.
+/// <doc://com.apple.documentation/documentation/avfoundation> can stream.
 @property (nonatomic, retain, nullable) NSURL *remoteVideoURL;
 
 @end

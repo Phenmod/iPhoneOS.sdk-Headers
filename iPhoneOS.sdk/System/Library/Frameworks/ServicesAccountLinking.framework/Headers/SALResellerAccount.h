@@ -21,6 +21,10 @@ typedef struct {
 /// Error domain for account registration failures.
 static NSErrorDomain const SALRegistrationErrorDomain NS_SWIFT_NAME(RegistrationErrorDomain) = @"SALRegistrationErrorDomain";
 
+/// `userInfo` key whose value is an `NSNumber` containing the server-provided retry interval
+/// in seconds. Present on ``RegistrationError/rateLimited`` errors.
+static NSString * const SALRegistrationErrorRetryAfterKey NS_SWIFT_NAME(RegistrationErrorRetryAfterKey) = @"retryAfter";
+
 /// Registration error codes.
 typedef NS_ERROR_ENUM(SALRegistrationErrorDomain, SALRegistrationError) {
     /// The application is not registered as an authorized partner.
@@ -32,7 +36,13 @@ typedef NS_ERROR_ENUM(SALRegistrationErrorDomain, SALRegistrationError) {
     ///
     /// This may indicate the user is not signed into an Apple Media & Purchases account
     /// or another system error occurred. Implement retry logic with appropriate user messaging.
-    SALRegistrationErrorFailed = 1
+    SALRegistrationErrorFailed = 1,
+
+    /// The server rate-limited the request.
+    ///
+    /// Check the error's `userInfo` for ``RegistrationErrorRetryAfterKey`` to get the
+    /// server-provided retry interval. If absent, use exponential backoff.
+    SALRegistrationErrorRateLimited = 2
 } NS_SWIFT_NAME(RegistrationError);
 
 #endif /* SALResellerAccount_h */

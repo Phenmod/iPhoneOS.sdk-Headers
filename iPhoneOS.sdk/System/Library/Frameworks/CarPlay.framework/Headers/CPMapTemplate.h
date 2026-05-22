@@ -221,12 +221,12 @@ mapTemplateWaypoint:(CPNavigationWaypoint *)waypoint
 /**
  Called when the route source status has been updated by the built-in system.
  */
-- (void)mapTemplate:(CPMapTemplate *)mapTemplate didReceiveUpdatedRouteSource:(CPRouteSource)routeSource;
+- (void)mapTemplate:(CPMapTemplate *)mapTemplate didReceiveUpdatedRouteSource:(CPRouteSource)routeSource API_AVAILABLE(ios(26.4));
 
 /**
  Called when a navigation request is received. Show a trip preview corresponding to this destination and start navigation if the destination is accepted by the user.
  */
-- (void)mapTemplate:(CPMapTemplate *)mapTemplate didReceiveRequestForDestination:(CPNavigationWaypoint *)waypoint;
+- (void)mapTemplate:(CPMapTemplate *)mapTemplate didReceiveRequestForDestination:(CPNavigationWaypoint *)waypoint API_AVAILABLE(ios(26.4));
 
 #pragma mark - Notification Policy
 /**

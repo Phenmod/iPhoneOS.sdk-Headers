@@ -22,9 +22,11 @@ NS_SWIFT_SENDABLE
 API_DEPRECATED_WITH_REPLACEMENT("Check for PHPhotosErrorIdentifierNotFound in PHCloudIdentifierMapping.error", macos(10.13, 12)) API_UNAVAILABLE(ios, macCatalyst, tvos);
 
 
-@property (nonatomic, readonly) NSString *stringValue; /// For use in serialization
+/// For use in serialization
+@property (nonatomic, readonly) NSString *stringValue;
 
-- (instancetype)initWithStringValue:(NSString *)stringValue; /// Deserialization
+/// Deserialization
+- (instancetype)initWithStringValue:(NSString *)stringValue;
 
 @end
 
@@ -35,16 +37,20 @@ API_AVAILABLE_BEGIN(macos(12), ios(15), tvos(15))
 OS_EXPORT NS_REFINED_FOR_SWIFT
 NS_SWIFT_SENDABLE
 @interface PHCloudIdentifierMapping : NSObject
-@property (nonatomic, readonly, nullable) PHCloudIdentifier *cloudIdentifier; /// The cloud identifier of the resource found for this local identifier
-@property (nonatomic, readonly, nullable) NSError *error; /// error An error indicating why the \c cloudIdentifier is nil. \c PHPhotosErrorIdentifierNotFound if no resource could be found for the provided local identifier.
+/// The cloud identifier of the resource found for this local identifier
+@property (nonatomic, readonly, nullable) PHCloudIdentifier *cloudIdentifier;
+/// error An error indicating why the \c cloudIdentifier is nil. \c PHPhotosErrorIdentifierNotFound if no resource could be found for the provided local identifier.
+@property (nonatomic, readonly, nullable) NSError *error;
 @end
 
 /// Contains the local identifier result from looking up a cloud identifier via \c localIdentifierMappingsForCloudIdentifiers, or an \c error indicating why the lookup failed
 OS_EXPORT NS_REFINED_FOR_SWIFT
 NS_SWIFT_SENDABLE
 @interface PHLocalIdentifierMapping : NSObject
-@property (nonatomic, readonly, nullable) NSString *localIdentifier; /// The \c NSString representing the local identifier of the resource found for this cloud identifier, or nil if the match was not found.
-@property (nonatomic, readonly, nullable) NSError *error; /// An error indicating why the \c localIdentifier is nil. \c PHPhotosErrorIdentifierNotFound if no resource could be found for the provided cloud identifier. \c PHPhotosErrorMultipleLocalIdentifiersFound if the cloud identifier matched more than one photo library resource, so there were multiple local identifiers found. The array of matching local identifiers can be retrieved from the error's user info via the \c PHLocalIdentifiersErrorKey
+/// The \c NSString representing the local identifier of the resource found for this cloud identifier, or nil if the match was not found.
+@property (nonatomic, readonly, nullable) NSString *localIdentifier;
+/// An error indicating why the \c localIdentifier is nil. \c PHPhotosErrorIdentifierNotFound if no resource could be found for the provided cloud identifier. \c PHPhotosErrorMultipleLocalIdentifiersFound if the cloud identifier matched more than one photo library resource, so there were multiple local identifiers found. The array of matching local identifiers can be retrieved from the error's user info via the \c PHLocalIdentifiersErrorKey
+@property (nonatomic, readonly, nullable) NSError *error;
 @end
 
 @interface PHCloudIdentifier () <NSCopying>

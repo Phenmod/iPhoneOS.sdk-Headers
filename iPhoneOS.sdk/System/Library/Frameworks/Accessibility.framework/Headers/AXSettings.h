@@ -41,7 +41,7 @@ AX_EXTERN NSNotificationName const AXPrefersActionSliderAlternativeDidChangeNoti
 AX_EXTERN BOOL AXShowBordersEnabled(void) API_AVAILABLE(ios(26.1), macos(26.1), tvos(26.1), watchos(26.1), visionos(26.1)) NS_REFINED_FOR_SWIFT;
 AX_EXTERN NSNotificationName const AXShowBordersEnabledStatusDidChangeNotification API_AVAILABLE(ios(26.1), macos(26.1), tvos(26.1), watchos(26.1), visionos(26.1)) NS_SWIFT_NAME(AccessibilitySettings.showBordersEnabledStatusDidChangeNotification);
 
-// Returns whether the system preference for reduce highlighting effects is enabled
+// Returns whether the system preference for reduce bright effects is enabled
 AX_EXTERN BOOL AXReduceHighlightingEffectsEnabled(void) API_AVAILABLE(ios(26.4), macos(26.4), tvos(26.4), watchos(26.4), visionos(26.4)) NS_SWIFT_NAME(getter:AccessibilitySettings.isReduceHighlightingEffectsEnabled());
 AX_EXTERN NSNotificationName const AXReduceHighlightingEffectsEnabledDidChangeNotification API_AVAILABLE(ios(26.4), macos(26.4), tvos(26.4), watchos(26.4), visionos(26.4)) NS_SWIFT_NAME(AccessibilitySettings.reduceHighlightingEffectsEnabledDidChangeNotification);
 
