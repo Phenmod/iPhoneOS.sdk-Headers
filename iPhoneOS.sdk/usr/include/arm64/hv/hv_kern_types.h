@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2024 Apple Inc. All rights reserved.
+ * Copyright (c) 2019-2026 Apple Inc. All rights reserved.
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_START@
  *
@@ -35,7 +35,7 @@
 #include <mach/message.h>
 #include <sys/cdefs.h>
 
-__BEGIN_DECLS
+__BEGIN_DECLS __ASSUME_PTR_ABI_SINGLE_BEGIN
 
 #define err_sub_hypervisor err_sub(0xba5)
 #define err_common_hypervisor (err_local | err_sub_hypervisor)
@@ -115,6 +115,6 @@ typedef struct {
 	hv_data_abort_notification_t body;
 } hv_vm_mem_access_msg_t;
 
-__END_DECLS
+__ASSUME_PTR_ABI_SINGLE_END __END_DECLS
 
 #endif

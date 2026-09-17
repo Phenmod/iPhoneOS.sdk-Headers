@@ -1,6 +1,6 @@
 /* CoreAnimation - CARemoteLayerServer.h
 
-   Copyright (c) 2010-2025, Apple Inc.
+   Copyright (c) 2010-2026, Apple Inc.
    All rights reserved. */
 
 #ifdef __OBJC__

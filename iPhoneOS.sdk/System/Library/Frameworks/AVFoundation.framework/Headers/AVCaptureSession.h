@@ -115,27 +115,6 @@ AVF_EXPORT NSString *const AVCaptureSessionInterruptionSystemPressureStateKey AP
  */
 AVF_EXPORT NSNotificationName const AVCaptureSessionInterruptionEndedNotification NS_SWIFT_NAME(AVCaptureSession.interruptionEndedNotification) API_AVAILABLE(macos(10.14), ios(4.0), macCatalyst(14.0), tvos(17.0), visionos(1.0)) API_UNAVAILABLE(watchos);
 
-/*!
- @enum AVCaptureVideoOrientation
- @abstract
-    Constants indicating video orientation, for use with AVCaptureVideoPreviewLayer (see AVCaptureVideoPreviewLayer.h) and AVCaptureConnection (see below).
- 
- @constant AVCaptureVideoOrientationPortrait
-    Indicates that video should be oriented vertically, home button on the bottom.
- @constant AVCaptureVideoOrientationPortraitUpsideDown
-    Indicates that video should be oriented vertically, home button on the top.
- @constant AVCaptureVideoOrientationLandscapeRight
-    Indicates that video should be oriented horizontally, home button on the right.
- @constant AVCaptureVideoOrientationLandscapeLeft
-    Indicates that video should be oriented horizontally, home button on the left.
- */
-typedef NS_ENUM(NSInteger, AVCaptureVideoOrientation) {
-    AVCaptureVideoOrientationPortrait           = 1,
-    AVCaptureVideoOrientationPortraitUpsideDown = 2,
-    AVCaptureVideoOrientationLandscapeRight     = 3,
-    AVCaptureVideoOrientationLandscapeLeft      = 4,
-} API_DEPRECATED("Use AVCaptureDeviceRotationCoordinator instead", macos(10.7, 14.0), ios(4.0, 17.0), macCatalyst(14.0, 17.0)) API_UNAVAILABLE(tvos, visionos) API_UNAVAILABLE(watchos);
-
 #pragma mark - AVCaptureSession
 
 @class AVCaptureInput;
@@ -1095,7 +1074,7 @@ AV_INIT_UNAVAILABLE
  @discussion
     The connection's videoRotationAngle property can only be set to a certain angle if this method returns YES for that angle. Only rotation angles of 0, 90, 180 and 270 are supported.
  */
-- (BOOL)isVideoRotationAngleSupported:(CGFloat)videoRotationAngle API_UNAVAILABLE(visionos);
+- (BOOL)isVideoRotationAngleSupported:(CGFloat)videoRotationAngle API_AVAILABLE(macos(14.0), ios(17.0), macCatalyst(17.0), tvos(17.0)) API_UNAVAILABLE(visionos);
 
 /*!
  @property videoRotationAngle
@@ -1292,6 +1271,21 @@ AV_INIT_UNAVAILABLE
     This property is only applicable to AVCaptureConnection instances involving video. Refer to property cameraIntrinsicMatrixDeliverySupported before setting this property. When this property is set to YES, the receiver's output will add the kCMSampleBufferAttachmentKey_CameraIntrinsicMatrix sample buffer attachment to all vended sample buffers. This property must be set before the session starts running.
  */
 @property(nonatomic, getter=isCameraIntrinsicMatrixDeliveryEnabled) BOOL cameraIntrinsicMatrixDeliveryEnabled API_AVAILABLE(ios(11.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILABLE(macos, visionos);
+
+/// Indicates whether the connection supports low light video noise reduction.
+///
+/// This property returns `true` if the connection's source device's active format supports low light video noise reduction (see ``AVCaptureDeviceFormat/isLowLightVideoNoiseReductionSupported``) and the connection's output supports the feature. This value reflects the active configuration and can change as the active format, video stabilization mode, auto video frame rate, or maximum video frame rate changes. See ``automaticallyEnablesLowLightVideoNoiseReduction`` for a detailed discussion. This property is key-value observable.
+@property(nonatomic, readonly, getter=isLowLightVideoNoiseReductionSupported) BOOL lowLightVideoNoiseReductionSupported API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos);
+
+/// Indicates whether the connection should automatically enable low light video noise reduction when the connection supports it.
+///
+/// On a connection where ``isLowLightVideoNoiseReductionSupported`` is `true`, the system can enable low light video noise reduction to improve video quality at the cost of additional power. This property defaults to `true` for movie file output connections. When ``automaticallyEnablesLowLightVideoNoiseReduction`` is `true`, the connection sets ``isLowLightVideoNoiseReductionEnabled`` to `true` automatically when the session configuration is committed and the connection supports the feature. For `AVCaptureMultiCamSession` configurations with multiple movie file outputs, automatic enablement is suppressed because the feature can only be active on one output at a time; in that case, set this property to `false` and control ``isLowLightVideoNoiseReductionEnabled`` directly on the desired connection. Enabling the feature on more than one movie file output connection increases the session's `hardwareCost` and may result in an `AVCaptureSessionRuntimeErrorNotification`. Setting this property on a connection that does not support low light video noise reduction is permitted but has no effect. Clients can key-value observe ``isLowLightVideoNoiseReductionEnabled`` to know when the connection has automatically changed the value.
+@property(nonatomic) BOOL automaticallyEnablesLowLightVideoNoiseReduction API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos);
+
+/// Indicates whether low light video noise reduction is enabled for the current session.
+///
+/// A `BOOL` indicating whether low light video noise reduction is enabled on the connection. To set this property directly, first set ``automaticallyEnablesLowLightVideoNoiseReduction`` to `false`; setting this property while ``automaticallyEnablesLowLightVideoNoiseReduction`` is `true` throws an `NSInvalidArgumentException`. This property may only be set to `true` if the connection's ``isLowLightVideoNoiseReductionSupported`` property returns `true`, otherwise an `NSInvalidArgumentException` is thrown. This property is key-value observable.
+@property(nonatomic, getter=isLowLightVideoNoiseReductionEnabled) BOOL lowLightVideoNoiseReductionEnabled API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos);
 
 @end
 

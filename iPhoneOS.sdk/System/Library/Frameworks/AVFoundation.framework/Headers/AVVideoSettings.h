@@ -132,9 +132,27 @@ AVF_EXPORT NSString *const AVVideoScalingModeKey /* NSString */								API_AVAIL
 
 	If you require HDR Linear colorimetry, you can use:
 
-	 AVVideoColorPrimaries_ITU_R_2020
-	 AVVideoTransferFunction_Linear
-	 AVVideoYCbCrMatrix_ITU_R_2020
+		AVVideoColorPrimaries_ITU_R_2020
+		AVVideoTransferFunction_Linear
+		AVVideoYCbCrMatrix_ITU_R_2020
+
+	To write Apple Log, use
+
+		AVVideoColorPrimaries_ITU_R_2020
+		AVVideoLogTransferFunction_AppleLog
+		AVVideoYCbCrMatrix_ITU_R_2020
+
+		Do not set AVVideoTransferFunctionKey.
+		Source pixel buffers must have matching attachments.
+
+	To write Apple Log 2, use
+
+		AVVideoLogTransferFunction_AppleLog2
+		AVVideoYCbCrMatrix_ITU_R_2020
+
+		Do not set AVVideoColorPrimariesKey or AVVideoTransferFunctionKey.
+		Source pixel buffers must have matching attachments.
+
 
 	AVFoundation will color match if the source and destination color properties differ according to the following rules:
  
@@ -169,6 +187,9 @@ AVF_EXPORT NSString *const AVVideoColorPropertiesKey /* NSDictionary, all 3 belo
 		AVF_EXPORT NSString *const AVVideoYCbCrMatrix_ITU_R_601_4                                            API_AVAILABLE(macos(10.7), ios(10.0), tvos(10.0), visionos(1.0)) API_UNAVAILABLE(watchos);
 		AVF_EXPORT NSString *const AVVideoYCbCrMatrix_SMPTE_240M_1995                                        API_AVAILABLE(macos(10.7)) API_UNAVAILABLE(ios, tvos, watchos, visionos);
 		AVF_EXPORT NSString *const AVVideoYCbCrMatrix_ITU_R_2020                                             API_AVAILABLE(macos(10.13), ios(11.0), tvos(11.0), visionos(1.0)) API_UNAVAILABLE(watchos);
+	AVF_EXPORT NSString *const AVVideoLogTransferFunctionKey /* NSString */                                  API_AVAILABLE(macos(27), ios(27), tvos(27), visionos(27)) API_UNAVAILABLE(watchos);
+		AVF_EXPORT NSString *const AVVideoLogTransferFunction_AppleLog                                       API_AVAILABLE(macos(27), ios(27), tvos(27), visionos(27)) API_UNAVAILABLE(watchos);
+		AVF_EXPORT NSString *const AVVideoLogTransferFunction_AppleLog2                                      API_AVAILABLE(macos(27), ios(27), tvos(27), visionos(27)) API_UNAVAILABLE(watchos);
 
 /*!
  @constant	AVVideoAllowWideColorKey

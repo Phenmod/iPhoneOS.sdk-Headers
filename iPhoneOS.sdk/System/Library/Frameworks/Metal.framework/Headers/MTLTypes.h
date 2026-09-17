@@ -103,6 +103,12 @@ MTL_INLINE MTLCoordinate2D MTLCoordinate2DMake(float x, float y)
     return result;
 } 
 
+typedef NS_ENUM(NSInteger, MTLContentionRelief) {
+  MTLContentionReliefAutomatic = 0,
+  MTLContentionReliefNone = 1,
+} API_AVAILABLE(macos(27.0), ios(27.0));
+
+
 /*!
  @typedef MTLResourceID
  @abstract Handle of the GPU resource used for binding resources to argument tables, navigating resource view pools and storing resources in an argument buffer

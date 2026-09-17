@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Apple Inc. All rights reserved.
+ * Copyright (c) 2024-2026 Apple Inc. All rights reserved.
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_START@
  *
@@ -29,7 +29,8 @@
 #ifndef _ARM64_MTE_H_
 #define _ARM64_MTE_H_
 
-#include <sys/types.h>
+#include <sys/_types/_size_t.h>
+#include <sys/_types/_uintptr_t.h>
 
 #include <assert.h>
 #include <strings.h>
@@ -65,6 +66,15 @@ typedef uint64_t mte_exclude_mask_t;
  * Clang provides a basic set of MTE intrinsics which doesn't cover the
  * whole spectrum of ISA instructions. We provide here the complete set,
  * prefixed under mte_
+ */
+
+#ifndef __BUILDING_XNU_LIBRARY__
+/*
+ * When building for unit-tests, Static inlined functions that are defined in
+ * a header-file can't be mocked directly since they are not visible from
+ * outside the translation-unit and changing them to
+ * __static_testable __inline_testable would create duplicate symbols.
+ * So we move these functions in mte.c so that they can be mocked.
  */
 
 #pragma mark Tag store operations
@@ -182,8 +192,8 @@ mte_store_tag(void *__unsafe_indexable addr, size_t size)
 {
 	uintptr_t end = (uintptr_t)addr + size;
 
-	uintptr_t ptr = ((uintptr_t)addr & -16);  // round down to 16 bytes alignment
-	end = (((uintptr_t)end + 15) & -16);  // round up to 16 bytes alignment
+	uintptr_t ptr = ((uintptr_t)addr & -16ul);  // round down to 16 bytes alignment
+	end = (((uintptr_t)end + 15) & -16ul);  // round up to 16 bytes alignment
 
 	/* "Fast path" for small allocations */
 	if (end - ptr < 64) {
@@ -201,7 +211,7 @@ mte_store_tag(void *__unsafe_indexable addr, size_t size)
 	}
 
 	/* Optimize for DC GVA usage */
-	ptr = (ptr & -64);  // round down to 64 bytes alignment
+	ptr = (ptr & -64ul);  // round down to 64 bytes alignment
 	while (ptr + 64 < end) {
 		__asm__ __volatile__ ("dc gva, %0" : : "r" (ptr) : "memory");
 		ptr += 64;
@@ -299,7 +309,7 @@ mte_enable_tag_checking()
 static inline mte_exclude_mask_t
 mte_update_exclude_mask(void *src, mte_exclude_mask_t exclude_mask)
 {
-	return __arm_mte_exclude_tag(src, exclude_mask);
+	return (mte_exclude_mask_t)__arm_mte_exclude_tag(src, exclude_mask);
 }
 
 /*!
@@ -325,6 +335,22 @@ mte_generate_random_tag(void *target_address, mte_exclude_mask_t exclude_mask)
 {
 	return __arm_mte_create_random_tag(target_address, exclude_mask);
 }
+
+#else /* __BUILDING_XNU_LIBRARY__ */
+
+extern void mte_store_tag_16(void *addr);
+extern void mte_store_tag_32(void *addr);
+extern void mte_store_tag_64(void *addr);
+extern void mte_store_tag_small(uintptr_t start, uintptr_t end);
+extern void mte_store_tag(void *__unsafe_indexable addr, size_t size);
+extern void *mte_load_tag(void *addr);
+extern void mte_disable_tag_checking();
+extern void mte_enable_tag_checking();
+extern mte_exclude_mask_t mte_update_exclude_mask(void *src, mte_exclude_mask_t exclude_mask);
+extern void *mte_generate_random_tag(void *target_address, mte_exclude_mask_t exclude_mask);
+
+#endif /* __BUILDING_XNU_LIBRARY__ */
+
 
 # pragma mark Memory Zeroing helpers
 
@@ -381,9 +407,9 @@ mte_bzero_fast_checked(void *__unsafe_indexable buf, size_t n)
 	 * prefetching will be partially absorbed while the stream of DC ZVAs is
 	 * performed.
 	 */
-	asm volatile ("ldrb wzr, [%0]" : : "r"(buf) : "memory");
+	__asm__ __volatile__ ("ldrb wzr, [%0]" : : "r"(buf) : "memory");
 	mte_bzero_unchecked(buf, n);
-	asm volatile ("ldrb wzr, [%0]" : : "r"((uintptr_t)buf + n - 1) : "memory");
+	__asm__ __volatile__ ("ldrb wzr, [%0]" : : "r"((uintptr_t)buf + n - 1) : "memory");
 }
 
 __END_DECLS

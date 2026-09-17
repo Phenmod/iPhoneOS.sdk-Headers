@@ -13,7 +13,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*!
+/**
  @enum          HKAppleECGAlgorithmVersion
  @abstract      Indicates which algorithm version number was used by the ECG app on Apple Watch.
 
@@ -25,7 +25,7 @@ typedef NS_ENUM(NSInteger, HKAppleECGAlgorithmVersion) {
     HKAppleECGAlgorithmVersion2 API_AVAILABLE(ios(14.3), watchos(7.2), macCatalyst(14.3), macos(13.0)),
 } API_AVAILABLE(ios(14.0), watchos(7.0), macCatalyst(14.0), macos(13.0));
 
-/*!
+/**
  @enum          HKBloodGlucoseMealTime
  @abstract      Indicates how your blood glucose reading relates to a meal.
 
@@ -52,7 +52,7 @@ typedef NS_ENUM(NSInteger, HKBodyTemperatureSensorLocation) {
     HKBodyTemperatureSensorLocationForehead,
 } API_AVAILABLE(ios(8.0), watchos(2.0), macCatalyst(13.0), macos(13.0));
 
-/*!
+/**
  @enum          HKCyclingFunctionalThresholdPowerTestType
  @abstract      Represents the test used to determine a Cycling Functional Threshold Power value.
 
@@ -76,7 +76,7 @@ typedef NS_ENUM(NSInteger, HKCyclingFunctionalThresholdPowerTestType) {
     HKCyclingFunctionalThresholdPowerTestTypePredictionExercise,
 } API_AVAILABLE(ios(17.0), watchos(10.0), macCatalyst(17.0), macos(14.0));
 
-/*!
+/**
  @enum          HKDevicePlacementSide
  @abstract      The detected placement of the device during the bout of walking
 
@@ -98,7 +98,7 @@ typedef NS_ENUM(NSInteger, HKHeartRateMotionContext) {
     HKHeartRateMotionContextActive,
 } API_AVAILABLE(ios(11.0), watchos(4.0), macCatalyst(13.0), macos(13.0));
 
-/*!
+/**
  @enum          HKHeartRateRecoveryTestType
  @abstract      Represents the test used to determine a Heart Rate Recovery value
 
@@ -126,7 +126,7 @@ typedef NS_ENUM(NSInteger, HKHeartRateSensorLocation) {
     HKHeartRateSensorLocationFoot,
 } API_AVAILABLE(ios(8.0), watchos(2.0), macCatalyst(13.0), macos(13.0));
 
-/*!
+/**
  @enum          HKInsulinDeliveryReason
  @abstract      Represents a medical reason for the delivery of insulin
 
@@ -141,7 +141,7 @@ typedef NS_ENUM(NSInteger, HKInsulinDeliveryReason) {
     HKInsulinDeliveryReasonBolus,
 } API_AVAILABLE(ios(11.0), watchos(4.0), macCatalyst(13.0), macos(13.0));
 
-/*!
+/**
  @enum          HKPhysicalEffortEstimationType
  @abstract      Represents the estimation used to create a Physical Effort Sample.
 
@@ -155,7 +155,7 @@ typedef NS_ENUM(NSInteger, HKPhysicalEffortEstimationType) {
     HKPhysicalEffortEstimationTypeDeviceSensed,
 } API_AVAILABLE(ios(17.0), watchos(10.0), macCatalyst(17.0), macos(14.0));
 
-/*!
+/**
  @enum          HKSwimmingStrokeStyle
  @abstract      Represents a style of stroke used during a swimming workout.
  */
@@ -175,7 +175,7 @@ typedef NS_ENUM(NSInteger, HKUserMotionContext) {
     HKUserMotionContextActive,
 } API_AVAILABLE(ios(16.0), watchos(9.0), macCatalyst(16.0), macos(13.0));
 
-/*!
+/**
  @enum          HKVO2MaxTestType
  @abstract      Represents the test used to create a VO2 Max Sample.
 
@@ -195,7 +195,7 @@ typedef NS_ENUM(NSInteger, HKVO2MaxTestType) {
     HKVO2MaxTestTypePredictionStepTest API_AVAILABLE(ios(26.0), watchos(26.0), macCatalyst(26.0), macos(26.0)),
 } API_AVAILABLE(ios(11.0), watchos(4.0), macCatalyst(13.0), macos(13.0));
 
-/*!
+/**
  @enum          HKWaterSalinity
  @abstract      Represents the water salinity for an underwater depth or water temperature sample.
  @discussion    This value indicates the water salinity
@@ -236,7 +236,7 @@ typedef NS_ENUM(NSInteger, HKWeatherCondition) {
     HKWeatherConditionTornado,
 } API_AVAILABLE(ios(10.0), watchos(3.0), macCatalyst(13.0), macos(13.0));
 
-/*!
+/**
  @enum          HKWorkoutSwimmingLocationType
  @abstract      This enumerated type is used to represent the location type of a swimming workout.
  @discussion    This value indicates whether a swimming workout was performed in a pool or open water.

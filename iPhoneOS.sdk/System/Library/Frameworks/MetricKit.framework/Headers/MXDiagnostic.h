@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @abstract      An abstract class that describes a diagnostic report vended by MetricKit.
 @discussion    All supported diagnostics are subclasses of MXDiagnostic.
 */
-API_AVAILABLE(ios(14.0), macos(12.0)) API_UNAVAILABLE(tvos, watchos)
+API_DEPRECATED("Use DiagnosticResult instead.", ios(14.0, API_TO_BE_DEPRECATED), macos(12.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos)
 @interface MXDiagnostic : NSObject <NSSecureCoding>
 
 @property (readonly, strong, nonnull) MXMetaData* metaData;
@@ -40,14 +40,14 @@ API_AVAILABLE(ios(14.0), macos(12.0)) API_UNAVAILABLE(tvos, watchos)
  @abstract      Convenience method to return a JSON representation of this diagnostic.
  @result        An NSData object containing the JSON representation
  */
-- (NSData *)JSONRepresentation;
+- (NSData *)JSONRepresentation API_DEPRECATED("Use DiagnosticResult instead.", ios(14.0, API_TO_BE_DEPRECATED), macos(12.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos);
 
 /*!
  @method        dictionaryRepresentation
  @abstract      Convenience method to return a NSDictionary representation of this diagnostic.
  @result        An NSDictionary object containing the dictionary representation
  */
-- (NSDictionary *)dictionaryRepresentation;
+- (NSDictionary *)dictionaryRepresentation API_DEPRECATED("Use DiagnosticResult instead.", ios(14.0, API_TO_BE_DEPRECATED), macos(12.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos);
 
 @end
 

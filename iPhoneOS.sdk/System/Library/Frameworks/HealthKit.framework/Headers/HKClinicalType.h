@@ -42,7 +42,6 @@ HK_EXTERN HKClinicalTypeIdentifier const HKClinicalTypeIdentifierVitalSignRecord
 /// A type identifier for records containing information about the user’s insurance coverage.
 HK_EXTERN HKClinicalTypeIdentifier const HKClinicalTypeIdentifierCoverageRecord API_AVAILABLE(ios(14.0), watchos(7.0), macCatalyst(14.0), macos(13.0));
 
-
 @interface HKObjectType (ClinicalType)
 
 /*!

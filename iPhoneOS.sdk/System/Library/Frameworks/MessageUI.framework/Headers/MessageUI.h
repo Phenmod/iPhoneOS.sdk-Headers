@@ -6,7 +6,8 @@
  *
  */
 
-
+#import <MessageUI/MFComposeAssistantViewController.h>
 #import <MessageUI/MFMailComposeControllerDeferredAction.h>
 #import <MessageUI/MFMailComposeViewController.h>
+#import <MessageUI/MFMailDraft.h>
 #import <MessageUI/MFMessageComposeViewController.h>

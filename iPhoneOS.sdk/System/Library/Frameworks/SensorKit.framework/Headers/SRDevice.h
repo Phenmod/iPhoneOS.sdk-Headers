@@ -10,6 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+NS_SWIFT_SENDABLE
 SR_EXTERN API_AVAILABLE(ios(14.0)) API_UNAVAILABLE(watchos, macos, visionos) API_UNAVAILABLE(tvos)
 @interface SRDevice : NSObject <NSSecureCoding, NSCopying>
 

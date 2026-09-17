@@ -299,7 +299,7 @@ NS_CLASS_AVAILABLE(10_13, 11_0) NS_SWIFT_SENDABLE
 @property (class, strong, readonly) CIBlendKernel *exclusiveOr;
 
 /* PDF 1.7 blend modes
- * http://wwwimages.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf
+ * https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/PDF32000_2008.pdf
  */
 
 /* Standard separable blend modes */

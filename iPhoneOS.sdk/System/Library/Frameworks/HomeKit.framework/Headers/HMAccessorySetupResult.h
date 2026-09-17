@@ -11,7 +11,10 @@
 
 NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
-HM_EXTERN NS_SWIFT_SENDABLE API_AVAILABLE(ios(15.4)) API_UNAVAILABLE(watchos, tvos, visionos) API_UNAVAILABLE(macos, macCatalyst)
+HM_EXTERN
+NS_SWIFT_SENDABLE
+API_AVAILABLE(ios(15.4), macos(27.0), macCatalyst(27.0))
+API_UNAVAILABLE(watchos, tvos, visionos)
 @interface HMAccessorySetupResult : NSObject<NSCopying>
 
 /*!

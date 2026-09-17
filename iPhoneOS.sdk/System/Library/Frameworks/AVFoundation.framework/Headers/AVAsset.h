@@ -4,7 +4,7 @@
 
 	Framework:  AVFoundation
  
-	Copyright 2010-2024 Apple Inc. All rights reserved.
+	Copyright 2010-2026 Apple Inc. All rights reserved.
 
 */
 
@@ -104,6 +104,11 @@ API_DEPRECATED("Use load(.minimumTimeOffsetFromLive) instead", macos(10.15, 13.0
 #else
 API_AVAILABLE(macos(10.15), ios(13.0), tvos(13.0), watchos(6.0), visionos(1.0));
 #endif
+
+/// The list of file URLs that collectively represent the media asset.
+///
+/// The list of file URLs that constitute the asset are returned only for QuickTime reference movies, or if the MediaExtension format reader implements this property [MEFileInfo setConstituentFileNames:].
+@property (nonatomic, readonly) NSArray< NSURL * >* constituentFileURLs API_AVAILABLE(macos(27.0)) API_UNAVAILABLE(ios, tvos, watchos, visionos) NS_SWIFT_UNAVAILABLE("Use load(.constituentFileURLs) instead");
 
 @end
 
@@ -642,7 +647,7 @@ AV_INIT_UNAVAILABLE
 /// Provides the file types the AVURLAsset class understands.
 /// 
 /// - Returns: An NSArray of UTIs identifying the file types the AVURLAsset class understands.
-+ (NSArray<AVFileType> *)audiovisualTypes API_DEPRECATED("Use audiovisualContentTypes instead", macos(10.7, API_TO_BE_DEPRECATED), ios(5.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), watchos(1.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED));
++ (NSArray<AVFileType> *)audiovisualTypes API_DEPRECATED("Use audiovisualContentTypes instead", macos(10.7, 27.0), ios(5.0, 27.0), tvos(9.0, 27.0), watchos(1.0, 27.0), visionos(1.0, 27.0));
 
 /// Provides the MIME types the AVURLAsset class understands.
 /// 
@@ -659,8 +664,8 @@ AV_INIT_UNAVAILABLE
 /// On releases prior to macOS 14, iOS 17, tvOS 17, and watchOS 10, regardless of the specified MIME type this method interprets all codecs parameters according to the ISO family syntax defined by RFC 6381 and evaluates playability according to whether the indicated codecs are supported when carried in container formats that conform to the ISO BMFF specification, such as the MPEG-4 file format.
 /// On releases starting with macOS 14, iOS 17, tvOS 17, and watchOS 10, this method interprets codecs parameters according to the syntax and namespace determined by the specified MIME type and evaluates playability according to whether the indicated codecs are supported when carried in the container format indicated by that MIME type. Codecs parameters for each of the following MIME types are supported: video/mp4 (per RFC 6381, ISO/IEC 14496-15 Annex E, et al), video/quicktime (RFC 6381 et al), video/mp2t (ISO/IEC 13818-1), audio/vnd.wave (RFC 2361), audio/aiff (using the CoreAudio AudioFormatID namespace), audio/x-caf (also using the CoreAudio AudioFormatID namespace), and audio/mpeg (e.g. codecs="mp3"). MIME types supported as alternatives for the same container formats, e.g audio/mp4, are equivalently treated. If the indicated MIME type defines no supported syntax and namespace for codecs parameters, when any codecs parameter is present this method returns NO.
 /// 
-/// - Parameter extendedMIMEType:
-/// 
+/// - Parameter extendedMIMEType: An extended MIME type string such as video/3gpp2; codecs="mp4v.20.9, mp4a.E1" or audio/aac; codecs="mp4a.E1".
+///
 /// - Returns: YES or NO.
 + (BOOL)isPlayableExtendedMIMEType: (NSString *)extendedMIMEType API_AVAILABLE(macos(10.7), ios(5.0), tvos(9.0), watchos(1.0), visionos(1.0));
 

@@ -9,6 +9,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class CPRouteDetail;
+
 /**
  @c CPTravelEstimates describes the time and distance remaining for the active navigation session.
  */
@@ -32,6 +34,11 @@ API_AVAILABLE(ios(12.0)) API_UNAVAILABLE(tvos) API_UNAVAILABLE(macos, watchos)
 - (instancetype)initWithDistanceRemaining:(NSMeasurement<NSUnitLength *> *)distanceRemaining distanceRemainingToDisplay:(NSMeasurement<NSUnitLength *> *)distanceRemainingToDisplay timeRemaining:(NSTimeInterval)time NS_DESIGNATED_INITIALIZER  API_AVAILABLE(ios(17.4));
 
 /**
+ Initialize a @c CPTravelEstimates with distance, distance to display, time remaining, and additional trip information.
+ */
+- (instancetype)initWithDistanceRemaining:(NSMeasurement<NSUnitLength *> *)distanceRemaining distanceRemainingToDisplay:(NSMeasurement<NSUnitLength *> *)distanceRemainingToDisplay timeRemaining:(NSTimeInterval)time routeDetails:(NSArray<CPRouteDetail *> *)routeDetails NS_DESIGNATED_INITIALIZER API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(tvos) API_UNAVAILABLE(macos, watchos);
+
+/**
  Distance remaining for displaying to the user.  If not set falls back to distanceRemaining;
  */
 @property (nonatomic, readonly, copy) NSMeasurement<NSUnitLength *> *distanceRemainingToDisplay API_AVAILABLE(ios(17.4));
@@ -45,6 +52,11 @@ API_AVAILABLE(ios(12.0)) API_UNAVAILABLE(tvos) API_UNAVAILABLE(macos, watchos)
  Time remaining.
  */
 @property (nonatomic, readonly, assign) NSTimeInterval timeRemaining;
+
+/**
+ Additional trip information such as battery, fuel, or toll information to display with travel estimates.
+ */
+@property (nonatomic, readonly, copy) NSArray<CPRouteDetail *> *routeDetails API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(tvos) API_UNAVAILABLE(macos, watchos);
 
 @end
 

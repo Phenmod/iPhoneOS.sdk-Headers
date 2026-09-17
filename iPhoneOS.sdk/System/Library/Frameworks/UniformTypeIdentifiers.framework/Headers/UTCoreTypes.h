@@ -479,6 +479,16 @@ API_AVAILABLE(macos(12.0), macCatalyst(15.0), ios(15.0), watchos(8.0), tvos(15.0
 UT_EXPORT UTType *const UTTypeJSON NS_REFINED_FOR_SWIFT;
 
 /**
+     \brief Markdown data
+
+     UTI: net.daringfireball.markdown
+
+     conforms to: public.utf8-plain-text
+ */
+UT_EXPORT UTType *const UTTypeMarkdown NS_REFINED_FOR_SWIFT
+API_AVAILABLE(macos(27.0), macCatalyst(27.0), ios(27.0), watchos(27.0), tvos(27.0), visionos(27.0));
+
+/**
 	\brief A base type for property lists.
 
 	UTI: com.apple.property-list

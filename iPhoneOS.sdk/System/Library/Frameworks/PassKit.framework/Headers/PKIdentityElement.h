@@ -17,11 +17,31 @@ NS_ASSUME_NONNULL_BEGIN
 API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos, watchos, tvos)
 @interface PKIdentityElement: NSObject <NSCopying>
 
-/// The user's given name or first name.
+/// The user's given name
+///
+/// When requested, this element returns the given name if the identity document provides it
+/// as a separate field. For documents that do not provide separated name fields (common with
+/// international identity documents), this will fall back to returning the full name.
 @property (class, nonatomic, readonly) PKIdentityElement *givenNameElement;
 
-/// The user's family name or last name.
+/// The user's family name
+///
+/// When requested, this element returns the family name if the identity document provides it
+/// as a separate field. For documents that do not provide separated name fields (common with
+/// international identity documents), this will fall back to returning the full name.
 @property (class, nonatomic, readonly) PKIdentityElement *familyNameElement;
+
+/// The user's full name.
+///
+/// For National ID and other identity documents, requesting this element returns the user's
+/// full name as a single properly formatted string. The response may also include given name
+/// and family name when available.
+///
+/// For Driver's License documents, requesting this element returns the given name and family
+/// name as separate fields, but does not return a full name field. This limitation exists
+/// because the mDL (mobile Driver's License) standard does not currently include a full name
+/// field in its specification.
+@property (class, nonatomic, readonly) PKIdentityElement *nameElement API_AVAILABLE(ios(27.0));
 
 /// The portrait of the user on record with the issuer.
 @property (class, nonatomic, readonly) PKIdentityElement *portraitElement;

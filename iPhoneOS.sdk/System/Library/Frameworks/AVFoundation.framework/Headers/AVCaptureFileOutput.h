@@ -575,6 +575,7 @@ API_AVAILABLE(macos(10.7), ios(4.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILA
     Returns whether or not capturing spatial video to a file is supported. Note that in order to be supported, two conditions must be met. (1) The source AVCaptureDevice's activeFormat.spatialVideoCaptureSupported property must return YES. (2) The video AVCaptureConnection's activeVideoStabilizationMode property must return AVCaptureVideoStabilizationModeCinematic, AVCaptureVideoStabilizationModeCinematicExtended, or AVCaptureVideoStabilizationModeCinematicExtendedEnhanced.
  */
 @property(nonatomic, readonly, getter=isSpatialVideoCaptureSupported) BOOL spatialVideoCaptureSupported API_AVAILABLE(macos(15.0), ios(18.0), macCatalyst(18.0), tvos(18.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
+
 /*!
  @property spatialVideoCaptureEnabled
  @abstract
@@ -591,7 +592,68 @@ API_AVAILABLE(macos(10.7), ios(4.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILA
  */
 @property(nonatomic, getter=isSpatialVideoCaptureEnabled) BOOL spatialVideoCaptureEnabled API_AVAILABLE(macos(15.0), ios(18.0), macCatalyst(18.0), tvos(18.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
 
+/// Returns whether capturing cinematic video metadata to the movie file is supported in the current session configuration.
+///
+/// Cinematic video metadata enables post-capture cinematic video editing using the Cinematic framework.
+///
+/// This property returns `true` when all of the following conditions are met:
+/// - The source device's `activeFormat` supports cinematic video metadata capture.
+/// - The source device's dynamic aspect ratio is 16:9 or 9:16 (or unset).
+/// - Spatial video capture (`spatialVideoCaptureEnabled`) is not enabled.
+/// - No other incompatible features are enabled.
+///
+/// When switching cameras, formats, or toggling other features, this property may change. This property is key-value observable.
+@property(nonatomic, readonly, getter=isCinematicVideoMetadataCaptureSupported) BOOL cinematicVideoMetadataCaptureSupported
+    API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0))
+    API_UNAVAILABLE(visionos)
+    API_UNAVAILABLE(watchos);
+
+/// Controls whether cinematic video metadata capture is automatically managed by the framework.
+///
+/// When this property is `true` (the default), the framework manages `cinematicVideoMetadataCaptureEnabled` automatically. The framework decides when to enable cinematic video metadata capture; capture is not guaranteed even when `cinematicVideoMetadataCaptureSupported` is `true`. Clients that need explicit control over whether metadata is captured should set this property to `false` and manage `cinematicVideoMetadataCaptureEnabled` directly.
+///
+/// When this property is `false`, `cinematicVideoMetadataCaptureEnabled` is not automatically managed and must be explicitly set by the client.
+///
+/// Setting this property from `true` to `false` sets `cinematicVideoMetadataCaptureEnabled` to `false`.
+///
+/// This property can be set before calling `-[AVCaptureSession startRunning]` or within `-[AVCaptureSession beginConfiguration]` and `-[AVCaptureSession commitConfiguration]` while the session is running.
+///
+/// Default value: `true`.
+@property(nonatomic) BOOL automaticallyAdjustsCinematicVideoMetadataCaptureEnabled
+    API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0))
+    API_UNAVAILABLE(visionos)
+    API_UNAVAILABLE(watchos);
+
+/// Indicates whether cinematic video metadata is captured to movie files.
+///
+/// When `true`, recorded movie files include a cinematic video metadata track that enables post-capture cinematic video editing using the Cinematic framework.
+///
+/// This property may only be set when `automaticallyAdjustsCinematicVideoMetadataCaptureEnabled` is `false`. Setting this property when `automaticallyAdjustsCinematicVideoMetadataCaptureEnabled` is `true` throws an `NSInvalidArgumentException`.
+///
+/// This property may only be set to `true` when `cinematicVideoMetadataCaptureSupported` is `true`. Setting to `true` when not supported throws an `NSInvalidArgumentException`.
+///
+/// This property is key-value observable.
+@property(nonatomic, getter=isCinematicVideoMetadataCaptureEnabled) BOOL cinematicVideoMetadataCaptureEnabled
+    API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0))
+    API_UNAVAILABLE(visionos)
+    API_UNAVAILABLE(watchos);
 @end
+
+@interface AVCaptureMovieFileOutput (ProVideoStorage)
+
+/// Whether this movie file output supports writing to Pro Video Storage in its current configuration.
+///
+/// A value of `YES` indicates that Pro Video Storage support is enabled for this output while `NO` indicates it is not.
+/// Check this value prior to setting property usesProVideoStorage to avoid exceptions when Pro Video Storage support is not enabled.
+@property(nonatomic, readonly, getter=isProVideoStorageSupported) BOOL proVideoStorageSupported API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
+
+/// Whether this movie file output is configured to write to Pro Video Storage.
+///
+/// Default is `NO`. Raises an exception if set to `YES` while proVideoStorageSupported is `NO`.
+@property(nonatomic) BOOL usesProVideoStorage API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
+
+@end
+
 
 
 #pragma mark - AVCaptureAudioFileOutput

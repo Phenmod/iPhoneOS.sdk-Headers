@@ -22,6 +22,13 @@ API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos, watchos, tvos)
 /// Set of elements that will be requested from the document.
 @property (nonatomic, readonly) NSArray<PKIdentityElement *> *elements;
 
+/// A list of X.509 authority key identifiers which are accepted by the relying party.
+///
+/// An empty list means any document signer certificate is acceptable.
+///
+/// - Warning: The number of issuer identifiers must not exceed 1,000 and the size of each identifier must not exceed 64 bytes. Your app will terminate if these conditions are not met.
+@property (nonatomic, copy) NSArray<NSData *> *issuerIdentifiers API_AVAILABLE(ios(27.0), visionos(27.0));
+
 /// Intent to store for the given element, or nil if the element has not been added to this descriptor.
 - (nullable PKIdentityIntentToStore *)intentToStoreForElement:(PKIdentityElement *)element NS_SWIFT_NAME(intentToStore(element:));
 

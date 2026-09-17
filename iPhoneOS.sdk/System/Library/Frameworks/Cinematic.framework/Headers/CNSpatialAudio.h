@@ -15,25 +15,25 @@ NS_ASSUME_NONNULL_BEGIN
   @abstract	Standard rendering styles for Audio Mix type effects
  */
 typedef NS_ENUM(NSInteger, CNSpatialAudioRenderingStyle) {
-	/// Isolates the ambience and place it in a spatial stem. Isolates all voices and place them in a mono stem.
+	/// Isolates background and foreground sounds and places them in separate stems.
 	CNSpatialAudioRenderingStyleCinematic = 0,
-	/// Isolates the ambience and place it in a spatial stem. Isolates all voices, add a studio/proximity effect in the voice track and place them in a mono stem.
+	/// Isolates background and foreground in separate stems. Adds a proximity effect to foreground sounds.
 	CNSpatialAudioRenderingStyleStudio = 1,
-	/// Isolates the ambience and place it in a spatial stem. Isolates only voices from the camera field of view and place them in a mono stem.
+	/// Isolates background from foreground sounds in the camera field of view and places them in separate stems.
 	CNSpatialAudioRenderingStyleInFrame = 2,
-	/// Isolates the ambience when foreground is cinematic Audio Mix and place it in a spatial stem. There is no voice stem.
+	/// Isolates background sounds in a stem.
 	CNSpatialAudioRenderingStyleCinematicBackgroundStem = 3,
-	/// Isolates all voices and places them in a mono stem. There is no ambience stem.
+	/// Isolates foreground sounds in a stem.
 	CNSpatialAudioRenderingStyleCinematicForegroundStem = 4,
-	/// Isolates all voices, add a studio/proximity effect in the voice track and place them in a mono stem. There is no ambience stem.
+	/// Isolates foreground sounds in a stem, and adds a proximity effect.
 	CNSpatialAudioRenderingStyleStudioForegroundStem = 5,
-	/// Isolates only voices from the camera field of view and place them in a mono stem. There is no ambience stem.
+	/// Isolates foreground sounds within the camera field of view in a stem.
 	CNSpatialAudioRenderingStyleInFrameForegroundStem = 6,
-	/// This produces a spatial stem of the original recording that is unprocessed. This is the default rendering style.
+	/// Produces an unprocessed spatial stem of the original recording. This is the default rendering style.
 	CNSpatialAudioRenderingStyleStandard = 7,
-	/// Isolates the ambience when foreground is studio Audio Mix and place it in a spatial stem. There is no voice stem.
+	/// Isolates background sounds in a stem.
 	CNSpatialAudioRenderingStyleStudioBackgroundStem = 8,
-	/// Isolates the ambience and foreground that is out of frame and place it in a spatial stem. There is no voice stem.
+	/// Isolates background plus foreground sounds outside the camera field of view in a stem.
 	CNSpatialAudioRenderingStyleInFrameBackgroundStem = 9,
 }
 API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0)) API_UNAVAILABLE(watchos);
@@ -81,9 +81,7 @@ API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0)) API_UNAVAILABLE(watchos)
  @param			asset
 	An instance of AVAsset.
  @param			completionHandler
-	Completion handler to return the result
- @result		Boolean
- */
+	Completion handler to return the result */
 + (void)checkIfContainsSpatialAudio:(AVAsset *)asset completionHandler:(void (^)(BOOL result))completionHandler;
 
 /*!
@@ -93,7 +91,6 @@ API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0)) API_UNAVAILABLE(watchos)
 	An instance of AVAsset
  @param		completionHandler
 	Completion handler to return the result
- @result	An instance of CNAssetSpatialAudioInfo delivered via the completion handler or an error on failure
  */
 + (void)loadFromAsset:(AVAsset *)asset
 		completionHandler:(void (^)(CNAssetSpatialAudioInfo * _Nullable assetInfo,
@@ -116,13 +113,13 @@ API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0)) API_UNAVAILABLE(watchos)
 @property (nonatomic, readonly) float defaultEffectIntensity;
 
 /*!
- @method		defaultRenderingStyle
+ @property		defaultRenderingStyle
  @abstract		default rendering style as provided by the system
  */
 @property (nonatomic, readonly) CNSpatialAudioRenderingStyle defaultRenderingStyle;
 
 /*!
- @method		spatialAudioMixMetadata
+ @property		spatialAudioMixMetadata
  @abstract		The result of audio analysis during recording which contains metadata necessary to properly configure the Audio Mix feature during playback or editing..
 				Can be used with `AUAudioUnit` instances that support AudioUnitPropertyID `kProperty_SpatialAudioMixMetadata`
  */

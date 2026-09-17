@@ -13,14 +13,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+API_UNAVAILABLE_BEGIN(visionos)
+
 /**
  Object representing the geometry of a plane.
- @discussion The plane geometry will have a growing number of triangles
+
+ The plane geometry will have a growing number of triangles
  and vertices updated from frame to frame.
- */
+*/
 API_AVAILABLE(ios(11.3))
 NS_SWIFT_SENDABLE
-@interface ARPlaneGeometry : NSObject<NSSecureCoding>
+@interface ARPlaneGeometry : NSObject <NSSecureCoding>
 
 /**
  The number of mesh vertices of the geometry.
@@ -62,11 +65,23 @@ NS_SWIFT_SENDABLE
  */
 @property (nonatomic, readonly) const simd_float3 *boundaryVertices NS_REFINED_FOR_SWIFT;
 
-/** Unavailable */
+/**
+ Unavailable. ARPlaneGeometry objects are created by the system.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)init NS_UNAVAILABLE;
+
+/**
+ Unavailable. ARPlaneGeometry objects are created by the system.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_UNAVAILABLE;
 
 @end
+
+API_UNAVAILABLE_END
 
 NS_ASSUME_NONNULL_END
 #else

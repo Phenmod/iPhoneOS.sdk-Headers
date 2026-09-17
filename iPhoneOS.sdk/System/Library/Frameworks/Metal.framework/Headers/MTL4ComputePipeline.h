@@ -60,6 +60,10 @@ API_AVAILABLE(macos(26.0), ios(26.0))
 /// A value indicating whether the pipeline supports Metal indirect command buffers.
 @property (readwrite, nonatomic) MTL4IndirectCommandBufferSupportState supportIndirectCommandBuffers;
 
+@property(readwrite, nonatomic) MTLForwardProgressUsage forwardProgressUsage API_AVAILABLE(macos(27.0), ios(27.0));
+@property(readwrite, nonatomic) MTLContentionRelief contentionRelief API_AVAILABLE(macos(27.0), ios(27.0));
+@property(readwrite, nonatomic) BOOL optimizeForPersistentKernel API_AVAILABLE(macos(27.0), ios(27.0));
+
 /// Resets the descriptor to its default values.
 - (void)reset;
 @end

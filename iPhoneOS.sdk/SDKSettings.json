@@ -1,5 +1,5 @@
 {
-    "DisplayName": "iOS 26.5",
+    "DisplayName": "iOS 27.0",
     "DefaultProperties":
     {
         "CODE_SIGN_ENTITLEMENTS": "",
@@ -14,37 +14,19 @@
         "TAPI_VERIFY_MODE": "Pedantic",
         "TEST_LIBRARY_SEARCH_PATHS": "$(inherited) $(PLATFORM_DIR)/Developer/usr/lib",
         "PLATFORM_NAME": "iphoneos",
+        "KASAN_DEFAULT_CFLAGS[arch=arm64e.x1]": "$(KASAN_CFLAGS_TBI)",
         "KASAN_CFLAGS_CLASSIC": "-DKASAN=1 -DKASAN_CLASSIC=1 -fsanitize=address -mllvm -asan-globals-live-support -mllvm -asan-force-dynamic-shadow",
         "CODE_SIGNING_REQUIRED": "YES",
-        "IPHONEOS_DEPLOYMENT_TARGET": "26.5",
+        "_SWIFT_EXPLICIT_MODULES_ALLOW_CXX_INTEROP": "$(SWIFT_ENABLE_EXPLICIT_MODULES)",
         "CODE_SIGN_IDENTITY": "Apple Development",
         "KASAN_CFLAGS_TBI": "-DKASAN=1 -DKASAN_TBI=1 -fsanitize=kernel-hwaddress -mllvm -hwasan-recover=0 -mllvm -hwasan-instrument-atomics=0 -mllvm -hwasan-instrument-stack=1 -mllvm -hwasan-generate-tags-with-calls=1 -mllvm -hwasan-instrument-with-calls=1 -mllvm -hwasan-use-short-granules=0 -mllvm -hwasan-memory-access-callback-prefix=__asan_",
-        "TEST_FRAMEWORK_SEARCH_PATHS": "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks $(SDKROOT)/Developer/Library/Frameworks",
+        "IPHONEOS_DEPLOYMENT_TARGET": "27.0",
         "TAPI_USE_SRCROOT": "YES",
         "ENTITLEMENTS_DESTINATION": "Signature",
+        "TEST_FRAMEWORK_SEARCH_PATHS": "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks $(SDKROOT)/Developer/Library/Frameworks",
         "DEFAULT_COMPILER": "com.apple.compilers.llvm.clang.1_0",
         "DEPLOYMENT_TARGET_SUGGESTED_VALUES":
         [
-            "12.0",
-            "12.1",
-            "12.2",
-            "12.3",
-            "12.4",
-            "13.0",
-            "13.1",
-            "13.2",
-            "13.3",
-            "13.4",
-            "13.5",
-            "13.6",
-            "14.0",
-            "14.1",
-            "14.2",
-            "14.3",
-            "14.4",
-            "14.5",
-            "14.6",
-            "14.7",
             "15.0",
             "15.1",
             "15.2",
@@ -77,12 +59,14 @@
             "26.2",
             "26.3",
             "26.4",
-            "26.5"
+            "26.5",
+            "26.6",
+            "27.0"
         ],
         "AD_HOC_CODE_SIGNING_ALLOWED": "NO"
     },
-    "MinimalDisplayName": "26.5",
-    "Version": "26.5",
+    "MinimalDisplayName": "27.0",
+    "Version": "27.0",
     "IsBaseSDK": "YES",
     "SupportedTargets":
     {
@@ -93,7 +77,7 @@
             "BuildVersionPlatformID": "2",
             "SwiftSpanMinimumDeploymentTarget": "26.0",
             "LLVMTargetTripleVendor": "apple",
-            "MaximumDeploymentTarget": "26.5.99",
+            "MaximumDeploymentTarget": "27.0.99",
             "SwiftCompatibilityLibraryNotNeededStartingIn":
             {
                 "libswiftCompatibilitySpan.dylib": "26.0",
@@ -119,26 +103,6 @@
             "LLVMTargetTripleEnvironment": "",
             "ValidDeploymentTargets":
             [
-                "12.0",
-                "12.1",
-                "12.2",
-                "12.3",
-                "12.4",
-                "13.0",
-                "13.1",
-                "13.2",
-                "13.3",
-                "13.4",
-                "13.5",
-                "13.6",
-                "14.0",
-                "14.1",
-                "14.2",
-                "14.3",
-                "14.4",
-                "14.5",
-                "14.6",
-                "14.7",
                 "15.0",
                 "15.1",
                 "15.2",
@@ -171,17 +135,20 @@
                 "26.2",
                 "26.3",
                 "26.4",
-                "26.5"
+                "26.5",
+                "26.6",
+                "27.0"
             ],
-            "DefaultDeploymentTarget": "26.5",
-            "MinimumDeploymentTarget": "12.0",
+            "DefaultDeploymentTarget": "27.0",
+            "MinimumDeploymentTarget": "15.0",
             "DeploymentTargetSettingName": "IPHONEOS_DEPLOYMENT_TARGET",
             "Archs":
             [
                 "arm64e",
-                "arm64"
+                "arm64",
+                "arm64e.x1"
             ],
-            "RecommendedDeploymentTarget": "15.0",
+            "RecommendedDeploymentTarget": "17.0",
             "PlatformFamilyName": "iOS"
         }
     },
@@ -189,13 +156,13 @@
     [
         "embedded"
     ],
-    "DefaultDeploymentTarget": "26.5",
-    "MaximumDeploymentTarget": "26.5.99",
+    "DefaultDeploymentTarget": "27.0",
+    "MaximumDeploymentTarget": "27.0.99",
     "DebuggerOptions":
     {
         "SupportsViewDebugging": "YES"
     },
-    "CanonicalName": "iphoneos26.5",
+    "CanonicalName": "iphoneos27.0",
     "CustomProperties":
     {}
 }

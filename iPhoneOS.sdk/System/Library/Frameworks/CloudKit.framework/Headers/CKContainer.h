@@ -229,7 +229,7 @@ typedef void (^CKApplicationPermissionBlock)(CKApplicationPermissionStatus appli
 ///
 /// The first time you request a permission on any of the user's devices, the user receives a prompt to grant or deny the request. After the user grants or denies a permission, subsequent requests for the same permission (on the same or separate devices), don't prompt the user again.
 ///
-/// This method runs asynchronously, and the system calls your completion handler on an arbitary queue and provides the outcome.
+/// This method runs asynchronously, and the system calls your completion handler on an arbitrary queue and provides the outcome.
 - (void)requestApplicationPermission:(CKApplicationPermissions)applicationPermission completionHandler:(NS_SWIFT_SENDABLE CKApplicationPermissionBlock)completionHandler API_DEPRECATED("No longer supported. Please see Sharing CloudKit Data with Other iCloud Users.", macos(10.0, 14.0), ios(8.0, 17.0), tvos(9.0, 17.0), watchos(3.0, 10.0));
 
 @end
@@ -264,7 +264,7 @@ typedef void (^CKApplicationPermissionBlock)(CKApplicationPermissionStatus appli
 /// - An error if a problem occurs, or `nil` if the system successfully completes the request.
 ///
 /// This method searches for the users asynchronously and with a low priority. If you want the task to execute with a higher priority, create an instance of ``CKDiscoverAllUserIdentitiesOperation`` and configure it to use the necessary priority.
-- (void)discoverAllIdentitiesWithCompletionHandler:(void (NS_SWIFT_SENDABLE ^)(NSArray<CKUserIdentity *> * _Nullable userIdentities, NSError * _Nullable error))completionHandler NS_SWIFT_ASYNC_NAME(allUserIdentitiesFromContacts()) API_DEPRECATED("No longer supported. Please see Sharing CloudKit Data with Other iCloud Users.", macos(10.12, 14.0), ios(10.0, 17.0), watchos(3.0, 10.0)) API_UNAVAILABLE(tvos);
+- (void)discoverAllIdentitiesWithCompletionHandler:(void (NS_SWIFT_SENDABLE ^)(NSArray<CKUserIdentity *> * _Nullable userIdentities, NSError * _Nullable error))completionHandler API_DEPRECATED("No longer supported. Please see Sharing CloudKit Data with Other iCloud Users.", macos(10.12, 14.0), ios(10.0, 17.0), watchos(3.0, 10.0)) API_UNAVAILABLE(tvos) NS_REFINED_FOR_SWIFT_ASYNC(1);
 
 /// Fetches the user identity for the specified email address.
 ///
@@ -282,7 +282,7 @@ typedef void (^CKApplicationPermissionBlock)(CKApplicationPermissionStatus appli
 /// - The user grants the ``CKContainer/ApplicationPermissions/userDiscoverability`` permission for the container.
 ///
 /// This method searches for the user asynchronously and with a low priority. If you want the task to execute the request with a higher priority, create an instance of ``CKDiscoverUserIdentitiesOperation`` and configure it to use the necessary priority.
-- (void)discoverUserIdentityWithEmailAddress:(NSString *)email completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKUserIdentity * _Nullable_result userInfo, NSError * _Nullable error))completionHandler NS_SWIFT_ASYNC_NAME(userIdentity(forEmailAddress:)) API_DEPRECATED("No longer supported. Please see Sharing CloudKit Data with Other iCloud Users.", macos(10.12, 14.0), ios(10.0, 17.0), tvos(10.0, 17.0), watchos(3.0, 10.0));
+- (void)discoverUserIdentityWithEmailAddress:(NSString *)email completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKUserIdentity * _Nullable_result userInfo, NSError * _Nullable error))completionHandler API_DEPRECATED("No longer supported. Please see Sharing CloudKit Data with Other iCloud Users.", macos(10.12, 14.0), ios(10.0, 17.0), tvos(10.0, 17.0), watchos(3.0, 10.0)) NS_REFINED_FOR_SWIFT_ASYNC(2);
 
 /// Fetches the user identity for the specified phone number.
 ///
@@ -300,7 +300,7 @@ typedef void (^CKApplicationPermissionBlock)(CKApplicationPermissionStatus appli
 /// - The user grants the ``CKContainer/ApplicationPermissions/userDiscoverability`` permission for the container.
 ///
 /// This method searches for the user asynchronously and with a low priority. If you want the task to execute the request with a higher priority, create an instance of ``CKDiscoverUserIdentitiesOperation`` and configure it to use the necessary priority.
-- (void)discoverUserIdentityWithPhoneNumber:(NSString *)phoneNumber completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKUserIdentity * _Nullable_result userInfo, NSError * _Nullable error))completionHandler NS_SWIFT_ASYNC_NAME(userIdentity(forPhoneNumber:)) API_DEPRECATED("No longer supported. Please see Sharing CloudKit Data with Other iCloud Users.", macos(10.12, 14.0), ios(10.0, 17.0), tvos(10.0, 17.0), watchos(3.0, 10.0));
+- (void)discoverUserIdentityWithPhoneNumber:(NSString *)phoneNumber completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKUserIdentity * _Nullable_result userInfo, NSError * _Nullable error))completionHandler API_DEPRECATED("No longer supported. Please see Sharing CloudKit Data with Other iCloud Users.", macos(10.12, 14.0), ios(10.0, 17.0), tvos(10.0, 17.0), watchos(3.0, 10.0)) NS_REFINED_FOR_SWIFT_ASYNC(2);
 
 /// Fetches the user identity for the specified user record ID.
 ///
@@ -318,7 +318,7 @@ typedef void (^CKApplicationPermissionBlock)(CKApplicationPermissionStatus appli
 /// - The user grants the ``CKContainer/ApplicationPermissions/userDiscoverability`` permission for the container.
 ///
 /// This method searches for the user asynchronously and with a low priority. If you want the task to execute the request with a higher priority, create an instance of ``CKDiscoverUserIdentitiesOperation`` and configure it to use the necessary priority.
-- (void)discoverUserIdentityWithUserRecordID:(CKRecordID *)userRecordID completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKUserIdentity * _Nullable_result userInfo, NSError * _Nullable error))completionHandler NS_SWIFT_ASYNC_NAME(userIdentity(forUserRecordID:)) API_DEPRECATED("No longer supported. Please see Sharing CloudKit Data with Other iCloud Users.", macos(10.12, 14.0), ios(10.0, 17.0), tvos(10.0, 17.0), watchos(3.0, 10.0));
+- (void)discoverUserIdentityWithUserRecordID:(CKRecordID *)userRecordID completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKUserIdentity * _Nullable_result userInfo, NSError * _Nullable error))completionHandler API_DEPRECATED("No longer supported. Please see Sharing CloudKit Data with Other iCloud Users.", macos(10.12, 14.0), ios(10.0, 17.0), tvos(10.0, 17.0), watchos(3.0, 10.0)) NS_REFINED_FOR_SWIFT_ASYNC(2);
 
 @end
 
@@ -337,7 +337,7 @@ typedef void (^CKApplicationPermissionBlock)(CKApplicationPermissionStatus appli
 /// CloudKit can translate any valid email address into a share participant.  If the email address doesn't correspond to a known iCloud account, then at share-accept-time, CloudKit offers the accepting participant a vetting process. The accepting participant uses this vetting process to link the email address to an iCloud account.
 ///
 /// This method searches for the share participant asynchronously and with a low priority. If you want the task to execute with a higher priority, create an instance of ``CKFetchShareParticipantsOperation`` and configure it to use the necessary priority.
-- (void)fetchShareParticipantWithEmailAddress:(NSString *)emailAddress completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKShareParticipant * _Nullable shareParticipant, NSError * _Nullable error))completionHandler API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0)) NS_SWIFT_ASYNC_NAME(shareParticipant(forEmailAddress:));
+- (void)fetchShareParticipantWithEmailAddress:(NSString *)emailAddress completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKShareParticipant * _Nullable shareParticipant, NSError * _Nullable error))completionHandler API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0)) NS_REFINED_FOR_SWIFT_ASYNC(2);
 
 /// Fetches the share participant with the specified phone number.
 ///
@@ -352,7 +352,7 @@ typedef void (^CKApplicationPermissionBlock)(CKApplicationPermissionStatus appli
 /// CloudKit can translate any valid phone number into a share participant.  If the phone number doesn't correspond to a known iCloud account, then at share-accept-time, CloudKit offers the accepting participant a vetting process. The accepting participant uses this vetting process to link the phone number to an iCloud account.
 ///
 /// This method searches for the share participant asynchronously and with a low priority. If you want the task to execute with a higher priority, create an instance of ``CKFetchShareParticipantsOperation`` and configure it to use the necessary priority.
-- (void)fetchShareParticipantWithPhoneNumber:(NSString *)phoneNumber completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKShareParticipant * _Nullable shareParticipant, NSError *_Nullable error))completionHandler API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0)) NS_SWIFT_ASYNC_NAME(shareParticipant(forPhoneNumber:));
+- (void)fetchShareParticipantWithPhoneNumber:(NSString *)phoneNumber completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKShareParticipant * _Nullable shareParticipant, NSError *_Nullable error))completionHandler API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0)) NS_REFINED_FOR_SWIFT_ASYNC(2);
 
 /// Fetches the share participant with the specified user record ID.
 ///
@@ -365,7 +365,7 @@ typedef void (^CKApplicationPermissionBlock)(CKApplicationPermissionStatus appli
 ///   - An error if a problem occurs, or `nil` if CloudKit successfully retrieves the participant.
 ///
 /// This method searches for the share participant asynchronously and with a low priority. If you want the task to execute with a higher priority, create an instance of ``CKFetchShareParticipantsOperation`` and configure it to use the necessary priority.
-- (void)fetchShareParticipantWithUserRecordID:(CKRecordID *)userRecordID completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKShareParticipant *_Nullable shareParticipant, NSError *_Nullable error))completionHandler API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0)) NS_SWIFT_ASYNC_NAME(shareParticipant(forUserRecordID:));
+- (void)fetchShareParticipantWithUserRecordID:(CKRecordID *)userRecordID completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKShareParticipant *_Nullable shareParticipant, NSError *_Nullable error))completionHandler API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0)) NS_REFINED_FOR_SWIFT_ASYNC(2);
 
 /// Fetches the share metadata for the specified share URL.
 ///
@@ -376,7 +376,7 @@ typedef void (^CKApplicationPermissionBlock)(CKApplicationPermissionStatus appli
 /// The closure doesn't return a value and takes the following parameters:
 ///   - The share metadata, or `nil` if CloudKit can't find the metadata.
 ///   - An error if a problem occurs, or `nil` if CloudKit successfully retrieves the metadata.
-- (void)fetchShareMetadataWithURL:(NSURL *)url completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKShareMetadata *_Nullable metadata, NSError * _Nullable error))completionHandler API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0)) NS_SWIFT_ASYNC_NAME(shareMetadata(for:));
+- (void)fetchShareMetadataWithURL:(NSURL *)url completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKShareMetadata *_Nullable metadata, NSError * _Nullable error))completionHandler API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0)) NS_REFINED_FOR_SWIFT_ASYNC(2);
 
 /// Accepts the specified share metadata.
 ///
@@ -388,7 +388,7 @@ typedef void (^CKApplicationPermissionBlock)(CKApplicationPermissionStatus appli
 ///
 /// - The corresponding share, or `nil` if CloudKit can't accept the metadata.
 /// - An error if a problem occurs, or `nil` if CloudKit successfully accepts the metadata.
-- (void)acceptShareMetadata:(CKShareMetadata *)metadata completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKShare *_Nullable acceptedShare, NSError *_Nullable error))completionHandler API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0));
+- (void)acceptShareMetadata:(CKShareMetadata *)metadata completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKShare *_Nullable acceptedShare, NSError *_Nullable error))completionHandler API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0)) NS_REFINED_FOR_SWIFT_ASYNC(2);
 
 @end
 

@@ -410,6 +410,48 @@ API_AVAILABLE(macos(10.14), ios(12.0), watchos(5.0), tvos(12.0))
 uint32_t
 nw_tcp_get_available_send_buffer(nw_protocol_metadata_t metadata);
 
+/*!
+ * @function nw_tcp_set_max_pacing_rate
+ *
+ * @abstract
+ *		Set a maximum pacing rate for a TCP connection, in bytes per second.
+ *
+ * @discussion
+ *		TCP pacing spreads outgoing packet transmission across time to avoid
+ *		bursts and reduce queueing in the network. With a cap in place, the
+ *		on-wire rate is the minimum of (a) this cap, and (b) the rate computed
+ *		from the congestion window divided by smoothed RTT. The cap therefore
+ *		never raises throughput above what congestion control would otherwise
+ *		allow.
+ *
+ *		A value of 0 or UINT64_MAX disables pacing on this connection — the
+ *		connection sends without pacing (subject only to congestion control).
+ *
+ *		Rates in the open interval (0, 12500) are silently clamped up to
+ *		12500 bytes/second (100 Kbps). Callers needing genuinely sub-100-Kbps
+ *		pacing must shape at the application layer.
+ *
+ *		The cap may be updated at any time during the lifetime of an
+ *		established connection. Each call replaces the prior value.
+ *
+ * @param metadata
+ *		A TCP protocol metadata object from an established connection
+ *		(e.g. obtained via nw_connection_access_established_protocol_metadata).
+ *
+ * @param max_pacing_rate
+ *		Maximum pacing rate in bytes per second. 0 or UINT64_MAX disables
+ *		pacing on this connection.
+ *
+ * @result
+ *		Returns 0 on success, or a POSIX errno value on failure (e.g. EINVAL
+ *		if metadata is not a TCP metadata object, or the underlying socket
+ *		error).
+ */
+NW_EXPORT API_AVAILABLE(anyappleos(27.0))
+int
+nw_tcp_set_max_pacing_rate(nw_protocol_metadata_t metadata,
+						   uint64_t max_pacing_rate);
+
 NW_ASSUME_NONNULL_END
 
 __END_DECLS

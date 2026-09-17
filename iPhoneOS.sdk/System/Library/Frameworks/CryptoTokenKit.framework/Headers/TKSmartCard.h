@@ -22,13 +22,24 @@ API_AVAILABLE(macos(10.10), ios(9.0), tvos(11.0), watchos(4.0), visionos(1.0))
 /// iOS: The defaultManager instance is always accessible.
 @property (class, nullable, readonly) TKSmartCardSlotManager *defaultManager;
 
-/// Array of currently known slots in the system.  Slots are identified by NSString name instances.  Use KVO to be notified about slots arrivals and removals.
+/// Array of currently known slots in the system. Slots are identified by NSString name instances.
+/// Use KVO to be notified about slot arrivals and removals.
+///
+/// Recommended pattern:
+/// @code
+/// - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+///                         change:(NSDictionary *)change context:(void *)context {
+///     dispatch_async(self.myQueue, ^{
+///         // Process slot changes here
+///     });
+/// }
+/// @endcode
 @property (readonly) NSArray<NSString *> *slotNames;
 
 /// Instantiates smartcard reader slot of specified name.  If specified name is not registered, reports nil.
 - (void)getSlotWithName:(NSString *)name reply:(void(^)(TKSmartCardSlot *__nullable slot))reply NS_SWIFT_NAME(getSlot(withName:reply:));
 
-/// Gets SmartCard reader slot with specified name.  If reader slot with this name does not exist, returns nil.
+/// Gets SmartCard reader slot with specified name. If reader slot with this name does not exist, returns nil.
 - (nullable TKSmartCardSlot *)slotNamed:(NSString *)name
 API_AVAILABLE(macos(10.13), ios(9.0), tvos(11.0), watchos(4.0), visionos(1.0));
 

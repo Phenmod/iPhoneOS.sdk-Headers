@@ -223,8 +223,11 @@ API_UNAVAILABLE(visionos)
 /// The minimal texture usage options that your app’s input motion texture needs in order to support this denoiser scaler.
 @property (nonatomic, readonly) MTLTextureUsage motionTextureUsage;
 
-/// The minimal texture usage options that your app’s input reactive texture needs in order to support this denoiser scaler.
-@property (nonatomic, readonly) MTLTextureUsage reactiveTextureUsage;
+/// The minimal texture usage options that your app's input reactive mask texture needs in order to support this denoiser scaler.
+@property (nonatomic, readonly) MTLTextureUsage reactiveMaskTextureUsage API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+/// The minimal texture usage options that your app's input reactive texture needs in order to support this denoiser scaler.
+@property (nonatomic, readonly) MTLTextureUsage reactiveTextureUsage
+    API_DEPRECATED_WITH_REPLACEMENT("reactiveMaskTextureUsage", macos(14.4, 27.0), ios(17.4, 27.0));
 
 /// The minimal texture usage options that your app’s input diffuse albedo texture needs in order to support this denoiser scaler.
 @property (nonatomic, readonly) MTLTextureUsage diffuseAlbedoTextureUsage;

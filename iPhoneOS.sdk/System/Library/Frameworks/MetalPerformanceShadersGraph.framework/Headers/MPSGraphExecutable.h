@@ -181,6 +181,42 @@ MPS_SWIFT_NAME( run(with:inputs:results:executionDescriptor:) );
                                            executionDescriptor:(MPSGraphExecutableExecutionDescriptor * _Nullable) executionDescriptor
 MPS_SWIFT_NAME( runAsync(with:inputs:results:executionDescriptor:) );
 
+#if !TARGET_IPHONE_SIMULATOR
+
+/// Runs the graph for the given feeds and returns the target tensor values, ensuring all target operations also executed.
+///
+/// This call is synchronous and will return on completion of execution.
+///
+/// - Parameters:
+///   - commandQueue: MTL4CommandQueue passed to exectute the graph on.
+///   - inputsArray: Feeds tensorData for the placeholder tensors, same order as arguments of main function.
+///   - resultsArray: Results tensorData for which the caller wishes MPSGraphTensorData to be returned.
+/// - Returns: A valid MPSGraphTensorData array with results synchronized to the CPU memory if MPSGraphOptionsSynchronizeResults set.
+-(NSArray<MPSGraphTensorData *> *) runWithMTL4CommandQueue:(id<MTL4CommandQueue>) commandQueue
+                                               inputsArray:(NSArray<MPSGraphTensorData *> *) inputsArray
+                                              resultsArray:(NSArray<MPSGraphTensorData *> * _Nullable) resultsArray
+                                       executionDescriptor:(MPSGraphExecutableExecutionDescriptor * _Nullable) executionDescriptor
+MPS_SWIFT_NAME( run(on:inputs:results:executionDescriptor:) )
+MPS_AVAILABLE_STARTING(macos(27.0), ios(27.0));
+
+/// Runs the graph for the given feeds and returns the target tensor values, ensuring all target operations also executed.
+/// This call is asynchronous and will return immediately.
+///
+/// - Parameters:
+///   - commandQueue: MTL4CommandQueue passed to exectute the graph on.
+///   - inputsArray: Feeds tensorData for the placeholder tensors, same order as arguments of main function.
+///   - resultsArray: Tensors for which the caller wishes MPSGraphTensorData to be returned.
+///   - executionDescriptor: ExecutionDescriptor to be passed in and used.
+/// - Returns: A valid MPSGraphTensorData array with results synchronized to the CPU memory if MPSGraphOptionsSynchronizeResults set.
+-(NSArray<MPSGraphTensorData *> *) runAsyncWithMTL4CommandQueue:(id<MTL4CommandQueue>) commandQueue
+                                                    inputsArray:(NSArray<MPSGraphTensorData *> *) inputsArray
+                                                   resultsArray:(NSArray<MPSGraphTensorData *> * _Nullable) resultsArray
+                                            executionDescriptor:(MPSGraphExecutableExecutionDescriptor * _Nullable) executionDescriptor
+MPS_SWIFT_NAME( runAsync(on:inputs:results:executionDescriptor:) )
+MPS_AVAILABLE_STARTING(macos(27.0), ios(27.0));;
+
+#endif
+
 /// Runs the graph for the given feeds and returns the target tensor values, ensuring all target operations also executed. 
 /// This call is asynchronous and will return immediately after finishing encoding.
 ///

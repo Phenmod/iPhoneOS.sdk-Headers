@@ -12,6 +12,7 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreMedia/CMBase.h>
 #include <CoreMedia/CMTimeRange.h>
+#include <CoreMedia/CMFormatDescription.h>
 #include <AudioToolbox/AudioToolbox.h>
 
 #if defined(__cplusplus)
@@ -297,7 +298,7 @@ typedef struct {
 
 /*!
 	@function	MTAudioProcessingTapCreate
-	@abstract	Create a new processing tap.
+	@abstract	Creates a new processing tap.
 	@discussion	This function creates a processing tap.
 				The processing tap will then be used to process decoded data.
 				The processing is performed on audio either before or after any effects or other
@@ -324,6 +325,40 @@ MT_EXPORT OSStatus MTAudioProcessingTapCreate(
 		const MTAudioProcessingTapCallbacks * CM_NONNULL callbacks,
 		MTAudioProcessingTapCreationFlags flags,
 		CM_RETURNS_RETAINED_PARAMETER MTAudioProcessingTapRef CM_NULLABLE * CM_NONNULL tapOut) API_AVAILABLE(macos(10.9), ios(6.0), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(watchos);
+
+/*!
+	@function	MTAudioProcessingTapCreateWithPreferredFormat
+	@abstract	Creates a new processing tap.
+	@discussion	This function creates a processing tap.
+				The processing tap will then be used to process decoded data.
+				The processing is performed on audio either before or after any effects or other
+				processing (varispeed, etc) is applied by the audio queue.
+
+	@param		allocator
+				The allocator to use to allocate memory for the new tap. Pass NULL or kCFAllocatorDefault to use the current default allocator.
+	@param		callbacks
+				Callbacks struct.  MTAudioProcessingTap will make a copy of this struct.
+	@param		flags
+				Flags that are used to control aspects of the processing tap.
+				Valid flags are:
+				- kMTAudioProcessingTapCreationFlag_PreEffects:
+					processing is done before any further effects are applied by the audio queue to the audio.
+				- kMTAudioProcessingTapCreationFlag_PostEffects:
+					processing is done after all processing is done, including that of other taps.
+	@param		preferredFormat
+				A CMAudioFormatDescription for the preferred format of audio processed by the tap. The format ID of the AudioStreamBasicDescription must be kAudioFormatLinearPCM. If the AudioStreamBasicDescription specified a channel count greater than 2, an AudioChannelLayout must also be specified.
+				Because the actual format of the tap may differ from the specified preferred format in its LPCM numeric type, channel interleaving, and sample size, you should provide a prepare callback with particular attention to the mFormatFlags, mBytesPerPacket, and mBitsPerChannel fields of the AudioStreamBasicDescription. If any of these differs from the format in which you wish to operate, you can set up conversions between the tap's format and your required processing format.
+	@param		tapOut
+				The processing tap object.
+
+    @result     An OSStatus result code.
+*/
+MT_EXPORT OSStatus MTAudioProcessingTapCreateWithPreferredFormat(
+		CFAllocatorRef CM_NULLABLE allocator,
+		const MTAudioProcessingTapCallbacks * CM_NONNULL callbacks,
+		MTAudioProcessingTapCreationFlags flags,
+		CMAudioFormatDescriptionRef CM_NULLABLE preferredFormat,
+		CM_RETURNS_RETAINED_PARAMETER MTAudioProcessingTapRef CM_NULLABLE * CM_NONNULL tapOut) API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos);
 
 /*!
 	@function	MTAudioProcessingTapGetStorage

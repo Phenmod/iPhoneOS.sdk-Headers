@@ -8,6 +8,9 @@ Classes:
   - Selector: "typeWithIdentifier:"
     MethodKind: Class
     SwiftName: "init(_:)"
+  - Selector: "typeWithIdentifier:allowUndeclared:"
+    MethodKind: Class
+    SwiftName: "init(identifier:allowUndeclared:)"
   - Selector: "typeWithTag:tagClass:conformingToType:"
     MethodKind: Class
     SwiftName: "init(tag:tagClass:conformingTo:)"

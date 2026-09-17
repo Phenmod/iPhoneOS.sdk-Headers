@@ -419,7 +419,7 @@ API_AVAILABLE(macos(10.11), ios(13.0), watchos(6.0), visionos(1.0)) API_UNAVAILA
 */
 - (BOOL)appendSampleBuffer:(CMSampleBufferRef)sampleBuffer decodeTime:(nullable CMTime *)outDecodeTime presentationTime:(nullable CMTime *)outPresentationTime error:(NSError * _Nullable * _Nullable)outError
 #if defined(__swift__)
-API_DEPRECATED("Use append(_:) instead", macos(10.10, API_TO_BE_DEPRECATED), ios(8.0, API_TO_BE_DEPRECATED), watchos(1.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos)
+API_DEPRECATED("Use append(_:) instead", macos(10.10, 27.0), ios(8.0, 27.0), watchos(1.0, 27.0), visionos(1.0, 27.0)) API_UNAVAILABLE(tvos)
 #else
 API_AVAILABLE(macos(10.12), ios(13.0), watchos(6.0), visionos(1.0)) API_UNAVAILABLE(tvos)
 #endif

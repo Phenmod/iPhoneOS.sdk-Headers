@@ -40,7 +40,7 @@ AV_INIT_UNAVAILABLE
  */
 @property (nonatomic, readonly) CVPixelBufferRef pixelBuffer
 #if __swift__
-API_DEPRECATED("Use readOnlyPixelBuffer instead", macos(15.0, API_TO_BE_DEPRECATED), ios(18.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos, visionos)
+API_DEPRECATED("Use readOnlyPixelBuffer instead", macos(15.0, 27.0), ios(18.0, 27.0)) API_UNAVAILABLE(tvos, watchos, visionos)
 #endif
 ;
 

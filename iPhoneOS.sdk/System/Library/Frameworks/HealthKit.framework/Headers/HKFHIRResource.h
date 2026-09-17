@@ -29,7 +29,6 @@ HK_EXTERN HKFHIRResourceType const HKFHIRResourceTypeMedicationStatement API_AVA
 HK_EXTERN HKFHIRResourceType const HKFHIRResourceTypeObservation API_AVAILABLE(ios(12.0), macCatalyst(13.0), macos(13.0)) API_UNAVAILABLE(watchos);
 HK_EXTERN HKFHIRResourceType const HKFHIRResourceTypeProcedure API_AVAILABLE(ios(12.0), macCatalyst(13.0), macos(13.0)) API_UNAVAILABLE(watchos);
 
-
 /*!
  @class         HKFHIRResource
  @abstract      The HKFHIRResource class encapsulates a FHIR (Fast Healthcare Interoperability Resources) resource.

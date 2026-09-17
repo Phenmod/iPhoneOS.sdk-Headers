@@ -30,7 +30,6 @@
 #define _ARM_CPU_CAPABILITIES_PUBLIC_H
 
 
-
 /*
  * In order to reduce the number of sysctls require for a process to get
  * the full list of supported processor capabilities extensions, the
@@ -98,6 +97,7 @@
 #define CAP_BIT_AdvSIMD             49
 #define CAP_BIT_AdvSIMD_HPFPCvt     50
 #define CAP_BIT_FEAT_CRC32          51
+
 #define CAP_BIT_SME_F32F32          52
 #define CAP_BIT_SME_BI32I32         53
 #define CAP_BIT_SME_B16F32          54
@@ -129,10 +129,11 @@
 
 #define CAP_BIT_FEAT_SVE_B16B16     91
 
+
 /* Legacy definitions for backwards compatibility */
 #define CAP_BIT_CRC32               CAP_BIT_FEAT_CRC32
 
 /* Total number of FEAT bits. */
-#define CAP_BIT_NB 92
+#define CAP_BIT_NB 97
 
 #endif /* _ARM_CPU_CAPABILITIES_PUBLIC_H */

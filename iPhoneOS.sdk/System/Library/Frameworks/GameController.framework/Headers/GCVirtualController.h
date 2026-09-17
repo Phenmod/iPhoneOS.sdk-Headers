@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 
 
+@class GCController;
 @class UIBezierPath;
 
 NS_ASSUME_NONNULL_BEGIN

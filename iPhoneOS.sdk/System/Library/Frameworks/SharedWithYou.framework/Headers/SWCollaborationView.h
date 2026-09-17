@@ -51,6 +51,8 @@ API_AVAILABLE(ios(16.0))
 
 @property (nonatomic, assign) NSUInteger activeParticipantCount;
 
+@property (nonatomic, assign) NSUInteger pendingAccessRequestsCount API_AVAILABLE(ios(27.0), macos(27.0), visionos(27.0));
+
 @property (nonatomic, weak) id<SWCollaborationViewDelegate> delegate;
 
 @property (nonatomic, copy) NSString *headerTitle;

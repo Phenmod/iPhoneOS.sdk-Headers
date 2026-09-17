@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
  @typedef       MXLaunchTaskID
  @abstract      Describes the general purpose of a specific launch task.
  */
-API_AVAILABLE(ios(16.0), macos(13.0)) API_UNAVAILABLE(tvos, watchos)
+API_DEPRECATED("Use LaunchTaskID instead.", ios(16.0, API_TO_BE_DEPRECATED), macos(13.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos)
 typedef const NSString *const MXLaunchTaskID NS_TYPED_EXTENSIBLE_ENUM;
 
 /*!
@@ -29,7 +29,7 @@ typedef const NSString *const MXLaunchTaskID NS_TYPED_EXTENSIBLE_ENUM;
  @discussion    Metrics are not guaranteed to be delivered, but can be expected atleast once per day when conditions permit.
  @discussion    Subscribers to the metric manager can remove themselves using removeSubscriber:subscriber if they no longer wish to receive metrics.
  */
-API_AVAILABLE(ios(13.0), macos(12.0)) API_UNAVAILABLE(tvos, watchos)
+API_DEPRECATED("Use MetricManager instead.", ios(13.0, API_TO_BE_DEPRECATED), macos(12.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos)
 @interface MXMetricManager : NSObject
 
 /*!
@@ -48,7 +48,7 @@ API_AVAILABLE(ios(13.0), macos(12.0)) API_UNAVAILABLE(tvos, watchos)
  @property      sharedManager
  @abstract      Singleton instance of MXMetricManager.
  */
-@property (class, readonly, strong) MXMetricManager *sharedManager;
+@property (class, readonly, strong) MXMetricManager *sharedManager API_DEPRECATED("Use MetricManager instead.", ios(13.0, API_TO_BE_DEPRECATED), macos(12.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos);
 
 /*!
  @method        makeLogHandleWithCategory:category
@@ -57,7 +57,7 @@ API_AVAILABLE(ios(13.0), macos(12.0)) API_UNAVAILABLE(tvos, watchos)
  @discussion    The log handle configures persistence for any signposts emit while using the log handle.
  @result        A log handle that can be used with the logging framework.
  */
-+ (os_log_t _Nonnull)makeLogHandleWithCategory:(NSString *)category NS_SWIFT_NAME(makeLogHandle(category:));
++ (os_log_t _Nonnull)makeLogHandleWithCategory:(NSString *)category NS_SWIFT_NAME(makeLogHandle(category:)) API_DEPRECATED("Use MetricManager.logHandle(category:) instead.", ios(13.0, API_TO_BE_DEPRECATED), macos(12.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos);
 
 /*!
  @method        addSubscriber:subscriber
@@ -65,7 +65,7 @@ API_AVAILABLE(ios(13.0), macos(12.0)) API_UNAVAILABLE(tvos, watchos)
  @param         subscriber An object that conforms to the MXMetricManagerSubscriber protocol.
  @discussion    Subscribers can receive metric payloads by conforming to the MXMetricManagerSubscriber protocol.
  */
-- (void)addSubscriber:(id<MXMetricManagerSubscriber>)subscriber;
+- (void)addSubscriber:(id<MXMetricManagerSubscriber>)subscriber API_DEPRECATED("Use MetricManager instead.", ios(13.0, API_TO_BE_DEPRECATED), macos(12.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos);
 
 /*!
  @method        removeSubscriber:subscriber
@@ -73,7 +73,7 @@ API_AVAILABLE(ios(13.0), macos(12.0)) API_UNAVAILABLE(tvos, watchos)
  @param         subscriber An object that conforms to the MXMetricManagerSubscriber protocol.
  @discussion    The subscriber indicated, if previously registered, will no longer receive metric payloads.
  */
-- (void)removeSubscriber:(id<MXMetricManagerSubscriber>)subscriber;
+- (void)removeSubscriber:(id<MXMetricManagerSubscriber>)subscriber API_DEPRECATED("Use MetricManager instead.", ios(13.0, API_TO_BE_DEPRECATED), macos(12.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos);
 
 /*!
  @method        extendLaunchMeasurementForTaskID:error:
@@ -86,8 +86,7 @@ API_AVAILABLE(ios(13.0), macos(12.0)) API_UNAVAILABLE(tvos, watchos)
  @param         error               If an error occurs, this will contain a valid @c NSError object on exit.
  @result        Returns @c YES if the measurement started successfully and @c NO otherwise.
  */
-
-+ (BOOL)extendLaunchMeasurementForTaskID:(MXLaunchTaskID)taskID error:(NSError **)error API_AVAILABLE(ios(16.0), macos(13.0)) API_UNAVAILABLE(tvos, watchos);
++ (BOOL)extendLaunchMeasurementForTaskID:(MXLaunchTaskID)taskID error:(NSError **)error API_DEPRECATED("Use MetricManager.trackLaunchTask(id:onTrackingError:_:) instead.", ios(16.0, API_TO_BE_DEPRECATED), macos(13.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos);
 
 /*!
  @method        finishExtendedLaunchMeasurementForTaskID:error:
@@ -97,8 +96,7 @@ API_AVAILABLE(ios(13.0), macos(12.0)) API_UNAVAILABLE(tvos, watchos)
  @param         error               If an error occurs, this will contain a valid @c NSError object on exit.
  @result        Returns @c YES if the measurement for the task finished successfully and @c NO otherwise.
  */
-
-+ (BOOL)finishExtendedLaunchMeasurementForTaskID:(MXLaunchTaskID)taskID error:(NSError **)error API_AVAILABLE(ios(16.0), macos(13.0)) API_UNAVAILABLE(tvos, watchos);
++ (BOOL)finishExtendedLaunchMeasurementForTaskID:(MXLaunchTaskID)taskID error:(NSError **)error API_DEPRECATED("Use MetricManager.trackLaunchTask(id:onTrackingError:_:) instead.", ios(16.0, API_TO_BE_DEPRECATED), macos(13.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos);
 
 @end
 
@@ -108,7 +106,7 @@ API_AVAILABLE(ios(13.0), macos(12.0)) API_UNAVAILABLE(tvos, watchos)
  @discussion    In order to receive metric payloads, atleast one object must conform to this protocol and be subscribed   to the metric manager.
  @discussion    Objects which conform to this protocol can be passed to addSubscriber:subscriber and removeSubscriber:subscriber to manage their subscription state.
  */
-API_AVAILABLE(ios(13.0), macos(12.0)) API_UNAVAILABLE(tvos, watchos)
+API_DEPRECATED("Use MetricManager instead.", ios(13.0, API_TO_BE_DEPRECATED), macos(12.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos)
 @protocol MXMetricManagerSubscriber <NSObject>
 
 @optional
@@ -123,7 +121,7 @@ API_AVAILABLE(ios(13.0), macos(12.0)) API_UNAVAILABLE(tvos, watchos)
  @discussion    Atleast one subscriber must be available to receive metrics.
  @discussion    This method is invoked on a background queue.
  */
-- (void)didReceiveMetricPayloads:(NSArray<MXMetricPayload *> * _Nonnull)payloads API_AVAILABLE(macos(10.15));
+- (void)didReceiveMetricPayloads:(NSArray<MXMetricPayload *> * _Nonnull)payloads API_DEPRECATED("Use MetricManager.metricReports instead.", ios(13.0, API_TO_BE_DEPRECATED), macos(10.15, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos);
 
 /*!
  @method        didReceiveDiagnosticPayloads:payloads
@@ -135,7 +133,7 @@ API_AVAILABLE(ios(13.0), macos(12.0)) API_UNAVAILABLE(tvos, watchos)
  @discussion    Atleast one subscriber must be available to receive diagnostics.
  @discussion    This method is invoked on a background queue.
  */
-- (void)didReceiveDiagnosticPayloads:(NSArray<MXDiagnosticPayload *> * _Nonnull)payloads API_AVAILABLE(ios(14.0), macos(12.0)) API_UNAVAILABLE(tvos, watchos);
+- (void)didReceiveDiagnosticPayloads:(NSArray<MXDiagnosticPayload *> * _Nonnull)payloads API_DEPRECATED("Use MetricManager.diagnosticReports instead.", ios(14.0, API_TO_BE_DEPRECATED), macos(12.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos);
 
 @end
 

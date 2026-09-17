@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2022 Apple Inc. All rights reserved.
+ * Copyright (c) 2000-2026 Apple Inc. All rights reserved.
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_START@
  *
@@ -320,6 +320,7 @@ struct nd_opt_hdr {             /* Neighbor discovery option header */
 	u_int8_t        nd_opt_len;
 	/* followed by option specific data*/
 }__attribute__((__packed__));
+
 
 #define ND_OPT_SOURCE_LINKADDR          1
 #define ND_OPT_TARGET_LINKADDR          2

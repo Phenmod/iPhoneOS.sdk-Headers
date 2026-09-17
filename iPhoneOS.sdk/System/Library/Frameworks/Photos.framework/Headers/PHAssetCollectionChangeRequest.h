@@ -33,6 +33,8 @@ OS_EXPORT
 // requests that the specified asset collections be deleted
 + (void)deleteAssetCollections:(id<NSFastEnumeration>)assetCollections;
 
+
+
 #pragma mark - Modifying Asset Collections
 
 // if the asset collection does not allow the type of change requested, these methods will raise an exception, call canPerformEditOperation: on the asset collection to determine if the type of edit operation is allowed.

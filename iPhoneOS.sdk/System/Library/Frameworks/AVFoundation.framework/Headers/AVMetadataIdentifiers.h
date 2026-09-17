@@ -155,7 +155,7 @@ AVF_EXPORT AVMetadataIdentifier const AVMetadataIdentifierQuickTimeMetadataIsMon
 
 /// A value of type kCMMetadataBaseDataType_UInt8 indicating whether this movie is intended to be played back at the full frame rate (1), or at a slow motion rate (0).
 /// 
-/// Historically, some apps have played movies recorded at frame rates of 120fps or higher in slow motion by default. With the introduction of this metadata, apps that record high-frame-rate movies may add this movie-level metadata to indicate whether the movie is intended to be played at the full frame rate (1) or at a slow motion rate (0). Apps that play movies may use this metadata, when present, to guide their behavior.
+/// Historically, some apps have played movies recorded at high frame rates in slow motion by default. For example, QuickTime Player and Photos will by default play video with frame rates of 85 fps or higher in slow motion. With the introduction of this metadata, apps that record high-frame-rate movies may add this movie-level metadata to indicate whether the movie is intended to be played at the full frame rate (1) or at a slow motion rate (0). If this metadata is present, apps that play movies (e.g. QuickTime Player and Photos) may use it to guide their behavior.
 AVF_EXPORT AVMetadataIdentifier const AVMetadataIdentifierQuickTimeMetadataFullFrameRatePlaybackIntent     API_AVAILABLE(macos(15.0), ios(18.0), tvos(18.0), watchos(11.0), visionos(2.0));
 
 /// A value of type `kCMMetadataBaseDataType_UInt8` indicating whether this movie is intended as a Cinematic Video (1) or not (0).
@@ -232,12 +232,12 @@ AVF_EXPORT AVMetadataIdentifier const AVMetadataIdentifierQuickTimeMetadataLocat
 /// A value of type kCMMetadataBaseDataType_RawData
 /// 
 /// The static presentation metadata, Apple Immersive Media Embedded (AIME), for Apple Immersive Video that originates from ImmersiveMediaSupport framework's VenueDescriptor.aimeData.
-AVF_EXPORT AVMetadataIdentifier const AVMetadataIdentifierQuickTimeMetadataAIMEData API_AVAILABLE(macos(26.0), visionos(26.0)) API_UNAVAILABLE(ios, tvos, watchos);
+AVF_EXPORT AVMetadataIdentifier const AVMetadataIdentifierQuickTimeMetadataAIMEData API_AVAILABLE(macos(26.0), visionos(26.0), ios(26.0), tvos(26.0), watchos(26.0));
 
 /// A value of type kCMMetadataBaseDataType_RawData
 /// 
 /// The presentation timed metadata for Apple Immerisve Video. Value is a JSON-encoding of ImmersiveMediaSupport framework's PresentationDescriptor object.
-AVF_EXPORT AVMetadataIdentifier const AVMetadataIdentifierQuickTimeMetadataPresentationImmersiveMedia API_AVAILABLE(macos(26.0), visionos(26.0)) API_UNAVAILABLE(ios, tvos, watchos);
+AVF_EXPORT AVMetadataIdentifier const AVMetadataIdentifierQuickTimeMetadataPresentationImmersiveMedia API_AVAILABLE(macos(26.0), visionos(26.0), ios(26.0), tvos(26.0), watchos(26.0));
 
 // iTunesMetadata
 AVF_EXPORT AVMetadataIdentifier const AVMetadataIdentifieriTunesMetadataAlbum                              API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0), watchos(1.0), visionos(1.0));

@@ -40,7 +40,6 @@ API_AVAILABLE(macos(26.0), ios(26.0))
 
 /// Configure the options to use at binary function creation time.
 @property (nonatomic) MTL4BinaryFunctionOptions options;
-
 @end
 
 NS_ASSUME_NONNULL_END

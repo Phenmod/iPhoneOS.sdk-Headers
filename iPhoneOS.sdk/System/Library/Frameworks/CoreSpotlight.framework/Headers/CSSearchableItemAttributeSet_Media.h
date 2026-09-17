@@ -2,15 +2,17 @@
 //  CSSearchableItemAttributeSet_Media.h
 //  CoreSpotlight
 //
-//  Copyright © 2015 Apple. All rights reserved.
+//  Copyright © 2015–2026 Apple. All rights reserved.
 //
 
 #import <CoreSpotlight/CSSearchableItemAttributeSet.h>
-#import <CoreSpotlight/CSSearchableItemAttributeSet_General.h>
+
+#import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-CS_AVAILABLE(10_13, 9_0) CS_TVOS_UNAVAILABLE
+API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0))
+API_UNAVAILABLE(tvos, watchos)
 @interface CSSearchableItemAttributeSet (CSMedia)
 
 //The list of editor/editors that have worked on this item.
@@ -158,7 +160,8 @@ CS_AVAILABLE(10_13, 9_0) CS_TVOS_UNAVAILABLE
 
 @end
 
-CS_AVAILABLE(10_13, 9_0) CS_TVOS_UNAVAILABLE
+API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0))
+API_UNAVAILABLE(tvos, watchos)
 @interface CSSearchableItemAttributeSet (CSMusic)
 
 //The sample rate of the audio data contained in the file. The sample rate is a

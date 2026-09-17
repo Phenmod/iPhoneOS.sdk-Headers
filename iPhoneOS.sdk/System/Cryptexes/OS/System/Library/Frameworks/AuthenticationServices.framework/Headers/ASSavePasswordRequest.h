@@ -8,7 +8,6 @@
 
 #import <AuthenticationServices/ASCredentialServiceIdentifier.h>
 #import <AuthenticationServices/ASPasswordCredential.h>
-
 #import <AuthenticationServices/ASGeneratedPasswordKind.h>
 
 AS_HEADER_AUDIT_BEGIN(nullability, sendability)

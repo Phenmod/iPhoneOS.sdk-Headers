@@ -12,7 +12,7 @@
     @abstract   Error domain for NSError values stemming from the MetricKit Framework API.
     @discussion This error domain is used as the domain for all NSError instances stemming from the MetricKit Framework.
 */
-extern NSErrorDomain const MXErrorDomain API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos, tvos, watchos);
+extern NSErrorDomain const MXErrorDomain API_DEPRECATED("Use MetricManager.LaunchTaskError instead.", ios(16.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(macos, tvos, watchos);
 
 /*!
     @enum       MXErrorCode
@@ -33,4 +33,4 @@ typedef NS_ERROR_ENUM(MXErrorDomain, MXErrorCode) {
     MXErrorLaunchTaskDuplicated,
     MXErrorLaunchTaskUnknown,
     MXErrorLaunchTaskInternalFailure
-} API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos, tvos, watchos);
+} API_DEPRECATED("Use MetricManager.LaunchTaskError instead.", ios(16.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(macos, tvos, watchos);

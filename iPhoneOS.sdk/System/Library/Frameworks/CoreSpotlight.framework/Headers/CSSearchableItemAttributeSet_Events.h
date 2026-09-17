@@ -2,12 +2,15 @@
 //  CSSearchableItemAttributeSet_Events.h
 //  CoreSpotlight
 //
-//  Copyright © 2015 Apple. All rights reserved.
+//  Copyright © 2015–2026 Apple. All rights reserved.
 //
 
 #import <CoreSpotlight/CSSearchableItemAttributeSet.h>
 
-CS_AVAILABLE(10_13, 9_0) CS_TVOS_UNAVAILABLE
+#import <Foundation/Foundation.h>
+
+API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0))
+API_UNAVAILABLE(tvos, watchos)
 @interface CSSearchableItemAttributeSet (CSEvents)
 
 //Date this item is due.

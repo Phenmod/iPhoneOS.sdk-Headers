@@ -43,7 +43,7 @@
 //      information about service types.
 //
 NS_ASSUME_NONNULL_BEGIN
-NS_CLASS_AVAILABLE(10_10, 7_0)
+API_DEPRECATED("Use Network Framework instead", macos(10.10, 27.0), ios(7.0, 27.0), tvos(10.0, 27.0))
 @interface MCAdvertiserAssistant : NSObject
 - (instancetype)initWithServiceType:(NSString *)serviceType
                       discoveryInfo:(nullable NSDictionary<NSString *, NSString *> *)info
@@ -61,6 +61,7 @@ NS_CLASS_AVAILABLE(10_10, 7_0)
 
 @end
 
+API_DEPRECATED("Use Network Framework instead", macos(10.10, 27.0), ios(7.0, 27.0), tvos(10.0, 27.0))
 @protocol MCAdvertiserAssistantDelegate <NSObject>
 @optional
 

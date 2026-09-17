@@ -94,7 +94,7 @@ BG_EXTERN API_AVAILABLE(ios(13.0), tvos(13.0)) API_UNAVAILABLE(macos) API_UNAVAI
 /// Health research tasks may only be used by applications entitled to perform
 /// studies and user's have opted in to the relevant study. These apps must have the
 /// `com.apple.developer.backgroundtasks.healthresearch` entitlement.
-BG_EXTERN API_AVAILABLE(ios(17.0), tvos(32.0)) API_UNAVAILABLE(macos, tvos) API_UNAVAILABLE(watchos)
+BG_EXTERN API_AVAILABLE(ios(17.0)) API_UNAVAILABLE(macos, tvos) API_UNAVAILABLE(watchos)
 @interface BGHealthResearchTask : BGProcessingTask
 
 @end
@@ -124,7 +124,7 @@ BG_EXTERN API_AVAILABLE(ios(13.0), tvos(13.0)) API_UNAVAILABLE(macos) API_UNAVAI
 /// ``BGContinuedProcessingTask``s _must_ report progress via the ``NSProgressReporting`` protocol conformance during
 /// runtime and are subject to expiration based on changing system conditions and user input. Tasks that appear stalled
 /// may be forcibly expired by the scheduler to preserve system resources.
-BG_EXTERN API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(macos, tvos, visionos, watchos, macCatalyst)
+BG_EXTERN API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(macos, tvos, visionos, macCatalyst) API_UNAVAILABLE(watchos)
 @interface BGContinuedProcessingTask : BGTask<NSProgressReporting>
 
 /// The localized title displayed to the user.

@@ -355,17 +355,6 @@ API_AVAILABLE(macos(10.11), ios(8.0)) NS_SWIFT_SENDABLE
 /// 2. Assign that instance to the ``MTL4PipelineDescriptor/options`` property of an ``MTL4PipelineDescriptor`` instance.
 /// 3. Create a compute pipeline state by passing that pipeline descriptor to one of the ``MTL4Compiler`` instance's methods.
 ///
-/// During development, the property may contain reflection information without these steps
-/// because a GPU frame capture, Metal API validation layer, or shader validation layer
-/// can request reflection information when you enable them.
-/// You need to request reflection information if your app depends on it
-/// because Metal might not load these layers when you distribute your app.
-
-///
-/// > Tip:
-/// Verify the apps that need reflection information in production by testing them
-/// without a frame capture, Metal API validation layer, or shader validation layer.
-///
 /// The property is `nil` when you create a pipeline state from an``MTLDevice`` instance,
 /// such as with its ``MTLDevice/newRenderPipelineStateWithDescriptor:error:`` method.
 @property (nullable, readonly) MTLRenderPipelineReflection* reflection API_AVAILABLE(macos(26.0), ios(26.0));

@@ -6,6 +6,7 @@
 //
 
 #import <BrowserEngineKit/BEMacros.h>
+#import <CoreVideo/CoreVideo.h>
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -32,6 +33,12 @@ typedef NS_OPTIONS(NSUInteger, BEAccessibilityContainerType) {
     BEAccessibilityContainerTypeAlert            = 1 << 10,
     BEAccessibilityContainerTypeDescriptionList  = 1 << 11,
 } BROWSERENGINE_ACCESSIBILITY_AVAILABILITY;
+
+typedef NS_ENUM(NSInteger, BEAccessibilityOrientation) {
+    BEAccessibilityOrientationUnknown = 0,
+    BEAccessibilityOrientationVertical,
+    BEAccessibilityOrientationHorizontal
+} BROWSERENGINE_ACCESSIBILITY_AVAILABILITY_27;
 
 @interface NSObject (BEAccessibility)
 
@@ -129,6 +136,47 @@ typedef NS_OPTIONS(NSUInteger, BEAccessibilityContainerType) {
  @param position A text cursor position within a line of text.
  */
 - (NSRange)accessibilityLineRangeForPosition:(NSInteger)position BROWSERENGINE_ACCESSIBILITY_MARKER_AVAILABILITY;
+
+/**
+ @abstract Represents the value of aria-keyshortcuts.
+ default: nil
+ */
+@property (nonatomic, strong, nullable) NSString *browserAccessibilityKeyboardShortcuts BROWSERENGINE_ACCESSIBILITY_AVAILABILITY_27;
+
+/**
+ @abstract Represents the value of aria-details. Returns an array of objects.
+ default: []
+ */
+@property (nonatomic, strong) NSArray<NSObject *> *browserAccessibilityDetailsElements BROWSERENGINE_ACCESSIBILITY_AVAILABILITY_27;
+
+/**
+ @abstract Represents the value of aria-orientation.
+ default: BEAccessibilityOrientationUnknown
+ */
+@property (nonatomic, assign) BEAccessibilityOrientation browserAccessibilityOrientation BROWSERENGINE_ACCESSIBILITY_AVAILABILITY_27;
+
+/**
+ @abstract Returns the native pixel dimensions of the image represented by this element.
+ @result An NSValue wrapping a CGSize, or nil if this element does not represent an image.
+ */
+- (nullable NSValue *)browserAccessibilityImageDataSize NS_REFINED_FOR_SWIFT BROWSERENGINE_ACCESSIBILITY_AVAILABILITY_27;
+
+/**
+ @abstract Returns image pixel data for this element as a CVPixelBuffer.
+
+ @param attributes A dictionary of CVPixelBuffer attributes specifying the desired format and size.
+
+   Supported keys:
+     kCVPixelBufferPixelFormatTypeKey (NSNumber / OSType) — The desired pixel format,
+       e.g. kCVPixelFormatType_32RGBA. Required.
+     kCVPixelBufferWidthKey  (NSNumber) — Target image width in pixels. Absent means native width.
+     kCVPixelBufferHeightKey (NSNumber) — Target image height in pixels. Absent means native height.
+
+ @result A CVPixelBuffer containing the image pixel data, or NULL if this element does not
+ represent an image or the requested pixel format is unsupported. The caller is responsible
+ for releasing the returned pixel buffer.
+ */
+- (nullable CVPixelBufferRef)browserAccessibilityImageData:(NSDictionary *)attributes CF_RETURNS_RETAINED BROWSERENGINE_ACCESSIBILITY_AVAILABILITY_27;
 
 @end
 

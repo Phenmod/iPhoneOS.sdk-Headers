@@ -21,7 +21,7 @@
 #define MC_EXTERN_WEAK MC_EXTERN __attribute__((weak_import))
 #endif
 
-MC_EXTERN_WEAK NSString *const MCErrorDomain;
+MC_EXTERN_WEAK NSString *const MCErrorDomain API_DEPRECATED("Use Network Framework instead", macos(10.10, 27.0), ios(7.0, 27.0), tvos(10.0, 27.0));
 
 typedef NS_ENUM (NSInteger, MCErrorCode) {
     MCErrorUnknown = 0,
@@ -31,4 +31,4 @@ typedef NS_ENUM (NSInteger, MCErrorCode) {
     MCErrorTimedOut  = 4,
     MCErrorCancelled = 5,
     MCErrorUnavailable = 6,
-} NS_ENUM_AVAILABLE (10_10, 7_0);
+} API_DEPRECATED("Use Network Framework instead", macos(10.10, 27.0), ios(7.0, 27.0), tvos(10.0, 27.0));

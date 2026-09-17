@@ -146,6 +146,7 @@ API_AVAILABLE(ios(26.0), watchos(26.0), tvos(26.0), macCatalyst(26.0), visionos(
 ///
 /// Please see ``AVAudioSessionCategoryOptions/AVAudioSessionCategoryOptionBluetoothHighQualityRecording`` for details.
 @property (readonly, strong, nonatomic, nonnull) AVAudioSessionCapability* highQualityRecording;
+
 /// Describes whether this port supports far-field input capture.
 @property (readonly, strong, nonatomic, nonnull) AVAudioSessionCapability* farFieldCapture;
 @end

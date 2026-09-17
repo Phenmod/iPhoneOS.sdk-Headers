@@ -1,6 +1,6 @@
 /* CoreAnimation - CAMetalLayer.h
 
-   Copyright (c) 2013-2025, Apple Inc.
+   Copyright (c) 2013-2026, Apple Inc.
    All rights reserved. */
 
 #ifdef __OBJC__

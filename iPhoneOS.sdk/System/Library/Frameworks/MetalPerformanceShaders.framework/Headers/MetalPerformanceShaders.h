@@ -14,6 +14,7 @@
 #import <MPSMatrix/MPSMatrix.h>
 #import <MPSNeuralNetwork/MPSNeuralNetwork.h>
 #import <MPSNDArray/MPSNDArray.h>
+#import <MPSFunctions/MPSFunctions.h>
 #endif
 #import <MPSRayIntersector/MPSRayIntersector.h>
 

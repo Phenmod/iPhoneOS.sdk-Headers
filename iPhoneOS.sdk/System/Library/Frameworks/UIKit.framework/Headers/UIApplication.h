@@ -95,7 +95,7 @@ UIKIT_EXTERN API_AVAILABLE(ios(2.0)) API_UNAVAILABLE(watchos) NS_SWIFT_UI_ACTOR
 @property(nonatomic,getter=isIdleTimerDisabled)       BOOL idleTimerDisabled;	  // default is NO
 
 - (BOOL)openURL:(NSURL*)url API_DEPRECATED_WITH_REPLACEMENT("openURL:options:completionHandler:", ios(2.0, 10.0)) API_UNAVAILABLE(visionos, watchos);
-- (BOOL)canOpenURL:(NSURL *)url API_AVAILABLE(ios(3.0)) NS_SWIFT_NONISOLATED;
+- (BOOL)canOpenURL:(NSURL *)url API_DEPRECATED("Prefer attempting to open URLs and handling any failures", ios(3.0, 27.0), visionos(1.0, 27.0), tvos(9.0, 27.0)) API_UNAVAILABLE(watchos) NS_SWIFT_NONISOLATED;
 
 // Options are specified in the section below for openURL options. An empty options dictionary will result in the same
 // behavior as the older openURL call, aside from the fact that this is asynchronous and calls the completion handler rather
@@ -125,7 +125,7 @@ UIKIT_EXTERN API_AVAILABLE(ios(2.0)) API_UNAVAILABLE(watchos) NS_SWIFT_UI_ACTOR
 // UIInterfaceOrientationMaskAllButUpsideDown on a phone.  The return value
 // should be one of the UIInterfaceOrientationMask values which indicates the
 // orientations supported by this application.
-- (UIInterfaceOrientationMask)supportedInterfaceOrientationsForWindow:(nullable UIWindow *)window API_AVAILABLE(ios(6.0)) API_UNAVAILABLE(tvos);
+- (UIInterfaceOrientationMask)supportedInterfaceOrientationsForWindow:(nullable UIWindow *)window API_DEPRECATED("Use UIWindowSceneDelegate.supportedInterfaceOrientations(for:) instead", ios(6.0, 27.0)) API_UNAVAILABLE(tvos, watchos);
 
 @property(nonatomic,readonly) NSTimeInterval statusBarOrientationAnimationDuration API_DEPRECATED("Use viewWillTransitionToSize:withTransitionCoordinator: instead.", ios(2.0, 13.0)) API_UNAVAILABLE(tvos) API_UNAVAILABLE(visionos, watchos); // Returns the animation duration for the status bar during a 90 degree orientation change.  It should be doubled for a 180 degree orientation change.
 @property(nonatomic,readonly) CGRect statusBarFrame API_DEPRECATED("Use the statusBarManager property of the window scene instead.", ios(2.0, 13.0)) API_UNAVAILABLE(tvos) API_UNAVAILABLE(visionos, watchos); // returns CGRectZero if the status bar is hidden
@@ -164,6 +164,25 @@ UIKIT_EXTERN API_AVAILABLE(ios(2.0)) API_UNAVAILABLE(watchos) NS_SWIFT_UI_ACTOR
 
 // Return the size category
 @property(nonatomic,readonly) UIContentSizeCategory preferredContentSizeCategory API_AVAILABLE(ios(7.0));
+
+/// A Boolean value that indicates whether the system prefers that the app reduce its resource usage.
+///
+/// When this value is `YES`, the system has entered a state where it would prefer apps to scale back resource-intensive work.
+///
+/// Use this to avoid or reduce expensive work. For example:
+///
+/// - Gate or simplify resource-intensive UI, such as 3D or AR viewers, advanced camera modes, or live effects.
+/// - Choose lighter-weight paths, such as lower-resolution assets or fewer simultaneous operations.
+/// - Defer or shrink non-essential background work, such as prefetching or precomputation.
+///
+/// Avoid performing or scheduling expensive work in response to changes in this property, as this could worsen resource usage.
+///
+/// - Tip: For in-memory caching, consider using ``NSCache`` with ``NSPurgeableData``, which automatically evicts entries under system memory pressure.
+///   Use `systemPrefersReducedResourceUsage` for higher-level decisions that ``NSCache`` cannot make on its own.
+///
+/// To respond to changes in views, read the ``UITraitCollection/systemPrefersReducedResourceUsage`` trait.
+/// From other contexts, observe ``UIApplication/systemPrefersReducedResourceUsageDidChangeNotification`` and re-read this property.
+@property (nonatomic, readonly) BOOL systemPrefersReducedResourceUsage API_AVAILABLE(ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos);
 
 #pragma mark -- UIScene --
 // All of the currently connected UIScene instances
@@ -453,7 +472,7 @@ typedef NSString * UIApplicationOpenURLOptionsKey NS_TYPED_ENUM API_DEPRECATED("
 
 @property (nullable, nonatomic, strong) UIWindow *window API_AVAILABLE(ios(5.0));
 
-- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(nullable UIWindow *)window  API_AVAILABLE(ios(6.0)) API_UNAVAILABLE(tvos);
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(nullable UIWindow *)window API_DEPRECATED("Use UIWindowSceneDelegate.supportedInterfaceOrientations(for:) instead", ios(6.0, 27.0)) API_UNAVAILABLE(tvos, watchos);
 
 typedef NSString * UIApplicationExtensionPointIdentifier NS_TYPED_ENUM API_UNAVAILABLE(watchos);
 
@@ -524,15 +543,15 @@ typedef NSString * UIApplicationExtensionPointIdentifier NS_TYPED_ENUM API_UNAVA
 @property(nonatomic,getter=isProximitySensingEnabled) BOOL proximitySensingEnabled API_DEPRECATED("", ios(2.0, 3.0)) API_UNAVAILABLE(visionos, tvos, watchos); // default is NO. see UIDevice for replacement
 - (void)setStatusBarHidden:(BOOL)hidden animated:(BOOL)animated API_DEPRECATED("Use -[UIViewController prefersStatusBarHidden]", ios(2.0, 3.2)) API_UNAVAILABLE(visionos, tvos, watchos);
 
-// Explicit setting of the status bar orientation is more limited in iOS 6.0 and later.
+// Explicit setting of the status bar orientation is more limited in iOS 6.0 and later and entirely unsupported in iOS 27.0 and later.
 @property(readwrite, nonatomic) UIInterfaceOrientation statusBarOrientation API_DEPRECATED("Explicit setting of the status bar orientation is more limited in iOS 6.0 and later", ios(2.0, 9.0)) API_UNAVAILABLE(visionos, tvos, watchos);
 - (void)setStatusBarOrientation:(UIInterfaceOrientation)interfaceOrientation animated:(BOOL)animated API_DEPRECATED("Explicit setting of the status bar orientation is more limited in iOS 6.0 and later", ios(2.0, 9.0)) API_UNAVAILABLE(visionos, tvos, watchos);
 
-// Setting the statusBarStyle does nothing if your application is using the default UIViewController-based status bar system.
+// Setting the statusBarStyle does nothing if your application is using the default UIViewController-based status bar system or is linked against SDK versions 27.0 or later
 @property(readwrite, nonatomic) UIStatusBarStyle statusBarStyle API_DEPRECATED("Use -[UIViewController preferredStatusBarStyle]", ios(2.0, 9.0)) API_UNAVAILABLE(visionos, tvos, watchos);
 - (void)setStatusBarStyle:(UIStatusBarStyle)statusBarStyle animated:(BOOL)animated API_DEPRECATED("Use -[UIViewController preferredStatusBarStyle]", ios(2.0, 9.0)) API_UNAVAILABLE(visionos, tvos, watchos);
 
-// Setting statusBarHidden does nothing if your application is using the default UIViewController-based status bar system.
+// Setting statusBarHidden does nothing if your application is using the default UIViewController-based status bar system or is linked against SDK versions 27.0 or later.
 @property(readwrite, nonatomic,getter=isStatusBarHidden) BOOL statusBarHidden API_DEPRECATED("Use -[UIViewController prefersStatusBarHidden]", ios(2.0, 9.0)) API_UNAVAILABLE(visionos, tvos, watchos);
 - (void)setStatusBarHidden:(BOOL)hidden withAnimation:(UIStatusBarAnimation)animation API_DEPRECATED("Use -[UIViewController prefersStatusBarHidden]", ios(3.2, 9.0)) API_UNAVAILABLE(visionos, tvos, watchos);
 
@@ -566,6 +585,15 @@ UIKIT_EXTERN NSNotificationName const UIApplicationBackgroundRefreshStatusDidCha
 
 UIKIT_EXTERN NSNotificationName const UIApplicationProtectedDataWillBecomeUnavailable    API_AVAILABLE(ios(4.0)) API_UNAVAILABLE(watchos) NS_SWIFT_NONISOLATED;
 UIKIT_EXTERN NSNotificationName const UIApplicationProtectedDataDidBecomeAvailable       API_AVAILABLE(ios(4.0)) API_UNAVAILABLE(watchos) NS_SWIFT_NONISOLATED;
+
+/// A notification that posts when ``UIApplication/systemPrefersReducedResourceUsage`` changes.
+///
+/// The object of the notification is the `UIApplication` object.
+/// The `userInfo` dictionary is empty. Re-read `systemPrefersReducedResourceUsage` to get the new value.
+///
+/// Use this notification to re-read the value and adjust the scheduling of future work, the same way the property is read proactively.
+/// Avoid performing or scheduling expensive work directly in the handler, as this could worsen resource usage.
+UIKIT_EXTERN NSNotificationName const UIApplicationSystemPrefersReducedResourceUsageDidChangeNotification API_AVAILABLE(ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos) NS_SWIFT_NONISOLATED NS_SWIFT_NAME(UIApplication.systemPrefersReducedResourceUsageDidChangeNotification);
 
 /// UserInfo contains a ``NSURL`` with launch URL to open
 UIKIT_EXTERN UIApplicationLaunchOptionsKey const UIApplicationLaunchOptionsURLKey NS_SWIFT_NAME(url) API_DEPRECATED("Use UIScene lifecycle and UIScene.ConnectionOptions.URLContexts instead.", ios(3.0, 26.0), tvos(9.0, 26.0), visionos(1.0, 26.0)) API_UNAVAILABLE(watchos);

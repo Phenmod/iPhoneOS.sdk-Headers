@@ -157,7 +157,7 @@ AV_INIT_UNAVAILABLE
 /// This property is key value observable. Observers should not assume that they will be notified of changes on a specific thread.
 @property (nonatomic, readonly, getter=isReadyForMoreMediaData) BOOL readyForMoreMediaData
 #if __swift__
-API_DEPRECATED("Use the input receiver's async append(...) method instead", macos(10.7, API_TO_BE_DEPRECATED), ios(4.1, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED))
+API_DEPRECATED("Use the input receiver's async append(...) method instead", macos(10.7, 27.0), ios(4.1, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0))
 API_UNAVAILABLE(watchos)
 #else
 API_AVAILABLE(macos(10.7), ios(4.1), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(watchos)
@@ -173,7 +173,7 @@ API_AVAILABLE(macos(10.7), ios(4.1), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(w
 /// This property cannot be set after writing on the receiver's AVAssetWriter has started.
 @property (nonatomic) BOOL expectsMediaDataInRealTime
 #if __swift__
-API_DEPRECATED("Use the input receiver's appendImmediately(...) method instead", macos(10.7, API_TO_BE_DEPRECATED), ios(4.1, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED))
+API_DEPRECATED("Use the input receiver's appendImmediately(...) method instead", macos(10.7, 27.0), ios(4.1, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0))
 API_UNAVAILABLE(watchos)
 #else
 API_AVAILABLE(macos(10.7), ios(4.1), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(watchos)
@@ -215,7 +215,7 @@ API_AVAILABLE(macos(10.7), ios(4.1), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(w
 /// - Parameter block: The block the input should invoke to obtain media data.
 - (void)requestMediaDataWhenReadyOnQueue:(dispatch_queue_t)queue usingBlock:(void (^ NS_SWIFT_SENDABLE)(void))block
 #if __swift__
-API_DEPRECATED("Use the input receiver's async append(...) method on its own task instead", macos(10.7, API_TO_BE_DEPRECATED), ios(4.1, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED))
+API_DEPRECATED("Use the input receiver's async append(...) method on its own task instead", macos(10.7, 27.0), ios(4.1, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0))
 API_UNAVAILABLE(watchos)
 #else
 API_AVAILABLE(macos(10.7), ios(4.1), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(watchos)
@@ -258,7 +258,7 @@ API_AVAILABLE(macos(10.7), ios(4.1), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(w
 /// - Returns: A BOOL value indicating success of appending the sample buffer. If a result of NO is returned, clients can check the value of AVAssetWriter.status to determine whether the writing operation completed, failed, or was cancelled.  If the status is AVAssetWriterStatusFailed, AVAsset.error will contain an instance of NSError that describes the failure.
 - (BOOL)appendSampleBuffer:(CMSampleBufferRef)sampleBuffer
 #if __swift__
-API_DEPRECATED("Use SampleBufferReceiver.append(_:) instead", macos(10.7, API_TO_BE_DEPRECATED), ios(4.1, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED))
+API_DEPRECATED("Use SampleBufferReceiver.append(_:) instead", macos(10.7, 27.0), ios(4.1, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0))
 API_UNAVAILABLE(watchos)
 #else
 API_AVAILABLE(macos(10.7), ios(4.1), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(watchos)
@@ -546,7 +546,7 @@ AV_INIT_UNAVAILABLE
 /// Instances of AVAssetWriterInputPixelBufferAdaptor provide a CVPixelBufferPool that can be used to allocate pixel buffers for writing to the output file. Using the provided pixel buffer pool for buffer allocation is typically more efficient than appending pixel buffers allocated using a separate pool.
 NS_SWIFT_NONSENDABLE
 #if __swift__
-API_DEPRECATED("Use AVAssetWriter.inputPixelBufferReceiver(for:pixelBufferAttributes:) instead", macos(10.7, API_TO_BE_DEPRECATED), ios(4.1, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED))
+API_DEPRECATED("Use AVAssetWriter.inputPixelBufferReceiver(for:pixelBufferAttributes:) instead", macos(10.7, 27.0), ios(4.1, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0))
 API_UNAVAILABLE(watchos)
 #else
 API_AVAILABLE(macos(10.7), ios(4.1), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(watchos)
@@ -640,7 +640,7 @@ AV_INIT_UNAVAILABLE
 /// Instances of AVAssetWriterInputTaggedPixelBufferGroupAdaptor provide a CVPixelBufferPool that can be used to allocate the pixel buffers of tagged buffer groups for writing to the output file. Using the provided pixel buffer pool for buffer allocation is typically more efficient than appending pixel buffers allocated using a separate pool.
 NS_SWIFT_NONSENDABLE
 #if __swift__
-API_DEPRECATED("Use AVAssetWriter.inputTaggedPixelBufferGroupReceiver(for:pixelBufferAttributes:) instead", macos(14.0, API_TO_BE_DEPRECATED), ios(17.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED))
+API_DEPRECATED("Use AVAssetWriter.inputTaggedPixelBufferGroupReceiver(for:pixelBufferAttributes:) instead", macos(14.0, 27.0), ios(17.0, 27.0), visionos(1.0, 27.0))
 API_UNAVAILABLE(tvos, watchos)
 #else
 API_AVAILABLE(macos(14.0), ios(17.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos)
@@ -704,7 +704,8 @@ AV_INIT_UNAVAILABLE
 /// Before calling this method, you must ensure that the input that underlies the receiver is attached to an AVAssetWriter via a prior call to -addInput: and that -startWriting has been called on the asset writer. It is an error to invoke this method before starting a session (via -[AVAssetWriter startSessionAtSourceTime:]) or after ending a session (via -[AVAssetWriter endSessionAtSourceTime:]).
 /// 
 /// In an AVAssetWriterInput instance creation with AVMediaTypeVideo, kVTCompressionPropertyKey_MVHEVCVideoLayerIDs key must be specified as part of the dictionary given for AVVideoCompressionPropertiesKey. It sets video layer IDs to a target multi-image video encoder. This method checks the values for kCMTagCategory_VideoLayerID tag in tag collections of taggedPixelBufferGroup over the array values for kVTCompressionPropertyKey_MVHEVCVideoLayerIDs key. An NSInvalidArgumentException will be raised if the video layer IDs mismatch between the value of kVTCompressionPropertyKey_MVHEVCVideoLayerIDs in the AVVideoCompressionPropertiesKey sub-dictionary of the input's outputSettings property and tag collections of taggedPixelBufferGroup.
-/// 
+/// For MVHEVC encoding, it is recommended to set the boolean values to true for kVTCompressionPropertyKey_HasLeftStereoEyeView and kVTCompressionPropertyKey_HasRightStereoEyeView in the AVVideoCompressionPropertiesKey sub-dictionary. This will ensure that the values are included in the output stream's format description with the kCMFormatDescriptionExtension_HasLeftStereoEyeView and kCMFormatDescriptionExtension_HasRightStereoEyeView keys.
+///
 /// Below is a sample code sketch focusing on data flow that illustrates how you might append a taggedPixelBufferGroup instance.
 /// ```objc
 /// // Set up an AVAssetWriterInput and AVAssetWriterInputTaggedPixelBufferGroupAdaptor instance
@@ -743,7 +744,7 @@ AV_INIT_UNAVAILABLE
 /// Defines an interface for writing metadata, packaged as instances of AVTimedMetadataGroup, to a single AVAssetWriterInput object.
 NS_SWIFT_NONSENDABLE
 #if __swift__
-API_DEPRECATED("Use AVAssetWriter.inputMetadataReceiver(for:) instead", macos(10.10, API_TO_BE_DEPRECATED), ios(8.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED))
+API_DEPRECATED("Use AVAssetWriter.inputMetadataReceiver(for:) instead", macos(10.10, 27.0), ios(8.0, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0))
 API_UNAVAILABLE(watchos)
 #else
 API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(watchos)
@@ -806,7 +807,7 @@ AV_INIT_UNAVAILABLE
 /// An adaptor class for appending instances of AVCaption to an asset writer input. -[AVAssetWriterInput -appendSampleBuffer:] will throw an exception if used when this adaptor is attached.
 NS_SWIFT_NONSENDABLE
 #if __swift__
-API_DEPRECATED("Use AVAssetWriter.inputCaptionReceiver(for:) instead", macos(12.0, API_TO_BE_DEPRECATED), ios(18.0, API_TO_BE_DEPRECATED), macCatalyst(15.0, API_TO_BE_DEPRECATED))
+API_DEPRECATED("Use AVAssetWriter.inputCaptionReceiver(for:) instead", macos(12.0, 27.0), ios(18.0, 27.0), macCatalyst(15.0, 27.0))
 API_UNAVAILABLE(tvos, watchos, visionos)
 #else
 API_AVAILABLE(macos(12.0), ios(18.0), macCatalyst(15.0)) API_UNAVAILABLE(tvos, watchos, visionos)
@@ -853,8 +854,8 @@ AV_INIT_UNAVAILABLE
 /// When mixing calls to -appendCaptionGroup: and -appendCaption:, the start time of each group must be equal to or greater than the end time of any previous captions.
 /// To mark a time range containing no captions, append a group containing an empty caption array.
 /// 
-/// - Parameter captionGroup:
-/// 
+/// - Parameter captionGroup: The caption group that the system writes to the output.
+///
 /// - Returns: Returns YES if the operation succeeded, NO if it failed.
 - (BOOL)appendCaptionGroup:(AVCaptionGroup *)captionGroup;
 

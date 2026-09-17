@@ -36,7 +36,13 @@ API_UNAVAILABLE(tvos, watchos, macos)
 
 + (MPMediaLibrary *)defaultMediaLibrary;
 
-// Returns the date at which the media library was last modified.
+/*!
+ * Returns the date at which the media library database was last written to disk.
+ *
+ * @discussion This property reflects database persistence, not library content changes.
+ * On macOS, it requires Music.app to have been opened at least once to initialize the
+ * library; before that, it returns the current date as a fallback.
+ */
 @property (nonatomic, readonly) NSDate *lastModifiedDate;
 
 // MPMediaLibraryDidChangeNotification will be posted when a sync happens.

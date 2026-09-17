@@ -73,7 +73,8 @@ CM_ASSUME_NONNULL_BEGIN
 		• kVTCompressionPropertyKey_AverageBitRate specifies the desired long term average bit rate. It is a soft limit, so the encoder may overshoot or undershoot and the average bit rate of the output video may be over or under the target.
 		• kVTCompressionPropertyKey_DataRateLimits specifies a hard data rate cap for a given time window. The encoder will not overshoot. kVTCompressionPropertyKey_AverageBitRate and kVTCompressionPropertyKey_DataRateLimits may be used together to specify an overall target bit rate while also establishing hard limits over a smaller window.
 		• kVTCompressionPropertyKey_ConstantBitRate is intended for legacy content distribution networks which require constant bitrate, and is not intended for general streaming scenarios.
-		• kVTCompressionPropertyKey_VariableBitRate specifies the desired variable bitrate target. Encoder automatically allocates higher bitrate for complex segments of the video. It can be used along with kVTCompressionPropertyKey_VBVMaxBitRate to specify the maximum birate encoder can use.
+		• kVTCompressionPropertyKey_VariableBitRate specifies the desired variable bitrate target. Encoder automatically allocates higher bitrate for complex segments of the video. It can be used along with kVTCompressionPropertyKey_VBVMaxBitRate to specify the maximum bitrate encoder can use.
+		• kVTCompressionPropertyKey_ConstantQualityFactor specifies the desired constant quality factor to maintain consistent video quality. Encoder may result in larger variations in bitrates to maintain consistent quality across video frames.
 */
 
 #pragma mark Buffers
@@ -257,6 +258,9 @@ VT_EXPORT const CFStringRef kVTCompressionPropertyKey_DataRateLimits API_AVAILAB
 		number in the range of 0.0 to 1.0, where low = 0.25, normal = 0.50,
 		high = 0.75, and 1.0 implies lossless compression for encoders that
 		support it.
+
+		For some formats, this property will direct encoder to use a fixed
+		quantization parameter during encoding.
 */
 VT_EXPORT const CFStringRef kVTCompressionPropertyKey_Quality API_AVAILABLE(macos(10.8), ios(8.0), tvos(10.2), visionos(1.0)) API_UNAVAILABLE(watchos); // Read/write, CFNumber<Float>, Optional
 
@@ -1017,6 +1021,12 @@ VT_EXPORT const CFStringRef kVTCompressionPropertyKey_TransferFunction API_AVAIL
 */
 VT_EXPORT const CFStringRef kVTCompressionPropertyKey_YCbCrMatrix API_AVAILABLE(macos(10.8), ios(8.0), tvos(10.2), visionos(1.0)) API_UNAVAILABLE(watchos); // Read/write, CFString (see kCMFormatDescriptionExtension_YCbCrMatrix), Optional
 
+/// Indicates that the transfer function or gamma of the content is a log format and identifies the specific log curve.
+/// Log curve identifiers include ``kCVImageBufferLogTransferFunction_AppleLog`` ("com.apple.rec2020.apple-log")
+/// and ``kCVImageBufferLogTransferFunction_AppleLog2`` ("com.apple.apple-wide-gamut.apple-log").
+/// When the LogTransferFunction is specified for a VTCompressionSession, if source image buffers do not have exactly that LogTransferFunction, encoding will fail.
+VT_EXPORT const CFStringRef kVTCompressionPropertyKey_LogTransferFunction API_AVAILABLE(macos(27), ios(27), tvos(27), visionos(27)) API_UNAVAILABLE(watchos); // Read/write, CFString (see kCMFormatDescriptionExtension_LogTransferFunction), Optional
+
 /*!
 	@constant	kVTCompressionPropertyKey_ICCProfile
 	@abstract
@@ -1400,6 +1410,7 @@ VT_EXPORT const CFStringRef kVTProjectionKind_Rectilinear API_AVAILABLE(macos(26
 VT_EXPORT const CFStringRef kVTProjectionKind_Equirectangular API_AVAILABLE(macos(26.0), ios(26.0), visionos(26.0)) API_UNAVAILABLE(tvos, watchos);
 VT_EXPORT const CFStringRef kVTProjectionKind_HalfEquirectangular API_AVAILABLE(macos(26.0), ios(26.0), visionos(26.0)) API_UNAVAILABLE(tvos, watchos);
 VT_EXPORT const CFStringRef kVTProjectionKind_ParametricImmersive API_AVAILABLE(macos(26.0), ios(26.0), visionos(26.0)) API_UNAVAILABLE(tvos, watchos);
+VT_EXPORT const CFStringRef kVTProjectionKind_AppleImmersiveVideo API_AVAILABLE(macos(27.0), ios(27.0), visionos(27.0)) API_UNAVAILABLE(tvos, watchos);
 /*!
 	@constant	kVTCompressionPropertyKey_ViewPackingKind
 	@abstract
@@ -1417,50 +1428,91 @@ VT_EXPORT const CFStringRef kVTViewPackingKind_OverUnder API_AVAILABLE(macos(26.
 	@discussion
 		The property value is an array of dictionaries describing the camera calibration data for each lens. The camera calibration data includes intrinsics and extrinics with other parameters.
 		For a stereoscopic camera system, the left and right lens signaling can be done with the kVTCompressionPropertyCameraCalibrationKey_LensRole key and its value.
+		The following keys are required in each kVTCompressionPropertyKey_CameraCalibrationDataLensCollection dictionary.
+			kVTCompressionPropertyCameraCalibrationKey_LensAlgorithmKind
+			kVTCompressionPropertyCameraCalibrationKey_LensDomain
+			kVTCompressionPropertyCameraCalibrationKey_LensIdentifier
+			kVTCompressionPropertyCameraCalibrationKey_LensRole
+			kVTCompressionPropertyCameraCalibrationKey_LensDistortions
+			kVTCompressionPropertyCameraCalibrationKey_LensFrameAdjustmentsPolynomialX
+			kVTCompressionPropertyCameraCalibrationKey_LensFrameAdjustmentsPolynomialY
+			kVTCompressionPropertyCameraCalibrationKey_RadialAngleLimit
+			kVTCompressionPropertyCameraCalibrationKey_IntrinsicMatrix
+			kVTCompressionPropertyCameraCalibrationKey_IntrinsicMatrixProjectionOffset
+			kVTCompressionPropertyCameraCalibrationKey_IntrinsicMatrixReferenceDimensions
+			kVTCompressionPropertyCameraCalibrationKey_ExtrinsicOriginSource
+			kVTCompressionPropertyCameraCalibrationKey_ExtrinsicOrientationQuaternion
  */
 VT_EXPORT const CFStringRef kVTCompressionPropertyKey_CameraCalibrationDataLensCollection API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFArray of CFDictionaries
 
 /*!
-	The following keys are required in each kVTCompressionPropertyKey_CameraCalibrationDataLensCollection dictionary.
-
 	@constant kVTCompressionPropertyCameraCalibrationKey_LensAlgorithmKind
 	@abstract	Specifies the camera calibration methodology.
 	@discussion
 		If the algorithm kind is ParametricLens, the camera lens collection requires camera intrinsic and extrinsic parameters.
+*/
+VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_LensAlgorithmKind API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFString one of
+	VT_EXPORT const CFStringRef kVTCameraCalibrationLensAlgorithmKind_ParametricLens API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
 
+/*
 	@constant kVTCompressionPropertyCameraCalibrationKey_LensDomain
 	@abstract	Specifies the kind of lens (e.g., color).
+*/
+VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_LensDomain API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFString one of
+	VT_EXPORT const CFStringRef kVTCameraCalibrationLensDomain_Color API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
 
+/*
 	@constant kVTCompressionPropertyCameraCalibrationKey_LensIdentifier
 	@abstract	Specifies a unique number associated with a lens.
+*/
+VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_LensIdentifier API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFNumber(int32)
 
+/*
 	@constant kVTCompressionPropertyCameraCalibrationKey_LensRole
 	@abstract	Specifies the particular use of the lens in the camera system (e.g., left or right for a stereo system).
 	@discussion
 		For a stereoscopic camera system, one lens should have the left role and another should have the right role.
+*/
+VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_LensRole API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFString one of
+	VT_EXPORT const CFStringRef kVTCameraCalibrationLensRole_Mono API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
+	VT_EXPORT const CFStringRef kVTCameraCalibrationLensRole_Left API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
+	VT_EXPORT const CFStringRef kVTCameraCalibrationLensRole_Right API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
 
+/*
 	@constant kVTCompressionPropertyCameraCalibrationKey_LensDistortions
 	@abstract	Specifies the first and second radial distortion coefficients(k1 and k2) used to correct the distortion that appeared as curved lines for straight lines and the first and second tangential distortion coefficients(p1 and p2) used to correct the distortion caused by a lens's improper alignment of physical elements.
 	@discussion
 		The values are in a CFArray of four CFNumbers in k1, k2, p1 and p2 order.
+*/
+VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_LensDistortions API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFArray[CFNumber(float)]
 
-    @constant kVTCompressionPropertyCameraCalibrationKey_LensFrameAdjustmentsPolynomialX
-    @abstract    Specifies a three element polynomial for mapping x axis UV parameters with an adjustment using the equation `x' = polynomialX[0] + polynomialX[1]*x + polynomialX[2]*x^3`.
-    @discussion
+/*
+	@constant kVTCompressionPropertyCameraCalibrationKey_LensFrameAdjustmentsPolynomialX
+	@abstract	Specifies a three element polynomial for mapping x axis UV parameters with an adjustment using the equation `x' = polynomialX[0] + polynomialX[1]*x + polynomialX[2]*x^3`.
+	@discussion
 		The values are in a CFArray of three CFNumbers(float) in the order polynomialX[0], polynomialX[1] & polynomialX[2].
 		The polynomial transform origin is at the center of the frame. The default values of elements of polynomialX[] are [0.0, 1.0, 0.0].
+*/
+VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_LensFrameAdjustmentsPolynomialX API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFArray[CFNumber(float)]
 
-    @constant kVTCompressionPropertyCameraCalibrationKey_LensFrameAdjustmentsPolynomialY
-    @abstract    Specifies a three element polynomial for mapping y axis UV parameters with an adjustment using the equation `y' = polynomialY[0] + polynomialY[1]*y + polynomialY[2]*y^3`.
-    @discussion
+/*
+	@constant kVTCompressionPropertyCameraCalibrationKey_LensFrameAdjustmentsPolynomialY
+	@abstract	Specifies a three element polynomial for mapping y axis UV parameters with an adjustment using the equation `y' = polynomialY[0] + polynomialY[1]*y + polynomialY[2]*y^3`.
+	@discussion
 		The values are in a CFArray of three CFNumbers(float) in the order polynomialY[0], polynomialY[1] & polynomialY[2].
 		The polynomial transform origin is at the center of the frame. The default values of elements of polynomialY[] are [0.0, 1.0, 0.0].
- 
+*/
+VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_LensFrameAdjustmentsPolynomialY API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFArray[CFNumber(float)]
+
+/*
 	@constant kVTCompressionPropertyCameraCalibrationKey_RadialAngleLimit
 	@abstract	Specifies the outer limit of the calibration validity in degrees of angle eccentric from the optical axis.
 	@discussion
 		The value is linked to radial distortion corrections with k1 and k2.
+*/
+VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_RadialAngleLimit API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFNumber(float)
 
+/*
 	@constant kVTCompressionPropertyCameraCalibrationKey_IntrinsicMatrix
 	@abstract	Specifies the 3x3 camera intrinsic matrix for camera calibration.
 	@discussion
@@ -1471,45 +1523,41 @@ VT_EXPORT const CFStringRef kVTCompressionPropertyKey_CameraCalibrationDataLensC
 			fx and fy are the focal length in pixels. For square pixels, they will have the same value.
 			cx and cy are the coordinates of the principal point. The origin is the upper left of the frame.
 			s is an optional skew factor.
+*/
+VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_IntrinsicMatrix API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFData(matrix_float3x3)
 
+/*
 	@constant kVTCompressionPropertyCameraCalibrationKey_IntrinsicMatrixProjectionOffset
 	@abstract	Specifies the offset of the point of perspective relative to the rectilinear projection.
+*/
+VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_IntrinsicMatrixProjectionOffset API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFNumber(float)
 
+/*
 	@constant kVTCompressionPropertyCameraCalibrationKey_IntrinsicMatrixReferenceDimensions
 	@abstract	Specifies the image dimensions to which the camera’s intrinsic matrix values are relative.
 	@discussion
 		Values are width and height in a CFDictionary. Dictionary keys are compatible with CGSize dictionary, namely "Width" and "Height".
+*/
+VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_IntrinsicMatrixReferenceDimensions API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CGSize dictionary
 
+/*
 	@constant kVTCompressionPropertyCameraCalibrationKey_ExtrinsicOriginSource
 	@abstract	Identifies how the origin of the camera system's extrinsics are determined.
 	@discussion
 		The 'blin' value indicates the center of transform is determined by the point mid way along the dimensions indicated by the StereoCameraSystemBaselineBox held in the StereoCameraSystemBox.
 		Each left and right lens within a stereoscopic camera system is equidistant from this point, so the 'blin' value is halved when associated with the respective left and right lenses.
+*/
+VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_ExtrinsicOriginSource API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFString one of
 
+VT_EXPORT const CFStringRef kVTCameraCalibrationExtrinsicOriginSource_StereoCameraSystemBaseline API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
+
+/*
 	@constant kVTCompressionPropertyCameraCalibrationKey_ExtrinsicOrientationQuaternion
 	@abstract	Specifies a camera’s orientation to a world or scene coordinate system. The orientation value is a unit quaternion(ix, iy, and iz) instead of the classical 3x3 matrix.
 	@discussion
 		The values are in a CFArray of three CFNumbers in ix, iy, and iz order.
- */
-VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_LensAlgorithmKind API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFString one of
-VT_EXPORT const CFStringRef kVTCameraCalibrationLensAlgorithmKind_ParametricLens API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
-VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_LensDomain API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFString one of
-VT_EXPORT const CFStringRef kVTCameraCalibrationLensDomain_Color API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
-VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_LensIdentifier API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFNumber(int32)
-VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_LensRole API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFString one of
-VT_EXPORT const CFStringRef kVTCameraCalibrationLensRole_Mono API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
-VT_EXPORT const CFStringRef kVTCameraCalibrationLensRole_Left API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
-VT_EXPORT const CFStringRef kVTCameraCalibrationLensRole_Right API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
-VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_LensDistortions API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFArray[CFNumber(float)]
-VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_RadialAngleLimit API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFNumber(float)
-VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_LensFrameAdjustmentsPolynomialX API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFArray[CFNumber(float)]
-VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_LensFrameAdjustmentsPolynomialY API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFArray[CFNumber(float)]
-VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_IntrinsicMatrix API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFData(matrix_float3x3)
-VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_IntrinsicMatrixProjectionOffset API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFNumber(float)
-VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_IntrinsicMatrixReferenceDimensions API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CGSize dictionary
-VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_ExtrinsicOriginSource API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFString one of
-VT_EXPORT const CFStringRef kVTCameraCalibrationExtrinsicOriginSource_StereoCameraSystemBaseline API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
-VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_ExtrinsicOrientationQuaternion API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFArray[CFNumber(float)], , ix, iy & iz order 
+*/
+VT_EXPORT const CFStringRef kVTCompressionPropertyCameraCalibrationKey_ExtrinsicOrientationQuaternion API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFArray[CFNumber(float)], , ix, iy & iz order
 
 /*!
     @constant	kVTCompressionPropertyKey_SuggestedLookAheadFrameCount
@@ -1543,6 +1591,16 @@ enum {
 	kVTQPModulationLevel_Disable = 0,
 };
 
+/*!
+	@constant	kVTCompressionPropertyKey_ConstantQualityFactor
+	@abstract
+		Requires the encoder to maintain consistent quality by specifying a target constant quality factor in the range of 0.0 to 1.0.
+	@discussion
+		In contrast to cases where kVTCompressionPropertyKey_Quality will cause the quantization parameter to adhere to a fixed value, this property is designed for consistent visual quality with or without bitrate limit constraints.
+		0.0 is the lowest quality and 1.0 implies the highest quality possible.
+*/
+VT_EXPORT const CFStringRef kVTCompressionPropertyKey_ConstantQualityFactor API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)); // Read/write, CFNumber<Float>, Optional
+
 #pragma mark Encoder Settings Assistant
 
 /*!
@@ -1553,7 +1611,7 @@ enum {
 	Clients can select a compression preset for their encoding needs and use its encoder settings to configure the encoder.
 	Clients may also use the encoder settings as a base configuration that they can customize as they require.
 
-	See also kVTCompressionPreset_HighQuality, kVTCompressionPreset_Balanced, kVTCompressionPreset_HighSpeed, kVTCompressionPreset_VideoConferencing.
+	See also kVTCompressionPreset_HighQuality, kVTCompressionPreset_Balanced, kVTCompressionPreset_HighSpeed, kVTCompressionPreset_VideoConferencing, kVTCompressionPreset_ConsistentQuality.
 */
 VT_EXPORT const CFStringRef kVTCompressionPropertyKey_SupportedPresetDictionaries API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0)); // Read-only, CFDictionary
 
@@ -1565,7 +1623,7 @@ VT_EXPORT const CFStringRef kVTCompressionPropertyKey_SupportedPresetDictionarie
 	An encoder configured using this preset is expected to achieve a higher quality with a slower encoding than an encoder configured with the preset kVTCompressionPreset_Balanced or kVTCompressionPreset_HighSpeed.
 	The presets kVTCompressionPreset_Balanced and kVTCompressionPreset_HighSpeed may be preferred for a faster encoding.
 
-	See also kVTCompressionPreset_Balanced, kVTCompressionPreset_HighSpeed, kVTCompressionPreset_VideoConferencing.
+	See also kVTCompressionPreset_Balanced, kVTCompressionPreset_HighSpeed, kVTCompressionPreset_VideoConferencing, kVTCompressionPreset_ConsistentQuality.
 */
 VT_EXPORT const CFStringRef kVTCompressionPreset_HighQuality API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
 
@@ -1578,7 +1636,7 @@ VT_EXPORT const CFStringRef kVTCompressionPreset_HighQuality API_AVAILABLE(macos
 	The preset kVTCompressionPreset_HighSpeed may be preferred for a faster encoding.
 	The preset kVTCompressionPreset_HighQuality may be preferred for a higher compression quality.
 
-	See also kVTCompressionPreset_HighQuality, kVTCompressionPreset_HighSpeed, kVTCompressionPreset_VideoConferencing.
+	See also kVTCompressionPreset_HighQuality, kVTCompressionPreset_HighSpeed, kVTCompressionPreset_VideoConferencing, kVTCompressionPreset_ConsistentQuality.
 */
 VT_EXPORT const CFStringRef kVTCompressionPreset_Balanced API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
 
@@ -1590,7 +1648,7 @@ VT_EXPORT const CFStringRef kVTCompressionPreset_Balanced API_AVAILABLE(macos(26
 	An encoder configured using this preset is expected to achieve a faster encoding at a lower compression quality than an encoder configured with the preset kVTCompressionPreset_HighQuality or kVTCompressionPreset_Balanced.
 	The presets kVTCompressionPreset_HighQuality and kVTCompressionPreset_Balanced may be preferred for a higher compression quality.
 
-	See also kVTCompressionPreset_HighQuality, kVTCompressionPreset_Balanced, kVTCompressionPreset_VideoConferencing.
+	See also kVTCompressionPreset_HighQuality, kVTCompressionPreset_Balanced, kVTCompressionPreset_VideoConferencing, kVTCompressionPreset_ConsistentQuality.
 */
 VT_EXPORT const CFStringRef kVTCompressionPreset_HighSpeed API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
 
@@ -1601,9 +1659,20 @@ VT_EXPORT const CFStringRef kVTCompressionPreset_HighSpeed API_AVAILABLE(macos(2
 @discussion
 	This preset requires setting kVTVideoEncoderSpecification_EnableLowLatencyRateControl to kCFBooleanTrue for encoding in the low-latency mode.
 
-	See also kVTCompressionPreset_HighQuality, kVTCompressionPreset_Balanced, kVTCompressionPreset_HighSpeed.
+	See also kVTCompressionPreset_HighQuality, kVTCompressionPreset_Balanced, kVTCompressionPreset_HighSpeed, kVTCompressionPreset_ConsistentQuality.
 */
 VT_EXPORT const CFStringRef kVTCompressionPreset_VideoConferencing API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
+
+/*!
+@constant kVTCompressionPreset_ConsistentQuality
+@abstract
+	A preset to achieve consistent quality encoding across frames.
+@discussion
+	An encoder configured using this preset is expected to achieve consistent quality across frames with relaxed rate-control constraints.
+
+	See also kVTCompressionPreset_HighQuality, kVTCompressionPreset_Balanced, kVTCompressionPreset_HighSpeed, kVTCompressionPreset_VideoConferencing.
+*/
+VT_EXPORT const CFStringRef kVTCompressionPreset_ConsistentQuality API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), watchos(27.0), visionos(27.0));
 
 	
 CM_ASSUME_NONNULL_END

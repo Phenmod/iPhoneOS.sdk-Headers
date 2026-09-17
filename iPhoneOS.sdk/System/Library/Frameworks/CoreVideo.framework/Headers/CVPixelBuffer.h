@@ -335,7 +335,7 @@ CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferProResRAWKey_MetadataExtens
 #if COREVIDEO_SUPPORTS_IOSURFACE
 /*!
 	@const      kCVPixelBufferIOSurfacePurgeableKey
-	@abstract   Key sets the IOSurface backed memory allocation for CVPixelBuffer as purgable and volatile.
+	@abstract   Key sets the IOSurface backed memory allocation for CVPixelBuffer as purgeable and non-volatile. 
 	@discussion A purgeable IOSurface is capable of being switched between non-volatile, volatile and empty states using IOSurfaceSetPurgeable.  When in the volatile state, the OS is permitted to instantly change its state to empty and remove all its memory pages.  Clients should set the IOSurfaces to the non-volatile state while they are in use and the volatile state when their need and contents is optional/speculative and OK to discard in response to system memory demand.  See IOSurfaceSetPurgeable for more details.  This key is only effective for CVPixelBuffers that are backed by IOSurface.
 */
 CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferIOSurfacePurgeableKey API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0), watchos(8.0), visionos(26.0)) ;

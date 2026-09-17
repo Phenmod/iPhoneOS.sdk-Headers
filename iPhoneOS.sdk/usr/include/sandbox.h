@@ -14,8 +14,9 @@
 #define _SANDBOX_H_
 
 #include <os/availability.h>
-#include <sys/cdefs.h>
+#include <os/base.h>
 #include <stdint.h>
+#include <sys/cdefs.h>
 
 __BEGIN_DECLS
 
@@ -44,7 +45,7 @@ __BEGIN_DECLS
  */
 API_DEPRECATED("No longer supported", macos(10.5, 10.8), ios(2.0, 6.0), tvos(4.0, 4.0), watchos(1.0, 1.0))
 API_UNAVAILABLE(macCatalyst)
-__result_use_check
+OS_WARN_RESULT
 int sandbox_init(const char *profile, uint64_t flags, char **errorbuf);
 
 /*
@@ -52,37 +53,6 @@ int sandbox_init(const char *profile, uint64_t flags, char **errorbuf);
  * profile named by one of the kSBXProfile* string constants.
  */
 #define SANDBOX_NAMED		0x0001
-
-/*
- * Available Sandbox profiles.
- */
-
-/* TCP/IP networking is prohibited. */
-API_DEPRECATED("No longer supported", macos(10.5, 10.8), ios(2.0, 6.0), tvos(4.0, 4.0), watchos(1.0, 1.0))
-API_UNAVAILABLE(macCatalyst)
-extern const char kSBXProfileNoInternet[];
-
-/* All sockets-based networking is prohibited. */
-API_DEPRECATED("No longer supported", macos(10.5, 10.8), ios(2.0, 6.0), tvos(4.0, 4.0), watchos(1.0, 1.0))
-API_UNAVAILABLE(macCatalyst)
-extern const char kSBXProfileNoNetwork[];
-
-/* File system writes are prohibited. */
-API_DEPRECATED("No longer supported", macos(10.5, 10.8), ios(2.0, 6.0), tvos(4.0, 4.0), watchos(1.0, 1.0))
-API_UNAVAILABLE(macCatalyst)
-extern const char kSBXProfileNoWrite[];
-
-/* File system writes are restricted to temporary folders /var/tmp and
- * confstr(_CS_DARWIN_USER_DIR, ...).
- */
-API_DEPRECATED("No longer supported", macos(10.5, 10.8), ios(2.0, 6.0), tvos(4.0, 4.0), watchos(1.0, 1.0))
-API_UNAVAILABLE(macCatalyst)
-extern const char kSBXProfileNoWriteExceptTemporary[];
-
-/* All operating system services are prohibited. */
-API_DEPRECATED("No longer supported", macos(10.5, 10.8), ios(2.0, 6.0), tvos(4.0, 4.0), watchos(1.0, 1.0))
-API_UNAVAILABLE(macCatalyst)
-extern const char kSBXProfilePureComputation[];
 
 /*
  * @function sandbox_free_error

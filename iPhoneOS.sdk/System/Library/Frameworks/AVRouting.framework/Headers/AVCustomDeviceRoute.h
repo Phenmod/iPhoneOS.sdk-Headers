@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// valid value, depending on the type of device. In certain cases, both
 /// properties might provide valid values, in which case your app determines which
 /// one to use.
-API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos)
+API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos) API_DEPRECATED_WITH_REPLACEMENT("AVSystemRoute", ios(16.0, 27.0))
 NS_SWIFT_SENDABLE @interface AVCustomDeviceRoute : NSObject
 
 /*!
@@ -38,7 +38,7 @@ NS_SWIFT_SENDABLE @interface AVCustomDeviceRoute : NSObject
  */
 
 /// A local or remote endpoint to connect to.
-@property (nonatomic, nullable, readonly) nw_endpoint_t networkEndpoint API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos);
+@property (nonatomic, nullable, readonly) nw_endpoint_t networkEndpoint API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos) API_DEPRECATED("Use AVSystemRoute instead", ios(16.0, 27.0));
 
 /*!
 	@property 	bluetoothIdentifier
@@ -46,7 +46,7 @@ NS_SWIFT_SENDABLE @interface AVCustomDeviceRoute : NSObject
  */
 
 /// An identifier to use to establish a connection to a Bluetooth device.
-@property (nonatomic, nullable, readonly) NSUUID *bluetoothIdentifier API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos);
+@property (nonatomic, nullable, readonly) NSUUID *bluetoothIdentifier API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos) API_DEPRECATED("Use AVSystemRoute instead", ios(16.0, 27.0));
 
 @end
 

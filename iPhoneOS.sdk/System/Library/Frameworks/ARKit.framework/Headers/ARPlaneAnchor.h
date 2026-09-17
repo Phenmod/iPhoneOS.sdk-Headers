@@ -8,8 +8,9 @@
 
 #import <ARKit/ARAnchor.h>
 
-
 NS_ASSUME_NONNULL_BEGIN
+
+API_UNAVAILABLE_BEGIN(visionos)
 
 @class ARPlaneGeometry;
 
@@ -23,7 +24,6 @@ typedef NS_ENUM(NSInteger, ARPlaneAnchorAlignment) {
 
     /** A plane that is vertical with respect to gravity. */
     ARPlaneAnchorAlignmentVertical API_AVAILABLE(ios(11.3)),
-
 } NS_SWIFT_NAME(ARPlaneAnchor.Alignment);
 
 /**
@@ -83,8 +83,9 @@ NS_SWIFT_SENDABLE
 
 /**
  An anchor representing a planar surface in the world.
- @discussion Planes are defined in the X and Z direction, where Y is the surface’s normal.
- */
+
+ Planes are defined in the X and Z direction, where Y is the surface’s normal.
+*/
 API_AVAILABLE(ios(11.0))
 NS_SWIFT_SENDABLE
 @interface ARPlaneAnchor : ARAnchor
@@ -129,11 +130,29 @@ NS_SWIFT_SENDABLE
  */
 @property (nonatomic, assign, readonly) ARPlaneClassification classification API_AVAILABLE(ios(12.0)) NS_REFINED_FOR_SWIFT;
 
-/** Unavailable */
+/**
+ Unavailable.
+
+ - Parameter transform: The transformation matrix.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)initWithTransform:(simd_float4x4)transform NS_UNAVAILABLE;
+
+/**
+ Unavailable.
+
+ - Parameters:
+   - name: The anchor name.
+   - transform: The transformation matrix.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)initWithName:(NSString *)name transform:(simd_float4x4)transform NS_UNAVAILABLE;
 
 @end
+
+API_UNAVAILABLE_END
 
 NS_ASSUME_NONNULL_END
 #else

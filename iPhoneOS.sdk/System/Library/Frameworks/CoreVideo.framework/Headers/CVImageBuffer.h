@@ -22,7 +22,7 @@
 #include <AvailabilityMacros.h>
 
 // For legacy reasons CVImageBuffer.h includes CoreGraphics.h and ApplicationServices.h
-#if TARGET_OS_IPHONE || TARGET_OS_WIN32
+#if defined(__swift__) || TARGET_OS_IPHONE || TARGET_OS_WIN32
 #include <CoreGraphics/CoreGraphics.h>
 #else
 #if __has_include(<ApplicationServices/ApplicationServices.h>)
@@ -376,6 +376,16 @@ CV_EXPORT const CFStringRef CV_NONNULL kCVImageBufferDisplayMaskRectangle_LeftEd
         Specifies inset points on the right vertical edge of the rectangle. The points are CFArray of unsigned 16-bit integer CFNumber pairs alternating between inset X and inset Y. Inset X is an unsigned offset from right edge (0) towards the left edge (width). Inset Y is an unsigned offset from top edge (0) towards the bottom edge (height)
  */
 CV_EXPORT const CFStringRef CV_NONNULL kCVImageBufferDisplayMaskRectangle_RightEdgePointsKey API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0)); // CFArray(  CFNumber(uint16_t) pairs)
+
+/*!
+    @constant    kCVImageBufferHorizontalDisparityAdjustmentKey
+    @abstract
+        Indicates a relative shift of the left and right images, which changes the zero parallax plane.
+    @discussion
+        The value encoded in normalized image space is a CFNumber holding a signed 32-bit integer measured over the range of -10000 to 10000 mapping to the uniform range [-1.0...1.0]. The interval of 0.0 to 1.0 or 0 to 10000 maps onto the stereo eye view image width. The negative interval 0.0 to -1.0 or 0 to -10000 similarly map onto the stereo eye view image width.
+        The default value of 0 is inferred if this property is not set.
+ */
+CV_EXPORT const CFStringRef CV_NONNULL kCVImageBufferHorizontalDisparityAdjustmentKey API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(10.0)); // CFNumber(int32_t)
 
 #if defined(__cplusplus)
 }

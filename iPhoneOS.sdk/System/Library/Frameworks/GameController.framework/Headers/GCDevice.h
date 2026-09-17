@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+
 #import <GameController/GCProductCategories.h>
 
 @class GCPhysicalInputProfile;

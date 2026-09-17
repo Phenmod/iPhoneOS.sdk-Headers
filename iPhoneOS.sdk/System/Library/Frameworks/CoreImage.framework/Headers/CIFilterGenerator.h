@@ -88,7 +88,7 @@ NS_CLASS_AVAILABLE_MAC(10_5)
 
 /** This methods allows you to export an input or output key of an object in the filter chain to be available through the inputKeys or outputKeys API when converted into a CIFilter
  
- When you create a CIFilter from the CIFilterGenerator, you might want the client of the filter being able to set some of the paramters of the filter chain. To do so these parameters have to be exported as keys much like the inputKeys and outputKeys of all CIFilters.
+ When you create a CIFilter from the CIFilterGenerator, you might want the client of the filter being able to set some of the parameters of the filter chain. To do so these parameters have to be exported as keys much like the inputKeys and outputKeys of all CIFilters.
  @param      key The key path that is to be exported from the target object (eg. inputImage)
  @param      targetObject The object of which the key is to be exported (eg the filter).
  @param      exportedKeyName The name under which you want the new key to be available. This parameter can be nil in which case the original key name will be used. This name has to be unique. If a key being exported is an inputKey of the filter it will be exported as an input key and the other way around for output keys.
@@ -139,7 +139,7 @@ NS_CLASS_AVAILABLE_MAC(10_5)
 /** Register the resulting filter of the chain in the CIFilter repository.
  
  This method allows you to register the filter chain as a named filter in the filter repository. You can then create a CIFilter object from it using the filterWithName: method. Make sure you set the class attributes first - see CIFilter for a description of the classAttributes that are needed to register a filter.
- When registering Core Image automatically adds the kCIFilterGeneratorCategory to the filters categories. The kCIFilterGeneratorCategory is purely for identification purpose and will not be exposed in the filter browser as a seperate category.
+ When registering Core Image automatically adds the kCIFilterGeneratorCategory to the filters categories. The kCIFilterGeneratorCategory is purely for identification purpose and will not be exposed in the filter browser as a separate category.
  
  @param      name The name under which the filter will be registered. This name has to be unique. 
 */
@@ -147,7 +147,7 @@ NS_CLASS_AVAILABLE_MAC(10_5)
 
 
 /** Write the CIFilterGenerator into a file
- @result     Returns true when the chain with written our succesfully 
+ @result     Returns true when the chain was written out successfully 
 */
 - (BOOL)writeToURL:(NSURL *)aURL atomically:(BOOL)flag;
 

@@ -12,8 +12,8 @@ NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 /// An instance of this class can be invalidated when the asset pack that it represents is updated on the server.
 API_AVAILABLE(ios(26), macos(26), tvos(26), visionos(26))
 API_UNAVAILABLE(watchos)
-NS_SWIFT_SENDABLE
 NS_REFINED_FOR_SWIFT
+NS_SWIFT_SENDABLE
 @interface BAAssetPack : NSObject
 
 /// A unique identifier for the asset pack.
@@ -26,6 +26,13 @@ NS_REFINED_FOR_SWIFT
 
 /// The asset pack’s version number
 @property (readonly, assign) NSInteger version;
+
+/// The language, represented as a BCP-47 identifier, for which this asset pack is localized.
+///
+/// This property is `nil` if the asset pack isn’t localized and therefore isn’t language-specific.
+@property (nullable, readonly, copy) NSString* language
+API_AVAILABLE(ios(27), macos(27), tvos(27), visionos(27))
+NS_SWIFT_NAME(languageID);
 
 /// JSON-encoded custom information that’s associated with the asset pack.
 ///

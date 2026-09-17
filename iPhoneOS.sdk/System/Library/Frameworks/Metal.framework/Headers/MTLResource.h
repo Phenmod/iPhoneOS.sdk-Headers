@@ -82,7 +82,7 @@ typedef NS_ENUM(NSUInteger, MTLCPUCacheMode)
 typedef NS_ENUM(NSUInteger, MTLStorageMode)
 {
     MTLStorageModeShared  = 0,
-    MTLStorageModeManaged API_AVAILABLE(macos(10.11), macCatalyst(13.0)) API_UNAVAILABLE(ios) = 1,
+    MTLStorageModeManaged API_DEPRECATED("Managed storage has no effect on Apple Silicon, use Shared storage instead", macos(10.11, 27.0), macCatalyst(13.0, 27.0)) API_UNAVAILABLE(ios) = 1,
     MTLStorageModePrivate = 2,
     MTLStorageModeMemoryless API_AVAILABLE(macos(11.0), macCatalyst(14.0), ios(10.0)) = 3,
 } API_AVAILABLE(macos(10.11), ios(9.0));
@@ -174,7 +174,7 @@ typedef NS_OPTIONS(NSUInteger, MTLResourceOptions)
     MTLResourceCPUCacheModeWriteCombined = MTLCPUCacheModeWriteCombined << MTLResourceCPUCacheModeShift,
 
     MTLResourceStorageModeShared API_AVAILABLE(macos(10.11), ios(9.0)) = MTLStorageModeShared << MTLResourceStorageModeShift,
-    MTLResourceStorageModeManaged API_AVAILABLE(macos(10.11), macCatalyst(13.0)) API_UNAVAILABLE(ios) = MTLStorageModeManaged << MTLResourceStorageModeShift,
+    MTLResourceStorageModeManaged API_DEPRECATED("Managed storage has no effect on Apple Silicon, use Shared storage instead", macos(10.11, 27.0), macCatalyst(13.0, 27.0)) API_UNAVAILABLE(ios) = MTLStorageModeManaged << MTLResourceStorageModeShift,
     MTLResourceStorageModePrivate API_AVAILABLE(macos(10.11), ios(9.0)) = MTLStorageModePrivate << MTLResourceStorageModeShift,
     MTLResourceStorageModeMemoryless API_AVAILABLE(macos(11.0), macCatalyst(14.0), ios(10.0)) = MTLStorageModeMemoryless << MTLResourceStorageModeShift,
     

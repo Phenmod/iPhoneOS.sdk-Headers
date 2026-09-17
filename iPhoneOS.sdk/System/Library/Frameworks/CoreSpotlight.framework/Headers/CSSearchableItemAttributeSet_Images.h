@@ -2,14 +2,17 @@
 //  CSSearchableItemAttributeSet_Images.h
 //  CoreSpotlight
 //
-//  Copyright © 2015 Apple. All rights reserved.
+//  Copyright © 2015–2026 Apple. All rights reserved.
 //
 
 #import <CoreSpotlight/CSSearchableItemAttributeSet.h>
 
+#import <Foundation/Foundation.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
-CS_AVAILABLE(10_13, 9_0) CS_TVOS_UNAVAILABLE
+API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0))
+API_UNAVAILABLE(tvos, watchos)
 @interface CSSearchableItemAttributeSet (CSImages)
 
 //The height of the item in pixels (ie Image height or Video frame height)

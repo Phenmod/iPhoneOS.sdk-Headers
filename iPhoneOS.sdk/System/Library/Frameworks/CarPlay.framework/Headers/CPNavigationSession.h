@@ -6,6 +6,7 @@
 //
 
 #import <CarPlay/CPManeuver.h>
+#import <CarPlay/CPMapPanel.h>
 #import <CarPlay/CPRerouteReason.h>
 #import <CarPlay/CPRouteInformation.h>
 #import <CarPlay/CPRouteSegment.h>
@@ -67,6 +68,16 @@ CARPLAY_TEMPLATE_UI_ACTOR
  @param rerouteReason The reason for the reroute
  */
 - (void)resumeTripWithUpdatedRouteSegments:(NSArray<CPRouteSegment *> *)routeSegments currentSegment:(CPRouteSegment *)currentSegment rerouteReason:(CPRerouteReason)rerouteReason NS_SWIFT_NAME(resumeTrip(updatedRouteSegments:currentSegment:rerouteReason:)) API_AVAILABLE(ios(26.4));
+
+/**
+ Resume navigation with an updated trip and route segments for cases such as the trip destination changing.
+ 
+ @param trip The updated trip
+ @param routeSegments The updated route segments for the current trip
+ @param currentSegment The current route segment
+ @param rerouteReason The reason for the reroute
+ */
+- (void)resumeNavigationWithUpdatedTrip:(CPTrip *)trip routeSegments:(NSArray<CPRouteSegment *> *)routeSegments currentSegment:(CPRouteSegment *)currentSegment rerouteReason:(CPRerouteReason)rerouteReason NS_SWIFT_NAME(resumeNavigation(updatedTrip:routeSegments:currentSegment:rerouteReason:)) API_AVAILABLE(ios(27.0));
 
 /**
  Finish the trip.
@@ -133,6 +144,11 @@ CARPLAY_TEMPLATE_UI_ACTOR
 - (void)updateTravelEstimates:(CPTravelEstimates *)estimates forManeuver:(CPManeuver *)maneuver;
 
 /**
+The options panel to display when the ellipsis button on the travel estimates is tapped.
+ */
+@property (nonatomic, strong, nullable) CPMapPanel *optionsPanel API_AVAILABLE(ios(27.0));
+
+/**
 The route segments associated with this navigation session.
  */
 @property (nonatomic, readonly, strong) NSArray<CPRouteSegment *> *routeSegments API_AVAILABLE(ios(26.4));
@@ -141,6 +157,16 @@ The route segments associated with this navigation session.
 The current route segment.
  */
 @property (nonatomic) CPRouteSegment *currentSegment API_AVAILABLE(ios(26.4));
+
+/**
+ Whether the vehicle is presently using route data for any features in its built-in navigation system.
+ */
+@property (nonatomic, readonly, getter=isRouteSharingEnabled) BOOL routeSharingEnabled API_AVAILABLE(ios(27.0));
+
+/**
+ Whether the connected vehicle supports the route sharing feature.
+ */
+@property (nonatomic, readonly, getter=isRouteSharingSupported) BOOL routeSharingSupported API_AVAILABLE(ios(27.0));
 
 @end
 

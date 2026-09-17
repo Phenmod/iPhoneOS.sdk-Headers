@@ -151,7 +151,7 @@ BNNS_ENUM(BNNSDataType, uint32_t,
  @constant BNNSPoolingFunctionL2Norm
  <math><msqrt><mi>&sum;<sub>i</sub> X<sub>i</sub><sup>2</sup></mi></msqrt></math>
 
-*/
+ */
 BNNS_ENUM(BNNSPoolingFunction, uint32_t,
 
   BNNSPoolingFunctionMax                        __API_AVAILABLE(macos(10.12), ios(10.0), watchos(3.0), tvos(10.0)) = 0,

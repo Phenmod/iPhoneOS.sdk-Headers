@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 		Reads and writes are always sequential, but random access is possible by setting the
 		framePosition property.
 */
-NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
+API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 @interface AVAudioFile : NSObject
 - (instancetype)init API_DEPRECATED("Deprecated - use initForReading or initForWriting", macos(10.10, 26.0), ios(8.0, 26.0), watchos(2.0, 26.0), tvos(9.0, 26.0), macCatalyst(10.10, 26.0));
 
@@ -133,6 +133,10 @@ NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 		YES for success.
 	@discussion
 		Like `readIntoBuffer:error:`, but can be used to read fewer frames than buffer.frameCapacity.
+
+		Starting in macOS 27.0, iOS 27.0, watchOS 27.0, and tvOS 27.0, attempting to read beyond the
+		end of the file will return NO and set outError to an NSError with domain NSOSStatusErrorDomain
+		and code kAudioFileEndOfFileError.
 */
 - (BOOL)readIntoBuffer:(AVAudioPCMBuffer *)buffer frameCount:(AVAudioFrameCount)frames error:(NSError **)outError;
 

@@ -47,7 +47,7 @@ typedef void (^CMStepUpdateHandler)(NSInteger numberOfSteps, NSDate *timestamp, 
  *      by either calling stopStepCountingUpdates or upon CMStepCounter deallocation.
  *
  */
-NS_CLASS_DEPRECATED_IOS(7_0,8_0,"Use CMPedometer instead") API_UNAVAILABLE(watchos)
+NS_CLASS_DEPRECATED_IOS(7_0,8_0,"Use CMPedometer instead") API_UNAVAILABLE(watchos, tvos)
 @interface CMStepCounter : NSObject
 
 /*

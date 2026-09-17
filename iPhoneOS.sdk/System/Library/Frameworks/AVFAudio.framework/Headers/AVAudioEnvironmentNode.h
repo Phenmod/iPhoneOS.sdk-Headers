@@ -50,7 +50,7 @@ typedef NS_ENUM(NSInteger, AVAudioEnvironmentDistanceAttenuationModel) {
         A standalone instance of AVAudioEnvironmentDistanceAttenuationParameters cannot be created. 
         Only an instance vended out by a source object (e.g. AVAudioEnvironmentNode) can be used.
 */
-API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 @interface AVAudioEnvironmentDistanceAttenuationParameters : NSObject {
 @private
 	void *_impl;
@@ -113,7 +113,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
         Only an instance vended out by a source object (e.g. AVAudioEnvironmentNode) can be used.
 */
 
-API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 @interface AVAudioEnvironmentReverbParameters : NSObject {
 @private
 	void *_impl;
@@ -205,7 +205,7 @@ typedef NS_ENUM(NSInteger, AVAudioEnvironmentOutputType) {
         with a desired AudioChannelLayout.
 */
 
-API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0)) API_UNAVAILABLE(watchos)
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0)) API_UNAVAILABLE(watchos)
 @interface AVAudioEnvironmentNode : AVAudioNode <AVAudioMixing>
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER;

@@ -355,4 +355,34 @@ SR_EXTERN SRSensor const SRSensorAcousticSettings API_AVAILABLE(ios(26.0)) API_U
  */
 SR_EXTERN SRSensor const SRSensorSleepSessions API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(watchos, macos, visionos) API_UNAVAILABLE(tvos);
 
+/*!
+ * @const SRSensorHeadphoneMotion
+ *
+ * @brief
+ * Sensor stream for headphone motion collection
+ *
+ * @discussion
+ * This stream stores samples about headphone motion including:
+ * @textblock
+ *  - acceleration measured by the device's accelerometer
+ *  - rotation rate measured by the device's gyroscope
+ *  - altitude
+ * @/textblock
+ *
+ * Fetches from this stream return objects of type \c NSArray<CMRecordedDeviceMotion *> * as defined in the CoreMotion framework
+ */
+SR_EXTERN SRSensor const SRSensorHeadphoneMotion API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(watchos, macos, visionos) API_UNAVAILABLE(tvos);
+
+/*!
+ * @const SRSensorHeadphoneSettings
+ *
+ * @brief
+ * Sensor stream for headphone settings
+ *
+ * @discussion
+ * This stream stores samples about headphone settings.  Fetches from this stream return objects of
+ * type \c SRHeadphoneSettings
+ */
+SR_EXTERN SRSensor const SRSensorHeadphoneSettings API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(watchos, macos, visionos) API_UNAVAILABLE(tvos);
+
 NS_ASSUME_NONNULL_END

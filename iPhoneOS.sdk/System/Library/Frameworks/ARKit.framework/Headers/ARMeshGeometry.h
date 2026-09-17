@@ -11,12 +11,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+API_UNAVAILABLE_BEGIN(visionos)
+
 /**
  A container for vector data of a geometry.
  */
 API_AVAILABLE(ios(13.4))
 NS_SWIFT_SENDABLE
-@interface ARGeometrySource : NSObject<NSSecureCoding>
+@interface ARGeometrySource : NSObject <NSSecureCoding>
 
 /**
  A Metal buffer containing per-vector data for the source.
@@ -48,8 +50,18 @@ NS_SWIFT_SENDABLE
  */
 @property (nonatomic, assign, readonly) NSInteger stride;
 
-/** Unavailable */
+/**
+ Unavailable. ARGeometrySource objects are created by the system.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)init NS_UNAVAILABLE;
+
+/**
+ Unavailable. ARGeometrySource objects are created by the system.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_UNAVAILABLE;
 
 @end
@@ -70,7 +82,7 @@ typedef NS_ENUM(NSInteger, ARGeometryPrimitiveType) {
  */
 API_AVAILABLE(ios(13.4))
 NS_SWIFT_SENDABLE
-@interface ARGeometryElement : NSObject<NSSecureCoding>
+@interface ARGeometryElement : NSObject <NSSecureCoding>
 
 /**
  A Metal buffer containing index data that defines the geometry.
@@ -89,18 +101,30 @@ NS_SWIFT_SENDABLE
 
 /**
  The number of indices for each primitive.
- @see ARGeometryPrimitiveType
- @discussion This is based on the primitiveType. For ARGeometryPrimitiveTypeTriangle the value is 3.
- */
+
+ This is based on the primitiveType. For `ARGeometryPrimitiveTypeTriangle` the value is `3`.
+
+ - SeeAlso: ``ARGeometryPrimitiveType``
+*/
 @property (nonatomic, assign, readonly) NSInteger indexCountPerPrimitive;
 
 /**
  The type of the geometry element.
  */
-@property(nonatomic, assign, readonly) ARGeometryPrimitiveType primitiveType;
+@property (nonatomic, assign, readonly) ARGeometryPrimitiveType primitiveType;
 
-/** Unavailable */
+/**
+ Unavailable. ARGeometryElement objects are created by the system.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)init NS_UNAVAILABLE;
+
+/**
+ Unavailable. ARGeometryElement objects are created by the system.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_UNAVAILABLE;
 
 @end
@@ -125,7 +149,7 @@ A three-dimensional shape that represents the geometry of a mesh.
 */
 API_AVAILABLE(ios(13.4))
 NS_SWIFT_SENDABLE
-@interface ARMeshGeometry : NSObject<NSSecureCoding>
+@interface ARMeshGeometry : NSObject <NSSecureCoding>
 
 /**
  The vertices of the mesh.
@@ -147,11 +171,23 @@ NS_SWIFT_SENDABLE
  */
 @property (nonatomic, strong, readonly, nullable) ARGeometrySource *classification;
 
-/** Unavailable */
+/**
+ Unavailable. ARMeshGeometry objects are created by the system.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)init NS_UNAVAILABLE;
+
+/**
+ Unavailable. ARMeshGeometry objects are created by the system.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_UNAVAILABLE;
 
 @end
+
+API_UNAVAILABLE_END
 
 NS_ASSUME_NONNULL_END
 #else

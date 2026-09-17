@@ -2,7 +2,7 @@
 //  PencilKit.h
 //  PencilKit
 //
-//  Copyright © 2020 Apple Inc. All rights reserved.
+//  Copyright © 2019-2026 Apple Inc. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -31,5 +31,6 @@
 #import <PencilKit/PKFloatRange.h>
 #import <PencilKit/PKStrokePath.h>
 #import <PencilKit/PKStrokePoint.h>
+#import <PencilKit/PKStrokeRenderState.h>
 #import <PencilKit/PKInk.h>
 #import <PencilKit/PKInkType.h>

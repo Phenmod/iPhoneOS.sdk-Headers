@@ -43,12 +43,16 @@ extern "C" {
  
     - Use zlib otherwise.
  
- If you do not require interoperability with non-Apple devices, use LZFSE
+ If you do not require interoperability with non-Apple devices, use LZMESH
  in the place of zlib in the hierarchy above.  It is an Apple-developed
  algorithm that is faster than, and generally compresses better than zlib.
  It is slower than LZ4 and does not compress as well as LZMA, however, so
  you will still want to use those algorithms in the situations described.
 
+ If you do not require interoperability with non-Apple devices, use LZRAVEN
+ in the place of LZMA in the hierarchy above.  It is an Apple-developed
+ algorithm that is faster than, and generally compresses better than LZMA.
+ 
  Brotli is a widely adopted content-encoding-method for the web. Thus, Brotli
  is included in libcompression especially to provide decoding capabilities.
  In many other use-cases, one of the above mentioned algorithms is probably a
@@ -119,11 +123,13 @@ typedef enum {
     COMPRESSION_ZLIB     = 0x205,       // available starting OS X 10.11, iOS 9.0
     COMPRESSION_LZMA     = 0x306,       // available starting OS X 10.11, iOS 9.0
     COMPRESSION_LZ4_RAW  = 0x101,       // available starting OS X 10.11, iOS 9.0
-    COMPRESSION_BROTLI   = 0xB02,       // available starting OS X 12.0, iOS 15.0
+    COMPRESSION_BROTLI   = 0xB02,       // available starting macOS 12.0, iOS 15.0
 
     /* Apple-specific algorithms */
-    COMPRESSION_LZFSE    = 0x801,       // available starting OS X 10.11, iOS 9.0
-    COMPRESSION_LZBITMAP = 0x702,       // buffer API only, available starting OS X 12.0, iOS 15.0
+    COMPRESSION_LZFSE     = 0x801,      // available starting OS X 10.11, iOS 9.0
+    COMPRESSION_LZBITMAP  = 0x702,      // buffer API only, available starting macOS 12.0, iOS 15.0
+    COMPRESSION_LZRAVEN   = 0xD05,      // buffer API only, available starting macOS 27.0, iOS 27.0
+    COMPRESSION_LZMESH    = 0xE05,      // buffer API only, available starting macOS 27.0, iOS 27.0
   
 } compression_algorithm;
 

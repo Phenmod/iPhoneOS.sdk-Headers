@@ -118,7 +118,9 @@ MPS_CLASS_AVAILABLE_STARTING(macos(12.0), ios(15.0), tvos(15.0))
 -(void) disableTypeInference;
 
 /// Turns on Automatic Layout Conversion (for conv like operations) for GPU.
--(void) convertLayoutToNHWC MPS_AVAILABLE_STARTING(macos(26.4), ios(26.4), tvos(26.4));
+-(void) convertLayoutToNHWC MPS_AVAILABLE_STARTING_BUT_DEPRECATED("Layout Conversion to NHWC is enabled by default on M5 and newer", macos(26.4, 27.0), ios(26.4, 27.0), tvos(26.4, 27.0));
+/// Turns off Automatic Layout Conversion (for conv like operations) for GPU.
+-(void) disableAutoLayoutConversion MPS_AVAILABLE_STARTING(macos(27.0), ios(27.0), tvos(27.0));
 
 /// The optimization level for the graph execution, default is MPSGraphOptimizationLevel1.
 @property (readwrite, nonatomic) MPSGraphOptimization optimizationLevel MPS_AVAILABLE_STARTING(macos(12.3), ios(15.4), tvos(15.4));
@@ -334,6 +336,48 @@ MPS_SWIFT_NAME( runAsync(with:feeds:targetTensors:targetOperations:executionDesc
                   resultsDictionary:(MPSGraphTensorDataDictionary *) resultsDictionary
                 executionDescriptor:(MPSGraphExecutionDescriptor * _Nullable) executionDescriptor
 MPS_SWIFT_NAME( runAsync(with:feeds:targetOperations:resultsDictionary:executionDescriptor:) );
+
+#if !TARGET_IPHONE_SIMULATOR
+
+/// Runs the graph for the given feeds and returns the target tensor values, ensuring all target operations also executed.
+///
+/// This call is asynchronous and will return immediately if a completionHandler is set.
+///
+/// - Parameters:
+///   - commandQueue: MTL4CommandQueue passed to exectute the graph on.
+///   - feeds: Feeds dictionary for the placeholder tensors.
+///   - targetTensors: Tensors for which the caller wishes MPSGraphTensorData to be returned.
+///   - targetOperations: Operations to be completed at the end of the run.
+///   - executionDescriptor: ExecutionDescriptor to be passed in and used.
+/// - Returns: A valid MPSGraphTensor : MPSGraphTensorData dictionary with results synchronized to the CPU memory if MPSGraphOptionsSynchronizeResults set.
+-(MPSGraphTensorDataDictionary *) runAsyncWithMTL4CommandQueue:(id<MTL4CommandQueue>) commandQueue
+                                                         feeds:(MPSGraphTensorDataDictionary *) feeds
+                                                 targetTensors:(NSArray<MPSGraphTensor *> *) targetTensors
+                                              targetOperations:(NSArray<MPSGraphOperation *> * _Nullable) targetOperations
+                                           executionDescriptor:(MPSGraphExecutionDescriptor * _Nullable) executionDescriptor
+MPS_SWIFT_NAME( runAsync(on:feeds:targetTensors:targetOperations:executionDescriptor:) )
+MPS_AVAILABLE_STARTING(macos(27.0), ios(27.0));
+
+
+/// Encodes the graph for the given feeds to returns the target tensor values in the results dictionary provided by the user.
+///
+/// It ensures all target operations also executed. This call is asynchronous and will return immediately if a completionHandler is set.
+///
+/// - Parameters:
+///   - commandQueue: MTL4CommandQueue passed to exectute the graph on.
+///   - feeds: Feeds dictionary for the placeholder tensors.
+///   - targetOperations: Operations to be completed at the end of the run.
+///   - resultsDictionary: MPSGraphTensors dictionary passed by user, these will be filled with graph output data.
+///   - executionDescriptor: ExecutionDescriptor to be passed in and used.
+-(void) runAsyncWithMTL4CommandQueue:(id<MTL4CommandQueue>) commandQueue
+                               feeds:(MPSGraphTensorDataDictionary *) feeds
+                    targetOperations:(NSArray<MPSGraphOperation *> * _Nullable) targetOperations
+                   resultsDictionary:(MPSGraphTensorDataDictionary *) resultsDictionary
+                 executionDescriptor:(MPSGraphExecutionDescriptor * _Nullable) executionDescriptor
+MPS_SWIFT_NAME( runAsync(on:feeds:targetOperations:resultsDictionary:executionDescriptor:) )
+MPS_AVAILABLE_STARTING(macos(27.0), ios(27.0));
+
+#endif
 
 /// Encodes the graph for the given feeds to returns the target tensor values, ensuring all target operations also executed. 
 ///

@@ -131,11 +131,32 @@ Create a new nearby accessory configuration using data received from the accesso
                        bluetoothPeerIdentifier:(NSUUID *)identifier
                                          error:(NSError **)error API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(watchos, tvos, macos);
 
+/**
+ Configure the session for Bluetooth Channel Sounding ranging using a Bluetooth Channel Sounding identifier.
+ 
+ @param bluetoothIdentifier The pairing identifier necessary to form a bluetooth connection for Bluetooth Channel Sounding ranging.
+ @param previousBluetoothIdentifier Optional previous Bluetooth identifier for reconnection scenarios. Defaults to nil for initial configuration.
+ @return The configuration instance.
+ @discussion When previousBluetoothIdentifier is provided, this method provides continuity of the internal state from the previousBluetoothIdentifier to the bluetoothIdentifier, allowing the session to maintain context across reconnections where the Bluetooth identifier may change.
+ */
+- (instancetype)initWithBluetoothChannelSoundingIdentifier:(NSUUID *)bluetoothIdentifier
+                               previousBluetoothIdentifier:(nullable NSUUID *)previousBluetoothIdentifier NS_SWIFT_NAME(init(bluetoothChannelSoundingIdentifier:previousBluetoothIdentifier:))
+API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(watchos, tvos, macos, visionos);
+
 /** Unavailable */
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
 
 @end
+
+/**
+ DL-TDoA out-of-band discovery method defines how session scans for DL-TDoA anchors.
+ */
+API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(watchos, tvos, macos, visionos, macCatalyst)
+typedef NS_ENUM(NSInteger, NIDLTDOADiscoveryMethod) {
+    NIDLTDOADiscoveryMethodWiFi NS_SWIFT_NAME(wifi) = 0,
+    NIDLTDOADiscoveryMethodBluetoothLowEnergy  = 1,
+} NS_SWIFT_NAME(NIDLTDOAConfiguration.DiscoveryMethod);
 
 /**
  A session configuration that enables UWB Down Link Time Difference of Arrival(DL-TDoA) ranging with nearby anchors.
@@ -150,9 +171,19 @@ NI_EXPORT
 @property (nonatomic, assign) NSInteger networkIdentifier;
 
 /**
- Initializes a new configuration with a network identifier
+ Current session's out-of-band discovery method.
+ */
+@property (nonatomic, assign) NIDLTDOADiscoveryMethod discoveryMethod API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(watchos, tvos, macos, visionos, macCatalyst);
+
+/**
+ Initializes a new configuration with a network identifier(default discovery method - NIDLTDOADiscoveryMethodBluetoothLowEnergy)
  */
 - (instancetype)initWithNetworkIdentifier:(NSInteger)networkIdentifier;
+
+/**
+ Initializes a new configuration with a network identifier and anchor discovery method
+ */
+- (instancetype)initWithNetworkIdentifier:(NSInteger)networkIdentifier discoveryMethod:(NIDLTDOADiscoveryMethod)discoveryMethod API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(watchos, tvos, macos, visionos, macCatalyst);
 
 /** Unavailable  */
 - (instancetype)init NS_UNAVAILABLE;

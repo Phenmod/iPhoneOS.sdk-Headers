@@ -60,6 +60,27 @@ API_AVAILABLE(macos(26.0), ios(26.0))
 /// The height, in pixels, of the output color texture for the frame interpolator.
 @property (readwrite, nonatomic) NSUInteger outputHeight;
 
+/// A Boolean value that indicates whether the frame interpolator supports barrel distortion correction.
+///
+/// Set this property to <doc://com.apple.documentation/documentation/swift/true> to create a frame interpolator
+/// that can apply barrel distortion correction using a distortion field texture.
+///
+/// When you enable this property, you can assign a distortion texture to the interpolator's
+/// ``MTLFXFrameInterpolatorBase/distortionTexture`` property to correct lens distortion artifacts
+/// during frame interpolation.
+///
+/// This property's default value is <doc://com.apple.documentation/documentation/swift/false>.
+@property (readwrite, nonatomic, getter=isDistortionTextureEnabled) BOOL distortionTextureEnabled API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+
+/// A Boolean value that indicates whether the frame interpolator requires the client to provide a previous color texture.
+///
+/// When this property is YES (the default), you must assign a valid texture to the interpolator's
+/// ``prevColorTexture`` property before encoding. When NO, the frame interpolator internally manages
+/// the previous color data and ``prevColorTexture`` may be nil.
+///
+/// This property's default value is <doc://com.apple.documentation/documentation/swift/true>.
+@property (readwrite, nonatomic) BOOL requiresPrevColorTexture API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);;
+
 /// Creates a frame interpolator instance for a Metal device.
 ///
 /// - Parameters:
@@ -153,9 +174,9 @@ API_UNAVAILABLE(visionos)
 /// The pixel format of the output color texture for this frame interpolator.
 @property (nonatomic, readonly) MTLPixelFormat outputTextureFormat;
 
-/// The width, in pixels, of the input color texture for the frame interpolator.
+/// The width, in pixels, of the input depth and motion texture for the frame interpolator.
 @property (nonatomic, readonly) NSUInteger inputWidth;
-/// The height, in pixels, of the input color texture for the frame interpolator.
+/// The height, in pixels, of the input depth and motion texture for the frame interpolator.
 @property (nonatomic, readonly) NSUInteger inputHeight;
 /// The width, in pixels, of the output color texture for the frame interpolator.
 @property (nonatomic, readonly) NSUInteger outputWidth;
@@ -163,6 +184,48 @@ API_UNAVAILABLE(visionos)
 @property (nonatomic, readonly) NSUInteger outputHeight;
 /// The pixel format of the input UI texture for the frame interpolator.
 @property (nonatomic, readonly) MTLPixelFormat uiTextureFormat;
+
+/// The width, in pixels, of the content region within the input textures to process.
+///
+/// Use this property together with ``contentHeight`` to specify a subrectangle of the input
+/// textures for the frame interpolator to process.
+@property (nonatomic, readwrite) NSUInteger contentWidth API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+
+/// The height, in pixels, of the content region within the input textures to process.
+///
+/// Use this property together with ``contentWidth`` to specify a subrectangle of the input
+/// textures for the frame interpolator to process.
+@property (nonatomic, readwrite) NSUInteger contentHeight API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+
+/// The horizontal offset, in pixels, of the region within the depth texture to use as input.
+@property (nonatomic, readwrite) NSUInteger depthContentOffsetX API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+/// The vertical offset, in pixels, of the region within the depth texture to use as input.
+@property (nonatomic, readwrite) NSUInteger depthContentOffsetY API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+
+/// The horizontal offset, in pixels, of the region within the motion texture to use as input.
+@property (nonatomic, readwrite) NSUInteger motionContentOffsetX API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+/// The vertical offset, in pixels, of the region within the motion texture to use as input.
+@property (nonatomic, readwrite) NSUInteger motionContentOffsetY API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+
+/// The horizontal offset, in pixels, of the region within the output texture to write results. For regions outside the contents of the colorTexture are copied.
+@property (nonatomic, readwrite) NSUInteger outputOffsetX API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+/// The vertical offset, in pixels, of the region within the output texture to write results. . For regions outside the contents of the colorTexture are copied.
+@property (nonatomic, readwrite) NSUInteger outputOffsetY API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+
+/// The horizontal offset, in pixels, of the region within the distortion texture to use as input.
+@property (nonatomic, readwrite) NSUInteger distortionOffsetX API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+/// The vertical offset, in pixels, of the region within the distortion texture to use as input.
+@property (nonatomic, readwrite) NSUInteger distortionOffsetY API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+
+/// The width, in pixels, of the content region within the distortion texture to use as input.
+///
+/// When set to zero (the default), the frame interpolator uses ``contentWidth`` instead.
+@property (nonatomic, readwrite) NSUInteger distortionWidth API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+
+/// The height, in pixels, of the content region within the distortion texture to use as input.
+///
+/// When set to zero (the default), the frame interpolator uses ``contentHeight`` instead.
+@property (nonatomic, readwrite) NSUInteger distortionHeight API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
 
 /// The color texture that this frame interpolator evaluates.
 ///
@@ -237,6 +300,11 @@ API_UNAVAILABLE(visionos)
 /// typically `width/height`.
 @property (readwrite, nonatomic) float aspectRatio;
 
+/// The world-to-view transformation matrix this frame interpolator uses as part of its operation.
+@property (nonatomic) simd_float4x4 worldToViewMatrix API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+/// The view-to-clip coordinates transformation matrix this frame interpolator uses as part of its operation.
+@property (nonatomic) simd_float4x4 viewToClipMatrix API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+
 /// An optional texture containing your game's custom UI that this frame interpolator evaluates.
 ///
 /// The frame interpolator uses this property to overlay your custom UI on any frame data it produces into ``outputTexture``.
@@ -284,6 +352,16 @@ API_UNAVAILABLE(visionos)
 ///
 /// You are responsible for providing a texture with a private `storageMode` to this property.
 @property (nonatomic, retain, nullable) id<MTLTexture> outputTexture;
+
+/// A distortion field texture that the frame interpolator uses to correct barrel distortion.
+///
+/// Assign a texture containing a distortion field to this property to enable barrel distortion
+/// correction during frame interpolation. The distortion field describes how to remap pixels
+/// to correct lens distortion artifacts common in VR or wide-angle camera applications.
+///
+/// You are responsible for providing a texture that matches the output dimensions of the frame interpolator.
+@property (nonatomic, retain, nullable) id<MTLTexture> distortionTexture API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+
 
 /// An optional fence that this frame interpolator waits for and updates.
 ///

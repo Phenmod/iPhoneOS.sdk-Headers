@@ -32,6 +32,7 @@ typedef NS_ERROR_ENUM(DCErrorDomain, DCError) {
     /// - You call
     /// ``DeviceCheck/DCAppAttestService/generateAssertion:clientDataHash:completionHandler:``
     /// with an unattested key.
+    /// - The App Attest service cannot enforce the key access control policy on macOS.
     /// - The App Attest service rejects the key.
     DCErrorInvalidKey,
     /// An error that indicates a failed attempt to contact the App Attest service

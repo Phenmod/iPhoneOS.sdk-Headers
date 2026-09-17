@@ -3,9 +3,6 @@
 
 #include <Availability.h>
 #include <OpenGLES/OpenGLESAvailability.h>
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /*
 ** Copyright (c) 2007-2012 The Khronos Group Inc.
@@ -775,6 +772,10 @@ extern "C" {
 #define GL_MAX_ELEMENT_INDEX                             0x8D6B
 #define GL_NUM_SAMPLE_COUNTS                             0x9380
 #define GL_TEXTURE_IMMUTABLE_LEVELS                      0x82DF
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*-------------------------------------------------------------------------
  * Entrypoint definitions

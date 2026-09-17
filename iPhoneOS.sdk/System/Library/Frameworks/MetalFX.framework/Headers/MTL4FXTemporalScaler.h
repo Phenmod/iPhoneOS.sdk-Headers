@@ -17,7 +17,7 @@
 /// inherits from protocol ``MTLFXTemporalScalerBase`` and then call ``encodeToCommandBuffer:`` to
 /// encode its work into a Metal command buffer.
 ///
-/// See ``MTLFXTemporalScalerBase`` for more details on configuring and using spatial scalers.
+/// See ``MTLFXTemporalScalerBase`` for more details on configuring and using temporal scalers.
 ///
 API_AVAILABLE(macos(26.0), ios(26.0))
 #if defined(TARGET_OS_VISION) && TARGET_OS_VISION
@@ -25,10 +25,10 @@ API_UNAVAILABLE(visionos)
 #endif
 @protocol MTL4FXTemporalScaler <MTLFXTemporalScalerBase>
 
-/// Encode this spatial scaler work into a command buffer.
+/// Adds a scaling pass to a command buffer.
 ///
 /// - Parameters:
-///    - commandBuffer: A command buffer into which this spatial scaler encodes work.
+///    - commandBuffer: A command buffer into which this scaler encodes work.
 ///
 - (void)encodeToCommandBuffer:(nonnull id<MTL4CommandBuffer>)commandBuffer;
 

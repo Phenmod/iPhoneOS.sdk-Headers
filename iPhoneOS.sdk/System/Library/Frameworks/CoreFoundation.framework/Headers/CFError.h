@@ -46,7 +46,7 @@ typedef CFStringRef CFErrorDomain CF_EXTENSIBLE_STRING_ENUM;
 	@typedef CFErrorRef
 	    This is the type of a reference to CFErrors.  CFErrorRef is toll-free bridged with NSError.
 */
-typedef struct CF_BRIDGED_TYPE(NSError) __CFError * CFErrorRef;
+typedef struct CF_BRIDGED_MUTABLE_TYPE(NSError) __CFError * CFErrorRef;
 
 /*!
 	@function CFErrorGetTypeID

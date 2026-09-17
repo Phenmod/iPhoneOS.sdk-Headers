@@ -5,11 +5,18 @@
 //  Copyright © 2020 Apple Inc. All rights reserved.
 //
 
+#if __has_include(<AppleFeatures/AppleFeatures.h>)
+#import <AppleFeatures/AppleFeatures.h>
+#endif
 #import <Foundation/Foundation.h>
 #import <NearbyInteraction/NIAlgorithmConvergenceStatusReason.h>
+#if APPLE_FEATURE_NIBODY
+#import <NearbyInteraction/NIBody.h>
+#endif // APPLE_FEATURE_NIBODY
 #import <NearbyInteraction/NIConfiguration.h>
 #import <NearbyInteraction/NIDeviceCapability.h>
 #import <NearbyInteraction/NIExport.h>
+#import <NearbyInteraction/NINearbyObject.h>
 #import <NearbyInteraction/NIDLTDOAMeasurement.h>
 #import <simd/simd.h>
 
@@ -51,7 +58,11 @@ NI_EXPORT
  The dispatch queue on which the delegate calls are performed.
  @discussion If not provided or nil, delegate calls will be performed on the main queue.
  */
+#if OS_OBJECT_USE_OBJC
 @property (nonatomic, strong, nullable) dispatch_queue_t delegateQueue;
+#else
+@property (nonatomic, assign, nullable) dispatch_queue_t delegateQueue;
+#endif
 
 /**
  A unique nearby interaction identifier for this session.
@@ -65,6 +76,13 @@ NI_EXPORT
  The nearby interaction configuration currently being used by the session.
  */
 @property (nonatomic, copy, nullable, readonly) NIConfiguration *configuration;
+
+#if APPLE_FEATURE_NIBODY
+/**
+ The body associated with the device where solution from this session such as horizontal angle will be originated from.
+ */
+@property (nonatomic, strong, nullable) id<NIBodyIdentifiable> originBody API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(watchos, macos, tvos, visionos);
+#endif // APPLE_FEATURE_NIBODY
 
 /**
  Start a nearby interaction session.
@@ -95,6 +113,18 @@ NI_EXPORT
  @discussion If the platform does not support camera assistance or an ARSession is provided without enabling cameraAssistanceEnabled property in the NIConfiguration, the NISession will invalidate with error (see NIError.h)
  */
 - (void)setARSession:(ARSession*)session NS_SWIFT_NAME(setARSession(_:)) API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(watchos);
+
+/**
+ Update the motion state for a specific nearby object identified by its discovery token.
+
+ @param motionState The current motion activity state.
+ @param token The discovery token identifying the nearby object.
+ @discussion This information helps improve location estimation accuracy.
+             Call this method whenever the motion state changes for a specific nearby object.
+ */
+- (void)updateMotionState:(NIMotionActivityState)motionState
+      forObjectWithToken:(NIDiscoveryToken *)token NS_SWIFT_NAME(updateMotionState(_:forObjectWithToken:))
+API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(watchos, tvos, macos, visionos);
 
 /**
  Compute a transform in ARKit's world coordinate system for a given nearby object.

@@ -81,9 +81,29 @@ NS_SWIFT_SENDABLE
 /// Reports whether the system supports this processor on the current configuration.
 @property (class, nonatomic, readonly, getter=isSupported) BOOL supported;
 
+/// Reports the set of supported scale factors to use when initializing a low latency super-resolution scaler configuration.
+/// Note: not all scale factors are available for all source dimensions.
+@property (class, nonatomic, readonly) NSArray<NSNumber*> * supportedScaleFactors API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos) NS_REFINED_FOR_SWIFT;
+
 /// Returns an array of supported scale factors values, or an empty list if the processor doesn't support the dimensions.
 + (NSArray<NSNumber*>*) supportedScaleFactorsForFrameWidth:(NSInteger)frameWidth
 											   frameHeight:(NSInteger)frameHeight NS_REFINED_FOR_SWIFT;
+
+/// The maximum value for either dimension of the source frame, in pixels, for a given spatial scale factor.
+///
+/// Both `frameWidth` and `frameHeight` must be less than or equal to this value.
+/// Use in conjunction with ``maximumPixelCountForSpatialScaleFactor:`` to determine valid frame dimensions.
+/// For example, if ``maximumDimensionForSpatialScaleFactor:`` is 1920 and ``maximumPixelCountForSpatialScaleFactor:``
+/// corresponds to 1920×1080, then 1920×1080, 1080×1920, and 1440×1440 are all valid, but 1920×1920 is not.
+/// Returns `0` if an unsupported scale factor is provided or if processor is unsupported.
++ (NSInteger)maximumDimensionForSpatialScaleFactor:(float)spatialScaleFactor API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos) NS_REFINED_FOR_SWIFT;
+
+/// The maximum total number of pixels in the source frame for a given spatial scale factor.
+///
+/// The product of `frameWidth` and `frameHeight` must be less than or equal to this value.
+/// Use in conjunction with ``maximumDimensionForSpatialScaleFactor:`` to determine valid frame dimensions.
+/// Returns `0` if an unsupported scale factor is provided or if processor is unsupported.
++ (NSInteger)maximumPixelCountForSpatialScaleFactor:(float)spatialScaleFactor API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos) NS_REFINED_FOR_SWIFT;
 
 @end
 

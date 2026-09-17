@@ -12,6 +12,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// Forward declare the struct
+typedef struct AVCaptureTimecode AVCaptureTimecode;
+
 /// Defines possible sources for generating timecode in using a timecode generator.
 typedef NS_ENUM(NSInteger, AVCaptureTimecodeSourceType) {
     /// No internal or external source is adopted. Timecodes are zero-based, sequentially generated frame counts.
@@ -71,7 +74,7 @@ API_AVAILABLE(macos(26.0), ios(26.0), macCatalyst(26.0), tvos(26.0)) API_UNAVAIL
 /// This structure represents a timecode, adhering to SMPTE standards, which define precise time information and associated timestamps for video or audio synchronization.
 ///
 /// This structure corresponds to the SMPTE 12M-1 Linear Timecode (LTC) format, widely used for professional video and audio synchronization.
-typedef struct {
+struct AVCaptureTimecode {
     /// Time component representing the current timecode in hours.
     uint8_t hours;
     /// Time component representing the current timecode in minutes.
@@ -86,7 +89,7 @@ typedef struct {
     CMTime frameDuration;
     /// Source type of the timecode, indicating the emitter, carriage, or transport mechanism.
     AVCaptureTimecodeSourceType sourceType API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
-} AVCaptureTimecode API_AVAILABLE(macos(26.0), ios(26.0), macCatalyst(26.0), tvos(26.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
+} API_AVAILABLE(macos(26.0), ios(26.0), macCatalyst(26.0), tvos(26.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
 
 /// Creates a sample buffer containing Timecode Media Description metadata for integration with a video track.
 ///

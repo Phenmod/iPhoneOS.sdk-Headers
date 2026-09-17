@@ -4,7 +4,7 @@
  
 	Framework:  AVFoundation
  
-	Copyright 2010-2024 Apple Inc. All rights reserved.
+	Copyright 2010-2026 Apple Inc. All rights reserved.
 
  */
 
@@ -127,6 +127,10 @@ typedef NS_ERROR_ENUM(AVFoundationErrorDomain, AVError) {
 	AVErrorNoSmartFramingsEnabled API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(macos, macCatalyst, tvos, visionos) API_UNAVAILABLE(watchos) = -11890,
 	AVErrorAutoWhiteBalanceNotLocked API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(macos, macCatalyst, tvos, watchos, visionos) = -11891,
 	AVErrorFollowExternalSyncDeviceTimedOut API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(macos, macCatalyst, tvos, watchos, visionos) = -11892,
+	AVErrorFollowExternalSyncFailed API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(macos, tvos, watchos, visionos, macCatalyst) = -11894,
+	AVErrorExternalSyncDeviceFrequencyHigherThanSpecified API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(macos, tvos, watchos, visionos, macCatalyst) = -11895,
+	AVErrorExternalSyncDeviceFrequencyLowerThanSpecified API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(macos, tvos, watchos, visionos, macCatalyst) = -11896,
+	AVErrorNotEnoughSpaceForProVideoStorageReplenishment API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos) = -11897,
 };
 
 #else

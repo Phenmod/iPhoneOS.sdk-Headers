@@ -78,7 +78,7 @@ static const NSUInteger VNDetectBarcodesRequestRevision3 = 3;
     @brief expands set of detected symbologies, improves accuracy, offers supplemental payloads,
     adds inverted color support, and may produce observations outside image bounds in comparison to prior revisions
  */
-API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0))
+API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(27.0))
 static const NSUInteger VNDetectBarcodesRequestRevision4 = 4;
 
 

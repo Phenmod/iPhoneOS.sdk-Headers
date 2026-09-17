@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @discussion    This Metric subclass contains properties that describe disk space usage in various locations in the apps container. Some properties also describe the number of files in common locations, and the types of files.
 @discussion    The data contained in this Metric is computed as a daily snapshot, and should be used as a guide to optimize app disk space usage.
 */
-API_AVAILABLE(ios(26.0), macos(26.0)) API_UNAVAILABLE(tvos, watchos)
+API_DEPRECATED("Use MetricResult instead.", ios(26.0, API_TO_BE_DEPRECATED), macos(26.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos)
 @interface MXDiskSpaceUsageMetric : MXMetric
 
 /*!

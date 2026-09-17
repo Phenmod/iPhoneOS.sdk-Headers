@@ -45,6 +45,8 @@ typedef NS_ENUM(NSInteger, CBError) {
 	CBErrorTooManyLEPairedDevices NS_ENUM_AVAILABLE(11_0, 14_0) = 16,
     CBErrorLeGattExceededBackgroundNotificationLimit API_AVAILABLE(watchos(9.0)) API_UNAVAILABLE(macos,ios, tvos) = 17,
     CBErrorLeGattNearBackgroundNotificationLimit API_AVAILABLE(watchos(9.0)) API_UNAVAILABLE(macos,ios, tvos) = 18,
+    CBErrorChannelSoundingConfigurationFailed API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(macos, watchos, tvos, visionos) = 19,
+    CBErrorChannelSoundingProcedureFailed API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(macos, watchos, tvos, visionos) = 20,
 };
 
 CB_EXTERN NSString * const CBATTErrorDomain;

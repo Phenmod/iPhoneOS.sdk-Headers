@@ -11,7 +11,7 @@
 @class         MXAppLaunchDiagnostic
 @abstract      An MXDiagnostic subclass that encapsulates app launch diagnostic reports.
 */
-API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos, tvos, watchos)
+API_DEPRECATED("Use DiagnosticResult instead.", ios(16.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(macos, tvos, watchos)
 @interface MXAppLaunchDiagnostic : MXDiagnostic
 
 /*!

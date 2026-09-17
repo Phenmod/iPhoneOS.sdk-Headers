@@ -78,20 +78,15 @@ typedef NSString *CKOperationID;
 /// The following is the typical life cycle of a long-lived operation:
 ///
 /// 1. The app creates a long-lived operation and executes it.
-///
-/// The daemon starts saving and sending the callbacks to the running app.
+///    The daemon starts saving and sending the callbacks to the running app.
 /// 2. The app exits.
-///
-/// The daemon continues running the long-lived operation and saves the callbacks.
+///    The daemon continues running the long-lived operation and saves the callbacks.
 /// 3. The app launches and fetches the long-lived operation.
-///
-/// If the operation is running or if it completed within the previous 24 hours, the daemon returns a proxy for the long-lived operation. If the operation completed more than 24 hours previously, the daemon may stop returning it in fetch requests.
+///    If the operation is running or if it completed within the previous 24 hours, the daemon returns a proxy for the long-lived operation. If the operation completed more than 24 hours previously, the daemon may stop returning it in fetch requests.
 /// 4. The app runs the long-lived operation again.
-///
-/// The daemon sends the app all the saved callbacks (it doesn't actually rerun the operation), and continues saving the callbacks and sending them to the running app.
+///    The daemon sends the app all the saved callbacks (it doesn't actually rerun the operation), and continues saving the callbacks and sending them to the running app.
 /// 5. The app receives the completion callback or the app cancels the operation.
-///
-/// The daemon stops including the operation in future fetch results.
+///    The daemon stops including the operation in future fetch results.
 API_AVAILABLE(macos(10.10), ios(8.0), watchos(3.0))
 @interface CKOperation : NSOperation
 
@@ -159,7 +154,6 @@ CK_SUBCLASSING_DEPRECATED // should not be subclassed, or Sendable may no longer
 /// - SeeAlso: `NSURLSessionConfiguration.timeoutIntervalForResource`
 @property (assign) NSTimeInterval timeoutIntervalForResource;
 
-
 @end
 
 #pragma mark - Deprecated CKOperation
@@ -172,7 +166,7 @@ CK_SUBCLASSING_DEPRECATED // should not be subclassed, or Sendable may no longer
 /// @DeprecationSummary {
 ///     Use ``CKOperation/Configuration/container`` instead.
 /// }
-/// 
+///
 /// The container defines where the operation executes. The ``CKContainer/add(_:)`` method of the ``CKContainer`` and ``CKDatabase`` classes implicitly set this property to their container.
 ///
 /// If you execute the operation yourself, either directly or using a custom operation queue, set the value of this property explicitly. If the value is `nil` when you execute an operation, the operation implicitly executes in your app's default container.

@@ -188,6 +188,28 @@ typedef AudioComponentInstance AudioUnit;
 
 	@constant       kAudioUnitType_SpeechSynthesizer
 		An offline audio unit that produces synthesized speech audio output.
+ 
+	@constant       kAudioUnitType_HeadTrackingBinauralRenderer
+		 An Audio Unit that enables third-party developers to provide custom spatial audio rendering
+		 for their compatible Bluetooth headphones.
+		 
+		 This Audio Unit type is only used by a 3rd Party Spatial Audio Extension to receive head
+		 tracking data and perform binaural rendering.
+		 
+		 Headphone manufacturers must publish head tracking spatial audio capabilities for matching
+		 headphones via Audio Accessory Framework. This enables the manufacturer-provided Audio
+		 Accessory Extension to take the head tracking data retrieved from the headphones using
+		 Core Bluetooth APIs and transmit it to the Audio Accessory Daemon. The Audio Unit then
+		 retrieves the head tracking data exposed through the daemon using API vended for this
+		 purpose. See the 3rd Party Spatial Audio Extension programming guide for more information.
+		  
+		 The system automatically loads matching Head Tracking Binaural Renderer Audio Units into
+		 the audio signal chain when spatialization is enabled and audio is routed to the Bluetooth
+		 headphones. When spatialization is disabled, the system removes the Audio Unit from the
+		 signal chain.
+		 
+		 When loaded, the system bypasses Audio Units of this type if power limits are exceeded or
+		 if the system detects audio dropouts.
 */
 CF_ENUM(UInt32) {
 	kAudioUnitType_Output					= 'auou',
@@ -200,7 +222,8 @@ CF_ENUM(UInt32) {
 	kAudioUnitType_Generator				= 'augn',
 	kAudioUnitType_OfflineEffect			= 'auol',
 	kAudioUnitType_MIDIProcessor			= 'aumi',
-	kAudioUnitType_SpeechSynthesizer API_AVAILABLE(ios(16.0), macos(13.0), watchos(9.0), tvos(16.0))  = 'ausp'
+	kAudioUnitType_SpeechSynthesizer API_AVAILABLE(ios(16.0), macos(13.0), watchos(9.0), tvos(16.0))  = 'ausp',
+	kAudioUnitType_HeadTrackingBinauralRenderer API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), watchos(27.0), visionos(27.0)) = 'auht'
 };
 
 #if AU_SUPPORT_INTERAPP_AUDIO
@@ -1600,6 +1623,17 @@ AudioUnitProcessMultiple(			AudioUnit						inUnit,
 					
 					The call should only clear memory, it should NOT allocate or free memory 
 					resources (this is done in the Initialize calls).
+	
+					It is the AudioUnit host's responsibility to synchronize calls to AudioUnitReset()
+					against calls to AudioUnitRender() so that they are not being called concurrently.
+					Generally, this should not be accomplished by calling AudioUnitReset() from a realtime
+					thread, since the clearing of large internal buffers can be sufficiently slow as to
+					trigger an overload.
+
+                    Note: Some Audio Unit implementations do internally synchronize Reset against Render,
+                    because they must synchronize with external event sources (beyond the host).
+					The Apple base implementation, AUBase, provides an optional mutex for this purpose,
+					though most AudioUnits don't need to use it.
 	
 	@param			inUnit
 					the audio unit

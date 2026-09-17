@@ -10,6 +10,9 @@
 #import <SceneKit/SCNGeometry.h>
 
 @protocol MTLDevice;
+
+API_UNAVAILABLE_BEGIN(visionos)
+
 @class ARPlaneGeometry;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -22,22 +25,25 @@ API_AVAILABLE(ios(11.3))
 
 /**
  Creates a new plane geometry using a Metal device.
- 
- @param device A Metal device.
- @return A new plane geometry.
- */
+
+ - Parameter device: A Metal device.
+
+ - Returns: A new plane geometry.
+*/
 + (nullable instancetype)planeGeometryWithDevice:(id<MTLDevice>)device;
 
 /**
  Updates the geometry with the vertices of a plane geometry.
- 
- @param planeGeometry A plane geometry.
- */
+
+ - Parameter planeGeometry: A plane geometry.
+*/
 - (void)updateFromPlaneGeometry:(ARPlaneGeometry *)planeGeometry;
 
 @end
 
 NS_ASSUME_NONNULL_END
+
+API_UNAVAILABLE_END
 #else
 #import <ARKitUI/ARSCNPlaneGeometry.h> 
 #endif // #if (defined(USE_ARKIT_PUBLIC_HEADERS) \&\& USE_ARKIT_PUBLIC_HEADERS) || !__has_include(<ARKitUI/ARSCNPlaneGeometry.h>)

@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @class AVAudioUnitVarispeed
     @abstract an AVAudioUnitTimeEffect that can be used to control the playback rate 
 */
-API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0)) API_UNAVAILABLE(watchos) 
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0)) API_UNAVAILABLE(watchos) 
 @interface AVAudioUnitVarispeed : AVAudioUnitTimeEffect
 
 /*! @property rate

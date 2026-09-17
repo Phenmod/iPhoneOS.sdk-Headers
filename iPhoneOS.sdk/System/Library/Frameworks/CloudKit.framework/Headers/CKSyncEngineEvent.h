@@ -147,7 +147,7 @@ NS_SWIFT_SENDABLE
 /// This event happens occasionally when the sync engine modifies the state internally during normal sync operation.
 /// This event also happens when you change the state yourself.
 ///
-/// The sync engine does not persist this state to disk, so you need to persist it in alongside your own local data.
+/// The sync engine does not persist this state to disk, so you need to persist it alongside your own local data.
 /// The next time your process launches, use this latest state serialization in ``CKSyncEngineConfiguration/stateSerialization`` to initialize your sync engine.
 ///
 /// This state is directly tied to the changes you fetch and send with the sync engine.
@@ -462,7 +462,7 @@ NS_SWIFT_SENDABLE
 /// The record that CloudKit is unable to modify.
 @property (readonly, strong, nonatomic) CKRecord *record;
 
-/// A error that describes the reason for the unsuccessful attempt to modify the associated record.
+/// An error that describes the reason for the unsuccessful attempt to modify the associated record.
 @property (readonly, strong, nonatomic) NSError *error;
 
 @end
@@ -480,7 +480,7 @@ CK_SUBCLASSING_RESTRICTED
 /// The record zone that CloudKit is unable to modify.
 @property (readonly, strong, nonatomic) CKRecordZone *recordZone;
 
-/// A error that describes the reason for the unsuccessful attempt to modify the associated record zone.
+/// An error that describes the reason for the unsuccessful attempt to modify the associated record zone.
 @property (readonly, strong, nonatomic) NSError *error;
 
 @end

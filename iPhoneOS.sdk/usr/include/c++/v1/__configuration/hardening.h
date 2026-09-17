@@ -115,6 +115,8 @@
 #  define _LIBCPP_HARDENING_MODE_DEBUG     (1 << 3)
 // clang-format on
 
+
+
 #ifndef _LIBCPP_HARDENING_MODE
 
 #  ifndef _LIBCPP_HARDENING_MODE_DEFAULT
@@ -172,11 +174,18 @@ _LIBCPP_HARDENING_MODE_DEBUG
 
 // If the user attempts to configure the assertion semantic, check that it is allowed in the current environment.
 #if defined(_LIBCPP_ASSERTION_SEMANTIC)
-#  if !_LIBCPP_HAS_EXPERIMENTAL_LIBRARY
+#  if !_LIBCPP_HAS_EXPERIMENTAL_HARDENING_OBSERVE_SEMANTIC
 #    error "Assertion semantics are an experimental feature."
 #  endif
 #  if defined(_LIBCPP_CXX03_LANG)
-#    error "Assertion semantics are not available in the C++03 mode."
+// #    error "Assertion semantics are not available in the C++03 mode."
+// Temporary (and ugly) workaround for projects that need `compilerClientsConfig` overrides *and* compile in C++03 mode
+// -- silently downgrade them from `observe` to just `ignore`. At the moment, it's only a single module within a single
+// project, so the impact is very small.
+#    if _LIBCPP_ASSERTION_SEMANTIC == _LIBCPP_ASSERTION_SEMANTIC_OBSERVE
+#      undef _LIBCPP_ASSERTION_SEMANTIC
+#      define _LIBCPP_ASSERTION_SEMANTIC _LIBCPP_ASSERTION_SEMANTIC_IGNORE
+#    endif
 #  endif
 #endif // defined(_LIBCPP_ASSERTION_SEMANTIC)
 

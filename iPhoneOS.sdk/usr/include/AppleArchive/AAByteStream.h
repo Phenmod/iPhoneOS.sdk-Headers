@@ -166,6 +166,8 @@ APPLE_ARCHIVE_AVAILABLE(macos(11.0), ios(14.0), watchos(7.0), tvos(14.0));
   @discussion This stream is write-only, and supports only sequential writes.
   pwrite, read, pread, seek are not implemented.
   \p compressed_stream must implement \p write.
+  \p block_size must not exceed the internal maximum (currently 128 MiB).
+  The number of worker threads may be reduced to limit memory consumption.
 
   @param compressed_stream is the output stream receiving the compressed data
   @param compression_algorithm is the compression algorithm to use
@@ -192,6 +194,8 @@ APPLE_ARCHIVE_AVAILABLE(macos(11.0), ios(14.0), watchos(7.0), tvos(14.0));
   If smaller than block size, the last block in the existing stream will be modified to add incoming data.
   \p compressed_stream must implement \p pread, \p seek, and \p write.
   The returned stream MUST be closed before \p compressed_stream
+  The stream's block size, as read from the existing header, must not exceed the internal maximum (currently 128 MiB).
+  The number of worker threads may be reduced to limit memory consumption.
 
   @param compressed_stream is the output stream providing/receiving the compressed data
   @param flags stream flags
@@ -216,6 +220,8 @@ APPLE_ARCHIVE_AVAILABLE(macos(11.0), ios(14.0), watchos(7.0), tvos(14.0));
   This stream is read-only, and supports only sequential reads.
   pread, write, pwrite, seek are not implemented.
   The returned stream MUST be closed before \p compressed_stream
+  For block compression (pbz*) streams, the block size read from the stream header must not exceed the
+  internal maximum (currently 128 MiB), and the number of worker threads may be reduced to limit memory consumption.
 
   @param compressed_stream is the input stream providing the compressed data, only read is called
   @param flags stream flags
@@ -234,10 +240,12 @@ APPLE_ARCHIVE_AVAILABLE(macos(11.0), ios(14.0), watchos(7.0), tvos(14.0));
 
   @description
   The input stream MUST use the block compression format (pbz*).
+  The block size read from the stream header must not exceed the internal maximum (currently 128 MiB).
   The size specified in \p alloc_limit is the requested limit for memory allocation. Depending on the
   block size and compressor algorithm, we may have to allocate more memory in some cases.  Increasing this value
   allows more blocks to be cached, and increases performance.  Set it to 0 to request minimal allocation, and to
   SIZE_MAX to request best performance.
+  The number of worker threads may be reduced to limit memory consumption.
   This stream is read-only and supports random access reads.
   write and pwrite are not implemented, but read, pread and seek are.
   The returned stream MUST be closed before \p compressed_stream

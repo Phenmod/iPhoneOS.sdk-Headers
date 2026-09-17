@@ -2,12 +2,15 @@
 //  CSImportExtension.h
 //  CoreSpotlight
 //
-//  Copyright © 2020–2021 Apple Inc. All rights reserved.
+//  Copyright © 2020–2026 Apple Inc. All rights reserved.
 //
 
 #import <CoreSpotlight/CSSearchableItemAttributeSet.h>
 
-API_AVAILABLE(macos(12.0), ios(15.0)) API_UNAVAILABLE(tvos)
+#import <Foundation/Foundation.h>
+
+API_AVAILABLE(macos(12.0), ios(15.0), visionos(1.0))
+API_UNAVAILABLE(tvos, watchos)
 @interface CSImportExtension : NSObject <NSExtensionRequestHandling>
 
 // The developer should implement this method to import the file located at contentURL, and update the provided attributes.

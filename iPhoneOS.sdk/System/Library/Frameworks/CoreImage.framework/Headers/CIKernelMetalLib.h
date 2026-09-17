@@ -72,41 +72,42 @@ namespace coreimage
     #endif
     {
         // Returns the pixel value produced from sampler at the position p, where p is specified in sampler space.
-        float4 sample(float2 p) const;
+        float4 sample(float2 p) const thread;
         
         // Returns the position in the coordinate space of the source that is associated with the position defined in working-space coordinates.
-        float2 transform(float2 p) const;
+        float2 transform(float2 p) const thread;
         
         // Returns the position, in sampler space, of the sampler that is associated with the current output pixel (that is, after any transformation matrix
         // associated with sampler is applied). The sample space refers to the coordinate space of that you are texturing from. Note that if your source data is tiled,
         // the sample coordinate will have an offset (dx/dy). You can convert a destination location to the sampler location using the transform function.
-        float2 coord() const;
+        float2 coord() const thread;
         
         // Returns the extent of the sampler in world coordinates, as a four-element vector [x, y, width, height].
-        float4 extent() const;
         
-        inline float2 origin() const { return extent().xy; }
-        inline float2 size() const { return extent().zw; }
         
+        float4 extent() const thread;
+        inline float2 origin() const thread { return extent().xy; }
+        inline float2 size() const thread { return extent().zw; }
+
 #ifdef __CIKERNEL_METAL_SUPPORTS_GATHER__
         // Returns four samples (placed in CCW order starting with sample to the lower left) that would be used for bilinear interpolation when sampling at the position p,
         // where p is specified in sampler space.
-        float4 gatherX(float2 p) const;
-        float4 gatherY(float2 p) const;
-        float4 gatherZ(float2 p) const;
-        float4 gatherW(float2 p) const;
-        
+        float4 gatherX(float2 p) const thread;
+        float4 gatherY(float2 p) const thread;
+        float4 gatherZ(float2 p) const thread;
+        float4 gatherW(float2 p) const thread;
+
         // Returns four (unordered) samples that would be used for bilinear interpolation when sampling at the position p, where p is specified in sampler space.
-        float4 gatherX_unordered(float2 p) const;
-        float4 gatherY_unordered(float2 p) const;
-        float4 gatherZ_unordered(float2 p) const;
-        float4 gatherW_unordered(float2 p) const;
+        float4 gatherX_unordered(float2 p) const thread;
+        float4 gatherY_unordered(float2 p) const thread;
+        float4 gatherZ_unordered(float2 p) const thread;
+        float4 gatherW_unordered(float2 p) const thread;
 #endif
         
     private:
         #if __CIKERNEL_METAL_VERSION__ >= 300
         friend Sampler make_sampler(texture2d<float, access::sample> t, metal::sampler s, constant float4x4& m, float2 dc );
-        Sampler(texture2d<float, access::sample> t_, metal::sampler s_, constant float4x4& m_, float2 dc_)
+        Sampler(texture2d<float, access::sample> t_, metal::sampler s_, constant float4x4& m_, float2 dc_) thread
             : t(t_), s(s_),m(m_), dc(dc_) {}
         #endif
         
@@ -124,39 +125,41 @@ namespace coreimage
     #endif
     {
         // Returns the pixel value produced from sampler at the position p, where p is specified in sampler space.
-        half4 sample(float2 p) const;
         
+        half4 sample(float2 p) const thread;
         // Returns the position in the coordinate space of the source that is associated with the position defined in working-space coordinates.
-        float2 transform(float2 p) const;
         
+        float2 transform(float2 p) const thread;
         // Returns the position, in sampler space, of the sampler that is associated with the current output pixel (that is, after any transformation matrix
         // associated with sampler is applied). The sample space refers to the coordinate space of that you are texturing from. Note that if your source data is tiled,
         // the sample coordinate will have an offset (dx/dy). You can convert a destination location to the sampler location using the transform function.
-        float2 coord() const;
         
+        float2 coord() const thread;
         // Returns the extent of the sampler in world coordinates, as a four-element vector [x, y, width, height].
-        float4 extent() const;
         
-        inline float2 origin() const { return extent().xy; }
-        inline float2 size() const { return extent().zw; }
         
+        float4 extent() const thread;
+        inline float2 origin() const thread { return extent().xy; }
+        inline float2 size() const thread { return extent().zw; }
+
         // Returns four samples (placed in CCW order starting with sample to the lower left) that would be used for bilinear interpolation when sampling at the position p,
         // where p is specified in sampler space.
-        half4 gatherX(float2 p) const;
-        half4 gatherY(float2 p) const;
-        half4 gatherZ(float2 p) const;
-        half4 gatherW(float2 p) const;
         
+        half4 gatherX(float2 p) const thread;
+        half4 gatherY(float2 p) const thread;
+        half4 gatherZ(float2 p) const thread;
+        half4 gatherW(float2 p) const thread;
+
         // Returns four (unordered) samples that would be used for bilinear interpolation when sampling at the position p, where p is specified in sampler space.
-        half4 gatherX_unordered(float2 p) const;
-        half4 gatherY_unordered(float2 p) const;
-        half4 gatherZ_unordered(float2 p) const;
-        half4 gatherW_unordered(float2 p) const;
+        half4 gatherX_unordered(float2 p) const thread;
+        half4 gatherY_unordered(float2 p) const thread;
+        half4 gatherZ_unordered(float2 p) const thread;
+        half4 gatherW_unordered(float2 p) const thread;
         
     private:
         #if __CIKERNEL_METAL_VERSION__ >= 300
         friend Sampler_h make_sampler(texture2d<half, access::sample> t, metal::sampler s, constant float4x4& m, float2 dc );
-        Sampler_h(texture2d<half, access::sample> t_, metal::sampler s_, constant float4x4& m_, float2 dc_)
+        Sampler_h(texture2d<half, access::sample> t_, metal::sampler s_, constant float4x4& m_, float2 dc_) thread
             : t(t_), s(s_),m(m_), dc(dc_) {}
         #endif
         
@@ -194,7 +197,7 @@ namespace coreimage
     {
         // Returns the position, in working space coordinates, of the pixel currently being computed.
         // The destination space refers to the coordinate space of the image you are rendering.
-        inline float2 coord() const { return c; }
+        inline float2 coord() const thread { return c; }
         
     private:
         float2 c;
@@ -211,15 +214,15 @@ namespace coreimage
         {
             // Returns the position, in working space coordinates, of the pixel currently being computed.
             // The destination space refers to the coordinate space of the image you are rendering.
-            inline float2 coord() const { return c; }
             
+            inline float2 coord() const thread { return c; }
             // Writes 4 color values to the destination texture for the current 2x2 group of pixels.
-            void write(float4 v0, float4 v1, float4 v2, float4 v3);
+            void write(float4 v0, float4 v1, float4 v2, float4 v3) thread;
             
         private:
             #if __CIKERNEL_METAL_VERSION__ >= 300
             friend group::Destination make_destination (float2 c, uint2 gid, float4 r, float4x4 m, metal::texture2d<float, access::write> t );
-            Destination(float2 c_, uint2 gid_, float4 r_, float4x4 m_, texture2d<float, access::write> t_) : c(c_), gid(gid_), r(r_), m(m_), t(t_) {}
+            Destination(float2 c_, uint2 gid_, float4 r_, float4x4 m_, texture2d<float, access::write> t_) thread : c(c_), gid(gid_), r(r_), m(m_), t(t_) {}
             #endif
             
             float2 c;
@@ -237,15 +240,15 @@ namespace coreimage
         {
             // Returns the position, in working space coordinates, of the pixel currently being computed.
             // The destination space refers to the coordinate space of the image you are rendering.
-            inline float2 coord() const { return c; }
             
+            inline float2 coord() const thread { return c; }
             // Writes 4 color values to the destination texture for the current 2x2 group of pixels.
-            void write(half4 v0, half4 v1, half4 v2, half4 v3);
+            void write(half4 v0, half4 v1, half4 v2, half4 v3) thread;
             
         private:
             #if __CIKERNEL_METAL_VERSION__ >= 300
             friend group::Destination_h make_destination (float2 c, uint2 gid, float4 r, float4x4 m, metal::texture2d<half, access::write> t );
-            Destination_h(float2 c_, uint2 gid_, float4 r_, float4x4 m_, texture2d<half, access::write> t_) : c(c_), gid(gid_), r(r_), m(m_), t(t_) {}
+            Destination_h(float2 c_, uint2 gid_, float4 r_, float4x4 m_, texture2d<half, access::write> t_) thread : c(c_), gid(gid_), r(r_), m(m_), t(t_) {}
             #endif
             
             float2 c;

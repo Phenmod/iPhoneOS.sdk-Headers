@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
  @abstract      A class that represents a record of signpost instance.
  @discussion    Signpost instances are either Signpost intervals or events and MXSignpostRecord captures information reagarding such signpost instances
  */
-API_AVAILABLE(macos(14.0), ios(17.0)) API_UNAVAILABLE(tvos, watchos)
+API_DEPRECATED("Use SignpostRecord instead.", macos(14.0, API_TO_BE_DEPRECATED), ios(17.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos)
 @interface MXSignpostRecord : NSObject <NSSecureCoding>
 
 /*!
@@ -66,14 +66,14 @@ API_AVAILABLE(macos(14.0), ios(17.0)) API_UNAVAILABLE(tvos, watchos)
  @abstract      Convenience method to return a JSON representation of this SignpostRecord.
  @result        An NSData object containing the JSON representation
  */
-- (NSData *)JSONRepresentation;
+- (NSData *)JSONRepresentation API_DEPRECATED("Use SignpostRecord instead.", macos(14.0, API_TO_BE_DEPRECATED), ios(17.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos);
 
 /*!
 @method        dictionaryRepresentation
 @abstract      Convenience method to return a NSDictionary representation of this SignpostRecord.
 @result        An NSDictionary object containing the dictionary representation
 */
-- (NSDictionary *)dictionaryRepresentation;
+- (NSDictionary *)dictionaryRepresentation API_DEPRECATED("Use SignpostRecord instead.", macos(14.0, API_TO_BE_DEPRECATED), ios(17.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos);
 
 @end
 

@@ -131,6 +131,12 @@ Globals:
   SwiftName: textureTarget
 - Name: kCIImageTextureFormat
   SwiftName: textureFormat
+- Name: kCIImageSubsampleFactor
+  SwiftName: subsampleFactor
+- Name: kCIImageTypeIdentifierHint
+  SwiftName: typeIdentifierHint
+- Name: kCIImageUseHardwareAcceleration
+  SwiftName: useHardwareAcceleration
 - Name: kCIImageAuxiliaryDepth
   SwiftName: auxiliaryDepth
 - Name: kCIImageAuxiliaryDisparity
@@ -514,6 +520,12 @@ Classes:
     MethodKind: Class
     SwiftName: "init(name:parameters:)"
 
+- Name: CIRAWFilter
+  Methods:
+  - Selector: "supportedCameraModelsWithVersion:"
+    MethodKind: Class
+    SwiftName: "supportedCameraModels(with:)"
+
 #--------------------------------- Versioned ----------------------------------#
 
 SwiftVersions:
@@ -734,6 +746,14 @@ SwiftVersions:
     SwiftName: kCIFormatIh
   - Name: kCIFormatIf
     SwiftName: kCIFormatIf
+  - Name: kCIFormatA10
+    SwiftName: A10
+  - Name: kCIFormatA12
+    SwiftName: A12
+  - Name: kCIFormatLA10
+    SwiftName: LA10
+  - Name: kCIFormatLA12
+    SwiftName: LA12
   - Name: kCIFormatRGB8
     SwiftName: kCIFormatRGB8
   - Name: kCIFormatRGB16

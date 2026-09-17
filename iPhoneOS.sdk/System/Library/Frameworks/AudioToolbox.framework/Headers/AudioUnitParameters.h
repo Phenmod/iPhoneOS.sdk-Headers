@@ -1081,6 +1081,8 @@ CF_ENUM(AudioUnitParameterID) {
 	kReverb2Param_DecayTimeAtNyquist				= 5,
 		// Global, Integer, 1->1000
 	kReverb2Param_RandomizeReflections				= 6,
+		// Global, Boolean, 0->1, 1
+	kReverb2Param_LegacyMode						= 7,
 };
 
 #endif //AudioUnit_AudioUnitParameters_h

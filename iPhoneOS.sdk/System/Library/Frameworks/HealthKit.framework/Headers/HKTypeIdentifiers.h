@@ -2,7 +2,7 @@
 //  HKTypeIdentifiers.h
 //  HealthKit
 //
-//  Copyright © 2014-2025 Apple, Inc. All rights reserved.
+//  Copyright © 2014-2026 Apple, Inc. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -72,6 +72,7 @@ HK_EXTERN HKQuantityTypeIdentifier const HKQuantityTypeIdentifierHeadphoneAudioE
 HK_EXTERN HKQuantityTypeIdentifier const HKQuantityTypeIdentifierAtrialFibrillationBurden API_AVAILABLE(ios(16.0), watchos(9.0), macCatalyst(16.0), macos(13.0), visionos(1.0));            // %, Discrete (Temporally Weighted)
 HK_EXTERN HKQuantityTypeIdentifier const HKQuantityTypeIdentifierHeartRate API_AVAILABLE(ios(8.0), watchos(2.0), macCatalyst(13.0), macos(13.0), visionos(1.0));                            // count/s, Discrete (Temporally Weighted)
 HK_EXTERN HKQuantityTypeIdentifier const HKQuantityTypeIdentifierHeartRateRecoveryOneMinute API_AVAILABLE(ios(16.0), watchos(9.0), macCatalyst(16.0), macos(13.0), visionos(1.0));          // count/min, Discrete (Arithmetic)
+HK_EXTERN HKQuantityTypeIdentifier const HKQuantityTypeIdentifierHeartRateVariabilityRMSSD API_AVAILABLE(ios(27.0), watchos(27.0), macCatalyst(27.0), macos(27.0), visionos(27.0));         // ms, Discrete (Arithmetic)
 HK_EXTERN HKQuantityTypeIdentifier const HKQuantityTypeIdentifierHeartRateVariabilitySDNN API_AVAILABLE(ios(11.0), watchos(4.0), macCatalyst(13.0), macos(13.0), visionos(1.0));            // ms, Discrete (Arithmetic)
 HK_EXTERN HKQuantityTypeIdentifier const HKQuantityTypeIdentifierPeripheralPerfusionIndex API_AVAILABLE(ios(8.0), watchos(2.0), macCatalyst(13.0), macos(13.0), visionos(1.0));             // %, Discrete (Arithmetic)
 HK_EXTERN HKQuantityTypeIdentifier const HKQuantityTypeIdentifierRestingHeartRate API_AVAILABLE(ios(11.0), watchos(4.0), macCatalyst(13.0), macos(13.0), visionos(1.0));                    // count/min, Discrete (Temporally Weighted)
@@ -190,6 +191,7 @@ HK_EXTERN HKCategoryTypeIdentifier const HKCategoryTypeIdentifierHandwashingEven
 HK_EXTERN HKCategoryTypeIdentifier const HKCategoryTypeIdentifierToothbrushingEvent API_AVAILABLE(ios(13.0), watchos(6.0), macCatalyst(13.0), macos(13.0), visionos(1.0));                  // HKCategoryValue
 
 // Reproductive Health
+HK_EXTERN HKCategoryTypeIdentifier const HKCategoryTypeIdentifierBleedingAfterMenopause API_AVAILABLE(ios(27.0), watchos(27.0), macCatalyst(27.0), macos(27.0), visionos(27.0));            // HKCategoryValueVaginalBleeding
 HK_EXTERN HKCategoryTypeIdentifier const HKCategoryTypeIdentifierBleedingAfterPregnancy API_AVAILABLE(ios(18.0), watchos(11.0), macCatalyst(18.0), macos(15.0), visionos(2.0));             // HKCategoryValueVaginalBleeding
 HK_EXTERN HKCategoryTypeIdentifier const HKCategoryTypeIdentifierBleedingDuringPregnancy API_AVAILABLE(ios(18.0), watchos(11.0), macCatalyst(18.0), macos(15.0), visionos(2.0));            // HKCategoryValueVaginalBleeding
 HK_EXTERN HKCategoryTypeIdentifier const HKCategoryTypeIdentifierCervicalMucusQuality API_AVAILABLE(ios(9.0), watchos(2.0), macCatalyst(13.0), macos(13.0), visionos(1.0));                 // HKCategoryValueCervicalMucusQuality
@@ -198,6 +200,7 @@ HK_EXTERN HKCategoryTypeIdentifier const HKCategoryTypeIdentifierInfrequentMenst
 HK_EXTERN HKCategoryTypeIdentifier const HKCategoryTypeIdentifierIntermenstrualBleeding API_AVAILABLE(ios(9.0), watchos(2.0), macCatalyst(13.0), macos(13.0), visionos(1.0));               // HKCategoryValue
 HK_EXTERN HKCategoryTypeIdentifier const HKCategoryTypeIdentifierIrregularMenstrualCycles API_AVAILABLE(ios(16.0), watchos(9.0), macCatalyst(16.0), macos(13.0), visionos(1.0));            // HKCategoryValue
 HK_EXTERN HKCategoryTypeIdentifier const HKCategoryTypeIdentifierLactation API_AVAILABLE(ios(14.3), watchos(7.2), macCatalyst(14.3), macos(13.0), visionos(1.0));                           // HKCategoryValue
+HK_EXTERN HKCategoryTypeIdentifier const HKCategoryTypeIdentifierMenopausalState API_AVAILABLE(ios(27.0), watchos(27.0), macCatalyst(27.0), macos(27.0), visionos(27.0));                   // HKCategoryValueMenopausalState
 HK_EXTERN HKCategoryTypeIdentifier const HKCategoryTypeIdentifierMenstrualFlow API_AVAILABLE(ios(9.0), watchos(2.0), macCatalyst(13.0), macos(13.0), visionos(1.0));                        // HKCategoryValueVaginalBleeding
 HK_EXTERN HKCategoryTypeIdentifier const HKCategoryTypeIdentifierOvulationTestResult API_AVAILABLE(ios(9.0), watchos(2.0), macCatalyst(13.0), macos(13.0), visionos(1.0));                  // HKCategoryValueOvulationTestResult
 HK_EXTERN HKCategoryTypeIdentifier const HKCategoryTypeIdentifierPersistentIntermenstrualBleeding API_AVAILABLE(ios(16.0), watchos(9.0), macCatalyst(16.0), macos(13.0), visionos(1.0));    // HKCategoryValue

@@ -11,6 +11,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+API_UNAVAILABLE_BEGIN(visionos)
+
+/**
+ A collection of 3D points representing features in the environment.
+ */
 API_AVAILABLE(ios(11.0))
 NS_SWIFT_SENDABLE
 @interface ARPointCloud : NSObject <NSSecureCoding>
@@ -30,11 +35,23 @@ NS_SWIFT_SENDABLE
  */
 @property (nonatomic, readonly) const uint64_t *identifiers NS_REFINED_FOR_SWIFT;
 
-/** Unavailable */
+/**
+ Unavailable. ARPointCloud objects are created by the system.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)init NS_UNAVAILABLE;
+
+/**
+ Unavailable. ARPointCloud objects are created by the system.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_UNAVAILABLE;
 
 @end
+
+API_UNAVAILABLE_END
 
 NS_ASSUME_NONNULL_END
 #else

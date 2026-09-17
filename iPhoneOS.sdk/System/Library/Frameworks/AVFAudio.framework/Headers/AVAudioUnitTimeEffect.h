@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
     unit is an example of a time effect unit.
  
 */
-API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0)) API_UNAVAILABLE(watchos)
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0)) API_UNAVAILABLE(watchos)
 @interface AVAudioUnitTimeEffect : AVAudioUnit
 
 #if AVAUDIOUNIT_HAVE_AUDIOUNIT

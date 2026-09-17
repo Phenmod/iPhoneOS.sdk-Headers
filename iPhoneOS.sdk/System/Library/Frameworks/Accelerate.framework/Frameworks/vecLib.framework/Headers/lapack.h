@@ -38406,6 +38406,118 @@ zrscl_(
 __LAPACK_ALIAS(zrscl)
 API_AVAILABLE(macos(15.5), ios(18.5), watchos(11.5), tvos(18.5));
 
+void
+clarf1f_(
+  const char * _Nonnull side,
+  const __LAPACK_int * _Nonnull m,
+  const __LAPACK_int * _Nonnull n,
+  const __LAPACK_float_complex * _Nullable v,
+  const __LAPACK_int * _Nonnull incv,
+  const __LAPACK_float_complex * _Nonnull tau,
+  __LAPACK_float_complex * _Nullable c,
+  const __LAPACK_int * _Nonnull ldc,
+  __LAPACK_float_complex * _Nullable work)
+__LAPACK_ALIAS(clarf1f)
+API_AVAILABLE(macos(27.0), ios(27.0), watchos(27.0), tvos(27.0));
+
+void
+clarf1l_(
+  const char * _Nonnull side,
+  const __LAPACK_int * _Nonnull m,
+  const __LAPACK_int * _Nonnull n,
+  const __LAPACK_float_complex * _Nullable v,
+  const __LAPACK_int * _Nonnull incv,
+  const __LAPACK_float_complex * _Nonnull tau,
+  __LAPACK_float_complex * _Nullable c,
+  const __LAPACK_int * _Nonnull ldc,
+  __LAPACK_float_complex * _Nullable work)
+__LAPACK_ALIAS(clarf1l)
+API_AVAILABLE(macos(27.0), ios(27.0), watchos(27.0), tvos(27.0));
+
+void
+dlarf1f_(
+  const char * _Nonnull side,
+  const __LAPACK_int * _Nonnull m,
+  const __LAPACK_int * _Nonnull n,
+  const double * _Nullable v,
+  const __LAPACK_int * _Nonnull incv,
+  const double * _Nonnull tau,
+  double * _Nullable c,
+  const __LAPACK_int * _Nonnull ldc,
+  double * _Nullable work)
+__LAPACK_ALIAS(dlarf1f)
+API_AVAILABLE(macos(27.0), ios(27.0), watchos(27.0), tvos(27.0));
+
+void
+dlarf1l_(
+  const char * _Nonnull side,
+  const __LAPACK_int * _Nonnull m,
+  const __LAPACK_int * _Nonnull n,
+  const double * _Nullable v,
+  const __LAPACK_int * _Nonnull incv,
+  const double * _Nonnull tau,
+  double * _Nullable c,
+  const __LAPACK_int * _Nonnull ldc,
+  double * _Nullable work)
+__LAPACK_ALIAS(dlarf1l)
+API_AVAILABLE(macos(27.0), ios(27.0), watchos(27.0), tvos(27.0));
+
+void
+slarf1f_(
+  const char * _Nonnull side,
+  const __LAPACK_int * _Nonnull m,
+  const __LAPACK_int * _Nonnull n,
+  const float * _Nullable v,
+  const __LAPACK_int * _Nonnull incv,
+  const float * _Nonnull tau,
+  float * _Nullable c,
+  const __LAPACK_int * _Nonnull ldc,
+  float * _Nullable work)
+__LAPACK_ALIAS(slarf1f)
+API_AVAILABLE(macos(27.0), ios(27.0), watchos(27.0), tvos(27.0));
+
+void
+slarf1l_(
+  const char * _Nonnull side,
+  const __LAPACK_int * _Nonnull m,
+  const __LAPACK_int * _Nonnull n,
+  const float * _Nullable v,
+  const __LAPACK_int * _Nonnull incv,
+  const float * _Nonnull tau,
+  float * _Nullable c,
+  const __LAPACK_int * _Nonnull ldc,
+  float * _Nullable work)
+__LAPACK_ALIAS(slarf1l)
+API_AVAILABLE(macos(27.0), ios(27.0), watchos(27.0), tvos(27.0));
+
+void
+zlarf1f_(
+  const char * _Nonnull side,
+  const __LAPACK_int * _Nonnull m,
+  const __LAPACK_int * _Nonnull n,
+  const __LAPACK_double_complex * _Nullable v,
+  const __LAPACK_int * _Nonnull incv,
+  const __LAPACK_double_complex * _Nonnull tau,
+  __LAPACK_double_complex * _Nullable c,
+  const __LAPACK_int * _Nonnull ldc,
+  __LAPACK_double_complex * _Nullable work)
+__LAPACK_ALIAS(zlarf1f)
+API_AVAILABLE(macos(27.0), ios(27.0), watchos(27.0), tvos(27.0));
+
+void
+zlarf1l_(
+  const char * _Nonnull side,
+  const __LAPACK_int * _Nonnull m,
+  const __LAPACK_int * _Nonnull n,
+  const __LAPACK_double_complex * _Nullable v,
+  const __LAPACK_int * _Nonnull incv,
+  const __LAPACK_double_complex * _Nonnull tau,
+  __LAPACK_double_complex * _Nullable c,
+  const __LAPACK_int * _Nonnull ldc,
+  __LAPACK_double_complex * _Nullable work)
+__LAPACK_ALIAS(zlarf1l)
+API_AVAILABLE(macos(27.0), ios(27.0), watchos(27.0), tvos(27.0));
+
 
 #ifdef __cplusplus
 } //extern "C" {

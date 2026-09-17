@@ -6,8 +6,8 @@
 //  Copyright © 2017 Apple Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <CoreGraphics/CGGeometry.h>
+#import <Foundation/Foundation.h>
 #import <simd/simd.h>
 
 @class ARAnchor;
@@ -18,25 +18,27 @@
 API_DEPRECATED("Use raycasting", ios(11.0, 14.0))
 typedef NS_OPTIONS(NSUInteger, ARHitTestResultType) {
     /** Result type from intersecting the nearest feature point. */
-    ARHitTestResultTypeFeaturePoint                                        = (1 << 0),
-    
+    ARHitTestResultTypeFeaturePoint = (1 << 0),
+
     /** Result type from intersecting a horizontal plane estimate, determined for the current frame. */
-    ARHitTestResultTypeEstimatedHorizontalPlane                            = (1 << 1),
-    
+    ARHitTestResultTypeEstimatedHorizontalPlane = (1 << 1),
+
     /** Result type from intersecting a vertical plane estimate, determined for the current frame. */
-    ARHitTestResultTypeEstimatedVerticalPlane API_AVAILABLE(ios(11.3))     = (1 << 2),
-    
+    ARHitTestResultTypeEstimatedVerticalPlane API_AVAILABLE(ios(11.3)) = (1 << 2),
+
     /** Result type from intersecting with an existing plane anchor. */
-    ARHitTestResultTypeExistingPlane                                       = (1 << 3),
-    
+    ARHitTestResultTypeExistingPlane = (1 << 3),
+
     /** Result type from intersecting with an existing plane anchor, taking into account the plane’s extent. */
-    ARHitTestResultTypeExistingPlaneUsingExtent                            = (1 << 4),
-    
+    ARHitTestResultTypeExistingPlaneUsingExtent = (1 << 4),
+
     /** Result type from intersecting with an existing plane anchor, taking into account the plane’s geometry. */
     ARHitTestResultTypeExistingPlaneUsingGeometry API_AVAILABLE(ios(11.3)) = (1 << 5),
 } NS_SWIFT_NAME(ARHitTestResult.ResultType);
 
 NS_ASSUME_NONNULL_BEGIN
+
+API_UNAVAILABLE_BEGIN(visionos)
 
 /**
  A result of an intersection found during a hit-test.
@@ -68,16 +70,28 @@ API_DEPRECATED("Use raycasting", ios(11.0, 14.0))
 
 /**
  The anchor that the hit-test intersected.
- 
- @discussion An anchor will only be provided for existing plane result types.
- */
+
+ An anchor will only be provided for existing plane result types.
+*/
 @property (nonatomic, strong, nullable, readonly) ARAnchor *anchor;
 
-/** Unavailable */
+/**
+ Unavailable.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)init NS_UNAVAILABLE;
+
+/**
+ Unavailable.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_UNAVAILABLE;
 
 @end
+
+API_UNAVAILABLE_END
 
 NS_ASSUME_NONNULL_END
 #else

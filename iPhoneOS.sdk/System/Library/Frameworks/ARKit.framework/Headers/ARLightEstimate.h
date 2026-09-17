@@ -6,11 +6,13 @@
 //  Copyright © 2016-2021 Apple Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
+#import <Foundation/Foundation.h>
 #import <simd/simd.h>
 
 NS_ASSUME_NONNULL_BEGIN
+
+API_UNAVAILABLE_BEGIN(visionos)
 
 /**
  A light estimate representing the light in the scene.
@@ -21,24 +23,33 @@ NS_SWIFT_SENDABLE
 
 /**
  Ambient intensity of the lighting.
- 
- @discussion In a well lit environment, this value is close to 1000. It typically ranges from 0 (very dark) to around 2000 (very bright).
- */
+
+ In a well lit environment, this value is close to `1000`. It typically ranges from `0` (very dark) to around `2000` (very bright).
+*/
 @property (nonatomic, readonly) CGFloat ambientIntensity;
 
 /**
  The ambient color temperature of the lighting.
 
- @discussion This specifies the ambient color temperature of the lighting in Kelvin (6500 corresponds to pure white).
+ This specifies the ambient color temperature of the lighting in Kelvin (`6500` corresponds to pure white).
 */
 @property (nonatomic, readonly) CGFloat ambientColorTemperature;
 
-/** Unavailable */
+/**
+ Unavailable.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)init NS_UNAVAILABLE;
+
+/**
+ Unavailable.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_UNAVAILABLE;
 
 @end
-
 
 /**
  A directional light estimate representing the light intensity and direction in the scene.
@@ -49,10 +60,10 @@ NS_SWIFT_SENDABLE
 
 /**
  Second degree spherical harmonics coefficients representing the intensity of light.
- 
- @discussion The data is an array of 27 32-bit floating-point values, containing three non-interleaved data sets
+
+ The data is an array of `27` 32-bit floating-point values, containing three non-interleaved data sets
  corresponding to the red, green, and blue sets of coefficients.
- */
+*/
 @property (nonatomic, copy, readonly) NSData *sphericalHarmonicsCoefficients;
 
 /**
@@ -66,6 +77,8 @@ NS_SWIFT_SENDABLE
 @property (nonatomic, readonly) CGFloat primaryLightIntensity;
 
 @end
+
+API_UNAVAILABLE_END
 
 NS_ASSUME_NONNULL_END
 #else

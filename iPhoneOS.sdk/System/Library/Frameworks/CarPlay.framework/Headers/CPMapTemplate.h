@@ -8,11 +8,15 @@
 
 #import <CarPlay/CPBarButtonProviding.h>
 #import <CarPlay/CPMapButton.h>
+#import <CarPlay/CPMapPanel.h>
 #import <CarPlay/CPMapTemplateWaypoint.h>
+#import <CarPlay/CPMultiStopCardConfiguration.h>
 #import <CarPlay/CPNavigationAlert.h>
 #import <CarPlay/CPNavigationSession.h>
+#import <CarPlay/CPPanel.h>
 #import <CarPlay/CPRouteSource.h>
 #import <CarPlay/CPTemplate.h>
+#import <CarPlay/CPTextButton.h>
 #import <CarPlay/CPTrip.h>
 #import <CarPlay/CPTripPreviewTextConfiguration.h>
 #import <CarPlay/CPNavigationWaypoint.h>
@@ -82,17 +86,16 @@ CARPLAY_TEMPLATE_UI_ACTOR
 - (void)showTripPreviews:(NSArray<CPTrip *> *)tripPreviews textConfiguration:(nullable CPTripPreviewTextConfiguration *)textConfiguration;
 
 /**
-* Display a preview for a trip. Used to provide an overview for the upcoming trip or can show multiple trip options,
-* such as for search results. Trip previews can appear over an active navigation session. Number of trips will be
-* limited to 12. Optionally provide a CPTrip object from the list of trips to be selected when initially presented.
-*/
+ * Display a preview for a trip. Used to provide an overview for the upcoming trip or can show multiple trip options,
+ * such as for search results. Trip previews can appear over an active navigation session. Number of trips will be
+ * limited to 12. Optionally provide a CPTrip object from the list of trips to be selected when initially presented.
+ */
 - (void)showTripPreviews:(NSArray<CPTrip *> *)tripPreviews selectedTrip:(nullable CPTrip *)selectedTrip textConfiguration:(nullable CPTripPreviewTextConfiguration *)textConfiguration API_AVAILABLE(ios(14.0));
 
 /**
  * Display the route choices for a single trip. Trip previews can appear over an active navigation session.
  */
 - (void)showRouteChoicesPreviewForTrip:(CPTrip *)tripPreview textConfiguration:(nullable CPTripPreviewTextConfiguration *)textConfiguration;
-
 /**
  * Stop displaying any currently shown trip previews.
  */
@@ -181,6 +184,40 @@ CARPLAY_TEMPLATE_UI_ACTOR
  */
 - (void)dismissNavigationAlertAnimated:(BOOL)animated completion:(void (^)(BOOL dismissed))completion;
 
+#pragma mark - Panel
+
+/**
+ Shows an overlay with the specified panel.
+
+ @param panel The panel to display.
+ @param completion An optional block called when the overlay has been shown.
+ */
+- (void)showPanel:(CPMapPanel *)panel
+       completion:(nullable void (^)(BOOL success, NSError * _Nullable error))completion NS_SWIFT_NAME(showPanel(_:completion:)) API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(tvos);
+
+/**
+ Pushes a new panel.
+
+ @param panel The panel to push.
+ @param completion An optional block called when the panel has been pushed.
+ */
+- (void)pushPanel:(CPMapPanel *)panel
+       completion:(nullable void (^)(BOOL success, NSError * _Nullable error))completion NS_SWIFT_NAME(pushPanel(_:completion:)) API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(tvos);
+
+/**
+ Pops the top panel from the overlay's panel stack.
+
+ @param completion An optional block called when the panel has been popped.
+ */
+- (void)popPanelWithCompletion:(nullable void (^)(BOOL success, NSError * _Nullable error))completion API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(tvos);
+
+/**
+ Hides the overlay.
+
+ @param completion An optional block called when the overlay has been hidden.
+ */
+- (void)hidePanelWithCompletion:(nullable void (^)(BOOL success, NSError * _Nullable error))completion API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(tvos);
+
 @end
 
 API_AVAILABLE(ios(12.0)) API_UNAVAILABLE(tvos) API_UNAVAILABLE(macos, watchos)
@@ -227,6 +264,34 @@ mapTemplateWaypoint:(CPNavigationWaypoint *)waypoint
  Called when a navigation request is received. Show a trip preview corresponding to this destination and start navigation if the destination is accepted by the user.
  */
 - (void)mapTemplate:(CPMapTemplate *)mapTemplate didReceiveRequestForDestination:(CPNavigationWaypoint *)waypoint API_AVAILABLE(ios(26.4));
+
+/**
+ Called when the route sharing enabled status has been updated by the built-in system. Route sharing enabled is set to true when any vehicle features are enabled that rely on a route provided by the built‑in navigation system to func‑
+ tion.
+ */
+- (void)mapTemplate:(CPMapTemplate *)mapTemplate didUpdateRouteSharingEnabled:(BOOL)enabled API_AVAILABLE(ios(27.0));
+
+#pragma mark - Multi-Stop Routing
+/**
+ Determines if the template should provide UI for multi-stop routing while actively navigating, including the ability to add and remove stops.
+ @return YES if the template should provide multi-stop routing functionalities, otherwise NO
+ */
+- (BOOL)mapTemplateShouldProvideMultiStopRouting:(CPMapTemplate *)mapTemplate API_AVAILABLE(ios(27.0));
+
+/**
+ Called when the user removes a waypoint. Perform a reroute to update the route accordingly.
+ */
+- (void)mapTemplate:(CPMapTemplate *)mapTemplate didRequestToRemoveWaypoint:(CPNavigationWaypoint *)waypoint API_AVAILABLE(ios(27.0));
+
+/**
+ Called when the user removes the waypoint corresponding to the trip's destination. Perform a reroute to update both the trip and route accordingly.
+ */
+- (void)mapTemplate:(CPMapTemplate *)mapTemplate didRequestToRemoveDestination:(CPNavigationWaypoint *)waypoint API_AVAILABLE(ios(27.0));
+
+/**
+ Called when the user requests multi-stop card to be displayed via tapping ETA tray.
+ */
+- (void)mapTemplate:(CPMapTemplate *)mapTemplate didRequestMultiStopCardConfigurationWithCompletion:(void (^)(CPMultiStopCardConfiguration *))completion NS_SWIFT_ASYNC_NAME(multiStopCardConfigurationForMapTemplate(_:)) API_AVAILABLE(ios(27.0));
 
 #pragma mark - Notification Policy
 /**
@@ -279,6 +344,8 @@ mapTemplateWaypoint:(CPNavigationWaypoint *)waypoint
  This will be called when the pan interface disappears on the map interface.
  */
 - (void)mapTemplateDidDismissPanningInterface:(CPMapTemplate *)mapTemplate;
+
+#pragma mark - Navigation Bar Visibility
 
 /**
  Called when a pan button is pressed/selected for an extended duration.

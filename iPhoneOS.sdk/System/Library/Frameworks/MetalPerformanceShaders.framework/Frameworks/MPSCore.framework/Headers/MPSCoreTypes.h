@@ -269,6 +269,11 @@ MPSFloatDataTypeShift
     MPSDataTypeFloat32 MPS_ENUM_AVAILABLE_STARTING( macos(10.13), ios(10.0), macCatalyst(13.0), tvos(10.0)) = MPSDataTypeFloatBit | 32,
     MPSDataTypeFloat16 MPS_ENUM_AVAILABLE_STARTING( macos(10.13), ios(10.0), macCatalyst(13.0), tvos(10.0)) = MPSDataTypeFloatBit | 16,
 
+    MPSDataTypeFloat4e2m1 MPS_ENUM_AVAILABLE_STARTING( macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) = MPSDataTypeFloatBit | 0x210000 | 4,
+    MPSDataTypeFloat8e4m3 MPS_ENUM_AVAILABLE_STARTING( macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) = MPSDataTypeFloatBit | 0x430000 | 8,
+    MPSDataTypeFloat8e5m2 MPS_ENUM_AVAILABLE_STARTING( macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) = MPSDataTypeFloatBit | 0x520000 | 8,
+    MPSDataTypeFloat8e8m0 MPS_ENUM_AVAILABLE_STARTING( macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) = MPSDataTypeFloatBit | 0x800000 | 8,
+
     MPSDataTypeComplexBit MPS_ENUM_AVAILABLE_STARTING( macos(13.1), ios(16.2), macCatalyst(16.2), tvos(16.2)) = 0x01000000,
     MPSDataTypeComplexFloat32  MPS_ENUM_AVAILABLE_STARTING( macos(13.1), ios(16.2), macCatalyst(16.2), tvos(13.1)) = MPSDataTypeFloatBit | MPSDataTypeComplexBit | 64,
     MPSDataTypeComplexFloat16  MPS_ENUM_AVAILABLE_STARTING( macos(13.1), ios(16.2), macCatalyst(16.2), tvos(13.1)) = MPSDataTypeFloatBit | MPSDataTypeComplexBit | 32,

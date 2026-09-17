@@ -151,14 +151,13 @@ typedef NS_ENUM(NSInteger, AVAudioConverterOutputStatus) {
 		convertToBuffer:error:withInputFromBlock: will return as much output as could be converted
 		with the input already supplied.
 */
-typedef AVAudioBuffer * __nullable (^ NS_SWIFT_SENDABLE AVAudioConverterInputBlock)(AVAudioPacketCount inNumberOfPackets, AVAudioConverterInputStatus* outStatus);
+typedef AVAudioBuffer * __nullable (^ NS_SWIFT_NONSENDABLE AVAudioConverterInputBlock)(AVAudioPacketCount inNumberOfPackets, AVAudioConverterInputStatus* outStatus);
 
 /*!
 	@class AVAudioConverter
 	@abstract
 		Converts streams of audio between various formats.
 */
-NS_SWIFT_SENDABLE
 API_AVAILABLE(macos(10.11), ios(9.0), watchos(2.0), tvos(9.0))
 @interface AVAudioConverter : NSObject {
 @private
@@ -301,7 +300,7 @@ API_AVAILABLE(macos(10.11), ios(9.0), watchos(2.0), tvos(9.0))
 		It attempts to fill the buffer to its capacity. On return, the buffer's length indicates the number of 
 		sample frames successfully converted.
 */
-- (AVAudioConverterOutputStatus)convertToBuffer:(AVAudioBuffer *)outputBuffer error:(NSError **)outError withInputFromBlock:(AVAudioConverterInputBlock)inputBlock;
+- (AVAudioConverterOutputStatus)convertToBuffer:(AVAudioBuffer *)outputBuffer error:(NSError **)outError withInputFromBlock:(NS_NOESCAPE AVAudioConverterInputBlock)inputBlock;
 
 @end
 

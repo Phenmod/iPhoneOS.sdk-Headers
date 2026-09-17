@@ -27,6 +27,7 @@ typedef NS_ENUM(NSInteger, CLLiveUpdateConfiguration) {
 	CLLiveUpdateConfigurationOtherNavigation,         // Configuration tuned for other navigation use cases
 	CLLiveUpdateConfigurationFitness,                 // Configuration tuned for fitness use cases
 	CLLiveUpdateConfigurationAirborne,                // Configuration tuned for airborne use cases
+	CLLiveUpdateConfigurationMaritime API_AVAILABLE(ios(27.0), macos(27.0), watchos(27.0), tvos(27.0), visionos(27.0)),  // Configuration tuned for vehicular maritime use cases
 } NS_REFINED_FOR_SWIFT;
 
 /*

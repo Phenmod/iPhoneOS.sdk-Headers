@@ -57,7 +57,7 @@ API_AVAILABLE(macos(10.11), ios(8.0))
  It is not valid to invoke this method on buffers of other storage modes.
  @param range The range of bytes that have been modified.
  */
-- (void)didModifyRange:(NSRange)range API_AVAILABLE(macos(10.11), macCatalyst(13.0)) API_UNAVAILABLE(ios);
+- (void)didModifyRange:(NSRange)range API_DEPRECATED("Managed storage has no effect on Apple Silicon, use Shared storage instead", macos(10.11, 27.0), macCatalyst(13.0, 27.0)) API_UNAVAILABLE(ios);
 
 /*!
  @method newTextureWithDescriptor:offset:bytesPerRow:
@@ -65,21 +65,25 @@ API_AVAILABLE(macos(10.11), ios(8.0))
  */
 - (nullable id <MTLTexture>)newTextureWithDescriptor:(MTLTextureDescriptor*)descriptor offset:(NSUInteger)offset bytesPerRow:(NSUInteger)bytesPerRow API_AVAILABLE(macos(10.13), ios(8.0));
 
-/// Creates a tensor that shares storage with this buffer.
+/// Creates a single-plane tensor with the specified descriptor that shares storage with this buffer.
 ///
-/// `offset` must be 0 when ``MTLTensorDescriptor/usage`` contains ``MTLTensorUsage/MTLTensorUsageMachineLearning``.
+/// This method validates the constraints documented on ``MTLTensorDescriptor``,
+/// and additionally requires:
+/// - `offset` is 0 when ``MTLTensorDescriptor/usage`` contains
+///   ``MTLTensorUsage/MTLTensorUsageMachineLearning``.
+/// - `offset` is aligned to 128 bytes if the data plane uses a format
+///   ``MTLTensorDataType``.
+/// - `offset` is aligned to the size of the data type in bytes otherwise.
 ///
-/// When ``MTLTensorDescriptor/dataType`` is a sub-byte ``MTLTensorDataType``, `offset` must be aligned to 128 bytes.
-/// Although only required for sub-byte types, applying 128-byte alignment for all ``MTLTensorDataType``
-/// values improves performance.
-///
-/// See ``MTLTensorDescriptor`` for more information.
+/// This method doesn't create tensors that contain auxiliary planes. Use
+/// ``MTLDevice/newTensorWithDescriptor:attachments:error:``
+/// instead to create a multi-plane tensor with per-plane buffer backing storage.
 ///
 /// - Parameters:
-///   - descriptor: A description of the properties for the new tensor.
-///   - offset: Offset into the buffer at which the data of the tensor begins.
-///   - error: If an error occurs during creation, Metal populates this parameter to provide you information about it.
-/// - Returns: The created ``MTLTensor`` instance, or `nil` if the function failed.
+///   - descriptor: The tensor descriptor configuring the data plane.
+///   - offset: The byte offset into the buffer where tensor data begins.
+///   - error: On failure, an NSError instance that describes the validation failure.
+/// - Returns: A tensor, or `nil` if validation fails.
 - (nullable id <MTLTensor>)newTensorWithDescriptor:(MTLTensorDescriptor *)descriptor
                                             offset:(NSUInteger)offset
                                              error:(__autoreleasing NSError * _Nullable * _Nullable)error API_AVAILABLE(macos(26.0), ios(26.0));

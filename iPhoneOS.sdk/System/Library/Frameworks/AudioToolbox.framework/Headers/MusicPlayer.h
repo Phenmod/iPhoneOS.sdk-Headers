@@ -532,7 +532,9 @@ MusicPlayerSetTime(		MusicPlayer 	inPlayer,
 */
 extern OSStatus
 MusicPlayerGetTime(		MusicPlayer 	inPlayer,
-						MusicTimeStamp	*outTime)								API_AVAILABLE(macos(10.0), ios(5.0), watchos(2.0), tvos(9.0));
+						MusicTimeStamp	*outTime)
+							CA_REALTIME_API
+							API_AVAILABLE(macos(10.0), ios(5.0), watchos(2.0), tvos(9.0));
 
 /*!
 	@function	MusicPlayerGetHostTimeForBeats
@@ -614,7 +616,9 @@ MusicPlayerStop(		MusicPlayer 	inPlayer)								API_AVAILABLE(macos(10.0), ios(5
 */
 extern OSStatus
 MusicPlayerIsPlaying(	MusicPlayer 	inPlayer,
-						Boolean *		outIsPlaying)							API_AVAILABLE(macos(10.2), ios(5.0), watchos(2.0), tvos(9.0));
+						Boolean *		outIsPlaying)
+							CA_REALTIME_API
+							API_AVAILABLE(macos(10.2), ios(5.0), watchos(2.0), tvos(9.0));
 
 /*!
 	@function	MusicPlayerSetPlayRateScalar
@@ -625,7 +629,9 @@ MusicPlayerIsPlaying(	MusicPlayer 	inPlayer,
 */
 extern OSStatus
 MusicPlayerSetPlayRateScalar(	MusicPlayer		inPlayer,
-								Float64			inScaleRate)					API_AVAILABLE(macos(10.3), ios(5.0), watchos(2.0), tvos(9.0));
+								Float64			inScaleRate)
+									CA_REALTIME_API
+									API_AVAILABLE(macos(10.3), ios(5.0), watchos(2.0), tvos(9.0));
 
 /*!
 	@function	MusicPlayerGetPlayRateScalar
@@ -635,7 +641,9 @@ MusicPlayerSetPlayRateScalar(	MusicPlayer		inPlayer,
 */
 extern OSStatus
 MusicPlayerGetPlayRateScalar(	MusicPlayer		inPlayer,
-								Float64 *		outScaleRate)					API_AVAILABLE(macos(10.3), ios(5.0), watchos(2.0), tvos(9.0));
+								Float64 *		outScaleRate)
+									CA_REALTIME_API
+									API_AVAILABLE(macos(10.3), ios(5.0), watchos(2.0), tvos(9.0));
 
 
 //=====================================================================================================================
@@ -700,7 +708,9 @@ MusicSequenceDisposeTrack(	MusicSequence 		inSequence,
 */
 extern OSStatus
 MusicSequenceGetTrackCount(	MusicSequence 		inSequence,
-							UInt32 				*outNumberOfTracks)				API_AVAILABLE(macos(10.0), ios(5.0), watchos(2.0), tvos(9.0));
+							UInt32 				*outNumberOfTracks)
+								CA_REALTIME_API
+								API_AVAILABLE(macos(10.0), ios(5.0), watchos(2.0), tvos(9.0));
 										
 /*!
 	@function	MusicSequenceGetIndTrack
@@ -714,7 +724,9 @@ MusicSequenceGetTrackCount(	MusicSequence 		inSequence,
 extern OSStatus
 MusicSequenceGetIndTrack(	MusicSequence 						inSequence,
 							UInt32 								inTrackIndex,
-							MusicTrack __nullable * __nonnull	outTrack)		API_AVAILABLE(macos(10.0), ios(5.0), watchos(2.0), tvos(9.0));
+							MusicTrack __nullable * __nonnull	outTrack)
+								CA_REALTIME_API
+								API_AVAILABLE(macos(10.0), ios(5.0), watchos(2.0), tvos(9.0));
 
 /*!
 	@function	MusicSequenceGetTrackIndex
@@ -728,7 +740,9 @@ MusicSequenceGetIndTrack(	MusicSequence 						inSequence,
 extern OSStatus
 MusicSequenceGetTrackIndex(	MusicSequence 		inSequence,
 							MusicTrack 			inTrack,
-							UInt32				*outTrackIndex)					API_AVAILABLE(macos(10.0), ios(5.0), watchos(2.0), tvos(9.0));
+							UInt32				*outTrackIndex)
+								CA_REALTIME_API
+								API_AVAILABLE(macos(10.0), ios(5.0), watchos(2.0), tvos(9.0));
 
 /*!
 	@function	MusicSequenceGetTempoTrack
@@ -741,7 +755,9 @@ MusicSequenceGetTrackIndex(	MusicSequence 		inSequence,
 */
 extern OSStatus
 MusicSequenceGetTempoTrack(	MusicSequence						inSequence,
-							MusicTrack __nullable * __nonnull	outTrack)		API_AVAILABLE(macos(10.1), ios(5.0), watchos(2.0), tvos(9.0));
+							MusicTrack __nullable * __nonnull	outTrack)
+								CA_REALTIME_API
+								API_AVAILABLE(macos(10.1), ios(5.0), watchos(2.0), tvos(9.0));
 
 
 /*!
@@ -1112,7 +1128,9 @@ CF_IMPLICIT_BRIDGING_DISABLED
 */
 extern OSStatus
 MusicTrackGetSequence(	MusicTrack 			inTrack,
-						MusicSequence __nullable * __nonnull outSequence)		API_AVAILABLE(macos(10.0), ios(5.0), watchos(2.0), tvos(9.0));
+						MusicSequence __nullable * __nonnull outSequence)
+							CA_REALTIME_API
+							API_AVAILABLE(macos(10.0), ios(5.0), watchos(2.0), tvos(9.0));
 
 /*!
 	@function	MusicTrackSetDestNode
@@ -1452,7 +1470,9 @@ MusicTrackNewAUPresetEvent(			MusicTrack 					inTrack,
 */
 extern OSStatus
 NewMusicEventIterator(		MusicTrack 									inTrack,
-							MusicEventIterator __nullable * __nonnull	outIterator)	API_AVAILABLE(macos(10.0), ios(5.0), watchos(2.0), tvos(9.0));
+							MusicEventIterator __nullable * __nonnull	outIterator)
+							CA_REALTIME_API
+							API_AVAILABLE(macos(10.0), ios(5.0), watchos(2.0), tvos(9.0));
 													
 /*!
 	@function	DisposeMusicEventIterator
@@ -1460,7 +1480,9 @@ NewMusicEventIterator(		MusicTrack 									inTrack,
 	@param		inIterator		the iterator
 */
 extern OSStatus
-DisposeMusicEventIterator(			MusicEventIterator	inIterator)				API_AVAILABLE(macos(10.0), ios(5.0), watchos(2.0), tvos(9.0));
+DisposeMusicEventIterator(			MusicEventIterator	inIterator)
+							CA_REALTIME_API
+							API_AVAILABLE(macos(10.0), ios(5.0), watchos(2.0), tvos(9.0));
 
 /*!
 	@function	MusicEventIteratorSeek

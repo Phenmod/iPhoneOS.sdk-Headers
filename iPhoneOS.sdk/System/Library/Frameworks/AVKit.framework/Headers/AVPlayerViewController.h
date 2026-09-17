@@ -36,6 +36,7 @@ typedef NS_ENUM(NSInteger, AVPlayerViewControllerSkippingBehavior) {
 @class AVGroupExperienceCoordinator;
 @class AVInterstitialTimeRange;
 @class AVPlaybackSpeed;
+@class AVViewport;
 
 @protocol AVPlayerViewControllerAnimationCoordinator;
 @protocol AVPlayerViewControllerDelegate;
@@ -87,6 +88,11 @@ API_AVAILABLE(ios(8.0), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(watchos) API_U
 	@abstract	The current size and position of the video image as displayed within the receiver's view's bounds.
  */
 @property (nonatomic, readonly) CGRect videoBounds API_UNAVAILABLE(tvos) API_UNAVAILABLE(watchos);
+
+/*!
+	A configuration object that manages viewport settings for different presentation modes.
+ */
+@property (nonatomic, strong, readonly) AVViewport *viewport API_AVAILABLE(visionos(27.0)) API_UNAVAILABLE(ios, macCatalyst, tvos, watchos);
 
 /*!
 	@property	contentOverlayView

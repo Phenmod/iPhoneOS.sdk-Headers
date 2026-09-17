@@ -17,7 +17,7 @@
 #include <CoreFoundation/CoreFoundation.h>
 
 #ifndef VT_SUPPORT_COLORSYNC_PIXEL_TRANSFER
-#if TARGET_OS_TV
+#if   TARGET_OS_TV
 	#if (__TV_OS_VERSION_MIN_REQUIRED >= 93000)
 		#define VT_SUPPORT_COLORSYNC_PIXEL_TRANSFER COREMEDIA_TRUE
 	#endif

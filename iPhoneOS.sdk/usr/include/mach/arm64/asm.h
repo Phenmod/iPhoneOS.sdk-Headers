@@ -171,6 +171,36 @@
 
 
 /**
+ * Emits an enhanced function prologue that signs LR, using both SP and PC
+ * as modifiers when possible.
+ */
+.macro ARM64_STACK_PROLOG_ENH
+#if __has_feature(ptrauth_returns) && __ARM_FEATURE_PAUTH_LR
+	pacibsppc
+#else
+	ARM64_STACK_PROLOG
+#endif
+.endmacro
+
+/**
+ * Emits an enhanced function epilogue that returns to a signed LR, using both
+ * SP and a PC-relative label as modifiers when possible.
+ *
+ * @param label Label pointing to the complementary ARM64_STACK_PROLOG_ENH
+ *              macro.
+ */
+#if __has_feature(ptrauth_returns) && __ARM_FEATURE_PAUTH_LR
+.macro ARM64_STACK_EPILOG_ENH label:req
+	retabsppc \label
+.endmacro
+#else
+.macro ARM64_STACK_EPILOG_ENH label
+	ARM64_STACK_EPILOG
+.endmacro
+#endif
+
+
+/**
  * Push a stack frame.
  *
  * Most callers should invoke ARM64_STACK_PROLOG first, since otherwise this will

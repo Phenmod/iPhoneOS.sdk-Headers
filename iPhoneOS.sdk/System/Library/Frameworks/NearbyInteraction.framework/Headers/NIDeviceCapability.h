@@ -40,6 +40,11 @@ NI_EXPORT
  */
 @property (nonatomic, readonly) BOOL supportsDLTDOAMeasurement API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(watchos, tvos, macos, visionos, macCatalyst);
 
+/**
+ Whether or not this device is capable of participating in a nearby interaction session with Bluetooth Channel Sounding
+ */
+@property (nonatomic, readonly) BOOL supportsBluetoothChannelSounding API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(watchos, tvos, macos, visionos);
+
 @end
 
 NS_ASSUME_NONNULL_END

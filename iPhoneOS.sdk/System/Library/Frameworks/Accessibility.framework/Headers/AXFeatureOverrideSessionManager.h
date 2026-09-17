@@ -2,8 +2,7 @@
 //  AXFeatureOverrideSessionManager.h
 //  Accessibility
 //
-//  Created by Drew Haas on 9/30/24.
-//  Copyright © 2024 Apple. All rights reserved.
+//  Copyright © 2024-2026 Apple Inc. All rights reserved.
 //
 
 #import <TargetConditionals.h>

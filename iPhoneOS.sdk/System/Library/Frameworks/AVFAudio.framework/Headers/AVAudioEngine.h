@@ -135,7 +135,19 @@ typedef NS_ENUM(NSInteger, AVAudioEngineManualRenderingMode) {
 	In such a case, the client could implement their own synchronization between their realtime
 	and non-realtime threads and retry calling `AVAudioEngineManualRenderingBlock`.
 */
-typedef AVAudioEngineManualRenderingStatus (^AVAudioEngineManualRenderingBlock)(AVAudioFrameCount numberOfFrames, AudioBufferList *outBuffer, OSStatus * __nullable outError) API_AVAILABLE(macos(10.13), ios(11.0), watchos(4.0), tvos(11.0));
+typedef AVAudioEngineManualRenderingStatus (^ NS_SWIFT_NONSENDABLE AVAudioEngineManualRenderingBlock)(AVAudioFrameCount numberOfFrames, AudioBufferList *outBuffer, OSStatus * __nullable outError) API_AVAILABLE(macos(10.13), ios(11.0), watchos(4.0), tvos(11.0));
+
+/*!
+	@typedef		AVMIDIEventListBlock
+	@abstract		A block used by an audio unit to send or receive MIDIEventList data.
+	@param eventSampleTime
+					The time in samples at which the MIDI events are to occur.
+	@param cable
+					The virtual cable number associated with this MIDI data.
+	@param eventList
+					One full MIDI, partial MIDI SysEx, or a full SysEx UMP message.
+*/
+typedef OSStatus (^ NS_SWIFT_NONSENDABLE AVMIDIEventListBlock)(SInt64 eventSampleTime, UInt8 cable, const struct MIDIEventList* eventList) CA_REALTIME_API API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), watchos(27.0));
 
 /*!
 	@class AVAudioEngine
@@ -157,7 +169,7 @@ typedef AVAudioEngineManualRenderingStatus (^AVAudioEngineManualRenderingBlock)(
 	audio device and rendering in response to requests from the client, normally at or
 	faster than realtime rate.
 */
-API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 @interface AVAudioEngine : NSObject {
 @private
 	void *_impl;
@@ -227,7 +239,36 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 	Note that any pre-existing connection(s) involving the source's output bus or the
 	destination's input bus will be broken.
 */
-- (void)connect:(AVAudioNode *)node1 to:(AVAudioNode *)node2 fromBus:(AVAudioNodeBus)bus1 toBus:(AVAudioNodeBus)bus2 format:(AVAudioFormat * __nullable)format;
+- (void)connect:(AVAudioNode *)node1 to:(AVAudioNode *)node2 fromBus:(AVAudioNodeBus)bus1 toBus:(AVAudioNodeBus)bus2 format:(AVAudioFormat * __nullable)format API_DEPRECATED_WITH_REPLACEMENT("connect:to:fromBus:toBus:format:error:", ios(8.0, 27.0), watchos(2.0, 27.0), macos(10.10, 27.0), tvos(9.0, 27.0));
+
+/*! @method connect:to:fromBus:toBus:format:error
+	@abstract
+		Establish a connection between two nodes.
+	@param node1
+		The source node
+	@param node2
+		The destination node
+	@param bus1
+		The output bus on the source node
+	@param bus2
+		The input bus on the destination node
+	@param format
+		If non-nil, the format of the source node's output bus is set to this
+		format. In all cases, the format of the destination node's input bus is set to
+		match that of the source node's output bus.
+	@param error
+		on exit, if an error occurs, a description of the error
+	@return
+		YES for success
+
+	Nodes have input and output buses (AVAudioNodeBus). Use this method to establish
+	one-to-one connections betweeen nodes. Connections made using this method are always
+	one-to-one, never one-to-many or many-to-one.
+
+	Note that any pre-existing connection(s) involving the source's output bus or the
+	destination's input bus will be broken.
+*/
+- (BOOL)connect:(AVAudioNode *)node1 to:(AVAudioNode *)node2 fromBus:(AVAudioNodeBus)bus1 toBus:(AVAudioNodeBus)bus2 format:(AVAudioFormat * __nullable)format error:(NSError**)error NS_SWIFT_NAME(connectNode(_:to:fromBus:toBus:format:)) API_AVAILABLE(macos(27.0), ios(27.0), watchos(27.0), tvos(27.0));
 
 /*!	@method connect:to:format:
 	@abstract
@@ -237,7 +278,21 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 	and bus 0 on the destination node, except in the case of a destination which is a mixer,
 	in which case the destination is the mixer's nextAvailableInputBus.
 */
-- (void)connect:(AVAudioNode *)node1 to:(AVAudioNode *)node2 format:(AVAudioFormat * __nullable)format;
+- (void)connect:(AVAudioNode *)node1 to:(AVAudioNode *)node2 format:(AVAudioFormat * __nullable)format API_DEPRECATED_WITH_REPLACEMENT("connect:to:format:error:", ios(8.0, 27.0), watchos(2.0, 27.0), macos(10.10, 27.0), tvos(9.0, 27.0));
+
+/*!	@method connect:to:format:error:
+	@abstract
+		Establish a connection between two nodes
+	@param error
+		on exit, if an error occurs, a description of the error
+	@return
+		YES for success
+
+	This calls connect:to:fromBus:toBus:format: using bus 0 on the source node,
+	and bus 0 on the destination node, except in the case of a destination which is a mixer,
+	in which case the destination is the mixer's nextAvailableInputBus.
+*/
+- (BOOL)connect:(AVAudioNode *)node1 to:(AVAudioNode *)node2 format:(AVAudioFormat * __nullable)format error:(NSError**)error NS_SWIFT_NAME(connectNode(_:to:format:)) API_AVAILABLE(macos(27.0), ios(27.0), watchos(27.0), tvos(27.0));
 
 /*! @method connect:toConnectionPoints:fromBus:format:
 	@abstract
@@ -274,7 +329,48 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 		- any AVAudioUnitTimeEffect
 		- any sample rate conversion
 */
-- (void)connect:(AVAudioNode *)sourceNode toConnectionPoints:(NSArray<AVAudioConnectionPoint *> *)destNodes fromBus:(AVAudioNodeBus)sourceBus format:(AVAudioFormat * __nullable)format API_AVAILABLE(macos(10.11), ios(9.0), watchos(2.0), tvos(9.0));
+- (void)connect:(AVAudioNode *)sourceNode toConnectionPoints:(NSArray<AVAudioConnectionPoint *> *)destNodes fromBus:(AVAudioNodeBus)sourceBus format:(AVAudioFormat * __nullable)format API_DEPRECATED_WITH_REPLACEMENT("connect:toConnectionPoints:fromBus:format:error:", ios(9.0, 27.0), watchos(2.0, 27.0), macos(10.11, 27.0), tvos(9.0, 27.0));
+
+/*! @method connect:toConnectionPoints:fromBus:format:error:
+	@abstract
+		Establish connections between a source node and multiple destination nodes.
+	@param sourceNode
+		The source node
+	@param destNodes
+		An array of AVAudioConnectionPoint objects specifying destination
+		nodes and busses
+	@param sourceBus
+		The output bus on source node
+	@param format
+		If non-nil, the format of the source node's output bus is set to this
+		format. In all cases, the format of the destination nodes' input bus is set to
+		match that of the source node's output bus
+	@param error
+		on exit, if an error occurs, a description of the error
+	@return
+		YES for success
+
+	Use this method to establish connections from a source node to multiple destination nodes.
+	Connections made using this method are either one-to-one (when a single destination
+	connection is specified) or one-to-many (when multiple connections are specified), but
+	never many-to-one.
+
+	To incrementally add a new connection to a source node, use this method with an array
+	of AVAudioConnectionPoint objects comprising of pre-existing connections (obtained from
+	`outputConnectionPointsForNode:outputBus:`) and the new connection.
+
+	Note that any pre-existing connection involving the destination's input bus will be
+	broken. And, any pre-existing connection on source node which is not a part of the
+	specified destination connection array will also be broken.
+
+	Also note that when the output of a node is split into multiple paths, all the paths
+	must render at the same rate until they reach a common mixer.
+	In other words, starting from the split node until the common mixer node where all split
+	paths terminate, you cannot have:
+		- any AVAudioUnitTimeEffect
+		- any sample rate conversion
+*/
+- (BOOL)connect:(AVAudioNode *)sourceNode toConnectionPoints:(NSArray<AVAudioConnectionPoint *> *)destNodes fromBus:(AVAudioNodeBus)sourceBus format:(AVAudioFormat * __nullable)format error:(NSError**)error NS_SWIFT_NAME(connectNode(_:to:fromBus:format:)) API_AVAILABLE(macos(27.0), ios(27.0), watchos(27.0), tvos(27.0));
 
 /*! @method disconnectNodeInput:bus:
 	@abstract
@@ -424,7 +520,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 	@abstract
 		The MusicSequence previously attached to the engine (if any).
  */
-@property (nonatomic, nullable) MusicSequence musicSequence;
+@property (nonatomic, nullable) MusicSequence musicSequence NS_REFINED_FOR_SWIFT;
 #endif
 
 /*! @property outputNode
@@ -748,7 +844,40 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
     Any client installed block on the source node's audio unit `AUMIDIOutputEventListBlock`
     will be overwritten when making the MIDI connection.
  */
-- (void)connectMIDI:(AVAudioNode *)sourceNode to:(AVAudioNode *)destinationNode format:(AVAudioFormat * __nullable)format eventListBlock:(AUMIDIEventListBlock __nullable)tapBlock API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0), watchos(9.0));
+- (void)connectMIDI:(AVAudioNode *)sourceNode to:(AVAudioNode *)destinationNode format:(AVAudioFormat * __nullable)format eventListBlock:(AUMIDIEventListBlock __nullable)tapBlock __attribute__((swift_attr("@_disfavoredOverload"))) API_DEPRECATED_WITH_REPLACEMENT("connectMIDI:to:format:eventListProvider:", macos(13.0, 27.0), ios(16.0, 27.0), watchos(9.0, 27.0), tvos(16.0, 27.0));
+
+/*! @method connectMIDI:to:format:eventListProvider:
+	@abstract
+		Establish a MIDI only connection between two nodes.
+	@param sourceNode
+		The source node.
+	@param destinationNode
+		The destination node.
+	@param format
+		If non-nil, the format of the source node's output bus is set to this format.
+		In all cases, the format of the source nodes' output bus has to match with the
+		destination nodes' output bus format.
+		Although the output bus of the source is not in use, the format needs to be set
+		in order to be able to use the sample rate for MIDI event timing calculations.
+	@param tapBlock
+		This block is called from the source node's `AUMIDIOutputEventListBlock`
+		on the realtime thread. The host can tap the MIDI data of the source node through
+		this block.
+
+	Use this method to establish a MIDI only connection between a source node and a
+	destination node that has MIDI input capability.
+
+	The source node can only be a AVAudioUnit node of type `kAudioUnitType_MIDIProcessor`.
+	The destination node types can be `kAudioUnitType_MusicDevice`,
+	`kAudioUnitType_MusicEffect` or `kAudioUnitType_MIDIProcessor`.
+
+	Note that any pre-existing MIDI connection involving the destination will be broken.
+
+	Any client installed block on the source node's audio unit `AUMIDIOutputEventListBlock`
+	will be overwritten when making the MIDI connection.
+ */
+
+- (void)connectMIDI:(AVAudioNode *)sourceNode to:(AVAudioNode *)destinationNode format:(AVAudioFormat * __nullable)format eventListProvider:(AVMIDIEventListBlock __nullable)tapBlock API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), watchos(27.0));
 
 /*! @method connectMIDI:toNodes:format:block:
     @abstract
@@ -820,7 +949,43 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
     Any client installed block on the source node's audio unit `AUMIDIOutputEventListBlock`
     will be overwritten when making the MIDI connection.
  */
-- (void)connectMIDI:(AVAudioNode *)sourceNode toNodes:(NSArray<AVAudioNode *> *)destinationNodes format:(AVAudioFormat * __nullable)format eventListBlock:(AUMIDIEventListBlock __nullable)tapBlock API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0), watchos(9.0));
+- (void)connectMIDI:(AVAudioNode *)sourceNode toNodes:(NSArray<AVAudioNode *> *)destinationNodes format:(AVAudioFormat * __nullable)format eventListBlock:(AUMIDIEventListBlock __nullable)tapBlock __attribute__((swift_attr("@_disfavoredOverload"))) API_DEPRECATED_WITH_REPLACEMENT("connectMIDI:toNodes:format:eventListProvider:", macos(13.0, 27.0), ios(16.0, 27.0), watchos(9.0, 27.0), tvos(16.0, 27.0));
+
+/*! @method connectMIDI:toNodes:format:eventListProvider:
+	@abstract
+		Establish a MIDI only connection between a source node and multiple destination nodes.
+	@param sourceNode
+		The source node.
+	@param destinationNodes
+		An array of AVAudioNodes specifying destination nodes.
+	@param format
+		If non-nil, the format of the source node's output bus is set to this format.
+		In all cases, the format of the source nodes' output bus has to match with the
+		destination nodes' output bus format.
+		Although the output bus of the source is not in use, the format needs to be set
+		in order to be able to use the sample rate for MIDI event timing calculations.
+	@param tapBlock
+		This block is called from the source node's `AUMIDIOutputEventListBlock`
+		on the realtime thread. The host can tap the MIDI data of the source node through
+		this block.
+
+	Use this method to establish a MIDI only connection between a source node and
+	multiple destination nodes.
+
+	The source node can only be a AVAudioUnit node of type `kAudioUnitType_MIDIProcessor`.
+	The destination node types can be `kAudioUnitType_MusicDevice`,
+	`kAudioUnitType_MusicEffect` or `kAudioUnitType_MIDIProcessor`.
+
+	MIDI connections made using this method are either one-to-one (when a single
+	destination connection is specified) or one-to-many (when multiple connections are
+	specified), but never many-to-one.
+
+	Note that any pre-existing connection involving the destination will be broken.
+
+	Any client installed block on the source node's audio unit `AUMIDIOutputEventListBlock`
+	will be overwritten when making the MIDI connection.
+ */
+- (void)connectMIDI:(AVAudioNode *)sourceNode toNodes:(NSArray<AVAudioNode *> *)destinationNodes format:(AVAudioFormat * __nullable)format eventListProvider:(AVMIDIEventListBlock __nullable)tapBlock API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), watchos(27.0));
 
 /*! @method disconnectMIDI:from:
     @abstract

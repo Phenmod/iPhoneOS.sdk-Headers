@@ -66,7 +66,7 @@
  */
 
 #ifndef _DNS_SD_H
-#define _DNS_SD_H 2881120011
+#define _DNS_SD_H 3111000005
 
 /* DNS-SD API version strings are of the form x[.y[.z]].
  * Version strings less than or equal to 1661 are encoded as (x * 10000) + (y * 100) + z, where 0 ≤ y,z ≤ 99.
@@ -801,6 +801,7 @@ enum
     kDNSServiceErr_PolicyDenied              = -65570,
     kDNSServiceErr_NotPermitted              = -65571,
     kDNSServiceErr_StaleData                 = -65572,
+    kDNSServiceErr_AWDLTimeout               = -65573,  /* AWDL global timeout. No futher AWDL results will be provided. */
 
                                                /* mDNS Error codes are in the range
                                                 * FFFE FF00 (-65792) to FFFE FFFF (-65537) */

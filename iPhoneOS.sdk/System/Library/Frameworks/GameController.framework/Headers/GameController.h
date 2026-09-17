@@ -17,6 +17,8 @@
 
 #import <GameController/GCDevice.h>
 
+#import <GameController/GCDeviceType.h>
+
 #import <GameController/GCDevicePhysicalInput.h>
 #import <GameController/GCPhysicalInputElement.h>
 #import <GameController/GCPhysicalInputSource.h>
@@ -35,6 +37,9 @@
 
 #import <GameController/GCDeviceLight.h>
 #import <GameController/GCDeviceBattery.h>
+
+#import <GameController/GCDeviceHaptics.h>
+#import <GameController/GCDeviceHapticsLocality.h>
 
 #import <GameController/GCControllerElement.h>
 #import <GameController/GCControllerAxisInput.h>
@@ -69,6 +74,7 @@
 #import <GameController/GCDirectionalGamepad.h>
 
 #import <GameController/GCController.h>
+#import <GameController/GCSpatialAccessory.h>
 #import <GameController/GCStylus.h>
 
 #import <GameController/GCKeyboard.h>
@@ -79,7 +85,7 @@
 #import <GameController/GCSteeringWheelElement.h>
 #import <GameController/GCGearShifterElement.h>
 
-#import <GameController/GCDeviceHaptics.h>
+#import <GameController/GCControllerHomeButtonSettingsManager.h>
 
 #import <GameController/GCEventViewController.h>
 #import <GameController/GCEventInteraction.h>

@@ -39,7 +39,7 @@ _LIBCPP_BEGIN_NAMESPACE_STD
 template <typename _Tag>
 struct __thread_access;
 
-class _LIBCPP_AVAILABILITY_SYNC jthread {
+class jthread {
 public:
   // types
   using id                 = thread::id;

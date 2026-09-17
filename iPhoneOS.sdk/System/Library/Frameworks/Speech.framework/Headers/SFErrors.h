@@ -20,7 +20,7 @@ typedef NS_ERROR_ENUM (SFSpeechErrorDomain, SFSpeechErrorCode) {
     /// There was an internal error.
     SFSpeechErrorCodeInternalServiceError = 1,
 
-    /// The audio file could not be read.
+    /// The audio source could not be read.
     SFSpeechErrorCodeAudioReadFailed = 2,
 
     // MARK: CustomLM data related errors

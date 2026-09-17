@@ -2,7 +2,7 @@
  *  CTFontDescriptor.h
  *  CoreText
  *
- *  Copyright (c) 2006-2023 Apple Inc. All rights reserved.
+ *  Copyright (c) 2006-2026 Apple Inc. All rights reserved.
  *
  */
 
@@ -62,7 +62,7 @@ CT_EXPORT const CFStringRef kCTFontURLAttribute CT_AVAILABLE(macos(10.6), ios(3.
 /*!
     @defined    kCTFontNameAttribute
     @abstract   The PostScript name.
-    @discussion This is the key for retrieving the PostScript name from the font descriptor. When matching, this is treated more generically: the system first tries to find fonts with this PostScript name. If none is found, the system tries to find fonts with this family name, and, finally, if still nothing, tries to find fonts with this display name. The value associated with this key is a CFStringRef. If unspecified, defaults to "Helvetica", if unavailable falls back to global font cascade list.
+    @discussion This is the key for retrieving the PostScript name from the font descriptor. When matching, this is treated more generically: the system first tries to find fonts with this PostScript name. If none is found, the system tries to find fonts with this family name, and, finally, if still nothing, tries to find fonts with this display name. The value associated with this key is a CFStringRef. If unspecified, defaults to the standard user font.
 */
 CT_EXPORT const CFStringRef kCTFontNameAttribute CT_AVAILABLE(macos(10.5), ios(3.2), watchos(2.0), tvos(9.0));
 /*!
@@ -92,7 +92,11 @@ CT_EXPORT const CFStringRef kCTFontTraitsAttribute CT_AVAILABLE(macos(10.5), ios
 /*!
     @defined    kCTFontVariationAttribute
     @abstract   The font variation dictionary.
-    @discussion This key is used to obtain the font variation instance as a CFDictionaryRef. If specified in a font descriptor, fonts with the specified axes will be primary match candidates, if no such fonts exist, this attribute will be ignored.
+    @discussion This key is used to obtain the font variation instance as a CFDictionaryRef with each key/value pair corresponding to an axis identifier and value, which is the same structure as the return value of CTFontCopyVariation().
+
+    @seealso    CTFontCopyVariation
+    @seealso    CTFontDescriptorCreateCopyWithAttributes
+    @seealso    CTFontDescriptorCreateCopyWithVariation
 */
 CT_EXPORT const CFStringRef kCTFontVariationAttribute CT_AVAILABLE(macos(10.5), ios(3.2), watchos(2.0), tvos(9.0));
 /*!
@@ -119,7 +123,9 @@ CT_EXPORT const CFStringRef kCTFontMatrixAttribute CT_AVAILABLE(macos(10.5), ios
 /*!
     @defined    kCTFontCascadeListAttribute
     @abstract   The font cascade list.
-    @discussion This key is used to specify or obtain the cascade list used for a font reference. The cascade list is a CFArrayRef containing CTFontDescriptorRefs. If unspecified, the global cascade list is used. This list is not consulted for private-use characters on OS X 10.10, iOS 8, or earlier.
+    @discussion This key is used to specify the cascade list for a font reference. The cascade list is a CFArrayRef containing CTFontDescriptorRefs, which are preferred for fallback over those in the default cascade list. This list is not consulted for private-use characters on OS X 10.10, iOS 8, or earlier.
+
+    @seealso    CTFontCopyDefaultCascadeListForLanguages
 */
 CT_EXPORT const CFStringRef kCTFontCascadeListAttribute CT_AVAILABLE(macos(10.5), ios(3.2), watchos(2.0), tvos(9.0));
 /*!
@@ -165,6 +171,8 @@ CT_EXPORT const CFStringRef kCTFontFeaturesAttribute CT_AVAILABLE(macos(10.5), i
                 Starting with OS X 10.10 and iOS 8.0, settings are also accepted (but not returned) in the following simplified forms:
                 An OpenType setting can be either an array pair of tag string and value number, or a tag string on its own. For example: @[ @"c2sc", @1 ] or simply @"c2sc". An unspecified value enables the feature and a value of zero disables it.
                 An AAT setting can be specified as an array pair of type and selector numbers. For example: @[ @(kUpperCaseType), @(kUpperCaseSmallCapsSelector) ].
+
+    @seealso    CTFontDescriptorCreateCopyWithAttributes
 */
 CT_EXPORT const CFStringRef kCTFontFeatureSettingsAttribute CT_AVAILABLE(macos(10.5), ios(3.2), watchos(2.0), tvos(9.0));
 /*!
@@ -347,10 +355,12 @@ CTFontDescriptorRef CTFontDescriptorCreateWithAttributes(
     @param      attributes
                 A CFDictionaryRef of arbitrary attributes.
 
-    @result     This function creates a new copy of the original font descriptor with attributes augmented by those specified. If there are conflicts between attributes, the new attributes will replace existing ones, except for kCTFontVariationAttribute and kCTFontFeatureSettingsAttribute which will be merged.
+    @result     This function creates a new copy of the original font descriptor with attributes augmented by those specified. If there are conflicts between attributes, the new attributes will replace existing ones, except for kCTFontFeatureSettingsAttribute and kCTFontVariationAttribute which will be merged.
                 Starting with macOS 10.12 and iOS 10.0, setting the value of kCTFontFeatureSettingsAttribute to kCFNull will clear the feature settings of the original font descriptor. Setting the value of any individual feature settings pair in the kCTFontFeatureSettingsAttribute value array to kCFNull will clear that feature setting alone. For example, an element like @{ (id)kCTFontFeatureTypeIdentifierKey: @(kLigaturesType), (id)kCTFontFeatureSelectorIdentifierKey: (id)kCFNull } means clear the kLigatureType feature set in the original font descriptor. An element like @[ @"liga", (id)kCFNull ] will have the same effect.
+                Starting with macOS 13.0 and iOS 16.0, setting the value of any individual axis in the kCTFontVariationAttribute value dictionary to kCFNull will reset that axis to its default value.
 
     @seealso    kCTFontFeatureSettingsAttribute
+    @seealso    kCTFontVariationAttribute
 */
 CT_EXPORT
 CTFontDescriptorRef CTFontDescriptorCreateCopyWithAttributes(
@@ -399,6 +409,8 @@ CTFontDescriptorRef _Nullable CTFontDescriptorCreateCopyWithSymbolicTraits(
     @function   CTFontDescriptorCreateCopyWithVariation
     @abstract   Creates a copy of the original font descriptor with a new variation instance.
 
+    @discussion This is a convenience method for easily creating new variation font instances and is equivalent to creating a copy of descriptor with kCTFontVariationAttribute and the specified identifier/value pair.
+
     @param      original
                 The original font descriptor reference.
 
@@ -408,7 +420,9 @@ CTFontDescriptorRef _Nullable CTFontDescriptorCreateCopyWithSymbolicTraits(
     @param      variationValue
                 The value corresponding with the variation instance.
 
-    @result     This function returns a copy of the original font descriptor with a new variation instance. This is a convenience method for easily creating new variation font instances.
+    @result     This function returns a copy of the original font descriptor with a new variation instance.
+
+    @seealso    kCTFontVariationAttribute
 */
 CT_EXPORT
 CTFontDescriptorRef CTFontDescriptorCreateCopyWithVariation(

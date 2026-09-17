@@ -47,7 +47,7 @@ API_AVAILABLE(macos(10.11), ios(8.0))
  making any CPU access (either MTLBuffer.contents or -[MTLTexture getBytes:...] and -[MTLTexture replaceRegion:]) produce undefined results.  To allow the CPU to see what the device
  has written, a CommandBuffer containing this synchronization must be executed.  After completion of the CommandBuffer, the CPU can access the contents of the resource safely.
  */
-- (void)synchronizeResource:(id<MTLResource>)resource API_AVAILABLE(macos(10.11), macCatalyst(13.0)) API_UNAVAILABLE(ios);
+- (void)synchronizeResource:(id<MTLResource>)resource API_DEPRECATED("Managed storage has no effect on Apple Silicon, use Shared storage instead", macos(10.11, 27.0), macCatalyst(13.0, 27.0)) API_UNAVAILABLE(ios);
 
 /*!
  @method synchronizeTexture:slice:mipmapLevel:
@@ -58,7 +58,7 @@ API_AVAILABLE(macos(10.11), ios(8.0))
  @discussion
  See the discussion of -synchronizeResource.   -synchronizeTexture:slice:mipmapLevel performs the same role, except it may flush only a subset of the texture storage, rather than the entire texture.
  */
-- (void)synchronizeTexture:(id<MTLTexture>)texture slice:(NSUInteger)slice level:(NSUInteger)level API_AVAILABLE(macos(10.11), macCatalyst(13.0)) API_UNAVAILABLE(ios);
+- (void)synchronizeTexture:(id<MTLTexture>)texture slice:(NSUInteger)slice level:(NSUInteger)level API_DEPRECATED("Managed storage has no effect on Apple Silicon, use Shared storage instead", macos(10.11, 27.0), macCatalyst(13.0, 27.0)) API_UNAVAILABLE(ios);
 
 /*!
  @method copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:
@@ -261,22 +261,87 @@ API_AVAILABLE(macos(10.11), ios(8.0))
      destinationBuffer:(id<MTLBuffer>)destinationBuffer
      destinationOffset:(NSUInteger)destinationOffset API_AVAILABLE(macos(10.15), ios(14.0));
 
-/// Encodes a command to copy data from a slice of one tensor into a slice of another tensor.
+
+
+/// Encodes a command to copy data from a slice of the data plane of a tensor into a slice of the data plane of
+/// another tensor.
 ///
-/// This command applies reshapes if `sourceTensor` and `destinationTensor` are not aliasable.
+/// If `sourceTensor` and `destinationTensor` are not aliasable, this command applies a reshape operation.
+///
+/// Ensure the first dimension of `sourceOrigin`, `sourceDimensions`, `destinationOrigin`,
+/// and `destinationDimensions` is byte aligned.
+///
 /// - Parameters:
-///    - sourceTensor: A tensor instance that this command copies data from.
-///    - sourceOrigin: An array of offsets, in elements, to the first element of the slice of `sourceTensor` that this command copies data from.
-///    - sourceDimensions: An array of sizes, in elements, of the slice `sourceTensor` that this command copies data from.
-///    - destinationTensor: A tensor instance that this command copies data to.
-///    - destinationOrigin: An array of offsets, in elements, to the first element of the slice of `destinationTensor` that this command copies data to.
-///    - destinationDimensions: An array of sizes, in elements, of the slice of `destinationTensor` that this command copies data to.
+///   - sourceTensor: A tensor instance the method copies data from.
+///   - sourceOrigin: An array of per-dimension offsets that together locate the first element
+///     to copy in `sourceTensor`. Each element in this array corresponds to the dimension at the
+///     same index in `sourceDimensions`. Each offset value represents the number of elements from
+///     the start of that dimension.
+///   - sourceDimensions: An array of per-dimension sizes that together define the extent of the
+///     slice to copy from `sourceTensor`. Each element in this array corresponds to the dimension
+///     at the same index in `sourceOrigin`. Each size value represents the number of elements to
+///     include along that dimension, starting from the corresponding offset in `sourceOrigin`.
+///   - destinationTensor: A tensor instance the method copies data to.
+///   - destinationOrigin: An array of per-dimension offsets that together locate the first element
+///     to write in `destinationTensor`. Each element in this array corresponds to the dimension at
+///     the same index in `destinationDimensions`. Each offset value represents the number of elements
+///     from the start of that dimension.
+///   - destinationDimensions: An array of per-dimension sizes that together define the extent of
+///     the slice to write in `destinationTensor`. Each element in this array corresponds to the
+///     dimension at the same index in `destinationOrigin`. Each size value represents the number of
+///     elements to include along that dimension, starting from the corresponding offset in
+///     `destinationOrigin`.
 - (void)copyFromTensor:(id<MTLTensor>)sourceTensor
           sourceOrigin:(MTLTensorExtents *)sourceOrigin
       sourceDimensions:(MTLTensorExtents *)sourceDimensions
               toTensor:(id<MTLTensor>)destinationTensor
      destinationOrigin:(MTLTensorExtents *)destinationOrigin
  destinationDimensions:(MTLTensorExtents *)destinationDimensions API_AVAILABLE(macos(26.0), ios(26.0));
+
+
+
+
+/// Encodes a command to copy data from a slice of a plane of a tensor into a slice of a plane of
+/// another tensor.
+///
+/// If `sourceTensor` and `destinationTensor` are not aliasable, this command applies a reshape operation.
+/// For auxiliary planes, specify origin and dimensions in plane coordinates by applying the corresponding auxiliary plane's block
+/// factors.
+///
+/// Ensure the first dimension of `sourceOrigin`, `sourceDimensions`, `destinationOrigin`,
+/// and `destinationDimensions` is byte aligned.
+///
+/// - Parameters:
+///   - sourceTensor: A tensor instance the method copies data from.
+///   - sourceOrigin: An array of per-dimension offsets that together locate the first element
+///     to copy in `sourceTensor`. Each element in this array corresponds to the dimension at the
+///     same index in `sourceDimensions`. Each offset value represents the number of elements from
+///     the start of that dimension.
+///   - sourceDimensions: An array of per-dimension sizes that together define the extent of the
+///     slice to copy from `sourceTensor`. Each element in this array corresponds to the dimension
+///     at the same index in `sourceOrigin`. Each size value represents the number of elements to
+///     include along that dimension, starting from the corresponding offset in `sourceOrigin`.
+///   - sourcePlane: The plane the method copies data from.
+///   - destinationTensor: A tensor instance the method copies data to.
+///   - destinationOrigin: An array of per-dimension offsets that together locate the first element
+///     to write in `destinationTensor`. Each element in this array corresponds to the dimension at
+///     the same index in `destinationDimensions`. Each offset value represents the number of elements
+///     from the start of that dimension.
+///   - destinationDimensions: An array of per-dimension sizes that together define the extent of
+///     the slice to write in `destinationTensor`. Each element in this array corresponds to the
+///     dimension at the same index in `destinationOrigin`. Each size value represents the number of
+///     elements to include along that dimension, starting from the corresponding offset in
+///     `destinationOrigin`.
+///   - destinationPlane: The plane the method copies data to.
+- (void)copyFromTensor:(id<MTLTensor>)sourceTensor
+          sourceOrigin:(MTLTensorExtents *)sourceOrigin
+      sourceDimensions:(MTLTensorExtents *)sourceDimensions
+           sourcePlane:(MTLTensorPlaneType)sourcePlane
+              toTensor:(id<MTLTensor>)destinationTensor
+     destinationOrigin:(MTLTensorExtents *)destinationOrigin
+ destinationDimensions:(MTLTensorExtents *)destinationDimensions
+      destinationPlane:(MTLTensorPlaneType)destinationPlane API_AVAILABLE(macos(27.0), ios(27.0));
+
 
 @end
 NS_ASSUME_NONNULL_END

@@ -10,6 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+API_UNAVAILABLE_BEGIN(visionos)
+
 /**
  Keeps track of where an altitude value came from and informs the user about the expected accuracy.
  */
@@ -18,7 +20,8 @@ typedef NS_ENUM(NSInteger, ARAltitudeSource) {
     /** Altitude could not be determined (yet). */
     ARAltitudeSourceUnknown,
 
-    /** ARKit determined altitude based on a coarse digital elevation model. The provided value is too imprecise to be used at close range, but is sufficient to anchor far away content. */
+    /** ARKit determined altitude based on a coarse digital elevation model. The provided value is too imprecise to be used at close range, but is
+     * sufficient to anchor far away content. */
     ARAltitudeSourceCoarse,
 
     /** ARKit determined altitude based on a high resolution digital elevation model. */
@@ -35,13 +38,13 @@ API_AVAILABLE(ios(14.0))
 typedef NS_ENUM(NSInteger, ARGeoTrackingState) {
     /** Geo tracking is not available. */
     ARGeoTrackingStateNotAvailable,
-    
+
     /** Geo tracking is being initialized. */
     ARGeoTrackingStateInitializing,
-    
+
     /** Geo tracking is attempting to localize against a Map. */
     ARGeoTrackingStateLocalizing,
-    
+
     /** Geo tracking is localized. */
     ARGeoTrackingStateLocalized,
 } NS_SWIFT_NAME(ARGeoTrackingStatus.State);
@@ -56,10 +59,10 @@ typedef NS_ENUM(NSInteger, ARGeoTrackingAccuracy) {
 
     /** Localized with low accuracy. */
     ARGeoTrackingAccuracyLow,
-    
+
     /** Localized with medium accuracy. */
     ARGeoTrackingAccuracyMedium,
-    
+
     /** Localized with high accuracy. */
     ARGeoTrackingAccuracyHigh
 } NS_SWIFT_NAME(ARGeoTrackingStatus.Accuracy);
@@ -119,10 +122,23 @@ NS_SWIFT_SENDABLE
  */
 @property (nonatomic, readonly) ARGeoTrackingStateReason stateReason;
 
+/**
+ Unavailable. Geo tracking status objects are created by the system.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)init NS_UNAVAILABLE;
+
+/**
+ Unavailable. Geo tracking status objects are created by the system.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_UNAVAILABLE;
 
 @end
+
+API_UNAVAILABLE_END
 
 NS_ASSUME_NONNULL_END
 

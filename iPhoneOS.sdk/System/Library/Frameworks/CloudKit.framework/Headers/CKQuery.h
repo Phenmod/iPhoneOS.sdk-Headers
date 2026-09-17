@@ -192,10 +192,10 @@ CK_SUBCLASSING_DEPRECATED // should not be subclassed, or Sendable may no longer
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
 
-/// Creates an operation group from a serialized instance.
+/// Creates a query from a serialized instance.
 ///
 /// - Parameters:
-///   - aDecoder: The coder to use when deserializing the group.
+///   - aDecoder: The coder to use when deserializing the query.
 - (instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
 
 /// Creates a query with the specified record type and predicate.

@@ -77,21 +77,21 @@ typedef CHHapticEngineFinishedAction (^CHHapticEngineFinishedHandler)(NSError *_
 		The AVAudioSession bound to this engine has been interrupted.
  
  	@constant	CHHapticEngineStoppedReasonApplicationSuspended
- 		The application owning this engine has been suspended (i.e., put into the background).
+ 		The application owning this engine has been suspended (e.g., upon being put into the background).
  
 	@constant	CHHapticEngineStoppedReasonIdleTimeout
-		The engine has stopped due to an idle timeout when the engine's `autoShutdownEnabled` property was set to YES.
+		The engine has stopped due to an idle timeout, for instance under `autoShutdownEnabled` policy or background inactivity.
  
 	@constant	CHHapticEngineStoppedReasonNotifyWhenFinished
  		The engine has stopped due to a call to a `CHHapticEngineFinishedHandler` returning `CHHapticEngineFinishedActionStopEngine`.
  
-    @constant    CHHapticEngineStoppedReasonEngineDestroyed
+	@constant	CHHapticEngineStoppedReasonEngineDestroyed
         The engine has stopped because the CHHapticEngine instance was destroyed.
 
-    @constant    CHHapticEngineStoppedReasonGameControllerDisconnect
+	@constant	CHHapticEngineStoppedReasonGameControllerDisconnect
         The engine has stopped because the Game Controller associated with this engine disconnected.
 
- 	@constant	CHHapticEngineStoppedReasonSystemError
+	@constant	CHHapticEngineStoppedReasonSystemError
  		An error has occurred.
  */
 

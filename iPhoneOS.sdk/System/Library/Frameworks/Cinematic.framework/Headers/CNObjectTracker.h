@@ -59,6 +59,8 @@ API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0)) API_UNAVAILABLE(watchos)
 /// Continue tracking an object for which tracking has started, and add a new detection to the detection track being built.
 /// - Parameters:
 ///   - time: the presentation time of the frame to be added to the detection track
+///   - sourceImage: image buffer containing the image
+///   - sourceDisparity: disparity buffer containing depth information
 /// - Returns: a prediction of where the object is in the source image
 - (nullable CNBoundsPrediction *)continueTrackingAt:(CMTime)time sourceImage:(CVPixelBufferRef)sourceImage sourceDisparity:(CVPixelBufferRef)sourceDisparity;
 

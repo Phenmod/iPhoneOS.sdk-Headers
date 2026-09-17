@@ -124,6 +124,10 @@ typedef NS_ENUM(NSInteger, CLActivityType) {
 										// positioning for activities in the air, e.g. flying in an
 										// airplane or helicopter, paragliding, flying on a drone,
 										// skydiving, etc.  Also includes runway taxiing
+
+    CLActivityTypeMaritime API_AVAILABLE(ios(27.0), macos(27.0), tvos(27.0), watchos(27.0), visionos(27.0)),
+										// positioning for vehicular activities on the water, e.g. boating,
+										// sailing, etc.
 };
 
 @class CLLocation;
@@ -133,6 +137,7 @@ typedef NS_ENUM(NSInteger, CLActivityType) {
 @class CLMonitorConfiguration;
 @class CLBackgroundActivitySession;
 @protocol CLLocationManagerDelegate;
+@protocol CLBodyIdentifiable;
 
 /*
  *  CLLocationManager
@@ -395,7 +400,15 @@ API_AVAILABLE(macos(10.6), ios(2.0))
  *      CLDeviceOrientationFaceDown are ignored.
  *      
  */
-@property(assign, nonatomic) CLDeviceOrientation headingOrientation API_AVAILABLE(ios(4.0), macos(10.15), watchos(2.0)) API_UNAVAILABLE(tvos, visionos);
+@property(assign, nonatomic) CLDeviceOrientation headingOrientation API_DEPRECATED_WITH_REPLACEMENT("headingBody", ios(4.0, 27.0), macos(10.15, 27.0), watchos(2.0, 27.0)) API_UNAVAILABLE(tvos, visionos);
+/*
+ *  headingBody
+ *
+ *  Discussion:
+ *      Specifies a body from which heading calculation should be referenced.
+ *
+ */
+@property(retain, nonatomic, nullable) id<CLBodyIdentifiable> headingBody API_AVAILABLE(ios(27.0), macos(27.0), watchos(27.0)) API_UNAVAILABLE(tvos, visionos);
 /*
  *  heading
  *  

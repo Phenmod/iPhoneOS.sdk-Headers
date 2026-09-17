@@ -140,10 +140,12 @@ typedef NS_ENUM(NSInteger, NEVPNIKEv2TLSVersion) {
 	NEVPNIKEv2TLSVersionDefault = 0,
 	/*! @const NEVPNIKEv2TLSVersion1_0 TLS 1.0 */
 	NEVPNIKEv2TLSVersion1_0 = 1,
-	/*! @const NEVPNIKEv2TLSVersion1_0 TLS 1.1 */
+	/*! @const NEVPNIKEv2TLSVersion1_1 TLS 1.1 */
 	NEVPNIKEv2TLSVersion1_1 = 2,
-	/*! @const NEVPNIKEv2TLSVersion1_0 TLS 1.2 */
+	/*! @const NEVPNIKEv2TLSVersion1_2 TLS 1.2 */
 	NEVPNIKEv2TLSVersion1_2 = 3,
+	/*! @const NEVPNIKEv2TLSVersion1_3 TLS 1.3 */
+	NEVPNIKEv2TLSVersion1_3 API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos) = 4,
 } API_AVAILABLE(macos(10.13), ios(11.0), tvos(17.0)) API_UNAVAILABLE(watchos);
 
 /*!

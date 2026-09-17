@@ -48,6 +48,9 @@ __BEGIN_DECLS
  * @constant OS_SECURITY_CONFIG_TPRO
  * Indicates that Trusted Path Read-Only (TPRO) is enabled for the process/task.
  *
+ * @constant OS_SECURITY_CONFIG_MTE
+ * Indicates that Memory Tagging Extension (MTE) is enabled for the process/task.
+ *
  * @constant OS_SECURITY_CONFIG_SCRIPT_RESTRICTIONS
  * Indicates Script Restrictions are enabled for the process/task.
  *

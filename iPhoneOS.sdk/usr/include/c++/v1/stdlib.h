@@ -138,10 +138,17 @@ inline _LIBCPP_HIDE_FROM_ABI lldiv_t div(long long __x, long long __y) _NOEXCEPT
 
 // TODO: Remove this once DriverKit provides allocation functions in <stdlib.h>. rdar://84311130
 #    if defined(_LIBCPP_ON_DRIVERKIT)
-extern "C" void free(void*);
-extern "C" void* aligned_alloc(size_t, size_t);
-extern "C" int posix_memalign(void**, size_t, size_t);
-#    endif
+#      ifdef __cplusplus
+extern "C" {
+#      endif // __cplusplus
+void free(void*);
+void* aligned_alloc(size_t, size_t);
+int posix_memalign(void**, size_t, size_t);
+#      ifdef __cplusplus
+} // extern "C"
+#      endif // __cplusplus
+#    endif   // defined(_LIBCPP_ON_DRIVERKIT)
+
 #  endif // _LIBCPP_STDLIB_H
 
 #endif // defined(__cplusplus) && __cplusplus < 201103L && defined(_LIBCPP_USE_FROZEN_CXX03_HEADERS)

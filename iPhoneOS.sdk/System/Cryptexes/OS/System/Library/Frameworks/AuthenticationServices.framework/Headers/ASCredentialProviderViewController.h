@@ -16,8 +16,8 @@
 #import <AuthenticationServices/ASCredentialRequest.h>
 #import <AuthenticationServices/ASPasskeyCredentialRequestParameters.h>
 
-#import <AuthenticationServices/ASSavePasswordRequest.h>
 #import <AuthenticationServices/ASGeneratePasswordsRequest.h>
+#import <AuthenticationServices/ASSavePasswordRequest.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -53,7 +53,7 @@ AS_EXTERN API_AVAILABLE(ios(12.0), macCatalyst(14.0), macos(11.0)) API_UNAVAILAB
  */
 - (void)prepareCredentialListForServiceIdentifiers:(NSArray<ASCredentialServiceIdentifier *> *)serviceIdentifiers requestParameters:(ASPasskeyCredentialRequestParameters *)requestParameters API_AVAILABLE(ios(17.0), macos(14.0)) API_UNAVAILABLE(watchos, tvos);
 
-/*! @abstract Prepare the view controller to show a list of one time code credentials.
+/*! @abstract Prepare the view controller to show a list of one-time code credentials.
  @param serviceIdentifiers the array of service identifiers.
  @discussion This method is called by the system to prepare the extension's view controller to present the list of credentials.
  A service identifier array is passed which can be used to filter or prioritize the credentials that closely match each service.
@@ -107,7 +107,7 @@ API_DEPRECATED_WITH_REPLACEMENT("provideCredentialWithoutUserInteractionForReque
 /// to enhance the user experience. If your extension can accomplish this (for example, the user’s passwords
 /// database is still unlocked from a recent interaction), call `-[ASCredentialProviderExtensionContext completeRequestWithSelectedCredential:completionHandler:]`
 /// for password credentials, `-[ASCredentialProviderExtensionContext completeAssertionRequestWithSelectedPasskeyCredential:completionHandler:]` for passkey credentials,
-/// or `-[ASCredentialProviderExtensionContext completeOneTimeCodeRequestWithSelectedCredential:completionHandler:]` for one time code credentials.
+/// or `-[ASCredentialProviderExtensionContext completeOneTimeCodeRequestWithSelectedCredential:completionHandler:]` for one-time code credentials.
 /// If an error occurs, call `-[ASCredentialProviderExtensionContext cancelRequestWithError:]`
 /// and pass an error with domain `ASExtensionErrorDomain` and an appropriate error code from
 /// `ASExtensionErrorCode`. For example, if your extension requires user interaction because the
@@ -125,7 +125,7 @@ API_DEPRECATED_WITH_REPLACEMENT("provideCredentialWithoutUserInteractionForReque
 ///
 /// Similarly, your extension needs to specify a true value for the Information Property List key `ProvidesOneTimeCodes`
 /// under the `ASCredentialProviderExtensionCapabilities` dictionary in order to be presented in
-/// the list of options for one time code requests.
+/// the list of options for one-time code requests.
 ///
 /// - Note: When this method is called, your extension's view controller is not present on the screen. Do not
 ///   attempt or expect to show any user interface in this method.

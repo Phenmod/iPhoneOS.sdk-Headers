@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2011 Apple Computer, Inc. All rights reserved.
+ * Copyright (c) 2000-2026 Apple Inc. All rights reserved.
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_START@
  *
@@ -387,7 +387,7 @@ struct sadb_sastat {
 #define SADB_EALG_DESCBC        1       /*2*/
 #define SADB_EALG_3DESCBC       2       /*3*/
 #define SADB_EALG_NULL          3       /*11*/
-#define SADB_EALG_MAX           12
+#define SADB_EALG_MAX           15
 /* private allocations - based on RFC2407/IANA assignment */
 #define SADB_X_EALG_CAST128CBC  5       /*6*/
 #define SADB_X_EALG_BLOWFISHCBC 4       /*7*/
@@ -429,6 +429,9 @@ struct sadb_sastat {
 #define SADB_X_EXT_PMASK        0x0300  /* mask for padding flag */
 
 #define SADB_X_EXT_IIV          0x0400 /* Implicit IV */
+/* Extended Sequence Numbers (RFC 4304).  Not implemented in software;
+ * plumbed through to drivers for hardware offload. */
+#define SADB_X_EXT_ESN          0x0800
 
 
 

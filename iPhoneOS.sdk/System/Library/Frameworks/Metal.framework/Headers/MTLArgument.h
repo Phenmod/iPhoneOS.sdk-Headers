@@ -209,6 +209,21 @@ MTL_EXPORT API_AVAILABLE(macos(10.13), ios(11.0))
 
 @end
 
+/// An auxiliary plane that a shader's tensor argument requires.
+MTL_EXPORT API_AVAILABLE(macos(27.0), ios(27.0))
+@interface MTLTensorAuxiliaryPlaneType : NSObject
+
+/// The data format of all elements in the plane.
+@property (readonly) MTLTensorDataType dataType;
+
+/// The number of data plane elements that correspond to one element in this plane.
+@property (readonly) MTLTensorExtents *blockFactors;
+
+/// The type of information this plane stores.
+@property (readonly) MTLTensorPlaneType planeType;
+
+@end
+
 /// An object that represents a tensor in the shading language in a struct or array.
 MTL_EXPORT API_AVAILABLE(macos(26.0), ios(26.0))
 @interface MTLTensorReferenceType : MTLType
@@ -221,8 +236,18 @@ MTL_EXPORT API_AVAILABLE(macos(26.0), ios(26.0))
 
 /// The array of sizes, in elements, one for each dimension of this tensor.
 ///
-/// Because shader-bound tensors have dynamic extents, the ``MTLTensorExtents/rank`` of `dimensions` corresponds to the rank the shader function specifies, and ``MTLTensorExtents/extentsAtDimensionIndex:`` always returns a value of -1.
+/// For shader-bound tensors with dynamic extents, the ``MTLTensorExtents/rank`` of `dimensions` corresponds to the rank the shader
+/// function specifies, and ``MTLTensorExtents/extentAtDimensionIndex:`` always returns a value of -1.
 @property (nullable, readonly) MTLTensorExtents *dimensions;
+
+
+/// The auxiliary planes that this tensor reference requires.
+///
+/// Returns an array of ``MTLTensorAuxiliaryPlaneType`` objects describing
+/// each auxiliary plane the shader expects. Empty if the tensor has no
+/// auxiliary planes.
+@property (readonly) NSArray<MTLTensorAuxiliaryPlaneType *> *auxiliaryPlanes API_AVAILABLE(macos(27.0), ios(27.0));
+
 
 /// A value that represents the read/write permissions of the tensor.
 @property (readonly) MTLBindingAccess access;
@@ -314,9 +339,14 @@ MTL_EXPORT API_AVAILABLE(macos(26.0), ios(26.0))
 
 /// The array of sizes, in elements, one for each dimension of this tensor.
 ///
-/// Because shader-bound tensors have dynamic extents, if this tensor is shader bound, the ``MTLTensorExtents/rank`` of `dimensions` corresponds to the rank the shader function specifies, and ``MTLTensorExtents/extentsAtDimensionIndex:`` always returns a value of -1.
-/// In the case of functions used with machine learning pipelines, `dimensions` corresponds to the default shape, if you provide one. Otherwise, it's `nil` in the case of an undefined shape.
+/// For shader-bound tensors with dynamic extents, the ``MTLTensorExtents/rank`` of `dimensions` corresponds to the rank the shader
+/// function specifies, and ``MTLTensorExtents/extentAtDimensionIndex:`` always returns a value of -1.
+///
+/// For machine learning pipelines, `dimensions` corresponds to the default shape, if you provide one. Otherwise, it's `nil` in the case of an undefined shape.
 @property (nullable, readonly) MTLTensorExtents *dimensions;
+
+/// An array of the tensor's auxiliary planes.
+@property (readonly) NSArray<MTLTensorAuxiliaryPlaneType *> *auxiliaryPlanes API_AVAILABLE(macos(27.0), ios(27.0));
 
 @end
 

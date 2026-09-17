@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 /// A notification the system posts when the list of authorized routes changes.
-AVROUTING_EXTERN NSNotificationName const AVCustomRoutingControllerAuthorizedRoutesDidChangeNotification NS_SWIFT_NAME(AVCustomRoutingController.authorizedRoutesDidChange) API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos);
+AVROUTING_EXTERN NSNotificationName const AVCustomRoutingControllerAuthorizedRoutesDidChangeNotification NS_SWIFT_NAME(AVCustomRoutingController.authorizedRoutesDidChange) API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos) API_DEPRECATED("Use AVSystemRouteController instead", ios(16.0, 27.0));
 
 /*!
 	@class		AVCustomRoutingController
@@ -38,7 +38,7 @@ AVROUTING_EXTERN NSNotificationName const AVCustomRoutingControllerAuthorizedRou
 /// A routing controller also informs its ``AVCustomRoutingController/delegate``
 /// object about which routes the user previously authorized, so it can
 /// reconnect, if appropriate.
-API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos)
+API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos) API_DEPRECATED_WITH_REPLACEMENT("AVSystemRouteController", ios(16.0, 27.0))
 @interface AVCustomRoutingController : NSObject
 
 /*!
@@ -47,7 +47,7 @@ API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos)
  */
 
 /// A delegate object for a routing controller.
-@property (nonatomic, weak, nullable) id<AVCustomRoutingControllerDelegate> delegate API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos);
+@property (nonatomic, weak, nullable) id<AVCustomRoutingControllerDelegate> delegate API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos) API_DEPRECATED("Use AVSystemRouteController instead", ios(16.0, 27.0));
 
 /*!
 	@property 	authorizedRoutes
@@ -62,12 +62,12 @@ API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos)
 /// app may reactivate any one of these routes when appropriate, but it needs to
 /// inform the system by calling
 /// ``AVCustomRoutingController/setActive:forRoute:``.
-@property (nonatomic, readonly) NSArray<AVCustomDeviceRoute *> *authorizedRoutes API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos);
+@property (nonatomic, readonly) NSArray<AVCustomDeviceRoute *> *authorizedRoutes API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos) API_DEPRECATED("Use AVSystemRouteController instead", ios(16.0, 27.0));
 
 /**
  An array of route addresses known to be on the local network.
  */
-@property (nonatomic, strong) NSArray<AVCustomRoutingPartialIP *> *knownRouteIPs API_AVAILABLE(ios(16.1)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos);
+@property (nonatomic, strong) NSArray<AVCustomRoutingPartialIP *> *knownRouteIPs API_AVAILABLE(ios(16.1)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos) API_DEPRECATED("Use AVSystemRouteController instead", ios(16.1, 27.0));
 
 /*!
     @property   customActionItems
@@ -75,7 +75,7 @@ API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos)
  */
 
 /// An array of custom action items to add to a route picker.
-@property (nonatomic, strong) NSArray<AVCustomRoutingActionItem *> *customActionItems API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos);
+@property (nonatomic, strong) NSArray<AVCustomRoutingActionItem *> *customActionItems API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos) API_DEPRECATED("Use AVSystemRouteController instead", ios(16.0, 27.0));
 
 /*!
 	@method     invalidateAuthorization
@@ -139,7 +139,7 @@ API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos)
 	@protocol	AVCustomRoutingControllerDelegate
 	@abstract	A protocol for delegates of AVCustomRoutingController.
  */
-API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos)
+API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos) API_DEPRECATED_WITH_REPLACEMENT("AVSystemRouteControllerObserver", ios(16.0, 27.0))
 
 /// A protocol for delegates of a custom routing controller.
 NS_SWIFT_SENDABLE @protocol AVCustomRoutingControllerDelegate <NSObject>
@@ -212,7 +212,7 @@ NS_SWIFT_SENDABLE @protocol AVCustomRoutingControllerDelegate <NSObject>
     @class      AVCustomRoutingPartialIP
     @abstract   Represents a full or partial IP address. To be used in conjunction with AVCustomRoutingController.knownRouteIPs
  */
-API_AVAILABLE(ios(16.1)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos)
+API_AVAILABLE(ios(16.1)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos) API_DEPRECATED("Use AVSystemRouteController instead", ios(16.1, 27.0))
 /// Represents a full or partial IP address.
 ///
 /// Use this class in conjunction with ``knownRouteIPs``.
@@ -229,7 +229,7 @@ NS_SWIFT_SENDABLE @interface AVCustomRoutingPartialIP : NSObject
 ///var partialIP = AVCustomRoutingPartialIP(address: address, mask: mask)
 ///```
 
-@property (readonly, copy, nonatomic) NSData *address API_AVAILABLE(ios(16.1)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos);
+@property (readonly, copy, nonatomic) NSData *address API_AVAILABLE(ios(16.1)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos) API_DEPRECATED("Use AVSystemRouteController instead", ios(16.1, 27.0));
 
 /** A mask representing how many octets of the IP  address to respect.
  
@@ -242,7 +242,7 @@ NS_SWIFT_SENDABLE @interface AVCustomRoutingPartialIP : NSObject
  var partialIP =AVCustomRoutingPartialIP(address: address, mask: mask)
  ```
 */
-@property (readonly, copy, nonatomic) NSData *mask API_AVAILABLE(ios(16.1)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos);
+@property (readonly, copy, nonatomic) NSData *mask API_AVAILABLE(ios(16.1)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos) API_DEPRECATED("Use AVSystemRouteController instead", ios(16.1, 27.0));
 
 /**
  Creates an IP fragment.
@@ -250,7 +250,7 @@ NS_SWIFT_SENDABLE @interface AVCustomRoutingPartialIP : NSObject
     - address: The IP address.
     - mask: The address mask.
  */
-- (instancetype)initWithAddress:(NSData *)address mask:(NSData *)mask API_AVAILABLE(ios(16.1)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos);
+- (instancetype)initWithAddress:(NSData *)address mask:(NSData *)mask API_AVAILABLE(ios(16.1)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos)  API_DEPRECATED("Use AVSystemRouteController instead", ios(16.1, 27.0));
 
 - (instancetype)init NS_UNAVAILABLE;
 

@@ -225,7 +225,7 @@ API_AVAILABLE(macos(10.7), ios(4.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILA
     Specifies the orientation of the preview layer.
  
  @discussion
-    AVCaptureVideoOrientation and its constants are defined in AVCaptureSession.h. The value of @"orientationSupported" must be YES in order to set @"orientation". An exception will be raised if this requirement is ignored. This property is deprecated. Use AVCaptureConnection's -videoOrientation instead.
+    AVCaptureVideoOrientation and its constants are defined in AVCaptureDevice.h. The value of @"orientationSupported" must be YES in order to set @"orientation". An exception will be raised if this requirement is ignored. This property is deprecated. Use AVCaptureConnection's -videoOrientation instead.
  */
 @property(nonatomic) AVCaptureVideoOrientation orientation API_DEPRECATED("Use AVCaptureConnection's videoOrientation instead.", ios(4.0, 6.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE(tvos);
 

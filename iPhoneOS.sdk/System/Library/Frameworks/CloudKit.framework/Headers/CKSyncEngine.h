@@ -43,6 +43,21 @@ NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 /// Database changes don't require any additional input, but the sync engine does expect you to provide the individual record zone changes — in batches — and return them from your delegate's implementation of ``CKSyncEngineDelegate/syncEngine:nextRecordZoneChangeBatchForContext:``.
 /// After the engine sends the changes, it notifies your delegate about their success (or failure) by dispatching events of type ``CKSyncEngineSentDatabaseChangesEvent`` and ``CKSyncEngineSentRecordZoneChangesEvent``.
 ///
+/// ### Batches
+///
+/// The sync engine sends record zone changes to the server in batches, where each batch corresponds to a single network request.
+/// After your app registers pending changes through ``CKSyncEngineState/addPendingRecordZoneChanges:``, the engine drives a send operation by repeatedly invoking ``CKSyncEngineDelegate/syncEngine:nextRecordZoneChangeBatchForContext:`` to gather those changes into batches and sending each batch as one request.
+/// It keeps asking for batches until your delegate returns `nil` or the operation is cancelled, meaning a single send operation may span many batches.
+///
+/// Each batch is bounded by the server's per-request limit of 250 records (saves plus deletes combined); a batch that exceeds the limit fails with ``CKError/Code/limitExceeded`` and the sync engine treats it like any other send failure.
+/// To stay within the limit automatically, build your batches with ``CKSyncEngineRecordZoneChangeBatch/initWithPendingChanges:recordProvider:``, which walks your pending changes in order and stops once the batch is full.
+/// Any changes that don't fit stay in ``CKSyncEngineState/pendingRecordZoneChanges``, so the engine picks them up on the next call.
+///
+/// After each batch finishes, the engine dispatches a ``CKSyncEngineSentRecordZoneChangesEvent`` (or ``CKSyncEngineSentDatabaseChangesEvent``, for database changes) that describes only the records in that batch, so a single send operation produces one sent-changes event per batch rather than a single event for the whole operation.
+///
+/// When your delegate builds a batch, include only changes that fall within the scope specified by ``CKSyncEngineSendChangesContext/options`` on the provided context.
+/// Returning changes outside that scope causes the send to fail with ``CKError/Code/invalidArguments``.
+///
 /// ### Fetch changes from iCloud
 ///
 /// By default, a sync engine attempts to discover an existing ``CKDatabaseSubscription`` for the associated database and uses that to receive silent notifications about remote record changes.
@@ -190,7 +205,7 @@ NS_SWIFT_SENDABLE
 
 /// Cancels any in-progress or pending sync operations.
 ///
-/// The sync engine processes cancelation requests asynchronously, meaning it's possible for in-progress operations to complete even after this method returns.
+/// The sync engine processes cancellation requests asynchronously, meaning it's possible for in-progress operations to complete even after this method returns.
 - (void)cancelOperationsWithCompletionHandler:(nullable void (NS_SWIFT_SENDABLE ^)(void))completionHandler;
 
 @end
@@ -215,7 +230,7 @@ NS_REFINED_FOR_SWIFT
 /// - Important: If `event` is an instance of ``CKSyncEngineStateUpdateEvent``, you must persist the attached state to disk alongside your app data.
 /// The sync engine requires you to provide it with the most recent serialized state at initialization, and it's your responsibility to make sure this is available across app launches.
 ///
-/// The sync engines provides events serially; your delegate won't receive the subsequent event until it finishes processing the current one and returns from this method.
+/// The sync engine provides events serially; your delegate won't receive the subsequent event until it finishes processing the current one and returns from this method.
 - (void)syncEngine:(CKSyncEngine *)syncEngine handleEvent:(CKSyncEngineEvent *)event NS_SWIFT_NAME(syncEngine(_:handleEvent:));
 
 /// Asks the delegate to provide the next set of record changes to send to the server.
@@ -361,7 +376,7 @@ NS_SWIFT_SENDABLE
 @property (strong) CKOperationGroup *operationGroup;
 
 /// Initializes a set of options with the specific scope.
-/// 
+///
 /// If no scope is provided, the default scope will include everything.
 - (instancetype)initWithScope:(nullable CKSyncEngineSendChangesScope *)scope;
 
@@ -429,7 +444,7 @@ typedef NS_ENUM(NSInteger, CKSyncEngineSyncReason) {
 
 /// The context of an attempt to fetch changes from the server.
 ///
-/// The sync engine might attempt to fetch changes to the server for many reasons.
+/// The sync engine might attempt to fetch changes from the server for many reasons.
 /// For example, if you call ``CKSyncEngine/fetchChangesWithCompletionHandler:``, it tries to fetch changes immediately.
 /// Or if it receives a push notification, it schedules a sync and fetch changes when the scheduler task runs.
 API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0), watchos(10.0))

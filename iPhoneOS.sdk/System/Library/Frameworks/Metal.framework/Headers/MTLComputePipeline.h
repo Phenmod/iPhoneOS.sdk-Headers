@@ -150,6 +150,11 @@ MTL_EXPORT API_AVAILABLE(macos(10.11), ios(9.0))
 */
 @property(readwrite, nonatomic) MTLSize requiredThreadsPerThreadgroup API_AVAILABLE(macos(26.0), ios(26.0));
 
+@property(readwrite, nonatomic) MTLForwardProgressUsage forwardProgressUsage API_AVAILABLE(macos(27.0), ios(27.0));
+@property(readwrite, nonatomic) MTLContentionRelief contentionRelief API_AVAILABLE(macos(27.0), ios(27.0));
+@property(readwrite, nonatomic) BOOL optimizeForPersistentKernel API_AVAILABLE(macos(27.0), ios(27.0));
+
+
 @end
 
 /*!
@@ -173,17 +178,6 @@ API_AVAILABLE(macos(10.11), ios(8.0)) NS_SWIFT_SENDABLE
 /// 1. Configure the ``MTL4PipelineOptions/shaderReflection`` property of an ``MTL4PipelineOptions`` instance.
 /// 2. Assign that instance to the ``MTL4PipelineDescriptor/options`` property of an ``MTL4PipelineDescriptor`` instance.
 /// 3. Create a compute pipeline state by passing that pipeline descriptor to one of the ``MTL4Compiler`` instance's methods.
-///
-/// During development, the property may contain reflection information without these steps
-/// because a GPU frame capture, Metal API validation layer, or shader validation layer
-/// can request reflection information when you enable them.
-/// You need to request reflection information if your app depends on it
-/// because Metal might not load these layers when you distribute your app.
-
-///
-/// > Tip:
-/// Verify the apps that need reflection information in production by testing them
-/// without a frame capture, Metal API validation layer, or shader validation layer.
 ///
 /// The property is `nil` when you create a pipeline state from an``MTLDevice`` instance,
 /// such as with its ``MTLDevice/newComputePipelineStateWithDescriptor:options:completionHandler:`` method.
@@ -300,6 +294,10 @@ API_AVAILABLE(macos(10.11), ios(8.0)) NS_SWIFT_SENDABLE
  @abstract The required size of every compute threadgroup.
 */
 @property (readonly) MTLSize requiredThreadsPerThreadgroup API_AVAILABLE(macos(26.0), ios(26.0));
+
+- (NSUInteger)recommendedPersistentThreadgroupsPerGridForThreadsPerThreadgroup:(MTLSize)threadsPerThreadgroup API_AVAILABLE(macos(27.0), ios(27.0));
+@property(readonly) MTLForwardProgressUsage forwardProgressUsage API_AVAILABLE(macos(27.0), ios(27.0));
+
 @end
 
 NS_ASSUME_NONNULL_END

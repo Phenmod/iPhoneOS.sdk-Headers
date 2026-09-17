@@ -189,6 +189,7 @@ CM_EXPORT OSStatus CMSwapHostEndianImageDescriptionToBig(
 
 CF_IMPLICIT_BRIDGING_DISABLED
 
+
 CM_ASSUME_NONNULL_BEGIN
 
 typedef CFStringRef CMSoundDescriptionFlavor CF_EXTENSIBLE_STRING_ENUM API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0), watchos(6.0), visionos(1.0));
@@ -722,6 +723,7 @@ CM_EXPORT OSStatus CMSwapHostEndianMetadataDescriptionToBig(
 #endif // TARGET_RT_BIG_ENDIAN
 
 CF_IMPLICIT_BRIDGING_DISABLED
+
 
 #pragma pack(pop)
 

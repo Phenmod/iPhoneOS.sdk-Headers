@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
  @discussion    An MXMetricPayload contains data that covers a 24 hour period of application usage. The properties timeStampBegin and timeStampEnd should be used to determine which time range the payload covers.
  @discussion    It is possible for an MXMetricPayload to cover regions of time where an application was updated, and thus had multiple different app version strings. The property latestApplicationVersion will always reflect the latest appVersion at the time the metric payload was created. Use includesMultipleApplicationVersions to determine if an application changed versions during the time range the payload covers.
  */
-API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(tvos, watchos)
+API_DEPRECATED("Use MetricReport instead.", ios(13.0, API_TO_BE_DEPRECATED), macos(10.15, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos)
 @interface MXMetricPayload : NSObject <NSSecureCoding>
 
 /*!
@@ -167,7 +167,7 @@ API_AVAILABLE(ios(26.0), macos(26.0)) API_UNAVAILABLE(tvos, watchos);
  @abstract      Convenience method to return a JSON representation of this payload.
  @result        An NSData object containing the JSON representation
  */
-- (NSData *)JSONRepresentation;
+- (NSData *)JSONRepresentation API_DEPRECATED("Use MetricReport instead.", ios(13.0, API_TO_BE_DEPRECATED), macos(10.15, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos);
 
 /*!
  @method        DictionaryRepresentation
@@ -181,7 +181,7 @@ API_AVAILABLE(ios(26.0), macos(26.0)) API_UNAVAILABLE(tvos, watchos);
 @abstract      Convenience method to return a NSDictionary representation of this payload.
 @result        An NSDictionary object containing the dictionary representation
 */
-- (NSDictionary *)dictionaryRepresentation API_AVAILABLE(ios(13.0), macos(11.0)) API_UNAVAILABLE(tvos, watchos);
+- (NSDictionary *)dictionaryRepresentation API_DEPRECATED("Use MetricReport instead.", ios(13.0, API_TO_BE_DEPRECATED), macos(11.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos);
 @end
 
 NS_ASSUME_NONNULL_END

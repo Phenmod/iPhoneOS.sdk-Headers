@@ -19,7 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
     @class AVAudioRecorder
     @abstract An object that records audio data to a file.
  */
-NS_SWIFT_SENDABLE 
 API_AVAILABLE(macos(10.7), ios(3.0), watchos(4.0), tvos(17.0))
 @interface AVAudioRecorder : NSObject {
 @private

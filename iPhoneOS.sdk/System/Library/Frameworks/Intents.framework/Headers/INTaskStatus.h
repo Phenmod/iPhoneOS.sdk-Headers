@@ -15,6 +15,6 @@ typedef NS_ENUM(NSInteger, INTaskStatus) {
     INTaskStatusUnknown = 0,
     INTaskStatusNotCompleted,
     INTaskStatusCompleted,
-} API_AVAILABLE(ios(11.0), watchos(4.0)) API_UNAVAILABLE(macos, tvos);
+} API_DEPRECATED("INTaskStatus is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.", ios(11.0, 27.0), watchos(4.0, 27.0)) API_UNAVAILABLE(macos, tvos);
 
 #endif // INTaskStatus_h

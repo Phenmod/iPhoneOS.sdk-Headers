@@ -359,27 +359,27 @@ class _MPSSrcImage
                   array_ref<texture2d<_type, _access>> Aimg,
                   array_ref<texture2d_array<_type, _access>> AimgA,
                   const int texType,
-                  constant MPSCustomKernelSourceInfo &info ) : _img(img), _imgA(imgA), _Aimg(Aimg), _AimgA(AimgA), _texType(texType), _info(info) { }
+                  constant MPSCustomKernelSourceInfo &info ) thread : _img(img), _imgA(imgA), _Aimg(Aimg), _AimgA(AimgA), _texType(texType), _info(info) { }
     
     // image metadata
     //  The imageIndex parameter for width, height and slices, can be ignored.
     //  It may save some registers / memory access if you use the same where.w as your read/sample/gather call
-    ushort  get_width(uint imageIndex = 0) const;
-    ushort  get_height(uint imageIndex = 0) const;
-    ushort  get_slices(uint imageIndex = 0) const;
-    ushort  get_image_count(void) const;
-    ushort4 get_size(uint imageIndex = 0) const { return ushort4(get_width(imageIndex), get_height(imageIndex), get_slices(imageIndex), get_image_count()); }
-    ushort  get_feature_channels(void) const {return _info.featureChannels;}
+    ushort  get_width(uint imageIndex = 0) const thread;
+    ushort  get_height(uint imageIndex = 0) const thread;
+    ushort  get_slices(uint imageIndex = 0) const thread;
+    ushort  get_image_count(void) const thread;
+    ushort4 get_size(uint imageIndex = 0) const thread { return ushort4(get_width(imageIndex), get_height(imageIndex), get_slices(imageIndex), get_image_count()); }
+    ushort  get_feature_channels(void) const thread {return _info.featureChannels;}
     
-    short2  get_offset(void) const { return _info.offset; }
-    ushort  get_slice_offset(void) const { return _info.featureChannelOffset; }
-    uniform<ushort> get_image_offset(void) const { return make_uniform(_info.imageArrayOffset); }
-    short4  get_all_offsets(void) const { return short4(get_offset(), short(get_slice_offset()), short(get_image_offset())); }
-    ushort2 get_stride(void) const { return _info.stride; }
-    ushort2 get_dilation_rate(void) const { return _info.dilationRate; }
-    ushort2 get_kernel_size(void) const { return _info.kernelSize; }
-    ushort2 get_kernel_phase(void) const { return _info.kernelPhase; }
-    float2  get_kernel_origin(ushort2 globalID ) const { return float2(_info.kernelOrigin) + float2(get_stride() * globalID); }
+    short2  get_offset(void) const thread { return _info.offset; }
+    ushort  get_slice_offset(void) const thread { return _info.featureChannelOffset; }
+    uniform<ushort> get_image_offset(void) const thread { return make_uniform(_info.imageArrayOffset); }
+    short4  get_all_offsets(void) const thread { return short4(get_offset(), short(get_slice_offset()), short(get_image_offset())); }
+    ushort2 get_stride(void) const thread { return _info.stride; }
+    ushort2 get_dilation_rate(void) const thread { return _info.dilationRate; }
+    ushort2 get_kernel_size(void) const thread { return _info.kernelSize; }
+    ushort2 get_kernel_phase(void) const thread { return _info.kernelPhase; }
+    float2  get_kernel_origin(ushort2 globalID ) const thread { return float2(_info.kernelOrigin) + float2(get_stride() * globalID); }
     
     // Some platforms require that all threads access the same image in the
     // array of textures, or else performance is dreadful. We have broken out
@@ -387,10 +387,10 @@ class _MPSSrcImage
     // where = {X,Y} and which = {feature channel slice, batch image}.
     // It wasn't possible to declare just the w component of a float4 to be uniform<>
     // See small uniform tutorial below
-    __attribute__((__always_inline__)) _type4  sample( sampler s, float2 where, ushort slice, uniform<ushort> image, int2 offset = int2(0) ) const;
-    __attribute__((__always_inline__)) _type4  gather( sampler s, float2 where, ushort slice, uniform<ushort> image, int2 offset = int2(0), component c = component::x ) const;
-    __attribute__((__always_inline__)) _type4  read( ushort2 where, ushort slice, uniform<ushort> image ) const;
-    __attribute__((__always_inline__)) _type4  read( uint2 where, uint slice, uniform<uint> image ) const;
+    __attribute__((__always_inline__)) _type4  sample( sampler s, float2 where, ushort slice, uniform<ushort> image, int2 offset = int2(0) ) const thread;
+    __attribute__((__always_inline__)) _type4  gather( sampler s, float2 where, ushort slice, uniform<ushort> image, int2 offset = int2(0), component c = component::x ) const thread ;
+    __attribute__((__always_inline__)) _type4  read( ushort2 where, ushort slice, uniform<ushort> image ) const thread;
+    __attribute__((__always_inline__)) _type4  read( uint2 where, uint slice, uniform<uint> image ) const thread;
 };
 
 //
@@ -448,27 +448,27 @@ class _MPSSrcImage
     })
 
 //ushort  get_width(uint imageIndex = 0) const;
-template<class _type, access _access, class _type4> ushort _MPSSrcImage<_type, _access, _type4>::get_width(uint index) const {
+template<class _type, access _access, class _type4> ushort _MPSSrcImage<_type, _access, _type4>::get_width(uint index) const thread {
     __MPS_TEX_TYPE_SELECT( _img.get_width(), _imgA.get_width(), _Aimg[index].get_width(), _AimgA[index].get_width(), 0);
 }
 
 //ushort  get_height(uint imageIndex = 0) const;
-template<class _type, access _access, class _type4> ushort  _MPSSrcImage<_type, _access, _type4>::get_height(uint index) const {
+template<class _type, access _access, class _type4> ushort  _MPSSrcImage<_type, _access, _type4>::get_height(uint index) const thread {
     __MPS_TEX_TYPE_SELECT( _img.get_height(), _imgA.get_height(), _Aimg[index].get_height(), _AimgA[index].get_height(), 0);
 }
 
 //ushort  get_slices(uint imageIndex = 0) const;
-template<class _type, access _access, class _type4> ushort _MPSSrcImage<_type, _access, _type4>::get_slices(uint index) const {
+template<class _type, access _access, class _type4> ushort _MPSSrcImage<_type, _access, _type4>::get_slices(uint index) const thread {
     __MPS_TEX_TYPE_SELECT( (uint16_t) 1, _imgA.get_array_size(), (uint16_t) 1, _AimgA[index].get_array_size(), 0);
 }
 
 //ushort  get_image_count(void) const;
-template<class _type, access _access, class _type4> ushort _MPSSrcImage<_type, _access, _type4>::get_image_count(void) const {
+template<class _type, access _access, class _type4> ushort _MPSSrcImage<_type, _access, _type4>::get_image_count(void) const thread {
     __MPS_TEX_TYPE_SELECT( (uint16_t) 1, (uint16_t) 1, _info.imageArraySize, _info.imageArraySize, 0);
 }
 
 //_type4   sample( sampler s, float2 where, ushort slice, uniform<ushort> image, int2 offset = int2(0) );
-template<class _type, access _access, class _type4> __attribute__((__always_inline__)) _type4 _MPSSrcImage<_type, _access, _type4>::sample( sampler s, float2 where, ushort slice, uniform<ushort> image, int2 offset ) const {
+template<class _type, access _access, class _type4> __attribute__((__always_inline__)) _type4 _MPSSrcImage<_type, _access, _type4>::sample( sampler s, float2 where, ushort slice, uniform<ushort> image, int2 offset ) const thread {
    return  __MPS_TEX_TYPE_SELECT_TYPE4( _img.sample(s, where, offset),
                                         _imgA.sample(s, where, slice, offset),
                                         _Aimg[image].sample(s, where, offset),
@@ -478,7 +478,7 @@ template<class _type, access _access, class _type4> __attribute__((__always_inli
 
 
 //_type4   gather( sampler s, float2 where, ushort2 which, int2 offset = int2(0), component c = component::x );
-template<class _type, access _access, class _type4> __attribute__((__always_inline__)) _type4 _MPSSrcImage<_type, _access, _type4>::gather( sampler s, float2 where, ushort slice, uniform<ushort> image, int2 offset, component c ) const {
+template<class _type, access _access, class _type4> __attribute__((__always_inline__)) _type4 _MPSSrcImage<_type, _access, _type4>::gather( sampler s, float2 where, ushort slice, uniform<ushort> image, int2 offset, component c ) const thread {
     switch(c)
     { // this switch should be optimized away, since c is known at compile time.
         case component::x:
@@ -510,7 +510,7 @@ template<class _type, access _access, class _type4> __attribute__((__always_inli
 }
 
 //_type4   read( ushort4 where );
-template<class _type, access _access, class _type4> __attribute__((__always_inline__)) _type4 _MPSSrcImage<_type, _access, _type4>::read( ushort2 where, ushort slice, uniform<ushort> image ) const {
+template<class _type, access _access, class _type4> __attribute__((__always_inline__)) _type4 _MPSSrcImage<_type, _access, _type4>::read( ushort2 where, ushort slice, uniform<ushort> image ) const thread {
     return __MPS_TEX_TYPE_SELECT_TYPE4( _img.read(where),
                                         _imgA.read(where, slice),
                                         _Aimg[image].read( where),
@@ -519,7 +519,7 @@ template<class _type, access _access, class _type4> __attribute__((__always_inli
 }
 
 //_type4   read( uint4 where );
-template<class _type, access _access, class _type4> __attribute__((__always_inline__)) _type4 _MPSSrcImage<_type, _access, _type4>::read( uint2 where, uint slice, uniform<uint> image ) const {
+template<class _type, access _access, class _type4> __attribute__((__always_inline__)) _type4 _MPSSrcImage<_type, _access, _type4>::read( uint2 where, uint slice, uniform<uint> image ) const thread {
     return __MPS_TEX_TYPE_SELECT_TYPE4( _img.read(where),
                                         _imgA.read(where, slice),
                                         _Aimg[image].read( where),
@@ -548,27 +548,27 @@ class _MPSDestImage
                       array_ref<texture2d<_type, access::write>> Aimg [[function_constant(kMPSDeviceSupportsWritableArrayOfTextures)]],
                       array_ref<texture2d_array<_type, access::write>> AimgA [[function_constant(kMPSDeviceSupportsWritableArrayOfTextures)]],
                       const int texType,
-                      constant MPSCustomKernelInfo &info ) : _img(img), _imgA(imgA),
+                      constant MPSCustomKernelInfo &info ) thread : _img(img), _imgA(imgA),
                                                              _Aimg(Aimg), _AimgA(AimgA),
                                                              _texType(texType), _info(info) { }
     
     // image metadata
     // The imageIndex parameter for width, height and slices, can be ignored.
     // It may save some registers / memory access if you use the same where.w as your write call
-    ushort  get_width(uint imageIndex = 0) const;    ///< width of image in texels
-    ushort  get_height(uint imageIndex = 0) const;   ///< height of image in texels
-    ushort  get_slices(uint imageIndex = 0) const;   ///< number of slices in a single image
-    ushort  get_image_count(void) const;             ///< number of images in the _MPSDestImage
-    ushort4 get_size(uint imageIndex = 0){ return ushort4(get_width(imageIndex), get_height(imageIndex), get_slices(imageIndex), get_image_count()); }  ///< (ushor4){ width, height, slice count, image count }
-    ushort  get_feature_channels(void) const {return _info.destinationFeatureChannels;} ///< number of feature channels in the images.
+    ushort  get_width(uint imageIndex = 0) const thread;    ///< width of image in texels
+    ushort  get_height(uint imageIndex = 0) const thread;   ///< height of image in texels
+    ushort  get_slices(uint imageIndex = 0) const thread;   ///< number of slices in a single image
+    ushort  get_image_count(void) const thread;             ///< number of images in the _MPSDestImage
+    ushort4 get_size(uint imageIndex = 0) thread { return ushort4(get_width(imageIndex), get_height(imageIndex), get_slices(imageIndex), get_image_count()); }  ///< (ushor4){ width, height, slice count, image count }
+    ushort  get_feature_channels(void) const thread {return _info.destinationFeatureChannels;} ///< number of feature channels in the images.
     
-    uniform<ushort> get_image_offset(void)const { return make_uniform(_info.clipOrigin.w);} ///< The index of the first image to start writing to
-    ushort  get_slice_offset(void)const { return _info.clipOrigin.z;}                       ///< The index of the first slice to start writing to
-    ushort4 get_clip_origin(void){ return _info.clipOrigin;}                                ///< {x,y, destinationFeatureChannelOffset/4}
-    ushort4 get_clip_size(void){ return _info.clipSize;}                                    ///< {clip.width, clip.height, clip.slice_cout, clip_image_count }
+    uniform<ushort> get_image_offset(void) const thread { return make_uniform(_info.clipOrigin.w);} ///< The index of the first image to start writing to
+    ushort  get_slice_offset(void) const thread { return _info.clipOrigin.z;}                       ///< The index of the first slice to start writing to
+    ushort4 get_clip_origin(void) thread { return _info.clipOrigin;}                                ///< {x,y, destinationFeatureChannelOffset/4}
+    ushort4 get_clip_size(void) thread { return _info.clipSize;}                                    ///< {clip.width, clip.height, clip.slice_cout, clip_image_count }
     
-    __attribute__((__always_inline__)) void    write( _type4 v, ushort2 where, ushort slice, uniform<ushort> image );
-    __attribute__((__always_inline__)) void    write( _type4 v, uint2 where, uint slice, uniform<uint> image );
+    __attribute__((__always_inline__)) void    write( _type4 v, ushort2 where, ushort slice, uniform<ushort> image ) thread;
+    __attribute__((__always_inline__)) void    write( _type4 v, uint2 where, uint slice, uniform<uint> image ) thread;
 };
 
 #define __MPS_DEST_TEX_TYPE_SELECT( _2d, _2da, _a2d, _a2da )                            \
@@ -590,27 +590,27 @@ class _MPSDestImage
 
 
 //ushort  get_width(uint imageIndex = 0) const;
-template<class _type, class _type4> ushort _MPSDestImage<_type, _type4>::get_width(uint index) const {
+template<class _type, class _type4> ushort _MPSDestImage<_type, _type4>::get_width(uint index) const thread {
     __MPS_DEST_TEX_TYPE_SELECT( _img.get_width(), _imgA.get_width(), _Aimg[index].get_width(), _AimgA[index].get_width());
 }
 
 //ushort  get_height(uint imageIndex = 0) const;
-template<class _type, class _type4> ushort _MPSDestImage<_type, _type4>::get_height(uint index) const {
+template<class _type, class _type4> ushort _MPSDestImage<_type, _type4>::get_height(uint index) const thread {
     __MPS_DEST_TEX_TYPE_SELECT( _img.get_height(), _imgA.get_height(), _Aimg[index].get_height(), _AimgA[index].get_height());
 }
 
 //ushort  get_slices(uint imageIndex = 0) const;
-template<class _type, class _type4> ushort _MPSDestImage<_type, _type4>::get_slices(uint index) const {
+template<class _type, class _type4> ushort _MPSDestImage<_type, _type4>::get_slices(uint index) const thread {
     __MPS_DEST_TEX_TYPE_SELECT( ushort(1), _imgA.get_array_size(), ushort(1), _AimgA[index].get_array_size());
 }
 
 //ushort  get_image_count(void) const;
-template<class _type, class _type4> ushort _MPSDestImage<_type, _type4>::get_image_count(void) const {
+template<class _type, class _type4> ushort _MPSDestImage<_type, _type4>::get_image_count(void) const thread {
     __MPS_DEST_TEX_TYPE_SELECT( (uint16_t) 1, (uint16_t) 1, _info.destImageArraySize, _info.destImageArraySize);
 }
 
 //void    write( _vec4 v, ushort2 where, ushort slice, uniform<ushort> image );
-template<class _type, class _type4> __attribute__((__always_inline__)) void _MPSDestImage<_type, _type4>::write( _type4 v, ushort2 where, ushort slice, uniform<ushort> image ) {
+template<class _type, class _type4> __attribute__((__always_inline__)) void _MPSDestImage<_type, _type4>::write( _type4 v, ushort2 where, ushort slice, uniform<ushort> image ) thread {
     switch(_texType & MPSImageType_texelFormatMask)
     {
         case MPSImageType_texelFormatBFloat16:
@@ -627,7 +627,7 @@ template<class _type, class _type4> __attribute__((__always_inline__)) void _MPS
 }
 
 //void    write( _vec4 v, uint2 where, uint slice, uniform<uint> image );
-template<class _type, class _type4> __attribute__((__always_inline__)) void _MPSDestImage<_type, _type4>::write( _type4 v, uint2 where, uint slice, uniform<uint> image ) {
+template<class _type, class _type4> __attribute__((__always_inline__)) void _MPSDestImage<_type, _type4>::write( _type4 v, uint2 where, uint slice, uniform<uint> image ) thread {
     switch(_texType & MPSImageType_texelFormatMask)
     {
         case MPSImageType_texelFormatBFloat16:

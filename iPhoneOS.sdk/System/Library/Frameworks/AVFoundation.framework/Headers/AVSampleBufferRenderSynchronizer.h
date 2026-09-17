@@ -19,6 +19,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// AVSampleBufferRenderSynchronizer can synchronize multiple objects conforming to AVQueuedSampleBufferRendering to a single timebase.
+NS_SWIFT_SENDABLE
 API_AVAILABLE(macos(10.13), ios(11.0), tvos(11.0), watchos(4.0), visionos(1.0))
 @interface AVSampleBufferRenderSynchronizer : NSObject
 {
@@ -106,7 +107,7 @@ AVF_EXPORT NSNotificationName const AVSampleBufferRenderSynchronizerRateDidChang
 /// A list of renderers added to and not removed from the synchronizer. The list also includes renderers that have been scheduled to be removed but have not yet been removed.
 /// 
 /// This property is not KVO observable.
-@property (atomic, readonly) NSArray<__kindof id <AVQueuedSampleBufferRendering>> *renderers;
+@property (atomic, readonly) NSArray<__kindof id <AVQueuedSampleBufferRendering>> *renderers AVF_DEPRECATED_FOR_SWIFT_ONLY("Accessing non-Sendable renderers concurrently risks causing data races", macos(10.13, 27.0), ios(11.0, 27.0), tvos(11.0, 27.0), watchos(4.0, 27.0), visionos(1.0, 27.0));
 
 /// Adds a renderer to the list of renderers under the synchronizer's control.
 /// 
@@ -115,7 +116,7 @@ AVF_EXPORT NSNotificationName const AVSampleBufferRenderSynchronizerRateDidChang
 /// This method can be called while rate is non-0.0.
 /// 
 /// - Parameter renderer: An object conforming to AVQueuedSampleBufferRendering to be synchronized by this synchronizer.
-- (void)addRenderer:(id <AVQueuedSampleBufferRendering>)renderer;
+- (void)addRenderer:(id <AVQueuedSampleBufferRendering>)renderer AVF_DEPRECATED_FOR_SWIFT_ONLY("Get an AVQueuedSampleBufferRenderingReceiver from an audio or video renderer with sampleBufferReceiver() and add it to the synchronizer with addReceiver(_:) instead", macos(10.13, 27.0), ios(11.0, 27.0), tvos(11.0, 27.0), watchos(4.0, 27.0), visionos(1.0, 27.0));
 
 /// Removes a renderer from the list of renderers under the synchronizer's control.
 /// 
@@ -134,7 +135,7 @@ AVF_EXPORT NSNotificationName const AVSampleBufferRenderSynchronizerRateDidChang
 /// - Parameter renderer: An object conforming to AVQueuedSampleBufferRendering currently synchronized by this synchronizer to no longer be synchronized by the synchronizer.
 /// - Parameter time: The time on the timebase's timeline at which the renderer should be removed.
 /// - Parameter completionHandler: Optional. A block called when the renderer is removed from the synchronizer. If provided, this block will always be called with didRemoveRenderer indicating whether the renderer was removed by this scheduled removal.
-- (void)removeRenderer:(id <AVQueuedSampleBufferRendering>)renderer atTime:(CMTime)time completionHandler:(nullable void (^ NS_SWIFT_SENDABLE)(BOOL didRemoveRenderer))completionHandler;
+- (void)removeRenderer:(id <AVQueuedSampleBufferRendering>)renderer atTime:(CMTime)time completionHandler:(nullable void (^ NS_SWIFT_SENDABLE)(BOOL didRemoveRenderer))completionHandler AVF_DEPRECATED_FOR_SWIFT_ONLY("Use removeReceiver(_:at:) instead", macos(10.13, 27.0), ios(11.0, 27.0), tvos(11.0, 27.0), watchos(4.0, 27.0), visionos(1.0, 27.0));
 
 @end
 

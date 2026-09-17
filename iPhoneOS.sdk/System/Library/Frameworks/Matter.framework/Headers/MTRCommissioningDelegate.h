@@ -24,6 +24,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// Keys for the context argument to commissioning:succeededForNodeID:metrics:context.
+
+// The transport type of the session opened for the initial phase of commissioning.
+MTR_EXTERN NSString * const MTRCommissioningSessionTransportType MTR_AVAILABLE(ios(27.0), macos(27.0), watchos(27.0), tvos(27.0));
+// Whether the call to succeededForNodeID concerns the completion of the unpowered phase
+// of commissioning (this is currently only ever added for commissioning over NFC).
+MTR_EXTERN NSString * const MTRUnpoweredInitialPhase MTR_AVAILABLE(ios(27.0), macos(27.0), watchos(27.0), tvos(27.0));
+
 MTR_AVAILABLE(ios(26.2), macos(26.2), watchos(26.2), tvos(26.2))
 @protocol MTRCommissioningDelegate <NSObject>
 @optional
@@ -109,10 +117,25 @@ MTR_AVAILABLE(ios(26.2), macos(26.2), watchos(26.2), tvos(26.2))
 
 /**
  * Notification that commissioning has succeeded.
+ *
+ * This selector will not be used if commissioning:succeededForNodeID:metrics:context: is supported.
  */
 - (void)commissioning:(MTRCommissioningOperation *)commissioning
     succeededForNodeID:(NSNumber *)nodeID
                metrics:(MTRMetrics *)metrics;
+
+/**
+ * Notification that commissioning has succeeded.
+ *
+ * If supported, this selector will be used in preference to commissioning:succeededForNodeID:metrics:.
+ *
+ * The context parameter is a dictionary with NSString keys and values of type id.
+ * The supported keys are defined above in this file.
+ */
+- (void)commissioning:(MTRCommissioningOperation *)commissioning
+    succeededForNodeID:(NSNumber *)nodeID
+               metrics:(MTRMetrics *)metrics
+               context:(NSDictionary<NSString *, id> *)context MTR_AVAILABLE(ios(27.0), macos(27.0), watchos(27.0), tvos(27.0));
 
 @end
 

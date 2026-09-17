@@ -90,19 +90,20 @@ API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0)) API_UNAVAILABLE(watchos)
 @property (readonly) CGAffineTransform preferredTransform;
 @property (readonly) CNRenderingQuality quality;
 
-
 /// Encode a command to render a shallow depth of field (SDoF) image to a pixel buffer.
 /// - Parameters:
 ///   - commandBuffer: the metal command buffer on which to encode the command
 ///   - frameAttributes: controls the focus distance and aperture of the rendering
 ///   - sourceImage: a pixel buffer read from the cinematicVideoTrack
-///   - sourceDisparity: a pixel buffer read from the cinematicDisparityTrack
+///   - sourceDisparity: a pixelbuffer with disparity. Can be nil only when preview rendering of assets
+///                      before preprocessing (\c CNAssetInfo.cinematicCapability == \c CNCinematicCapabilityNeedsPreprocessing). When nil the source disparity and frameAttributes.focusDisparity will be computed internally.
+///                      Passing nil for other types of assets will return false.
 ///   - destinationImage: the pixel buffer to which the SDoF image is rendered
 /// - Returns: whether encoding the render command was successful
 - (BOOL)encodeRenderToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                     frameAttributes:(CNRenderingSessionFrameAttributes *)frameAttributes
                         sourceImage:(CVPixelBufferRef)sourceImage
-                    sourceDisparity:(CVPixelBufferRef)sourceDisparity
+                    sourceDisparity:(CVPixelBufferRef _Nullable)sourceDisparity
                    destinationImage:(CVPixelBufferRef)destinationImage;
 
 /// Encode a command to render a shallow depth of field (SDoF) image to a metal texture as RGBA.
@@ -110,13 +111,15 @@ API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0)) API_UNAVAILABLE(watchos)
 ///   - commandBuffer: the metal command buffer on which to encode the command
 ///   - frameAttributes: controls the focus distance and aperture of the rendering
 ///   - sourceImage: a pixel buffer read from the cinematicVideoTrack
-///   - sourceDisparity: a pixel buffer read from the cinematicDisparityTrack
+///   - sourceDisparity: a pixelbuffer with disparity. Can be nil only when preview rendering of assets
+///                      before preprocessing (\c CNAssetInfo.cinematicCapability == \c CNCinematicCapabilityNeedsPreprocessing). When nil the source disparity and frameAttributes.focusDisparity will be computed internally.
+///                      Passing nil for other types of assets will return false.
 ///   - destinationRGBA: a metal texture to which the SDoF image is rendered in RGBA format
 /// - Returns: whether encoding the render command was successful
 - (BOOL)encodeRenderToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                     frameAttributes:(CNRenderingSessionFrameAttributes *)frameAttributes
                         sourceImage:(CVPixelBufferRef)sourceImage
-                    sourceDisparity:(CVPixelBufferRef)sourceDisparity
+                    sourceDisparity:(CVPixelBufferRef _Nullable)sourceDisparity
                     destinationRGBA:(id<MTLTexture>)destinationRGBA;
 
 /// Encode a command to render a shallow depth of field (SDoF) image to two metal textures as luma and chroma.
@@ -124,14 +127,16 @@ API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0)) API_UNAVAILABLE(watchos)
 ///   - commandBuffer: the metal command buffer on which to encode the command
 ///   - frameAttributes: controls the focus distance and aperture of the rendering
 ///   - sourceImage: a pixel buffer read from the cinematicVideoTrack
-///   - sourceDisparity: a pixel buffer read from the cinematicDisparityTrack
+///   - sourceDisparity: a pixelbuffer with disparity. Can be nil only when preview rendering of assets
+///                      before preprocessing (\c CNAssetInfo.cinematicCapability == \c CNCinematicCapabilityNeedsPreprocessing). When nil the source disparity and frameAttributes.focusDisparity will be computed internally.
+///                      Passing nil for other types of assets will return false.
 ///   - destinationLuma: a metal texture to which the luma of the SDoF image is rendered
 ///   - destinationChroma: a metal texture to which the chroma of the SDoF image is rendered
 /// - Returns: whether encoding the render command was successful
 - (BOOL)encodeRenderToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                     frameAttributes:(CNRenderingSessionFrameAttributes *)frameAttributes
                         sourceImage:(CVPixelBufferRef)sourceImage
-                    sourceDisparity:(CVPixelBufferRef)sourceDisparity
+                    sourceDisparity:(CVPixelBufferRef _Nullable)sourceDisparity
                     destinationLuma:(id<MTLTexture>)destinationLuma
                   destinationChroma:(id<MTLTexture>)destinationChroma;
 

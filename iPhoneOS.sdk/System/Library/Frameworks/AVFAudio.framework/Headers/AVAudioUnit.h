@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
         An AVAudioUnit is an AVAudioNode implemented by an audio unit. Depending on the type of
         the audio unit, audio is processed either in real-time or non real-time.
 */
-API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0)) API_UNAVAILABLE(watchos)
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0)) API_UNAVAILABLE(watchos)
 @interface AVAudioUnit : AVAudioNode
 
 #if AVAUDIOUNIT_HAVE_AUDIOUNIT
@@ -47,7 +47,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0)) API_UNAVAILABLE(watchos)
 		AVAudioUnitGenerator, AVAudioUnitMIDIInstrument, or AVAudioUnitTimeEffect), selected
 		according to the component's type.
 */
-+ (void)instantiateWithComponentDescription:(AudioComponentDescription)audioComponentDescription options:(AudioComponentInstantiationOptions)options completionHandler:(void (^)(__kindof AVAudioUnit * __nullable audioUnit, NSError * __nullable error))completionHandler API_AVAILABLE(macos(10.11), ios(9.0), tvos(9.0));
++ (void)instantiateWithComponentDescription:(AudioComponentDescription)audioComponentDescription options:(AudioComponentInstantiationOptions)options completionHandler:(void (^ NS_SWIFT_SENDING)(__kindof AVAudioUnit * __nullable audioUnit, NSError * __nullable error))completionHandler API_AVAILABLE(macos(10.11), ios(9.0), tvos(9.0));
 
 /*! @method loadAudioUnitPresetAtURL:error:
     @abstract Load an audio unit preset.
@@ -75,7 +75,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0)) API_UNAVAILABLE(watchos)
         directly on the audio unit. These include changing initialization state, stream formats,
         channel layouts or connections to other audio units.
 */
-@property (nonatomic, readonly) AudioUnit audioUnit;
+@property (nonatomic, readonly) AudioUnit audioUnit NS_REFINED_FOR_SWIFT;
 
 #ifdef __OBJC2__
 /*! @property AUAudioUnit
@@ -89,7 +89,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0)) API_UNAVAILABLE(watchos)
         engine should be performed directly on the audio unit. These include changing initialization
         state, stream formats, channel layouts or connections to other audio units.
 */
-@property (nonatomic, readonly) AUAudioUnit *AUAudioUnit API_AVAILABLE(macos(10.11), ios(9.0), tvos(9.0));
+@property (nonatomic, readonly) AUAudioUnit *AUAudioUnit API_AVAILABLE(macos(10.11), ios(9.0), tvos(9.0)) NS_REFINED_FOR_SWIFT;
 #endif // __OBJC2__
 
 /*! @property name

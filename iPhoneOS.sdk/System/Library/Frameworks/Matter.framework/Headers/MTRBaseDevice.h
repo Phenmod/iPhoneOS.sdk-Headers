@@ -157,6 +157,9 @@ typedef NS_ENUM(uint8_t, MTRTransportType) {
     MTRTransportTypeUDP,
     MTRTransportTypeBLE,
     MTRTransportTypeTCP,
+    MTRTransportTypeWiFiPAF MTR_AVAILABLE(ios(27.0), macos(27.0), watchos(27.0), tvos(27.0)),
+    MTRTransportTypeNFC MTR_AVAILABLE(ios(27.0), macos(27.0), watchos(27.0), tvos(27.0)),
+    MTRTransportTypeThreadMeshcop MTR_AVAILABLE(ios(27.0), macos(27.0), watchos(27.0), tvos(27.0)),
 } MTR_AVAILABLE(ios(16.4), macos(13.3), watchos(9.4), tvos(16.4));
 
 /**

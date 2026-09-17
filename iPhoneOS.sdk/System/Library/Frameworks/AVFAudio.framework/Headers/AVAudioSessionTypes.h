@@ -84,6 +84,9 @@ OS_EXPORT AVAudioSessionPort const AVAudioSessionPortAVB                API_AVAI
 /// Input or output connected via Thunderbolt
 OS_EXPORT AVAudioSessionPort const AVAudioSessionPortThunderbolt        API_AVAILABLE(ios(14.0), watchos(7.0), tvos(14.0)) API_UNAVAILABLE(macos);
 
+/// Output to a media device vended through a system-wide extension that the user has installed
+OS_EXPORT AVAudioSessionPort const AVAudioSessionPortMediaDeviceExtension    API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(watchos, tvos, macos, visionos);
+
 #pragma mark -- audio session categories --
 
 /// A category defines a broad set of behaviors for a session.
@@ -197,19 +200,18 @@ OS_EXPORT AVAudioSessionMode const AVAudioSessionModeVoicePrompt API_AVAILABLE(i
 /// - if the session is output muted, system may prevent interrupting other active audio apps.
 OS_EXPORT AVAudioSessionMode const AVAudioSessionModeShortFormVideo API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(watchos, tvos, visionos, macos);
 
-/// Appropriate for applications that require simultaneous use of built-in microphone/speaker
-/// with a secondary audio device that supports both input and output capabilities.
+/// A mode that provides simultaneous use of the built-in microphone/speaker and a secondary audio device that supports input and output.
 ///
-/// Only valid with ``AVAudioSessionCategoryMultiRoute``.
+/// This mode can only be used with the ``AVAudioSessionCategoryMultiRoute`` category. It additionally requires you to set the ``AVAudioSesssion/CategoryOptions/allowBluetoothHFP`` option.
 ///
-/// This mode requires ``AVAudioSessionCategoryOptionAllowBluetoothHFP`` to be set
+/// Enabling this mode results in the following behavior:
+/// - The primary audio route is always the built-in microphone/speaker.
+/// - The supported secondary route types are ``AVAudioSessionPortHeadsetMic``, ``AVAudioSessionPortHeadphones``, ``AVAudioSessionPortBluetoothLE``, and ``AVAudioSessionPortBluetoothHFP``.
+/// - Only audio routes that support input and output are available for use.
+/// - The hardware volume controls adjusts the volume for both primary and secondary routes.
+/// - The system may engage appropriate signal processing for output routes.
 ///
-/// When this mode is set:
-/// - The audio route will always include built-in mic/speaker as the primary route
-/// - Supported secondary route types: ``AVAudioSessionPortHeadsetMic``, ``AVAudioSessionPortHeadphones``, ``AVAudioSessionPortBluetoothLE``, ``AVAudioSessionPortBluetoothHFP``
-/// - Only routes with both input/output capabilities will be supported
-/// - Hardware volume controls will adjust volume for both primary and secondary routes
-///   - System may engage appropriate signal processing for output routes
+/// > Important: This API may not be used to enable recordings of others without their awareness.
 OS_EXPORT AVAudioSessionMode const AVAudioSessionModeDualRoute API_AVAILABLE(ios(26.2)) API_UNAVAILABLE(watchos, tvos, visionos, macos);
 
 #pragma mark-- Names for NSNotifications --
@@ -224,7 +226,7 @@ OS_EXPORT AVAudioSessionMode const AVAudioSessionModeDualRoute API_AVAILABLE(ios
 	In the case of a begin interruption notification, the reason for the interruption can be found
 	within the info dictionary under the key AVAudioSessionInterruptionReasonKey.
 */
-OS_EXPORT NSNotificationName const  AVAudioSessionInterruptionNotification API_AVAILABLE(ios(6.0), watchos(2.0), tvos(9.0)) API_UNAVAILABLE(macos);
+OS_EXPORT NSNotificationName const  AVAudioSessionInterruptionNotification API_AVAILABLE(ios(6.0), watchos(2.0), tvos(9.0)) API_DEPRECATED("Use AVAudioSessionDidBecomeInactiveNotification and AVAudioSessionResumptionRecommendationNotification instead", ios(6.0, 27.0), watchos(2.0, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0)) API_UNAVAILABLE(macos);
 
 /*!
 	@brief	Notification sent to registered listeners when an audio route change has occurred.
@@ -303,6 +305,21 @@ OS_EXPORT NSString *const AVAudioSessionMuteStateKey API_AVAILABLE(ios(26.0)) AP
 /// Notification sent to registered listeners when the application's output is muted and user hints to unmute.
 OS_EXPORT NSNotificationName const AVAudioSessionUserIntentToUnmuteOutputNotification API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(watchos, tvos, visionos, macos) NS_SWIFT_NAME(AVAudioSession.userIntentToUnmuteOutputNotification);
 
+/// Notification sent when the audio session becomes active.
+///
+/// This notification has no userInfo payload.
+OS_EXPORT NSNotificationName const AVAudioSessionDidBecomeActiveNotification API_AVAILABLE(ios(27.0), watchos(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(macos) NS_SWIFT_NAME(AVAudioSession.didBecomeActiveNotification);
+
+/// Notification sent when the audio session becomes inactive.
+///
+/// The userInfo dictionary contains an ``AVAudioSessionDeactivationContext`` object accessible via ``AVAudioSessionDeactivationContextKey``.
+OS_EXPORT NSNotificationName const AVAudioSessionDidBecomeInactiveNotification API_AVAILABLE(ios(27.0), watchos(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(macos) NS_SWIFT_NAME(AVAudioSession.didBecomeInactiveNotification);
+
+/// Notification sent when the system provides a resumption recommendation.
+///
+/// The userInfo dictionary contains an ``AVAudioSessionResumptionContext`` object accessible via ``AVAudioSessionResumptionContextKey``.
+OS_EXPORT NSNotificationName const AVAudioSessionResumptionRecommendationNotification API_AVAILABLE(ios(27.0), watchos(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(macos) NS_SWIFT_NAME(AVAudioSession.resumptionRecommendationNotification);
+
 #pragma mark-- Keys for NSNotification userInfo dictionaries --
 
 /// keys for AVAudioSessionSpatialPlaybackCapabilitiesChangedNotification
@@ -311,13 +328,13 @@ OS_EXPORT NSString *const AVAudioSessionSpatialAudioEnabledKey API_AVAILABLE(ios
 
 /// keys for AVAudioSessionInterruptionNotification
 /// Value is an NSNumber representing an AVAudioSessionInterruptionType
-OS_EXPORT NSString *const AVAudioSessionInterruptionTypeKey API_AVAILABLE(ios(6.0), watchos(2.0), tvos(9.0)) API_UNAVAILABLE(macos);
+OS_EXPORT NSString *const AVAudioSessionInterruptionTypeKey API_AVAILABLE(ios(6.0), watchos(2.0), tvos(9.0)) API_DEPRECATED("Use AVAudioSessionDidBecomeInactiveNotification and AVAudioSessionResumptionRecommendationNotification instead", ios(6.0, 27.0), watchos(2.0, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0)) API_UNAVAILABLE(macos);
 
 /// Only present for end interruption events.  Value is of type AVAudioSessionInterruptionOptions.
-OS_EXPORT NSString *const AVAudioSessionInterruptionOptionKey API_AVAILABLE(ios(6.0), watchos(2.0), tvos(9.0)) API_UNAVAILABLE(macos);
+OS_EXPORT NSString *const AVAudioSessionInterruptionOptionKey API_AVAILABLE(ios(6.0), watchos(2.0), tvos(9.0)) API_DEPRECATED("Use AVAudioSessionDidBecomeInactiveNotification and AVAudioSessionResumptionRecommendationNotification instead", ios(6.0, 27.0), watchos(2.0, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0)) API_UNAVAILABLE(macos);
 
 /// Only present in begin interruption events. Value is of type AVAudioSessionInterruptionReason.
-OS_EXPORT NSString *const AVAudioSessionInterruptionReasonKey API_AVAILABLE(ios(14.5), watchos(7.3)) API_UNAVAILABLE(tvos, macos);
+OS_EXPORT NSString *const AVAudioSessionInterruptionReasonKey API_AVAILABLE(ios(14.5), watchos(7.3)) API_DEPRECATED("Use AVAudioSessionDeactivationContext.interruptionDetails.reason instead", ios(14.5, 27.0), watchos(7.3, 27.0), tvos(14.5, 27.0), visionos(1.0, 27.0)) API_UNAVAILABLE(tvos, macos);
 
 /*!
 	Only present in begin interruption events, where the interruption is a direct result of the
@@ -355,6 +372,16 @@ OS_EXPORT NSString *const AVAudioSessionRenderingModeNewRenderingModeKey API_AVA
 /// Value is an NSNumber whose boolean value indicates if microphone injection is available.
 OS_EXPORT NSString *const AVAudioSessionMicrophoneInjectionIsAvailableKey API_AVAILABLE(ios(18.2), visionos(2.2)) API_UNAVAILABLE(tvos, watchos, macos);
 
+/// Keys for ``AVAudioSessionDidBecomeInactiveNotification``
+/// Value is an ``AVAudioSessionDeactivationContext`` object describing the deactivation.
+OS_EXPORT NSString *const AVAudioSessionDeactivationContextKey API_AVAILABLE(ios(27.0), watchos(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(macos)
+NS_SWIFT_NAME(AVAudioSession.deactivationContextKey);
+
+/// Keys for ``AVAudioSessionResumptionRecommendationNotification``
+/// Value is an ``AVAudioSessionResumptionContext`` describing the resumption recommendation.
+OS_EXPORT NSString *const AVAudioSessionResumptionContextKey API_AVAILABLE(ios(27.0), watchos(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(macos)
+NS_SWIFT_NAME(AVAudioSession.resumptionContextKey);
+
 /*!
 	@brief  Notification sent to registered listeners when there are changes in ``availableInputs``.
 
@@ -368,11 +395,17 @@ NS_SWIFT_NAME(AVAudioSession.availableInputsChangeNotification);
 /*!
     @enum AVAudioSessionActivationOptions
     @brief   For use with activateWithOptions:completionHandler:
-    
-    Reserved for future use. Added in watchOS 5.0.
 */
 typedef NS_OPTIONS(NSUInteger, AVAudioSessionActivationOptions) {
     AVAudioSessionActivationOptionNone    = 0
+};
+
+/// Options for deactivating an AVAudioSession
+typedef NS_OPTIONS(NSUInteger, AVAudioSessionDeactivationOptions) {
+    AVAudioSessionDeactivationOptionNone = 0,
+
+    /// Notify an interrupted app that the interruption has ended and it may resume playback.
+    AVAudioSessionDeactivationOptionNotifyOthersOnDeactivation API_AVAILABLE(ios(27.0), watchos(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(macos) = 1 << 0,
 };
 
 /// For use with overrideOutputAudioPort:error:
@@ -566,7 +599,7 @@ typedef NS_OPTIONS(NSUInteger, AVAudioSessionCategoryOptions) {
 
 	/// 	This option should be used if a session prefers to use FarFieldInput when available.
 	/// 	This option is only valid with categories that support input -
-	/// 	``AVAudioSessionCategoryPlayAndRecord`` and ``AVAudioSessionCategoryRecord``.
+	/// 	``AVAudioSessionCategoryPlayAndRecord``, ``AVAudioSessionCategoryRecord``, and ``AVAudioSessionMultiRoute`` with ``AVAudioSessionModeDualRoute``.
 	///
 	/// 	- This option requires ``AVAudioSessionCategoryOptionAllowBluetoothHFP`` to be set.
 	/// 	Otherwise error will be returned.
@@ -607,14 +640,14 @@ typedef NS_OPTIONS(NSUInteger, AVAudioSessionCategoryOptions) {
 typedef NS_ENUM(NSUInteger, AVAudioSessionInterruptionType) {
     AVAudioSessionInterruptionTypeBegan = 1, ///< the system has interrupted your audio session
     AVAudioSessionInterruptionTypeEnded = 0, ///< the interruption has ended
-};
+} API_DEPRECATED("Use AVAudioSessionDidBecomeInactiveNotification and AVAudioSessionResumptionRecommendationNotification instead", ios(6.0, 27.0), watchos(2.0, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0));
 
 /// Values for AVAudioSessionInterruptionOptionKey in AVAudioSessionInterruptionNotification's
 /// userInfo dictionary.
 typedef NS_OPTIONS(NSUInteger, AVAudioSessionInterruptionOptions) {
     /// Indicates that you should resume playback now that the interruption has ended.
     AVAudioSessionInterruptionOptionShouldResume = 1
-};
+} API_DEPRECATED("Use AVAudioSessionResumptionRecommendationNotification instead", ios(6.0, 27.0), watchos(2.0, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0));
 
 /*!
     @enum AVAudioSessionInterruptionReason
@@ -651,6 +684,20 @@ typedef NS_ENUM(NSUInteger, AVAudioSessionInterruptionReason) {
 	AVAudioSessionInterruptionReasonDeviceUnauthenticated API_UNAVAILABLE(visionos) = 5,
 #endif // TARGET_OS_VISION
 } NS_SWIFT_NAME(AVAudioSession.InterruptionReason);
+
+/// The source of the audio session deactivation.
+typedef NS_ENUM(NSInteger, AVAudioSessionDeactivationSource) {
+	AVAudioSessionDeactivationSourceApp = 1,      // App requested deactivation.
+	AVAudioSessionDeactivationSourceSystem = 2,   // The system deactivated the session.
+} NS_SWIFT_NAME(AVAudioSession.DeactivationSource)
+API_AVAILABLE(ios(27.0), watchos(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(macos);
+
+/// The system's recommendation on whether to resume playback.
+typedef NS_ENUM(NSInteger, AVAudioSessionResumptionRecommendation) {
+	AVAudioSessionResumptionRecommendationShouldNotResume = 0,  // The system recommends not resuming.
+	AVAudioSessionResumptionRecommendationShouldResume = 1,     // The system recommends resuming.
+} NS_SWIFT_NAME(AVAudioSession.ResumptionRecommendation)
+API_AVAILABLE(ios(27.0), watchos(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(macos);
 
 ///  options for use when calling setActive:withOptions:error:
 typedef NS_OPTIONS(NSUInteger, AVAudioSessionSetActiveOptions)

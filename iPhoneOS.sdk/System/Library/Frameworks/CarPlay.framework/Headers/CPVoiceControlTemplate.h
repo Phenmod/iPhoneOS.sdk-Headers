@@ -41,6 +41,30 @@ API_AVAILABLE(ios(12.0)) API_UNAVAILABLE(tvos) API_UNAVAILABLE(macos, watchos)
                              image:(nullable UIImage *)image
                            repeats:(BOOL)repeats;
 
+/**
+ Initialize a voice control state with a title and image.
+
+ @param identifier A custom identifier you can use to identify this voice control state. You'll also
+ switch to this state by specifying this identifier.
+ @param titleVariants An array of title variants. The Voice Control template will select the longest
+ variant that fits your specified content.
+ @param image An image to be animated while this template is visible. The system
+ enforces a minimum cycle duration of 0.3 seconds and a maximum cycle duration of 5 seconds.
+ Voice Control state images may be a maximum of 150 by 150 points.
+ @param backgroundImage A custom background image to be displayed behind the voice control template content.
+ The background image fills the entire template view and appears behind all voice control
+ state content, including the state image, title variants, and action buttons.
+ @param repeats For an animated image, YES if the animation should repeat indefinitely, NO
+ to run the animation only once.
+
+ @discussion When providing an image, your app should provide a @c UIImage that is display-ready. If necessary for the image, provide light and dark styles by using an asset from your asset catalog, prepared with light and dark styles or by using @c UIImageAsset to combine two @c UIImage instances into a single image with both styles.
+ */
+- (instancetype)initWithIdentifier:(NSString *)identifier
+                     titleVariants:(nullable NSArray <NSString *> *)titleVariants
+                             image:(nullable UIImage *)image
+                   backgroundImage:(nullable UIImage *)backgroundImage
+                           repeats:(BOOL)repeats API_AVAILABLE(ios(27.0));
+
 @property (nullable, nonatomic, readonly, copy) NSArray <NSString *> *titleVariants;
 
 @property (nullable, nonatomic, readonly, strong) UIImage *image;
@@ -72,6 +96,14 @@ API_AVAILABLE(ios(12.0)) API_UNAVAILABLE(tvos) API_UNAVAILABLE(macos, watchos)
  * @return The maximum number of action buttons supported by this template.
  */
 @property (nonatomic, readonly, class) NSInteger maximumActionButtonCount API_AVAILABLE(ios(26.4)) API_UNAVAILABLE(tvos, visionos) API_UNAVAILABLE(macos, watchos);
+
+/**
+ A custom background image to be displayed behind the voice control template content.
+
+ The background image fills the entire template view and appears behind all voice control
+ state content, including the state image, title variants, and action buttons.
+ */
+@property (nullable, nonatomic, readonly, strong) UIImage *backgroundImage API_AVAILABLE(ios(27.0));
 
 @end
 

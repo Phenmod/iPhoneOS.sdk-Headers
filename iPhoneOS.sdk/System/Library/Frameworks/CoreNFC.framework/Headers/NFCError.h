@@ -43,6 +43,9 @@ extern NSErrorDomain const NFCErrorDomain;
  * @constant    NFCNdefReaderSessionErrorTagUpdateFailure                       NDEF tag write fails.
  * @constant    NFCNdefReaderSessionErrorTagSizeTooSmall                        NDEF tag memory size is too small to store the desired data.
  * @constant    NFCNdefReaderSessionErrorZeroLengthMessage                      NDEF tag does not contain any NDEF message.
+ * @constant    NFCPaymentTagReaderSessionErrorLocationAuthorizationDenied      Location service is denied by user.
+ * @constant    NFCPaymentTagReaderSessionErrorLocationServiceRestricted        Application is not authorized to use location service due to active restriction.
+ * @constant    NFCPaymentTagReaderSessionErrorOnDeviceLocationUnavailable      Location is not produced by on-device hardware (produced by accessory or simulated by software).
  */
 API_AVAILABLE(ios(11.0)) API_UNAVAILABLE(watchos, macos, tvos)
 typedef NS_ERROR_ENUM(NFCErrorDomain, NFCReaderError) {
@@ -74,6 +77,10 @@ typedef NS_ERROR_ENUM(NFCErrorDomain, NFCReaderError) {
     NFCNdefReaderSessionErrorTagUpdateFailure API_AVAILABLE(ios(13.0)) API_UNAVAILABLE(watchos, macos, tvos, visionos),
     NFCNdefReaderSessionErrorTagSizeTooSmall API_AVAILABLE(ios(13.0)) API_UNAVAILABLE(watchos, macos, tvos, visionos),
     NFCNdefReaderSessionErrorZeroLengthMessage API_AVAILABLE(ios(13.0)) API_UNAVAILABLE(watchos, macos, tvos, visionos),
+    
+    NFCPaymentTagReaderSessionErrorLocationAuthorizationDenied API_AVAILABLE(ios(26.6)) API_UNAVAILABLE(watchos, macos, tvos, visionos) = 500,
+    NFCPaymentTagReaderSessionErrorLocationServiceRestricted API_AVAILABLE(ios(26.6)) API_UNAVAILABLE(watchos, macos, tvos, visionos),
+    NFCPaymentTagReaderSessionErrorOnDeviceLocationUnavailable API_AVAILABLE(ios(26.6)) API_UNAVAILABLE(watchos, macos, tvos, visionos),
 };
 
 #pragma mark - ISO15693 specific command response error code

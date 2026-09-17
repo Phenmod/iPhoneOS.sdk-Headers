@@ -66,14 +66,42 @@ typedef NS_OPTIONS(NSUInteger, PHPickerCapabilities) {
     PHPickerCapabilitiesSensitivityAnalysisIntervention = 1 << 4,
 } API_AVAILABLE(ios(17), macos(14)) API_UNAVAILABLE(watchos, tvos);
 
+/// Constants that specify metadata options for \c PHPickerViewController.
+typedef NS_OPTIONS(NSUInteger, PHPickerMetadataOptions) {
+    /// No metadata options.
+    PHPickerMetadataOptionsNone = 0,
+    /// Remove location metadata.
+    PHPickerMetadataOptionsRemoveLocation = 1 << 0,
+    /// Remove captions metadata.
+    PHPickerMetadataOptionsRemoveCaptions = 1 << 1,
+} API_AVAILABLE(ios(27), macos(27), visionos(27)) API_UNAVAILABLE(watchos, tvos);
+
 NS_ASSUME_NONNULL_END
 
 API_AVAILABLE_BEGIN(ios(14), macos(13))
 API_UNAVAILABLE_BEGIN(tvos, watchos)
 NS_ASSUME_NONNULL_BEGIN
 
+/// A search text for \c PHPickerViewController.
+OS_EXPORT
+NS_REFINED_FOR_SWIFT
+API_AVAILABLE(ios(27), macos(27), visionos(27))
+API_UNAVAILABLE(watchos)
+@interface PHPickerSearchText : NSObject <NSCopying>
+
+/// Creates a search text from a string.
+- (instancetype)initWithString:(NSString *)string API_AVAILABLE(ios(27), macos(27), visionos(27));
+
+#if TARGET_OS_IOS && !TARGET_OS_VISION
+/// Creates a search text from a photo search suggestion.
+- (instancetype)initWithPhotoSearchSuggestion:(UIPhotoSearchSuggestion *)suggestion API_AVAILABLE(ios(27)) API_UNAVAILABLE(macCatalyst, macos, visionos);
+#endif
+
+- (instancetype)init NS_UNAVAILABLE;
+
+@end
+
 /// A filter that restricts which types of assets \c PHPickerViewController can show.
-__attribute__((objc_subclassing_restricted))
 OS_EXPORT
 NS_REFINED_FOR_SWIFT
 API_UNAVAILABLE(watchos)
@@ -127,13 +155,11 @@ API_UNAVAILABLE(watchos)
 /// Returns a new filter formed by negating the given filter.
 + (PHPickerFilter *)notFilterOfSubfilter:(PHPickerFilter *)subfilter API_AVAILABLE(ios(15));
 
-+ (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
 @end
 
 /// An update configuration for \c PHPickerViewController.
-__attribute__((objc_subclassing_restricted))
 OS_EXPORT
 NS_REFINED_FOR_SWIFT
 API_AVAILABLE(ios(17), macos(14))
@@ -145,10 +171,12 @@ API_AVAILABLE(ios(17), macos(14))
 /// Edges of the picker that have no margin between the content and the edge (e.g. without bars in between).
 @property (nonatomic) NSDirectionalRectEdge edgesWithoutContentMargins API_AVAILABLE(ios(17), macos(14));
 
+/// The search text for the picker.
+@property (nonatomic, copy, nullable) PHPickerSearchText *searchText API_AVAILABLE(ios(27), macos(27), visionos(27));
+
 @end
 
 /// A configuration for \c PHPickerViewController.
-__attribute__((objc_subclassing_restricted))
 OS_EXPORT
 NS_REFINED_FOR_SWIFT
 API_UNAVAILABLE(watchos)
@@ -182,6 +210,12 @@ API_UNAVAILABLE(watchos)
 /// Capabilities of the picker that should be disabled. Default is \c PHPickerCapabilitiesNone.
 @property (nonatomic) PHPickerCapabilities disabledCapabilities API_AVAILABLE(ios(17), macos(14));
 
+/// Metadata options for the picker. Default is \c PHPickerMetadataOptionsNone.
+@property (nonatomic) PHPickerMetadataOptions metadataOptions API_AVAILABLE(ios(27), macos(27), visionos(27));
+
+/// The search text for the picker. Default is \c nil.
+@property (nonatomic, copy, nullable) PHPickerSearchText *searchText API_AVAILABLE(ios(27), macos(27), visionos(27));
+
 /// Initializes a new configuration with the \c photoLibrary the picker should use.
 - (instancetype)initWithPhotoLibrary:(PHPhotoLibrary *)photoLibrary API_UNAVAILABLE(watchos);
 
@@ -191,7 +225,6 @@ API_UNAVAILABLE(watchos)
 @end
 
 /// A user selected asset from \c PHPickerViewController.
-__attribute__((objc_subclassing_restricted))
 OS_EXPORT
 NS_REFINED_FOR_SWIFT
 API_UNAVAILABLE(watchos)
@@ -203,7 +236,6 @@ API_UNAVAILABLE(watchos)
 /// The local identifier of the selected asset.
 @property (nonatomic, readonly, nullable) NSString *assetIdentifier API_UNAVAILABLE(watchos);
 
-+ (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
 @end
@@ -225,7 +257,6 @@ API_UNAVAILABLE(watchos)
 
 /// A picker that manages the system interfaces for choosing assets from the user's photo library and delivers the results of those interactions to a delegate.
 /// @discussion The picker is intended to be used as-is and does not support subclassing. It is out-of-process, so photo library access authorization is not needed. The view hierarchy for the picker is private and must not be modified.
-__attribute__((objc_subclassing_restricted))
 OS_EXPORT
 API_UNAVAILABLE(watchos)
 #if __has_include(<UIKit/UIViewController.h>) && TARGET_OS_IPHONE
@@ -265,7 +296,6 @@ API_UNAVAILABLE(watchos)
 /// Zooms out content if possible.
 - (void)zoomOut API_AVAILABLE(ios(17), macos(14));
 
-+ (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 #if __has_include(<UIKit/UIViewController.h>) && TARGET_OS_IPHONE
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;

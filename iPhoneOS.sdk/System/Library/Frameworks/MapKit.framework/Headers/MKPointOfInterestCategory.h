@@ -11,9 +11,11 @@ typedef NSString * MKPointOfInterestCategory NS_TYPED_ENUM;
 
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryAnimalService API_AVAILABLE(ios(18.0), visionos(2.0), macos(15.0), tvos(18.0), watchos(11.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryAirport API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
+MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryAirportTerminal API_AVAILABLE(ios(27.0), visionos(27.0), macos(27.0), tvos(27.0), watchos(27.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryAmusementPark API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryAquarium API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryATM NS_SWIFT_NAME(atm) API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
+MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryAutomotiveDealership API_AVAILABLE(ios(27.0), visionos(27.0), macos(27.0), tvos(27.0), watchos(27.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryAutomotiveRepair API_AVAILABLE(ios(18.0), visionos(2.0), macos(15.0), tvos(18.0), watchos(11.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryBakery API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryBank API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
@@ -27,6 +29,7 @@ MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryCafe API_AVAI
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryCampground API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryCarRental API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryCastle API_AVAILABLE(ios(18.0), visionos(2.0), macos(15.0), tvos(18.0), watchos(11.0));
+MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryCommercialVehicleDealership API_AVAILABLE(ios(27.0), visionos(27.0), macos(27.0), tvos(27.0), watchos(27.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryConventionCenter API_AVAILABLE(ios(18.0), visionos(2.0), macos(15.0), tvos(18.0), watchos(11.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryDistillery API_AVAILABLE(ios(18.0), visionos(2.0), macos(15.0), tvos(18.0), watchos(11.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryEVCharger API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
@@ -42,6 +45,7 @@ MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryGoKart API_AV
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryHiking API_AVAILABLE(ios(18.0), visionos(2.0), macos(15.0), tvos(18.0), watchos(11.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryHospital API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryHotel API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
+MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryInformationBooth API_AVAILABLE(ios(27.0), visionos(27.0), macos(27.0), tvos(27.0), watchos(27.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryKayaking API_AVAILABLE(ios(18.0), visionos(2.0), macos(15.0), tvos(18.0), watchos(11.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryLandmark API_AVAILABLE(ios(18.0), visionos(2.0), macos(15.0), tvos(18.0), watchos(11.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryLaundry API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
@@ -49,6 +53,7 @@ MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryLibrary API_A
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryMailbox API_AVAILABLE(ios(18.0), visionos(2.0), macos(15.0), tvos(18.0), watchos(11.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryMarina API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryMiniGolf API_AVAILABLE(ios(18.0), visionos(2.0), macos(15.0), tvos(18.0), watchos(11.0));
+MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryMotorbikeDealership API_AVAILABLE(ios(27.0), visionos(27.0), macos(27.0), tvos(27.0), watchos(27.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryMovieTheater API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryMuseum API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryMusicVenue API_AVAILABLE(ios(18.0), visionos(2.0), macos(15.0), tvos(18.0), watchos(11.0));
@@ -58,14 +63,18 @@ MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryNightlife API
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryPark API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryParking API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryPharmacy API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
+MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryPicnicArea API_AVAILABLE(ios(27.0), visionos(27.0), macos(27.0), tvos(27.0), watchos(27.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryPlanetarium API_AVAILABLE(ios(18.0), visionos(2.0), macos(15.0), tvos(18.0), watchos(11.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryPolice API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryPostOffice API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryPublicTransport API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
+MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryRangerStation API_AVAILABLE(ios(27.0), visionos(27.0), macos(27.0), tvos(27.0), watchos(27.0));
+MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryRestArea API_AVAILABLE(ios(27.0), visionos(27.0), macos(27.0), tvos(27.0), watchos(27.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryRestaurant API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryRestroom API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryRockClimbing API_AVAILABLE(ios(18.0), visionos(2.0), macos(15.0), tvos(18.0), watchos(11.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryRVPark API_AVAILABLE(ios(18.0), visionos(2.0), macos(15.0), tvos(18.0), watchos(11.0));
+MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryScenicView API_AVAILABLE(ios(27.0), visionos(27.0), macos(27.0), tvos(27.0), watchos(27.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategorySchool API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategorySkatePark API_AVAILABLE(ios(18.0), visionos(2.0), macos(15.0), tvos(18.0), watchos(11.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategorySkating API_AVAILABLE(ios(18.0), visionos(2.0), macos(15.0), tvos(18.0), watchos(11.0));
@@ -78,7 +87,9 @@ MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategorySurfing API_A
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategorySwimming API_AVAILABLE(ios(18.0), visionos(2.0), macos(15.0), tvos(18.0), watchos(11.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryTennis API_AVAILABLE(ios(18.0), visionos(2.0), macos(15.0), tvos(18.0), watchos(11.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryTheater API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
+MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryTicketOffice API_AVAILABLE(ios(27.0), visionos(27.0), macos(27.0), tvos(27.0), watchos(27.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryUniversity API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
+MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryVisitorCenter API_AVAILABLE(ios(27.0), visionos(27.0), macos(27.0), tvos(27.0), watchos(27.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryWinery API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryVolleyball API_AVAILABLE(ios(18.0), visionos(2.0), macos(15.0), tvos(18.0), watchos(11.0));
 MK_EXTERN MKPointOfInterestCategory const MKPointOfInterestCategoryZoo API_AVAILABLE(ios(13.0), macos(10.15), tvos(13.0), watchos(6.0));

@@ -3,8 +3,8 @@
 #ifndef __SPARSE_HEADER__
 #define __SPARSE_HEADER__
 
-#include <vecLib/Sparse/Types.h>
-#include <vecLib/Sparse/BLAS.h>
+#include "BLAS/Types.h"
+#include "BLAS/BLAS.h"
 
 #endif
   /* __SPARSE_HEADER__ */

@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
  @abstract      An abstract class that describes a specific metric vended by MetricKit.
  @discussion    All supported metrics are subclasses of MXMetric.
  */
-API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(tvos, watchos)
+API_DEPRECATED("Use MetricResult instead.", ios(13.0, API_TO_BE_DEPRECATED), macos(10.15, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos)
 @interface MXMetric : NSObject <NSSecureCoding>
 
 /*!
@@ -23,7 +23,7 @@ API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(tvos, watchos)
  @abstract      Convenience method to return a JSON representation of this metric.
  @result        An NSData object containing the JSON representation
  */
-- (NSData *)JSONRepresentation;
+- (NSData *)JSONRepresentation API_DEPRECATED("Use MetricResult instead.", ios(13.0, API_TO_BE_DEPRECATED), macos(10.15, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos);
 
 /*!
  @method        DictionaryRepresentation
@@ -37,7 +37,7 @@ API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(tvos, watchos)
 @abstract      Convenience method to return a NSDictionary representation of this metric.
 @result        An NSDictionary object containing the dictionary representation
 */
-- (NSDictionary *)dictionaryRepresentation API_AVAILABLE(ios(13.0), macos(11.0)) API_UNAVAILABLE(tvos, watchos);
+- (NSDictionary *)dictionaryRepresentation API_DEPRECATED("Use MetricResult instead.", ios(13.0, API_TO_BE_DEPRECATED), macos(11.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos);
 
 @end
 

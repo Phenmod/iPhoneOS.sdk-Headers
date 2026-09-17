@@ -6,8 +6,8 @@
 //  Copyright © 2016-2021 Apple Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <ARKit/ARFaceAnchor.h>
+#import <Foundation/Foundation.h>
 
 @protocol MTLBuffer;
 @protocol MTLDevice;
@@ -15,14 +15,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+API_UNAVAILABLE_BEGIN(visionos)
+
 /**
  An object representing the geometry of a face.
- @discussion The face geometry will have a constant number of triangles
+
+ The face geometry will have a constant number of triangles
  and vertices, updating only the vertex positions from frame to frame.
- */
+*/
 API_AVAILABLE(ios(11.0))
 NS_SWIFT_SENDABLE
-@interface ARFaceGeometry : NSObject<NSSecureCoding, NSCopying>
+@interface ARFaceGeometry : NSObject <NSSecureCoding, NSCopying>
 
 /**
 The number of mesh vertices of the geometry.
@@ -56,18 +59,32 @@ The number of mesh vertices of the geometry.
 
 /**
  Creates and returns a face geometry by applying a set of given blend shape coefficients.
- 
- @discussion An empty dictionary can be provided to create a neutral face geometry.
- @param blendShapes A dictionary of blend shape coefficients.
- @return Face geometry after applying the blend shapes.
- */
-- (nullable instancetype)initWithBlendShapes:(NSDictionary<ARBlendShapeLocation, NSNumber*> *)blendShapes;
 
-/** Unavailable */
+ An empty dictionary can be provided to create a neutral face geometry.
+
+ - Parameter blendShapes: A dictionary of blend shape coefficients.
+
+ - Returns: Face geometry after applying the blend shapes.
+*/
+- (nullable instancetype)initWithBlendShapes:(NSDictionary<ARBlendShapeLocation, NSNumber *> *)blendShapes;
+
+/**
+ Unavailable.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)init NS_UNAVAILABLE;
+
+/**
+ Unavailable.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_UNAVAILABLE;
 
 @end
+
+API_UNAVAILABLE_END
 
 NS_ASSUME_NONNULL_END
 #else

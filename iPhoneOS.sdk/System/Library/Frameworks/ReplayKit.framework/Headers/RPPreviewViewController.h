@@ -28,9 +28,10 @@ NS_ASSUME_NONNULL_BEGIN
  @abstract View controller that allows the user to preview/edit a movie recorded with ReplayKit. Passed into the completion handler supplied to [RPScreenRecorder stopRecordingWithHandler:].
  */
 #if TARGET_OS_OSX
-API_AVAILABLE(macos(11.0))
+API_DEPRECATED("Use SCRecordingEditor instead", macos(11.0, 27.0))
 @interface RPPreviewViewController : NSViewController
 #else
+API_DEPRECATED("Use SCRecordingEditor instead", ios(9.0, 27.0), tvos(10.0, 27.0))
 @interface RPPreviewViewController : UIViewController
 #endif
 @property (nonatomic, weak, nullable) id<RPPreviewViewControllerDelegate>previewControllerDelegate;
@@ -39,6 +40,7 @@ API_AVAILABLE(macos(11.0))
 #endif
 @end
 
+API_DEPRECATED("Use SCRecordingEditor instead", ios(9.0, 27.0), tvos(10.0, 27.0), macos(11.0, 27.0))
 @protocol RPPreviewViewControllerDelegate <NSObject>
 @optional
 /* @abstract Called when the view controller is finished. */

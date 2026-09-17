@@ -180,7 +180,16 @@ typedef uint8_t UVersionInfo[U_MAX_VERSION_LENGTH];
 
 #define U_HEADER_ONLY_NAMESPACE U_ICU_NAMESPACE::U_HEADER_NESTED_NAMESPACE
 
+#if APPLE_ICU_CHANGES
+// rdar://171840870 (Enable U_SHOW_CPLUSPLUS_HEADER_API for C++17)
+// On Clang, the "namespace" line below generates a compiler warning when the language level is earlier
+// than C++17 because the nested name in "namespace xx::yy" is a C++17 extension that Clang supports anyway.
+#if __cplusplus >= 201703L
 namespace U_HEADER_ONLY_NAMESPACE {}
+#endif // __cplusplus >= 201703L
+#else
+namespace U_HEADER_ONLY_NAMESPACE {}
+#endif // APPLE_ICU_CHANGES
 
 #endif /* __cplusplus */
 

@@ -186,7 +186,7 @@ AV_INIT_UNAVAILABLE
 
 @end
 
-API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), visionos(26.0)) API_UNAVAILABLE(watchos);
+API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), visionos(26.0)) API_UNAVAILABLE(watchos)
 @interface AVPlayerPlaybackCoordinator (AVPlaybackCoordinationMediumSupport)
 
 /// Connects the playback coordinator to the coordination medium

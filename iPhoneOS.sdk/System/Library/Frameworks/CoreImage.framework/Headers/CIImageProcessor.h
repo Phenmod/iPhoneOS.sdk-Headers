@@ -18,6 +18,7 @@
 #elif !TARGET_OS_SIMULATOR
 #import <IOSurface/IOSurfaceRef.h>
 #endif
+#import <IOSurface/IOSurfaceObjC.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -181,7 +182,7 @@ NS_CLASS_AVAILABLE(10_12, 10_0)
 ///    - outputRect: the output `CGRect` that processor will be asked to output. 
 /// - Returns:
 ///    An array of ``CIVector`` that specify tile regions of the `inputIndex`'th input that is required for the above `outputRect`
-///    Each region tile in the array is a created by calling ``/CIVector/vectorWithCGRect:/``
+///    Each region tile in the array is a created by calling ``/CIVector/vectorWithCGRect:``
 ///    The tiles may overlap but should fully cover the area of 'input' that is needed.
 ///    If a processor has multiple inputs, then each input should return the same number of region tiles.
 ///
@@ -250,7 +251,7 @@ NS_CLASS_AVAILABLE(10_12, 10_0)
 ///    - inputs: An array of ``CIImage`` objects to use as input.
 ///    - arguments: This dictionary contains any additional parameters that the processor needs to
 ///                 produce its output. The argument objects can be of any type but in order for 
-///                 CoreImage  to cache intermediates, they must be of the following immutable types:
+///                 CoreImage to cache intermediates, they must be of the following immutable types:
 ///                 `NSArray`, `NSDictionary`, `NSNumber`, `NSValue`, `NSData`, `NSString`, `NSNull`,
 ///                 ``CIVector``, ``CIColor``, `CGImage`, `CGColorSpace`, or `MLModel`.
 ///    - error: Pointer to the `NSError` object into which processing errors will be written.
@@ -293,7 +294,7 @@ NS_CLASS_AVAILABLE(10_12, 10_0)
 + (BOOL)processWithInputs:(nullable NSArray<id<CIImageProcessorInput>> *)inputs
                 arguments:(nullable NSDictionary<NSString*,id> *)arguments
                   outputs:(NSArray<id <CIImageProcessorOutput>> *)outputs
-                    error:(NSError **)error NS_AVAILABLE(16_0, 19_0);
+                    error:(NSError **)error NS_AVAILABLE(26_0, 26_0);
 
 /// Override this class method if your processor has more than one output and 
 /// you want your processor's output to be in a specific supported `CIPixelFormat`.
@@ -312,7 +313,7 @@ NS_CLASS_AVAILABLE(10_12, 10_0)
 ///
 + (CIFormat)outputFormatAtIndex:(int)outputIndex
                       arguments:(nullable NSDictionary<NSString*,id> *)arguments
-NS_AVAILABLE(16_0, 19_0);
+NS_AVAILABLE(26_0, 26_0);
 
 /// Call this method on your multiple-output Core Image Processor Kernel subclass 
 /// to create an array of new image objects given the specified array of extents.
@@ -325,13 +326,13 @@ NS_AVAILABLE(16_0, 19_0);
 /// * your subclass does not implement ``processWithInputs:arguments:output:error:``
 ///
 /// - Parameters:
-///    - extents: The array of bounding rectangles  that the `CIImageProcessorKernel` can produce.
+///    - extents: The array of bounding rectangles that the `CIImageProcessorKernel` can produce.
 ///               Each rectangle in the array is an object created using ``/CIVector/vectorWithCGRect:`` 
 ///               This method will return `CIImage.emptyImage` if a rectangle in the array is empty.
 ///    - inputs: An array of ``CIImage`` objects to use as input.
 ///    - arguments: This dictionary contains any additional parameters that the processor needs to
 ///                 produce its output. The argument objects can be of any type but in order for 
-///                 CoreImage  to cache intermediates, they must be of the following immutable types:
+///                 CoreImage to cache intermediates, they must be of the following immutable types:
 ///                 `NSArray`, `NSDictionary`, `NSNumber`, `NSValue`, `NSData`, `NSString`, `NSNull`,
 ///                 ``CIVector``, ``CIColor``, `CGImage`, `CGColorSpace`, or `MLModel`.
 ///    - error: Pointer to the `NSError` object into which processing errors will be written.
@@ -341,7 +342,45 @@ NS_AVAILABLE(16_0, 19_0);
 + (nullable NSArray<CIImage*> *)applyWithExtents:(NSArray<CIVector*> *)extents
                                           inputs:(nullable NSArray<CIImage*> *)inputs
                                        arguments:(nullable NSDictionary<NSString*,id> *)arguments
-                                           error:(NSError **)error NS_AVAILABLE(16_0, 19_0);
+                                           error:(NSError **)error NS_AVAILABLE(26_0, 26_0);
+
+@end
+
+
+@interface CIImageProcessorKernel (TiledOutputSupport)
+
+/// Call this method on your Core Image Processor Kernel subclass to create a new image
+/// based on an array of tile extents that together cover the output.
+/// 
+/// Each tile is a CGRect encoded as a CIVector using +[CIVector vectorWithCGRect:].
+/// The overall output extent is computed as the union of all tile extents.
+///
+/// This method will return `nil` and an error if:
+/// * calling ``outputFormat`` on your subclass returns an unsupported format.
+/// * calling ``formatForInputAtIndex:`` on your subclass returns an unsupported format.
+/// * your subclass does not implement ``processWithInputs:arguments:output:error:``
+///
+/// - Parameters:
+///    - tileExtents: The array of bounding rectangles that the `CIImageProcessorKernel` can produce.
+///                   Each rectangle in the array is an object created using ``/CIVector/vectorWithCGRect:`` 
+///                   This method will return `CIImage.emptyImage` if the rectangles in the array 
+///                   have gaps or overlaps.
+///    - inputs: An array of ``CIImage`` objects to use as input.
+///    - arguments: This dictionary contains any additional parameters that the processor needs to
+///                 produce its output. The argument objects can be of any type but in order for 
+///                 CoreImage to cache intermediates, they must be of the following immutable types:
+///                 `NSArray`, `NSDictionary`, `NSNumber`, `NSValue`, `NSData`, `NSString`, `NSNull`,
+///                 ``CIVector``, ``CIColor``, `CGImage`, `CGColorSpace`, or `MLModel`.
+///    - error: Pointer to the `NSError` object into which processing errors will be written.
+/// - Returns:
+///     An autoreleased ``CIImage``
+///
++ (nullable CIImage *) applyWithTiledExtent:(NSArray<CIVector*>*)tileExtents
+                                     inputs:(nullable NSArray<CIImage*>*)inputs
+                                  arguments:(nullable NSDictionary<NSString*,id>*)args
+                                      error:(NSError **)error
+    NS_SWIFT_NAME(apply(tiledExtent:inputs:arguments:))
+API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos);
 
 @end
 
@@ -479,6 +518,66 @@ NS_CLASS_AVAILABLE(10_12, 10_0)
 /// 
 /// This digest will change if the graph up to and including the output of the processor changes in any way.
 @property (nonatomic, readonly) uint64_t digest NS_AVAILABLE(13_0, 16_0);
+
+/// Returns a temporary IOSurface that your Core Image Processor Kernel can use as scratch storage during processing.
+///
+/// Use this method when your processor needs an intermediate `IOSurface` to stash data between stages of its work.
+/// Core Image manages the lifetime of the returned surface and reuses the underlying allocation across multiple invocations
+/// when possible. This is more efficient than allocating a fresh `IOSurface` on each invocation of your processor.
+///
+/// The returned surface is valid only for the duration of the
+/// ``CIImageProcessorKernel/processWithInputs:arguments:output:error:`` call that requested it.
+/// Don't retain it beyond the scope of that method or use it after the method returns.
+///
+/// Calling this method multiple times within the same processor invocation with the same `identifier`, `format`,
+/// `width`, and `height` returns the same surface. Otherwise it returns a distinct surface.
+/// This lets a processor request several independent surfaces by giving each one a unique name.
+///
+/// - Parameters:
+///    - identifier: A name that uniquely identifies this scratch surface within the processor invocation.
+///    - format: The pixel format for the surface. Must be a non-zero `OSType` pixel format constant.
+///    - width: The width of the surface in pixels. Must be greater than zero.
+///    - height: The height of the surface in pixels. Must be greater than zero.
+/// - Returns:
+///    An autoreleased `IOSurface` of the requested size and format, or `nil` if the surface could not be created.
+///
+- (nullable IOSurface *)temporarySurfaceWithIdentifier:(NSString *)identifier
+                                                format:(OSType)format
+                                                 width:(size_t)width
+                                                height:(size_t)height
+    NS_SWIFT_NAME(temporarySurface(identifier:format:width:height:))
+API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos);
+
+/// Returns a temporary CVPixelBuffer that your Core Image Processor Kernel can use as scratch storage during processing.
+///
+/// Use this method when your processor needs an intermediate `CVPixelBuffer` to stash data between stages of its work.
+/// Core Image manages the lifetime of the returned buffer and reuses the underlying allocation across multiple invocations
+/// when possible. This is more efficient than allocating a fresh `CVPixelBuffer` on each invocation of your processor.
+///
+/// The returned pixel buffer is valid only for the duration of the
+/// ``CIImageProcessorKernel/processWithInputs:arguments:output:error:`` call that requested it.
+/// Don't retain it beyond the scope of that method or use it after the method returns.
+///
+/// Calling this method multiple times within the same processor invocation with the same `identifier`, `format`,
+/// `width`, and `height` returns a pixel buffer backed by the same `IOSurface`. Otherwise it returns a distinct pixel buffer.
+/// This lets a processor request several independent pixel buffers by giving each one a unique name.
+///
+/// - Parameters:
+///    - identifier: A name that uniquely identifies this scratch buffer within the processor invocation.
+///    - format: The pixel format for the buffer. Must be a non-zero `OSType` pixel format constant.
+///    - width: The width of the buffer in pixels. Must be greater than zero.
+///    - height: The height of the buffer in pixels. Must be greater than zero.
+///    - attributes: An optional dictionary of `CVPixelBuffer` creation attributes.
+/// - Returns:
+///    A non-retained `CVPixelBuffer` of the requested size and format, or `nil` if the buffer could not be created.
+///
+- (nullable CVPixelBufferRef)temporaryPixelBufferWithIdentifier:(NSString *)identifier
+                                                         format:(OSType)format
+                                                          width:(size_t)width
+                                                         height:(size_t)height
+                                                     attributes:(nullable NSDictionary *)attributes
+    NS_SWIFT_NAME(temporaryPixelBuffer(identifier:format:width:height:attributes:))
+API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos) CF_RETURNS_NOT_RETAINED;
 
 @end
 

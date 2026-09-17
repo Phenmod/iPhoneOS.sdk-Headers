@@ -2,32 +2,29 @@
 //  CSSearchableItemAttributeSet.h
 //  CoreSpotlight
 //
-//  Copyright © 2015–2023 Apple Inc. All rights reserved.
+//  Copyright © 2015–2026 Apple Inc. All rights reserved.
 //
-
-#import <CoreSpotlight/CSBase.h>
-#import <CoreSpotlight/CSPerson.h>
 
 #import <Foundation/Foundation.h>
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-CS_CLASS_AVAILABLE(10_13, 9_0)
-CS_TVOS_UNAVAILABLE
 // CSSearchableItemAttribute encapsulates a set of properties of an CSSearchableItem.
 // CSSearchableItemAttribute set should only be mutated from one thread at a time. Concurrent access to properties has undefined behavior.
+API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0))
+API_UNAVAILABLE(tvos, watchos)
 @interface CSSearchableItemAttributeSet : NSObject <NSCopying,NSSecureCoding>
 
 //Creates an attribute set for the given content type.
-- (instancetype)initWithItemContentType:(nonnull NSString *)itemContentType API_DEPRECATED("Use initWithContentType instead", macos(10.13, API_TO_BE_DEPRECATED), ios(9.0, API_TO_BE_DEPRECATED)) CS_TVOS_UNAVAILABLE;
-- (instancetype)initWithContentType:(nonnull UTType *)contentType NS_AVAILABLE(11_0, 14_0) CS_TVOS_UNAVAILABLE;
+- (instancetype)initWithItemContentType:(nonnull NSString *)itemContentType API_DEPRECATED("Use initWithContentType instead", macos(10.11, API_TO_BE_DEPRECATED), ios(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos);
+- (instancetype)initWithContentType:(nonnull UTType *)contentType API_AVAILABLE(macos(11.0), ios(14.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
 
 @end
 
 //CSLocalizedString can be used in place of NSString to support localization
-CS_CLASS_AVAILABLE(10_13, 9_0)
-CS_TVOS_UNAVAILABLE
+API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0))
+API_UNAVAILABLE(tvos, watchos)
 @interface CSLocalizedString : NSString
 
 //Takes a dictionary of preferred codes to the localized string for that language
@@ -39,8 +36,8 @@ CS_TVOS_UNAVAILABLE
 @end
 
 //CSCustomAttributeKey allows you to specify a custom attribute as well as various other properties of that attribute.
-CS_CLASS_AVAILABLE(10_13, 9_0)
-CS_TVOS_UNAVAILABLE
+API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0))
+API_UNAVAILABLE(tvos, watchos)
 @interface CSCustomAttributeKey : NSObject <NSCopying,NSSecureCoding>
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -73,7 +70,8 @@ CS_TVOS_UNAVAILABLE
 
 //Use these methods to set custom attributes on an attribute set
 //Values must be common plist types (NSString,NSNumber,NSNull,NSData,NSDate) or CSPerson, or arrays (NSArray) of these types.
-CS_AVAILABLE(10_13, 9_0) CS_TVOS_UNAVAILABLE
+API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0))
+API_UNAVAILABLE(tvos, watchos)
 @interface CSSearchableItemAttributeSet (CSCustomAttributes)
 
 - (void)setValue:(nullable id<NSSecureCoding>)value forCustomKey:(CSCustomAttributeKey *)key;
@@ -81,17 +79,14 @@ CS_AVAILABLE(10_13, 9_0) CS_TVOS_UNAVAILABLE
 
 @end
 
-#if __OBJC2__
-
 //Attributes to be indexed for a given NSUserActivity
-CS_AVAILABLE(10_13, 9_0) CS_TVOS_UNAVAILABLE
+API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0))
+API_UNAVAILABLE(tvos, watchos)
 @interface NSUserActivity (CSSearchableItemAttributeSet)
 
 @property (nullable, copy) CSSearchableItemAttributeSet *contentAttributeSet;
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END
 

@@ -1,6 +1,10 @@
 #ifndef __SCNMetalDefines__
 #define __SCNMetalDefines__
-
+#if defined(__METAL_VERSION__)
+#define SCN_METAL_HAS_SIMD_TYPES 1
+#else
+#define SCN_METAL_HAS_SIMD_TYPES 0
+#endif
 enum {
     SCNVertexSemanticPosition,
     SCNVertexSemanticNormal,
@@ -17,6 +21,8 @@ enum {
     SCNVertexSemanticTexcoord6,
     SCNVertexSemanticTexcoord7
 };
+
+#if SCN_METAL_HAS_SIMD_TYPES
 
 // This structure hold all the informations that are constant through a render pass
 // In a shader modifier, it is given both in vertex and fragment stage through an argument named "scn_frame".
@@ -63,5 +69,7 @@ struct SCNSceneBuffer {
 // float4x4 inverseModelViewProjectionTransform;
 // float2x3 boundingBox;
 // float2x3 worldBoundingBox;
+
+#endif
 
 #endif /* defined(__SCNMetalDefines__) */

@@ -2,34 +2,37 @@
 //  CSSearchableIndex.h
 //  CoreSpotlight
 //
-//  Copyright © 2015–2022 Apple Inc. All rights reserved.
+//  Copyright © 2015–2026 Apple Inc. All rights reserved.
 //
 
 #import <CoreSpotlight/CSSearchableItem.h>
-#import <CoreSpotlight/CSBase.h>
+
+#import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-CORESPOTLIGHT_EXPORT NSString * const CSIndexErrorDomain CS_AVAILABLE(10_13, 9_0) CS_TVOS_UNAVAILABLE;
+extern NSString * const CSIndexErrorDomain API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
 
 typedef NS_ENUM(NSInteger, CSIndexErrorCode) {
-    CSIndexErrorCodeUnknownError =                               -1,
-    CSIndexErrorCodeIndexUnavailableError =                   -1000, //The indexer was unavailable
-    CSIndexErrorCodeInvalidItemError =                        -1001, //The CSSearchableItem is invalid for some reason
-    CSIndexErrorCodeInvalidClientStateError =                 -1002, //The provided clientState was not valid for some reason
-    CSIndexErrorCodeRemoteConnectionError =                   -1003, //There was an error trying to communicate with the remote process
-    CSIndexErrorCodeQuotaExceeded =                           -1004, //Quota for bundle was exceeded
-    CSIndexErrorCodeIndexingUnsupported =                     -1005, //Indexing isn't supported on this device
-    CSIndexErrorCodeMismatchedClientState =                   -1006, //The expected client state did not match the indexed one.
-} CS_AVAILABLE(10_13, 9_0) CS_TVOS_UNAVAILABLE;
+    CSIndexErrorCodeUnknownError             = -1,
+    CSIndexErrorCodeIndexUnavailableError    = -1000, //The indexer was unavailable
+    CSIndexErrorCodeInvalidItemError         = -1001, //The CSSearchableItem is invalid for some reason
+    CSIndexErrorCodeInvalidClientStateError  = -1002, //The provided clientState was not valid for some reason
+    CSIndexErrorCodeRemoteConnectionError    = -1003, //There was an error trying to communicate with the remote process
+    CSIndexErrorCodeQuotaExceeded            = -1004, //Quota for bundle was exceeded
+    CSIndexErrorCodeIndexingUnsupported      = -1005, //Indexing isn't supported on this device
+    CSIndexErrorCodeMismatchedClientState API_AVAILABLE(macos(15.0), ios(18.0), visionos(2.0)) API_UNAVAILABLE(tvos, watchos) = -1006, //The expected client state did not match the indexed one.
+} API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
 
 @protocol CSSearchableIndexDelegate;
 
-CS_CLASS_AVAILABLE(10_13, 9_0)
-CS_TVOS_UNAVAILABLE
+API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0))
+API_UNAVAILABLE(tvos, watchos)
 @interface CSSearchableIndex : NSObject
 
 @property (weak,nullable) id<CSSearchableIndexDelegate> indexDelegate;
+
+@property (nonatomic, readonly) NSFileProtectionType protectionClass API_AVAILABLE(macos(27.0), ios(27.0), visionos(27.0)) API_UNAVAILABLE(tvos, watchos);
 
 // Not all devices support indexing.  Call this method to check if indexing is supported on the current device.
 + (BOOL)isIndexingAvailable;
@@ -62,8 +65,8 @@ CS_TVOS_UNAVAILABLE
 
 @end
 
-CS_AVAILABLE(10_13, 9_0)
-CS_TVOS_UNAVAILABLE
+API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0))
+API_UNAVAILABLE(tvos, watchos)
 @interface CSSearchableIndex (CSOptionalBatching)
 
 // Batching:
@@ -79,7 +82,7 @@ CS_TVOS_UNAVAILABLE
 - (void)beginIndexBatch;
 
 // End a batch passing in expected client state information to be persisted in the index, along with new client state for the current batch. The completion handler will be called once the client state has been persisted. If the client state does not match expected, an error of CSIndexErrorCodeMismatchedClientState will be returned.
-- (void)endIndexBatchWithExpectedClientState:(nullable NSData *)expectedClientState newClientState:(NSData *)newClientState completionHandler:(void (^ __nullable)(NSError * __nullable error))completionHandler NS_SWIFT_NAME(endIndexBatch(expectedClientState:newClientState:completionHandler:)) API_AVAILABLE(macos(15.0), ios(18.0));
+- (void)endIndexBatchWithExpectedClientState:(nullable NSData *)expectedClientState newClientState:(NSData *)newClientState completionHandler:(void (^ __nullable)(NSError * __nullable error))completionHandler NS_SWIFT_NAME(endIndexBatch(expectedClientState:newClientState:completionHandler:)) API_AVAILABLE(macos(15.0), ios(18.0), visionos(2.0)) API_UNAVAILABLE(tvos, watchos);
 
 // End a batch passing in client state information to be persisted in the index. The completion handler will be called once the client state has been persisted.
 - (void)endIndexBatchWithClientState:(NSData *)clientState completionHandler:(void (^ __nullable)(NSError * __nullable error))completionHandler;
@@ -89,7 +92,8 @@ CS_TVOS_UNAVAILABLE
 
 @end
 
-API_AVAILABLE(macos(13))
+API_AVAILABLE(macos(13.0))
+API_UNAVAILABLE(ios, tvos, watchos, visionos)
 @interface CSSearchableIndex (CSExternalProvider)
 
 - (void)fetchDataForBundleIdentifier:(NSString *)bundleIdentifier
@@ -97,21 +101,13 @@ API_AVAILABLE(macos(13))
                          contentType:(UTType *)contentType
                    completionHandler:(void (^)(NSData * _Nullable, NSError * _Nullable))completionHandler;
 
-
-@end
-
-CS_AVAILABLE(14_0, 17_0)
-CS_TVOS_UNAVAILABLE
-@interface CSSearchableIndex (CSOptionalBatchingWithExpectedState)
-// End a batch passing in client state information to be persisted in the index. The completion handler will be called with an error, and the new state will not be persisted, if the expectedClientState does not match the client state currently stored in the index. Otherwise, the completion handler will be called once the client state has been persisted.
-
 @end
 
 
 // An application that is long running should provide a CSSearchableIndexDelegate conforming object to handle communication from the index.
 // Alternatively, an app can provide an extension whose request handler conforms to this protocol and the extension will be called if the app isn't running.
-CS_AVAILABLE(10_13, 9_0)
-CS_TVOS_UNAVAILABLE
+API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0))
+API_UNAVAILABLE(tvos, watchos)
 @protocol CSSearchableIndexDelegate <NSObject>
 
 @required
@@ -139,16 +135,20 @@ CS_TVOS_UNAVAILABLE
 - (void)searchableIndexDidFinishThrottle:(CSSearchableIndex *)searchableIndex;
 
 // The developer may provide a NSData representation if type was specified in providerDataTypeIdentifiers property.
-- (nullable NSData *)dataForSearchableIndex:(CSSearchableIndex *)searchableIndex itemIdentifier:(NSString *)itemIdentifier typeIdentifier:(NSString *)typeIdentifier error:(out NSError ** __nullable)outError CS_AVAILABLE(10_13, 11_0) CS_TVOS_UNAVAILABLE;
+- (nullable NSData *)dataForSearchableIndex:(CSSearchableIndex *)searchableIndex itemIdentifier:(NSString *)itemIdentifier typeIdentifier:(NSString *)typeIdentifier error:(out NSError ** __nullable)outError API_AVAILABLE(macos(10.13), ios(11.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
 
 // The developer may provide a NSURL to file representation representation if type was specified from providerDataTypeIdentifiers or providerInPlaceFileTypeIdentifiers property.
-- (nullable NSURL *)fileURLForSearchableIndex:(CSSearchableIndex *)searchableIndex itemIdentifier:(NSString *)itemIdentifier typeIdentifier:(NSString *)typeIdentifier inPlace:(BOOL)inPlace error:(out NSError ** __nullable)outError CS_AVAILABLE(10_13, 11_0) CS_TVOS_UNAVAILABLE;
+- (nullable NSURL *)fileURLForSearchableIndex:(CSSearchableIndex *)searchableIndex itemIdentifier:(NSString *)itemIdentifier typeIdentifier:(NSString *)typeIdentifier inPlace:(BOOL)inPlace error:(out NSError ** __nullable)outError API_AVAILABLE(macos(10.13), ios(11.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
 
-// The index requests that the delegate provide searchable items for the provided identifiers
-- (void)searchableItemsForIdentifiers:(NSArray <NSString *> *)identifiers searchableItemsHandler:(void (^)(NSArray<CSSearchableItem *> *items))searchableItemsHandler NS_AVAILABLE(15_4, 18_4);
+// The index requests that the delegate provide searchable items for the provided identifiers with the default protection class
+- (void)searchableItemsForIdentifiers:(NSArray <NSString *> *)identifiers searchableItemsHandler:(void (^)(NSArray<CSSearchableItem *> *items))searchableItemsHandler NS_SWIFT_ASYNC(2) API_AVAILABLE(macos(15.4), ios(18.4), visionos(2.4)) API_UNAVAILABLE(tvos, watchos);
+
+// The index requests that the delegate provide searchable items for the provided identifiers in the specified protection class
+- (void)searchableItemsForIdentifiers:(NSArray <NSString *> *)identifiers protectionClass:(NSFileProtectionType)protectionClass searchableItemsHandler:(void (^)(NSArray<CSSearchableItem *> *items))searchableItemsHandler NS_SWIFT_ASYNC(3) API_AVAILABLE(macos(27.0), ios(27.0), visionos(27.0)) API_UNAVAILABLE(tvos, watchos);
 
 // The developer may want to be notified when an item has been updated with specific attributes (see: CSSearchableItemUpdateListenerOptions for Apple Intelligence attributes)
-- (void)searchableItemsDidUpdate:(NSArray<CSSearchableItem *> *)items NS_AVAILABLE(15_4, 18_4);
+- (void)searchableItemsDidUpdate:(NSArray<CSSearchableItem *> *)items API_AVAILABLE(macos(15.4), ios(18.4), visionos(2.4)) API_UNAVAILABLE(tvos, watchos);
 
 @end
+
 NS_ASSUME_NONNULL_END

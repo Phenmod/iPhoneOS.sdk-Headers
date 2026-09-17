@@ -10,6 +10,7 @@
 #define CMOdometer_h
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import <_LocationEssentials/CLLocationEssentials.h>
 #import <CoreMotion/CMAvailability.h>
 
 

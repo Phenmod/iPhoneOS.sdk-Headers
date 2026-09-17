@@ -298,6 +298,27 @@ MTL_EXPORT API_AVAILABLE(macos(26.0), ios(26.0))
  */
 @property (readwrite, nonatomic) MTLTextureSwizzleChannels swizzle;
  
+/// The minimum level of detail for texture views you create with the descriptor.
+///
+/// The property configures the lower limit of the level-of-detail (LOD) range that texture operations access for texture views you create with the descriptor.
+/// When the GPU calculates a mipmap level, it applies the value of this property
+/// as the final step, after clamping the sampler LOD and applying the texture view level range offsets.
+/// The default value is `0.0`.
+///
+/// Each of the following texture operations has a requirement for the `minLOD` value.
+///
+/// | Operation | Requirement |
+/// | --- | --- |
+/// | Read   | `floor(minLOD)` ≤ mip level |
+/// | Gather | `floor(minLOD)` ≤ `levelRange.location` |
+/// | Sample |        `minLOD` ≤ `levelRange.location` + `levelRange.length` |
+///
+/// Each operation returns an out-of-bounds value if a parameter doesn't meet a requirement.
+///
+/// > Note: For the specific out-of-bounds value for each operation, see the _Texture Functions_ section of the
+/// [Metal Shading Language Specification (PDF)](https://developer.apple.com/metal/Metal-Shading-Language-Specification.pdf).
+@property(readwrite, nonatomic) float minLOD API_AVAILABLE(macos(27.0), ios(27.0));
+
 @end
 
 
@@ -542,6 +563,26 @@ API_AVAILABLE(macos(10.11), ios(8.0))
  @abstract Query support tier for sparse textures.
  */
 @property (readonly) MTLTextureSparseTier sparseTextureTier API_AVAILABLE(macos(26.0), ios(26.0));
+
+/// The lowest mipmap level of detail for the texture.
+///
+/// The property represents the lower limit of the level-of-detail (LOD) range that texture operations access for the texture.
+/// When the GPU calculates a mipmap level, it applies the value of this property
+/// as the final step, after clamping the sampler LOD and applying the texture view level range offsets.
+///
+/// Each of the following texture operations has a requirement for the `minLOD` value.
+///
+/// | Operation | Requirement |
+/// | --- | --- |
+/// | Read   | `floor(minLOD)` ≤ mip level |
+/// | Gather | `floor(minLOD)` ≤ `levelRange.location` |
+/// | Sample |        `minLOD` ≤ `levelRange.location` + `levelRange.length` |
+///
+/// Each operation returns an out-of-bounds value if a parameter doesn't meet a requirement.
+///
+/// > Note: For the specific out-of-bounds value for each operation, see the _Texture Functions_ section of the
+/// [Metal Shading Language Specification (PDF)](https://developer.apple.com/metal/Metal-Shading-Language-Specification.pdf).
+@property (readonly) float minLOD API_AVAILABLE(macos(27.0), ios(27.0));
 
 @end
 NS_ASSUME_NONNULL_END

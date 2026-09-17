@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class SRNotificationUsage;
 @class SRWebUsage;
 
+NS_SWIFT_SENDABLE
 SR_EXTERN API_AVAILABLE(ios(14.0)) API_UNAVAILABLE(watchos, visionos) API_UNAVAILABLE(tvos, macos)
 @interface SRDeviceUsageReport : NSObject
 
@@ -59,6 +60,7 @@ typedef NS_ENUM(NSInteger, SRTextInputSessionType) {
     SRTextInputSessionTypeDictation,
 } API_AVAILABLE(ios(15.0)) API_UNAVAILABLE(watchos, visionos) API_UNAVAILABLE(tvos, macos);
 
+NS_SWIFT_SENDABLE
 SR_EXTERN API_AVAILABLE(ios(15.0)) API_UNAVAILABLE(watchos, visionos) API_UNAVAILABLE(tvos, macos)
 @interface SRTextInputSession : NSObject
 
@@ -74,6 +76,7 @@ SR_EXTERN API_AVAILABLE(ios(15.0)) API_UNAVAILABLE(watchos, visionos) API_UNAVAI
 @property (readonly, copy) NSString *sessionIdentifier API_AVAILABLE(ios(16.4)) API_UNAVAILABLE(watchos) API_UNAVAILABLE(tvos, macos);
 @end
 
+NS_SWIFT_SENDABLE
 SR_EXTERN API_AVAILABLE(ios(14.0)) API_UNAVAILABLE(watchos, visionos) API_UNAVAILABLE(tvos, macos)
 @interface SRApplicationUsage : NSObject
 
@@ -147,6 +150,7 @@ typedef NS_ENUM(NSInteger, SRNotificationEvent) {
     SRNotificationEventDeviceUnlocked,
 } API_AVAILABLE(ios(14.0)) API_UNAVAILABLE(watchos, visionos) API_UNAVAILABLE(tvos, macos);
 
+NS_SWIFT_SENDABLE
 SR_EXTERN API_AVAILABLE(ios(14.0)) API_UNAVAILABLE(watchos, visionos) API_UNAVAILABLE(tvos, macos)
 @interface SRNotificationUsage : NSObject
 
@@ -157,11 +161,13 @@ SR_EXTERN API_AVAILABLE(ios(14.0)) API_UNAVAILABLE(watchos, visionos) API_UNAVAI
 
 @end
 
+NS_SWIFT_SENDABLE
 SR_EXTERN API_AVAILABLE(ios(14.0)) API_UNAVAILABLE(watchos, visionos) API_UNAVAILABLE(tvos, macos)
 @interface SRWebUsage : NSObject
 @property (readonly) NSTimeInterval totalUsageTime;
 @end
 
+NS_SWIFT_SENDABLE
 SR_EXTERN API_AVAILABLE(ios(14.0)) API_UNAVAILABLE(watchos, visionos) API_UNAVAILABLE(tvos, macos)
 @interface SRMessagesUsageReport : NSObject
 
@@ -172,6 +178,7 @@ SR_EXTERN API_AVAILABLE(ios(14.0)) API_UNAVAILABLE(watchos, visionos) API_UNAVAI
 
 @end
 
+NS_SWIFT_SENDABLE
 SR_EXTERN API_AVAILABLE(ios(14.0)) API_UNAVAILABLE(watchos, visionos) API_UNAVAILABLE(tvos, macos)
 @interface SRPhoneUsageReport : NSObject
 

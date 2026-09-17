@@ -24,7 +24,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-API_AVAILABLE(ios(11.0), watchos(4.0))
+API_DEPRECATED("INAddTasksIntent is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.", ios(11.0, 27.0), watchos(4.0, 27.0))
 API_UNAVAILABLE(macos, tvos)
 @interface INAddTasksIntent : INIntent
 
@@ -53,7 +53,7 @@ API_UNAVAILABLE(macos, tvos)
  @discussion The minimum requirement for an implementing class is that it should be able to handle the intent. The resolution and confirmation methods are optional. The handling method is always called last, after resolving and confirming the intent.
  */
 
-API_AVAILABLE(ios(11.0), watchos(4.0))
+API_DEPRECATED("INAddTasksIntentHandling is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.", ios(11.0, 27.0), watchos(4.0, 27.0))
 API_UNAVAILABLE(macos, tvos)
 @protocol INAddTasksIntentHandling <NSObject>
 
@@ -98,7 +98,7 @@ API_UNAVAILABLE(macos, tvos)
  */
 
 - (void)resolveTargetTaskListForAddTasks:(INAddTasksIntent *)intent
-                          withCompletion:(void (^)(INTaskListResolutionResult *resolutionResult))completion NS_SWIFT_NAME(resolveTargetTaskList(for:with:)) API_DEPRECATED("resolveTargetTaskListForAddTasks:withCompletion: is deprecated. Use resolveTargetTaskListForAddTasks:completion: instead", ios(11.0, 13.0), watchos(4.0, 6.0));
+                          withCompletion:(void (^)(INTaskListResolutionResult *resolutionResult))completion NS_SWIFT_NAME(resolveTargetTaskList(for:with:));
 
 - (void)resolveTargetTaskListForAddTasks:(INAddTasksIntent *)intent
                               completion:(void (^)(INAddTasksTargetTaskListResolutionResult *resolutionResult))completion NS_SWIFT_NAME(resolveTargetTaskList(for:with:)) API_AVAILABLE(ios(13.0), watchos(6.0));
@@ -110,7 +110,7 @@ API_UNAVAILABLE(macos, tvos)
                                withCompletion:(void (^)(INSpatialEventTriggerResolutionResult *resolutionResult))completion NS_SWIFT_NAME(resolveSpatialEventTrigger(for:with:));
 
 - (void)resolveTemporalEventTriggerForAddTasks:(INAddTasksIntent *)intent
-                                withCompletion:(void (^)(INTemporalEventTriggerResolutionResult *resolutionResult))completion NS_SWIFT_NAME(resolveTemporalEventTrigger(for:with:)) API_DEPRECATED("resolveTemporalEventTriggerForAddTasks:withCompletion: is deprecated. Use resolveTemporalEventTriggerForAddTasks:completion: instead", ios(11.0, 13.0), watchos(4.0, 6.0));
+                                withCompletion:(void (^)(INTemporalEventTriggerResolutionResult *resolutionResult))completion NS_SWIFT_NAME(resolveTemporalEventTrigger(for:with:));
 
 - (void)resolveTemporalEventTriggerForAddTasks:(INAddTasksIntent *)intent
                                     completion:(void (^)(INAddTasksTemporalEventTriggerResolutionResult *resolutionResult))completion NS_SWIFT_NAME(resolveTemporalEventTrigger(for:with:)) API_AVAILABLE(ios(13.0), watchos(6.0));

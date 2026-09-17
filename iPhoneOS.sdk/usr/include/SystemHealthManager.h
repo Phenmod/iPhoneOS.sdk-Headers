@@ -20,6 +20,7 @@ typedef NS_ENUM(uint64_t, SHComponentType) {
     SHComponentTypeRCameraFail = 10,
     SHComponentTypeAudioCodec = 11,
     SHComponentTypeTouchID = 12,
+    SHComponentTypeDisplayTCON = 13,
     // Add new components above
     SHComponentAlertType_Count,
 };

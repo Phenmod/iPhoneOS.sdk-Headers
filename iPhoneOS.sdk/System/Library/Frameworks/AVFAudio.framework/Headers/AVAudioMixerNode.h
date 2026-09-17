@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 		conversions. It also accepts any channel count and will correctly upmix or downmix
 		to the output channel count.
 */
-API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 @interface AVAudioMixerNode : AVAudioNode <AVAudioMixing>
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER;

@@ -70,7 +70,7 @@ API_AVAILABLE(macos(10.7), ios(4.1), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(w
  */
 @property (nonatomic) BOOL alwaysCopiesSampleData
 #if __swift__
-API_DEPRECATED("It is not necessary to copy the sample data in order to make it safe to use the vended buffer", macos(10.8, API_TO_BE_DEPRECATED), ios(5.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED))
+API_DEPRECATED("It is not necessary to copy the sample data in order to make it safe to use the vended buffer", macos(10.8, 27.0), ios(5.0, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0))
 API_UNAVAILABLE(watchos)
 #else
 API_AVAILABLE(macos(10.8), ios(5.0), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(watchos)
@@ -89,12 +89,14 @@ API_AVAILABLE(macos(10.8), ios(5.0), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(w
 	The client is responsible for calling CFRelease on the returned CMSampleBuffer object when finished with it. This method will return NULL if there are no more sample buffers available for the receiver within the time range specified by its AVAssetReader's timeRange property, or if there is an error that prevents the AVAssetReader from reading more media data. When this method returns NULL, clients should check the value of the associated AVAssetReader's status property to determine why no more samples could be read.
  
 	In certain configurations, such as when outputSettings is nil, copyNextSampleBuffer may return marker-only sample buffers as well as sample buffers containing media data. Marker-only sample buffers can be identified by CMSampleBufferGetNumSamples returning 0. Clients who do not need the information attached to marker-only sample buffers may skip them.
- 
+
+	The order of returned sample buffers depends on the output's configuration. For a track output with a `nil` ``AVAssetReaderTrackOutput/outputSettings`` dictionary, the output skips decoding and returns sample buffers in decode order. Preserve that order when working with the encoded samples directly, such as when passing them to ``AVAssetWriter``. When the output decodes the samples, it returns them in presentation order. Playback and downstream processing operate in presentation order, so decode order no longer matters after decoding.
+
 	This method throws an exception if this output is not added to an instance of AVAssetReader (using -addOutput:) and -startReading is not called on that asset reader.
  */
 - (nullable CMSampleBufferRef)copyNextSampleBuffer CF_RETURNS_RETAINED
 #if __swift__
-API_DEPRECATED("Use AVAssetReaderOutput.Provider.next() instead", macos(10.7, API_TO_BE_DEPRECATED), ios(4.1, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED))
+API_DEPRECATED("Use AVAssetReaderOutput.Provider.next() instead", macos(10.7, 27.0), ios(4.1, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0))
 API_UNAVAILABLE(watchos)
 #endif
 ;
@@ -119,7 +121,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(
  */
 @property (nonatomic) BOOL supportsRandomAccess
 #if __swift__
-API_DEPRECATED("Use AVAssetReader.outputProviderWithRandomAccess(for:) instead", macos(10.10, API_TO_BE_DEPRECATED), ios(8.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED))
+API_DEPRECATED("Use AVAssetReader.outputProviderWithRandomAccess(for:) instead", macos(10.10, 27.0), ios(8.0, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0))
 API_UNAVAILABLE(watchos)
 #else
 API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(watchos)
@@ -157,7 +159,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(
  */
 - (void)resetForReadingTimeRanges:(NSArray<NSValue *> *)timeRanges
 #if __swift__
-API_DEPRECATED("Use RandomAccessController.resetForReading(timeRanges:) instead", macos(10.10, API_TO_BE_DEPRECATED), ios(8.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED))
+API_DEPRECATED("Use RandomAccessController.resetForReading(timeRanges:) instead", macos(10.10, 27.0), ios(8.0, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0))
 API_UNAVAILABLE(watchos)
 #else
 API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(watchos)
@@ -178,7 +180,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(
  */
 - (void)markConfigurationAsFinal
 #if __swift__
-API_DEPRECATED("Use RandomAccessController.markConfigurationAsFinal() instead", macos(10.10, API_TO_BE_DEPRECATED), ios(8.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED))
+API_DEPRECATED("Use RandomAccessController.markConfigurationAsFinal() instead", macos(10.10, 27.0), ios(8.0, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0))
 API_UNAVAILABLE(watchos)
 #else
 API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(watchos)
@@ -237,6 +239,14 @@ AV_INIT_UNAVAILABLE
 	ProRes encoded media can contain up to 12bits/ch. If your source is ProRes encoded and you wish to preserve more than 8bits/ch during decompression then use one of the following pixel formats: kCVPixelFormatType_4444AYpCbCr16, kCVPixelFormatType_422YpCbCr16, kCVPixelFormatType_422YpCbCr10, or kCVPixelFormatType_64ARGB.  AVAssetReader does not support scaling with any of these high bit depth pixel formats. If you use them then do not specify kCVPixelBufferWidthKey or kCVPixelBufferHeightKey in your outputSettings dictionary. If you plan to append these sample buffers to an AVAssetWriterInput then note that only the ProRes encoders support these pixel formats.
 
 	ProRes 4444 encoded media can contain a mathematically lossless alpha channel. To preserve the alpha channel during decompression use a pixel format with an alpha component such as kCVPixelFormatType_4444AYpCbCr16 or kCVPixelFormatType_64ARGB. To test whether your source contains an alpha channel check that the track's format description has kCMFormatDescriptionExtension_Depth and that its value is 32.
+
+	Video Orientation and Transforms:
+
+	AVAssetReaderTrackOutput does not automatically apply the video track's transform when reading sample buffers. Sample buffers are returned in their encoded orientation, which may differ from the display orientation indicated by the track's preferredTransform property. The preferredTransform describes how the video frames should be rotated, scaled, and offset for display purposes.
+
+	Rotation information can be obtained from the AVAssetTrack's preferredTransform property. Clients can choose to apply this transform manually if needed for their specific use case, such as when processing frames for display or analysis.
+
+	For workflows that use AVAssetReader to read samples and AVAssetWriter to write them (such as transcoding or remuxing), it is generally more efficient to pass through the preferredTransform to the output file without modifying the pixel data. This avoids the computational cost and potential quality loss from rotating every frame. In such cases, the same transform matrix should be used when configuring the AVAssetWriterInput to maintain the correct display orientation in the output file.
  */
 + (instancetype)assetReaderTrackOutputWithTrack:(AVAssetTrack *)track outputSettings:(nullable NSDictionary<NSString *, id> *)outputSettings;
 
@@ -272,7 +282,15 @@ AV_INIT_UNAVAILABLE
 	ProRes encoded media can contain up to 12bits/ch. If your source is ProRes encoded and you wish to preserve more than 8bits/ch during decompression then use one of the following pixel formats: kCVPixelFormatType_4444AYpCbCr16, kCVPixelFormatType_422YpCbCr16, kCVPixelFormatType_422YpCbCr10, or kCVPixelFormatType_64ARGB.  AVAssetReader does not support scaling with any of these high bit depth pixel formats. If you use them then do not specify kCVPixelBufferWidthKey or kCVPixelBufferHeightKey in your outputSettings dictionary. If you plan to append these sample buffers to an AVAssetWriterInput then note that only the ProRes encoders support these pixel formats.
 
 	ProRes 4444 encoded media can contain a mathematically lossless alpha channel. To preserve the alpha channel during decompression use a pixel format with an alpha component such as kCVPixelFormatType_4444AYpCbCr16 or kCVPixelFormatType_64ARGB.  To test whether your source contains an alpha channel check that the track's format description has kCMFormatDescriptionExtension_Depth and that its value is 32.
- 
+
+	Video Orientation and Transforms:
+
+	AVAssetReaderTrackOutput does not automatically apply the video track's transform when reading sample buffers. Sample buffers are returned in their encoded orientation, which may differ from the display orientation indicated by the track's preferredTransform property. The preferredTransform describes how the video frames should be rotated, scaled, and offset for display purposes.
+
+	Rotation information can be obtained from the AVAssetTrack's preferredTransform property. Clients can choose to apply this transform manually if needed for their specific use case, such as when processing frames for display or analysis.
+
+	For workflows that use AVAssetReader to read samples and AVAssetWriter to write them (such as transcoding or remuxing), it is generally more efficient to pass through the preferredTransform to the output file without modifying the pixel data. This avoids the computational cost and potential quality loss from rotating every frame. In such cases, the same transform matrix should be used when configuring the AVAssetWriterInput to maintain the correct display orientation in the output file.
+
 	This method throws an exception for any of the following reasons:
 		- the output settings dictionary contains an unsupported key mentioned above
 		- the output settings dictionary does not contain any recognized key
@@ -297,7 +315,7 @@ AV_INIT_UNAVAILABLE
 	The output settings used by the receiver.
 
  @discussion
-	The value of this property is an NSDictionary that contains values for keys as specified by either AVAudioSettings.h for audio tracks or AVVideoSettings.h for video tracks.  A value of nil indicates that the receiver will vend samples in their original format as stored in the target track.
+	The value is a dictionary that contains values for audio and video settings keys. A value of `nil` indicates that the track output vends samples in their original format as stored in the target track. In that case, the track output skips decoding and returns the samples in decode order. A non-`nil` value causes the track output to decode the samples and return them in presentation order.
  */ 
 @property (nonatomic, readonly, nullable) NSDictionary<NSString *, id> *outputSettings;
 
@@ -343,7 +361,7 @@ AV_INIT_UNAVAILABLE
  @abstract
 	Returns an instance of AVAssetReaderAudioMixOutput for reading mixed audio from the specified audio tracks, with optional audio settings.
 
- @param tracks
+ @param audioTracks
 	An NSArray of AVAssetTrack objects from which the created object should read sample buffers to be mixed.
  @param audioSettings
 	An NSDictionary of audio settings to be used for audio output.
@@ -364,7 +382,7 @@ AV_INIT_UNAVAILABLE
  @abstract
 	Creates an instance of AVAssetReaderAudioMixOutput for reading mixed audio from the specified audio tracks, with optional audio settings.
 
- @param tracks
+ @param audioTracks
 	An NSArray of AVAssetTrack objects from which the created object should read sample buffers to be mixed.
  @param audioSettings
 	An NSDictionary of audio settings to be used for audio output.
@@ -459,7 +477,7 @@ AV_INIT_UNAVAILABLE
  @abstract
 	Creates an instance of AVAssetReaderVideoCompositionOutput for reading composited video from the specified video tracks and supplying media data according to the specified video settings.
 
- @param tracks
+ @param videoTracks
 	An NSArray of AVAssetTrack objects from which the resulting AVAssetReaderVideoCompositionOutput should read video frames for compositing.
  @param videoSettings
 	An NSDictionary of video settings to be used for video output.  See AVVideoSettings.h for more information about how to construct a video settings dictionary.
@@ -484,7 +502,7 @@ AV_INIT_UNAVAILABLE
  @abstract
 	Creates an instance of AVAssetReaderVideoCompositionOutput for reading composited video from the specified video tracks and supplying media data according to the specified video settings.
 
- @param tracks
+ @param videoTracks
 	An NSArray of AVAssetTrack objects from which the resulting AVAssetReaderVideoCompositionOutput should read video frames for compositing.
  @param videoSettings
 	An NSDictionary of video settings to be used for video output.  See AVVideoSettings.h for more information about how to construct a video settings dictionary.
@@ -565,7 +583,7 @@ AV_INIT_UNAVAILABLE
  */
 NS_SWIFT_NONSENDABLE
 #if __swift__
-API_DEPRECATED("Use AVAssetReader.outputMetadataProvider(for:) instead", macos(10.10, API_TO_BE_DEPRECATED), ios(8.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED))
+API_DEPRECATED("Use AVAssetReader.outputMetadataProvider(for:) instead", macos(10.10, 27.0), ios(8.0, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0))
 API_UNAVAILABLE(watchos)
 #else
 API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(watchos)
@@ -582,7 +600,7 @@ AV_INIT_UNAVAILABLE
  @abstract
 	Creates a new timed metadata group adaptor for retrieving timed metadata group objects from an asset reader output.
 
- @param	assetReaderOutput
+ @param	trackOutput
 	An instance of AVAssetReaderTrackOutput that vends sample buffers containing metadata, e.g. an AVAssetReaderTrackOutput object initialized with a track of media type AVMediaTypeMetadata and nil outputSettings.
  @result
 	An instance of AVAssetReaderOutputMetadataAdaptor
@@ -599,7 +617,7 @@ AV_INIT_UNAVAILABLE
  @abstract
 	Creates a new timed metadata group adaptor for retrieving timed metadata group objects from an asset reader output.
 
- @param	assetReaderOutput
+ @param	trackOutput
 	An instance of AVAssetReaderTrackOutput that vends sample buffers containing metadata, e.g. an AVAssetReaderTrackOutput object initialized with a track of media type AVMediaTypeMetadata and nil outputSettings.
  @result
 	An instance of AVAssetReaderOutputMetadataAdaptor
@@ -649,7 +667,7 @@ AV_INIT_UNAVAILABLE
  */
 NS_SWIFT_NONSENDABLE
 #if __swift__
-API_DEPRECATED("Use AVAssetReader.outputCaptionProvider(for:validationDelegate:) instead", macos(12.0, API_TO_BE_DEPRECATED), ios(18.0, API_TO_BE_DEPRECATED), macCatalyst(15.0, API_TO_BE_DEPRECATED))
+API_DEPRECATED("Use AVAssetReader.outputCaptionProvider(for:validationDelegate:) instead", macos(12.0, 27.0), ios(18.0, 27.0), macCatalyst(15.0, 27.0))
 API_UNAVAILABLE(tvos, watchos, visionos)
 #else
 API_AVAILABLE(macos(12.0), ios(18.0), macCatalyst(15.0)) API_UNAVAILABLE(tvos, watchos, visionos)

@@ -111,7 +111,7 @@ typedef NS_ENUM(NSInteger, BGContinuedProcessingTaskRequestSubmissionStrategy) {
     /// substantial load and is unable to immediately run the task. Queued ``BGContinuedProcessingTaskRequest``s will be
     /// cancelled when the user removes your app from the app switcher.
     BGContinuedProcessingTaskRequestSubmissionStrategyQueue
-} NS_SWIFT_NAME(BGContinuedProcessingTaskRequest.SubmissionStrategy) API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(macos, tvos, visionos, watchos, macCatalyst);
+} NS_SWIFT_NAME(BGContinuedProcessingTaskRequest.SubmissionStrategy) API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(macos, tvos, visionos, macCatalyst) API_UNAVAILABLE(watchos);
 
 typedef NS_OPTIONS(NSInteger, BGContinuedProcessingTaskRequestResources) {
     /// No special system resources required.
@@ -127,13 +127,13 @@ typedef NS_OPTIONS(NSInteger, BGContinuedProcessingTaskRequestResources) {
     ///
     /// - Important: Applications must have the `com.apple.developer.background-tasks.continued-processing.gpu`  entitlement to submit a task request with this resource.
     BGContinuedProcessingTaskRequestResourcesGPU NS_SWIFT_NAME(gpu) = (1 << 0),
-} NS_SWIFT_NAME(BGContinuedProcessingTaskRequest.Resources) API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(macos, tvos, visionos, watchos, macCatalyst);
+} NS_SWIFT_NAME(BGContinuedProcessingTaskRequest.Resources) API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(macos, tvos, visionos, macCatalyst) API_UNAVAILABLE(watchos);
 
 #pragma mark -
 
 /// A request to begin a workload immediately, or shortly after submission, which is allowed to continue running even if
 /// the app is backgrounded.
-BG_EXTERN API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(macos, tvos, visionos, watchos, macCatalyst)
+BG_EXTERN API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(macos, tvos, visionos, macCatalyst) API_UNAVAILABLE(watchos)
 @interface BGContinuedProcessingTaskRequest : BGTaskRequest
 
 /// The localized title displayed to the user.

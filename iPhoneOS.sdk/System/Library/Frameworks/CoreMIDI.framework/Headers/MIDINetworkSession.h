@@ -88,10 +88,18 @@ OS_EXPORT MIDINETWORKSESSION_AVAILABLE
 
 /* __________________________________________________________________________________________________
 	MIDINetworkSession
-	
+
 	A network session represents one CoreMIDI entity (source/destination pair). One session can
 	have any number of connections. Output is broadcast to all connections; input from multiple
 	connections is merged.
+
+	Note: On macOS and Mac Catalyst, network MIDI sessions are configured by the user
+	through Audio MIDI Setup. The methods of this class are non-functional on macOS/Catalyst —
+	accessors return nil/NO/0 and mutators are no-ops. The symbols exist on macOS only so that
+	code shared between iOS and Catalyst can link. Once the user has enabled the session in
+	Audio MIDI Setup, the resulting source/destination endpoints can be discovered and used
+	through the standard CoreMIDI APIs (MIDIGetNumberOfDevices, MIDIGetSource, MIDIGetDestination,
+	etc.).
 */
 OS_EXPORT MIDINETWORKSESSION_AVAILABLE
 @interface MIDINetworkSession : NSObject {

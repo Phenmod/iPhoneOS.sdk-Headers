@@ -35,3 +35,5 @@
 #import <SensorKit/SRPhotoplethysmogramSample.h>
 #import <SensorKit/SRAcousticSettings.h>
 #import <SensorKit/SRSleepSession.h>
+#import <SensorKit/SRSourceDevice.h>
+#import <SensorKit/SRHeadphoneSettings.h>

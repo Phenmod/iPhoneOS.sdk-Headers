@@ -328,8 +328,10 @@ typedef CFIndex CMItemIndex;
 // Marks functions returning a CoreFoundation object that the caller is responsible for releasing. Blocks are Objective-C objects and functions returning them use CM_RETURNS_RETAINED_BLOCK instead.
 #if COREMEDIA_DECLARE_RETURNS_RETAINED
 #define CM_RETURNS_RETAINED		CF_RETURNS_RETAINED
+#define CM_RETURNS_NOT_RETAINED	CF_RETURNS_NOT_RETAINED
 #else
 #define CM_RETURNS_RETAINED
+#define CM_RETURNS_NOT_RETAINED
 #endif
 	
 #if COREMEDIA_DECLARE_RETURNS_RETAINED_ON_PARAMETERS
@@ -402,10 +404,20 @@ enum
 #define CM_SWIFT_SENDING_RELEASED_PARAMETER CM_SWIFT_SENDING CM_RELEASES_ARGUMENT
 #define CM_SWIFT_SENDING_RETAINED_RESULT CM_SWIFT_SENDING CM_RETURNS_RETAINED
 
+#ifdef CF_REFINED_FOR_SWIFT
+	#define CM_REFINED_FOR_SWIFT CF_REFINED_FOR_SWIFT
+#else
+	#define CM_REFINED_FOR_SWIFT
+#endif
+
 // Swift macros not available on Windows builds
 #if TARGET_OS_WINDOWS
 #define CF_SWIFT_UNAVAILABLE(_unused)
 #define CF_REFINED_FOR_SWIFT
+#define CF_SWIFT_NAME(_unused)
+#define CF_STRING_ENUM
+#define CF_TYPED_ENUM
+#define CF_TYPED_EXTENSIBLE_ENUM
 #endif // TARGET_OS_WINDOWS
 
 // CM_SWIFT_INIT_FOR_CF_TYPE creates a Swift init function for CF type that has the signature `init(referencing: Self)`

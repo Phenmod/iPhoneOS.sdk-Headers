@@ -14,8 +14,10 @@
 
 #import <Photos/PHObject.h>
 #import <Photos/PHAsset.h>
-#import <Photos/PHLivePhoto.h>
+#import <Photos/PHAssetCollection.h>
 #import <Photos/PHCollection.h>
+#import <Photos/PHCollectionList.h>
+#import <Photos/PHLivePhoto.h>
 
 #import <Photos/PHFetchOptions.h>
 #import <Photos/PHFetchResult.h>
@@ -32,6 +34,7 @@
 
 #import <Photos/PHAssetResourceUploadJob.h>
 #import <Photos/PHAssetResourceUploadJobChangeRequest.h>
+#import <Photos/PHAssetResourceUploadJobOptions.h>
 
 #import <Photos/PHCollectionListChangeRequest.h>
 #import <Photos/PHLivePhotoEditingContext.h>
@@ -41,6 +44,7 @@
 #import <Photos/PHAssetResourceManager.h>
 #import <Photos/PHAssetResource.h>
 
+
 #import <Photos/PHAdjustmentData.h>
 #import <Photos/PHContentEditingInput.h>
 #import <Photos/PHContentEditingOutput.h>
@@ -48,5 +52,7 @@
 #import <Photos/PHProject.h>
 #import <Photos/PHProjectChangeRequest.h>
 #import <Photos/PHCloudIdentifier.h>
+
+#import <Photos/PHAssetExtendedMetadata.h>
 
 #endif

@@ -29,10 +29,6 @@
 #import <ModelIO/ModelIO.h>
 #endif
 
-#if TARGET_OS_IOS || TARGET_OS_TV || TARGET_OS_MACCATALYST
-#import <ReplayKit/ReplayKit.h>
-#endif
-
 #import <GameKit/GKAccessPoint.h>
 #import <GameKit/GKAchievement.h>
 #import <GameKit/GKAchievementDescription.h>

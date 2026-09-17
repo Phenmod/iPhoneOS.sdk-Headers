@@ -60,6 +60,28 @@ OS_EXPORT
 @property (nonatomic, copy, nullable) PHAssetImageProgressHandler progressHandler; // provide caller a way to be told how much progress has been made prior to delivering the data when it comes from iCloud. Defaults to nil, shall be set by caller
 @property (nonatomic) BOOL allowSecondaryDegradedImage API_AVAILABLE(macos(14), ios(17), tvos(17)); // in addition to the initial degraded result, an additional degraded result will be returned if conditions permit
 
+/// Request HDR image data if available (such as PQ/HLG formats).
+///
+/// When set to `YES`, the image manager will attempt to provide HDR image data if the asset contains HDR content.
+/// Defaults to `NO`.
+@property (nonatomic, assign) BOOL preferHDR API_AVAILABLE(macos(14), ios(17), tvos(17), visionos(1));
+
+/// Target HDR headroom for image rendering.
+///
+/// Specifies the target headroom value for HDR image rendering. Headroom represents the ratio between
+/// the maximum display brightness and standard dynamic range (SDR) white level.
+///
+/// - A headroom value of `0.0` means "headroom unknown". Images with unknown content headroom will be
+///   excluded from tone mapping, following CGImage documentation behavior.
+/// - Headroom values less than `0.0` or between `0.0` and `1.0` (exclusive) are undefined and will be
+///   clamped to `0.0` (unknown) rather than throwing an error.
+/// - Headroom is dependent on the current display capabilities. It is the responsibility of the caller
+///   to re-request the image if the display's headroom characteristics change. Swift view default behavior
+///   applies to views that use images outside of the current display headroom supported range.
+///
+/// Defaults to `1.0` (SDR, fully tone mapped).
+@property (nonatomic, assign) CGFloat targetHDRHeadroom API_AVAILABLE(macos(14), ios(17), tvos(17), visionos(1));
+
 @end
 
 API_AVAILABLE_END // macos(10.13), ios(8), tvos(10)
@@ -73,6 +95,14 @@ OS_EXPORT
 @property (nonatomic, assign) PHImageRequestOptionsDeliveryMode deliveryMode;
 @property (nonatomic, assign, getter=isNetworkAccessAllowed) BOOL networkAccessAllowed;
 @property (nonatomic, copy, nullable) PHAssetImageProgressHandler progressHandler;
+
+/// Request HDR image data if available (such as PQ/HLG formats).
+///
+/// Off by default. For best results, only enable this when you intend to display an HDR experience in
+/// `PHLivePhotoView` — for example, when the view's `preferredImageDynamicRange` is greater than
+/// standard (SDR).
+/// Defaults to `NO`.
+@property (nonatomic) BOOL preferHDR API_AVAILABLE(macos(14), ios(17), tvos(17), visionos(1));
 
 @end
 

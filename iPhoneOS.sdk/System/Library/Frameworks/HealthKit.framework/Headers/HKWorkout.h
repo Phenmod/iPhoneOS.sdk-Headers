@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <HealthKit/HKDefines.h>
 #import <HealthKit/HKSample.h>
+#import <HealthKit/HKWorkoutActivityType.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,99 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 @class HKQuantityType;
 @class HKStatistics;
 @class HKWorkoutActivity;
-
-/*!
- @enum          HKWorkoutActivityType
- @abstract      Represents a particular type of workout or exercise
- */
-typedef NS_ENUM(NSUInteger, HKWorkoutActivityType) {
-    HKWorkoutActivityTypeAmericanFootball = 1,
-    HKWorkoutActivityTypeArchery,
-    HKWorkoutActivityTypeAustralianFootball,
-    HKWorkoutActivityTypeBadminton,
-    HKWorkoutActivityTypeBaseball,
-    HKWorkoutActivityTypeBasketball,
-    HKWorkoutActivityTypeBowling,
-    HKWorkoutActivityTypeBoxing, // See also HKWorkoutActivityTypeKickboxing.
-    HKWorkoutActivityTypeClimbing,
-    HKWorkoutActivityTypeCricket,
-    HKWorkoutActivityTypeCrossTraining, // Any mix of cardio and/or strength training. See also HKWorkoutActivityTypeCoreTraining and HKWorkoutActivityTypeFlexibility.
-    HKWorkoutActivityTypeCurling,
-    HKWorkoutActivityTypeCycling,
-    HKWorkoutActivityTypeDance API_DEPRECATED("Use HKWorkoutActivityTypeSocialDance or HKWorkoutActivityTypeCardioDance", ios(8.0, 14.0), watchos(2.0, 7.0)), // This enum remains available to access older data.
-    HKWorkoutActivityTypeDanceInspiredTraining API_DEPRECATED("Use HKWorkoutActivityTypeSocialDance, HKWorkoutActivityTypeCardioDance, HKWorkoutActivityTypeBarre or HKWorkoutActivityTypePilates", ios(8.0, 10.0), watchos(2.0, 3.0)), // This enum remains available to access older data.
-    HKWorkoutActivityTypeElliptical,
-    HKWorkoutActivityTypeEquestrianSports, // Polo, Horse Racing, Horse Riding, etc.
-    HKWorkoutActivityTypeFencing,
-    HKWorkoutActivityTypeFishing,
-    HKWorkoutActivityTypeFunctionalStrengthTraining, // Primarily free weights and/or body weight and/or accessories
-    HKWorkoutActivityTypeGolf,
-    HKWorkoutActivityTypeGymnastics,
-    HKWorkoutActivityTypeHandball,
-    HKWorkoutActivityTypeHiking,
-    HKWorkoutActivityTypeHockey, // Ice Hockey, Field Hockey, etc.
-    HKWorkoutActivityTypeHunting,
-    HKWorkoutActivityTypeLacrosse,
-    HKWorkoutActivityTypeMartialArts,
-    HKWorkoutActivityTypeMindAndBody, // Qigong, meditation, etc.
-    HKWorkoutActivityTypeMixedMetabolicCardioTraining API_DEPRECATED("Use HKWorkoutActivityTypeMixedCardio or HKWorkoutActivityTypeHighIntensityIntervalTraining", ios(8.0, 11.0), watchos(2.0, 4.0)), // This enum remains available to access older data.
-    HKWorkoutActivityTypePaddleSports, // Canoeing, Kayaking, Outrigger, Stand Up Paddle Board, etc.
-    HKWorkoutActivityTypePlay, // Dodge Ball, Hopscotch, Tetherball, Jungle Gym, etc.
-    HKWorkoutActivityTypePreparationAndRecovery, // Therapeutic activities like foam rolling, self massage and flexibility moves.
-    HKWorkoutActivityTypeRacquetball,
-    HKWorkoutActivityTypeRowing,
-    HKWorkoutActivityTypeRugby,
-    HKWorkoutActivityTypeRunning,
-    HKWorkoutActivityTypeSailing,
-    HKWorkoutActivityTypeSkatingSports, // Ice Skating, Speed Skating, Inline Skating, Skateboarding, etc.
-    HKWorkoutActivityTypeSnowSports, // Sledding, Snowmobiling, Building a Snowman, etc. See also HKWorkoutActivityTypeCrossCountrySkiing, HKWorkoutActivityTypeSnowboarding, and HKWorkoutActivityTypeDownhillSkiing.
-    HKWorkoutActivityTypeSoccer,
-    HKWorkoutActivityTypeSoftball,
-    HKWorkoutActivityTypeSquash,
-    HKWorkoutActivityTypeStairClimbing, // See also HKWorkoutActivityTypeStairs and HKWorkoutActivityTypeStepTraining.
-    HKWorkoutActivityTypeSurfingSports, // Traditional Surfing, Kite Surfing, Wind Surfing, etc.
-    HKWorkoutActivityTypeSwimming,
-    HKWorkoutActivityTypeTableTennis,
-    HKWorkoutActivityTypeTennis,
-    HKWorkoutActivityTypeTrackAndField, // Shot Put, Javelin, Pole Vaulting, etc.
-    HKWorkoutActivityTypeTraditionalStrengthTraining, // Primarily machines and/or free weights
-    HKWorkoutActivityTypeVolleyball,
-    HKWorkoutActivityTypeWalking,
-    HKWorkoutActivityTypeWaterFitness,
-    HKWorkoutActivityTypeWaterPolo,
-    HKWorkoutActivityTypeWaterSports, // Water Skiing, Wake Boarding, etc.
-    HKWorkoutActivityTypeWrestling,
-    HKWorkoutActivityTypeYoga,
-    
-    HKWorkoutActivityTypeBarre              API_AVAILABLE(ios(10.0), watchos(3.0), macCatalyst(13.0), macos(13.0)),    // HKWorkoutActivityTypeDanceInspiredTraining
-    HKWorkoutActivityTypeCoreTraining       API_AVAILABLE(ios(10.0), watchos(3.0), macCatalyst(13.0), macos(13.0)),
-    HKWorkoutActivityTypeCrossCountrySkiing API_AVAILABLE(ios(10.0), watchos(3.0), macCatalyst(13.0), macos(13.0)),
-    HKWorkoutActivityTypeDownhillSkiing     API_AVAILABLE(ios(10.0), watchos(3.0), macCatalyst(13.0), macos(13.0)),
-    HKWorkoutActivityTypeFlexibility        API_AVAILABLE(ios(10.0), watchos(3.0), macCatalyst(13.0), macos(13.0)),
-    HKWorkoutActivityTypeHighIntensityIntervalTraining    API_AVAILABLE(ios(10.0), watchos(3.0), macCatalyst(13.0), macos(13.0)),
-    HKWorkoutActivityTypeJumpRope           API_AVAILABLE(ios(10.0), watchos(3.0), macCatalyst(13.0), macos(13.0)),
-    HKWorkoutActivityTypeKickboxing         API_AVAILABLE(ios(10.0), watchos(3.0), macCatalyst(13.0), macos(13.0)),
-    HKWorkoutActivityTypePilates            API_AVAILABLE(ios(10.0), watchos(3.0), macCatalyst(13.0), macos(13.0)),    // HKWorkoutActivityTypeDanceInspiredTraining
-    HKWorkoutActivityTypeSnowboarding       API_AVAILABLE(ios(10.0), watchos(3.0), macCatalyst(13.0), macos(13.0)),
-    HKWorkoutActivityTypeStairs             API_AVAILABLE(ios(10.0), watchos(3.0), macCatalyst(13.0), macos(13.0)),
-    HKWorkoutActivityTypeStepTraining       API_AVAILABLE(ios(10.0), watchos(3.0), macCatalyst(13.0), macos(13.0)),
-    HKWorkoutActivityTypeWheelchairWalkPace API_AVAILABLE(ios(10.0), watchos(3.0), macCatalyst(13.0), macos(13.0)),
-    HKWorkoutActivityTypeWheelchairRunPace  API_AVAILABLE(ios(10.0), watchos(3.0), macCatalyst(13.0), macos(13.0)),
-    HKWorkoutActivityTypeTaiChi             API_AVAILABLE(ios(11.0), watchos(4.0), macCatalyst(13.0), macos(13.0)),
-    HKWorkoutActivityTypeMixedCardio        API_AVAILABLE(ios(11.0), watchos(4.0), macCatalyst(13.0), macos(13.0)),    // HKWorkoutActivityTypeMixedMetabolicCardioTraining
-    HKWorkoutActivityTypeHandCycling        API_AVAILABLE(ios(11.0), watchos(4.0), macCatalyst(13.0), macos(13.0)),
-    HKWorkoutActivityTypeDiscSports         API_AVAILABLE(ios(13.0), watchos(6.0), macCatalyst(13.0), macos(13.0)),
-    HKWorkoutActivityTypeFitnessGaming      API_AVAILABLE(ios(13.0), watchos(6.0), macCatalyst(13.0), macos(13.0)),
-    HKWorkoutActivityTypeCardioDance        API_AVAILABLE(ios(14.0), watchos(7.0), macCatalyst(14.0), macos(13.0)),
-    HKWorkoutActivityTypeSocialDance        API_AVAILABLE(ios(14.0), watchos(7.0), macCatalyst(14.0), macos(13.0)),    // Dances done in social settings like swing, salsa and folk dances from different world regions.
-    HKWorkoutActivityTypePickleball         API_AVAILABLE(ios(14.0), watchos(7.0), macCatalyst(14.0), macos(13.0)),
-    HKWorkoutActivityTypeCooldown           API_AVAILABLE(ios(14.0), watchos(7.0), macCatalyst(14.0), macos(13.0)),    // Low intensity stretching and mobility exercises following a more vigorous workout type
-    HKWorkoutActivityTypeSwimBikeRun        API_AVAILABLE(ios(16.0), watchos(9.0), macCatalyst(16.0), macos(13.0)) = 82,
-    HKWorkoutActivityTypeTransition         API_AVAILABLE(ios(16.0), watchos(9.0), macCatalyst(16.0), macos(13.0)),
-    HKWorkoutActivityTypeUnderwaterDiving   API_AVAILABLE(ios(17.0), watchos(10.0), macCatalyst(17.0), macos(14.0)),
-    
-    HKWorkoutActivityTypeOther = 3000,
-} API_AVAILABLE(ios(8.0), watchos(2.0), macCatalyst(13.0), macos(13.0));
 
 typedef NS_ENUM(NSInteger, HKWorkoutEventType) {
     HKWorkoutEventTypePause = 1,

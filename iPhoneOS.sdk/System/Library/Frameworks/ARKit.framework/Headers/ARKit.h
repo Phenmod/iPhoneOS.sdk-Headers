@@ -4,7 +4,7 @@
 //  Copyright © 2016-2023 Apple Inc. All rights reserved.
 //
 
-#include <TargetConditionals.h>
+#import <TargetConditionals.h>
 
 /** @framework ARKit
     @abstract A high-level Augmented Reality framework.

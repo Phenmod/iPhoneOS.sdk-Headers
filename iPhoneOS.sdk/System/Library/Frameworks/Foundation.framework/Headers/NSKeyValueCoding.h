@@ -13,28 +13,47 @@
 
 NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
-/* The exception that is thrown when a key value coding operation fails. The exception's user info dictionary will contain at least two entries:
-    - @"NSTargetObjectUserInfoKey": the receiver of the failed KVC message.
-    - @"NSUnknownUserInfoKey": the key that was used in the failed KVC message.
-
-The actual value of this constant string is "NSUnknownKeyException," to match the exceptions that are thrown by KVC methods that were deprecated in Mac OS 10.3.
-*/
+/// Raised when a key value coding operation fails.
+///
+/// The exception's user info dictionary will contain at least two entries:
+/// - `NSTargetObjectUserInfoKey`: the receiver of the failed KVC message.
+/// - `NSUnknownUserInfoKey`: the key that was used in the failed KVC message.
 FOUNDATION_EXPORT NSExceptionName const NSUndefinedKeyException;
 
+/// These constants define the available collection operators.
 typedef NSString * NSKeyValueOperator NS_TYPED_ENUM;
 
-/* Strings for the names of array operators supported by key-value coding. Only these string declarations are new in Mac OS 10.4. The actual support for array operators appeared in Mac OS 10.3. The values of these do not include "@" prefixes.
-*/
+/// An operator that returns the average of a collection's values for the specified key path.
 FOUNDATION_EXPORT NSKeyValueOperator const NSAverageKeyValueOperator;
+
+/// An operator that returns the number of objects in a collection.
 FOUNDATION_EXPORT NSKeyValueOperator const NSCountKeyValueOperator;
+
+/// An operator that returns an array of the distinct values found in the sub-arrays of all arrays in the collection.
 FOUNDATION_EXPORT NSKeyValueOperator const NSDistinctUnionOfArraysKeyValueOperator;
+
+/// An operator that returns an array of the distinct values of a collection.
 FOUNDATION_EXPORT NSKeyValueOperator const NSDistinctUnionOfObjectsKeyValueOperator;
+
+/// An operator that returns an array of the distinct values found in the sub-sets of all sets in the collection.
 FOUNDATION_EXPORT NSKeyValueOperator const NSDistinctUnionOfSetsKeyValueOperator;
+
+/// An operator that returns the maximum value of a collection's values for the specified key path.
 FOUNDATION_EXPORT NSKeyValueOperator const NSMaximumKeyValueOperator;
+
+/// An operator that returns the minimum value of a collection's values for the specified key path.
 FOUNDATION_EXPORT NSKeyValueOperator const NSMinimumKeyValueOperator;
+
+/// An operator that returns the sum of a collection's values for the specified key path.
 FOUNDATION_EXPORT NSKeyValueOperator const NSSumKeyValueOperator;
+
+/// An operator that returns all of the objects in the sub-arrays of all arrays in the collection, without removing duplicates.
 FOUNDATION_EXPORT NSKeyValueOperator const NSUnionOfArraysKeyValueOperator;
+
+/// An operator that returns all of a collection's values for the specified key path, without removing duplicates.
 FOUNDATION_EXPORT NSKeyValueOperator const NSUnionOfObjectsKeyValueOperator;
+
+/// An operator that returns all of the objects in the sub-sets of all sets in the collection, without removing duplicates.
 FOUNDATION_EXPORT NSKeyValueOperator const NSUnionOfSetsKeyValueOperator;
 
 @interface NSObject(NSKeyValueCoding)
@@ -150,52 +169,59 @@ Performance note: the repetitive -set<Key>: messages implied by step 2's descrip
 
 @interface NSArray<ObjectType>(NSKeyValueCoding)
 
-/* Return an array containing the results of invoking -valueForKey: on each of the receiver's elements. The returned array will contain NSNull elements for each instance of -valueForKey: returning nil.
-*/
+/// Returns an array containing the results of invoking `valueForKey:` on each of the receiver's elements.
+///
+/// The returned array contains `NSNull` elements for each object that returns `nil`.
+///
+/// - Parameter key: The key to retrieve.
+/// - Returns: An array containing the results of invoking `valueForKey:` using `key` on each of the array's objects.
 - (id)valueForKey:(NSString *)key;
 
-/* Invoke -setValue:forKey: on each of the receiver's elements.
-*/
+/// Invokes `setValue:forKey:` on each of the array's items using the specified `value` and `key`.
+///
+/// - Parameters:
+///   - value: The object value.
+///   - key: The key to store the value.
 - (void)setValue:(nullable id)value forKey:(NSString *)key;
 
 @end
 
 @interface NSDictionary<KeyType, ObjectType>(NSKeyValueCoding)
 
-/* Return the result of sending -objectForKey: to the receiver.
-*/
+/// Returns the value associated with a given key, equivalent to ``NSDictionary/objectForKey:``.
 - (nullable ObjectType)valueForKey:(NSString *)key;
 
 @end
 
 @interface NSMutableDictionary<KeyType, ObjectType>(NSKeyValueCoding)
 
-/* Send -setObject:forKey: to the receiver, unless the value is nil, in which case send -removeObjectForKey:.
-*/
+/// Adds a given key-value pair to the dictionary, or removes the key if `value` is `nil`.
+///
+/// If `value` is non-`nil`, sends ``NSMutableDictionary/setObject:forKey:`` to the receiver. If `value` is `nil`, sends ``NSMutableDictionary/removeObjectForKey:``.
 - (void)setValue:(nullable ObjectType)value forKey:(NSString *)key;
 
 @end
 
 @interface NSOrderedSet<ObjectType>(NSKeyValueCoding)
 
-/* Return an ordered set containing the results of invoking -valueForKey: on each of the receiver's members. The returned ordered set might not have the same number of members as the receiver. The returned ordered set will not contain any elements corresponding to instances of -valueForKey: returning nil, nor will it contain duplicates.
-*/
+/// Returns an ordered set containing the results of invoking ``NSObject/value(forKey:)`` on each of the receiver's members.
+///
+/// The returned ordered set might not have the same number of members as the receiver. The returned ordered set will not contain any elements corresponding to instances of `valueForKey:` returning `nil`, nor will it contain duplicates.
 - (id)valueForKey:(NSString *)key API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0));
 
-/* Invoke -setValue:forKey: on each of the receiver's members.
-*/
+/// Invokes ``NSObject/setValue(_:forKey:)`` on each of the receiver's members.
 - (void)setValue:(nullable id)value forKey:(NSString *)key API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0));
 
 @end
 
 @interface NSSet<ObjectType>(NSKeyValueCoding)
 
-/* Return a set containing the results of invoking -valueForKey: on each of the receiver's members. The returned set might not have the same number of members as the receiver. The returned set will not contain any elements corresponding to instances of -valueForKey: returning nil (in contrast with -[NSArray(NSKeyValueCoding) valueForKey:], which may put NSNulls in the arrays it returns).
-*/
+/// Returns a set containing the results of invoking ``NSObject/value(forKey:)`` on each of the receiver's members.
+///
+/// The returned set might not have the same number of members as the receiver. The returned set will not contain any elements corresponding to instances of `valueForKey:` returning `nil`.
 - (id)valueForKey:(NSString *)key;
 
-/* Invoke -setValue:forKey: on each of the receiver's members.
-*/
+/// Invokes ``NSObject/setValue(_:forKey:)`` on each of the receiver's members.
 - (void)setValue:(nullable id)value forKey:(NSString *)key;
 
 @end

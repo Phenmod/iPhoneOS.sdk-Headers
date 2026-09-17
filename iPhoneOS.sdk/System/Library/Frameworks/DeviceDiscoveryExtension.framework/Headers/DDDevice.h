@@ -140,13 +140,16 @@ API_AVAILABLE( ios( 16.0 ) )
 @property (readwrite, copy, nonatomic) NSString *identifier;
 
 /// Current state of media playback on this device.
-@property (readwrite, assign, nonatomic) DDDeviceMediaPlaybackState mediaPlaybackState;
+@property (readwrite, assign, nonatomic) DDDeviceMediaPlaybackState mediaPlaybackState
+API_DEPRECATED( "Please use MediaDeviceExtension", ios( 16.0, 27.0 ) );
 
 /// Title of the media content being played.
-@property (readwrite, copy, nullable, nonatomic) NSString *mediaContentTitle;
+@property (readwrite, copy, nullable, nonatomic) NSString *mediaContentTitle
+API_DEPRECATED( "Please use MediaDeviceExtension", ios( 16.0, 27.0 ) );
 
 /// Subtitle of the media content being played. It can be used to display extra information about the content, such as the name of the artist.
-@property (readwrite, copy, nullable, nonatomic) NSString *mediaContentSubtitle;
+@property (readwrite, copy, nullable, nonatomic) NSString *mediaContentSubtitle
+API_DEPRECATED( "Please use MediaDeviceExtension", ios( 16.0, 27.0 ) );
 
 /// Endpoint to communicate with the device via networking.
 @property (readwrite, dd_os_ownership, nullable, nonatomic) nw_endpoint_t networkEndpoint

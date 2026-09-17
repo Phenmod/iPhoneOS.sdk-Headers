@@ -46,9 +46,20 @@ AV_INIT_UNAVAILABLE
 /// This property returns `NULL` until the ``status`` reaches ``AVExternalSyncDeviceStatusActiveSync``.
 @property(nonatomic, readonly, nullable) __attribute__((NSObject)) CMClockRef clock;
 
+/// Whether adjusting the signal compensation delay property is currently supported.
+///
+/// This property returns `true` if the ``signalCompensationDelay`` can be adjusted.
+///
+/// ``signalCompensationDelay`` can be adjusted while the ``AVCaptureSession`` is not running.
+///
+/// Once the session is running, this property's value depends on ``AVCaptureDevice/isAdjustingSignalCompensationDelayWhileRunningSupported`` of the ``AVCaptureDevice`` backing the ``AVCaptureDeviceInput`` that is following this external sync device. Inspect that property in advance to determine whether ``signalCompensationDelay`` will remain adjustable while running on a given device.
+@property(nonatomic, readonly, getter=isSignalCompensationDelaySupported) BOOL signalCompensationDelaySupported API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
+
 /// Delay to wait before starting the frame capture.
 ///
 /// An external sync is generally used to configure multiple devices in the real world. A display and a camera may receive a signal at the same time, but that does not mean the refresh of the display and camera are aligned in a way that does not cause tearing in the recording. The signal compensation delay can be used to offset the readout of a camera on an intra-frame scale.
+///
+/// Setting this property throws an NSInvalidArgumentException if called when ``AVExternalSyncDevice/isSignalCompensationDelaySupported`` returns NO.
 ///
 /// - Important: You should always set this property to a value less than the frame duration at which the camera is operating.
 @property(nonatomic) CMTime signalCompensationDelay;

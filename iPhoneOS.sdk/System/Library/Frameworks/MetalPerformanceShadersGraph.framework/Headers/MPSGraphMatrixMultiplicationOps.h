@@ -13,6 +13,38 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// A descriptor that configures a scaled dot product attention (SDPA) operation.
+///
+/// Use this descriptor with
+/// ``MPSGraph/scaledDotProductAttentionWithQueryTensor:keyTensor:valueTensor:descriptor:name:``
+/// to specify optional features such as an attention mask, causal masking, and attention sinks.
+MPS_CLASS_AVAILABLE_STARTING(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0))
+@interface MPSGraphSDPADescriptor : MPSGraphObject
+
+/// The scale applied to the result of the query–key matrix multiply before softmax.
+/// Typically set to ``1/sqrt(headDimension)``.
+@property(nonatomic) float scale;
+
+/// An optional additive mask tensor applied to the scaled QK^T scores before softmax.
+/// Must be broadcast-compatible with shape ``[batch, heads, T_q, T_kv]``.
+/// Mutually exclusive with ``isCausal``.
+@property(nonatomic, retain, nullable) MPSGraphTensor *maskTensor;
+
+/// When YES, a causal (lower-triangular) mask is applied so that each query position
+/// attends only to key positions at or before it. Mutually exclusive with ``maskTensor``.
+@property(nonatomic) BOOL isCausal;
+
+/// An optional attention-sinks tensor of shape ``[nHeads]``. Each element seeds the
+/// online-softmax accumulator for the corresponding query head with a virtual token logit,
+/// causing real-token attention weights to sum to less than one.
+@property(nonatomic, retain, nullable) MPSGraphTensor *sinksTensor;
+
+/// Creates a descriptor with the given scale and all other properties set to their defaults
+/// (no mask, isCausal = NO, no sinks).
++ (instancetype)descriptorWithScale:(float)scale;
+
+@end
+
 MPS_CLASS_AVAILABLE_STARTING(macos(11.0), ios(14.0), tvos(14.0))
 @interface MPSGraph(MPSGraphMatrixMultiplicationOps)
 
@@ -88,6 +120,26 @@ MPS_AVAILABLE_STARTING(macos(15.0), ios(18.0), macCatalyst(18.0), tvos(18.0));
                                                         name:(NSString *_Nullable)name
     MPS_SWIFT_NAME(scaledDotProductAttention(query:key:value:scale:name:) )
 MPS_AVAILABLE_STARTING(macos(15.0), ios(18.0), macCatalyst(18.0), tvos(18.0));
+
+/// Creates a scaled dot product attention (SDPA) operation using a descriptor and returns the result tensor.
+///
+/// The descriptor allows configuring an optional attention mask, causal masking, and attention sinks
+/// without requiring a separate API method for each combination of features.
+///
+/// - Parameters:
+///   - queryTensor: A tensor that represents the query projection.
+///   - keyTensor: A tensor that represents the key projection.
+///   - valueTensor: A tensor that represents the value projection.
+///   - descriptor: A descriptor specifying scale and optional features (mask, isCausal, sinks).
+///   - name: The name for the operation.
+/// - Returns: A valid MPSGraphTensor object.
+- (MPSGraphTensor *)scaledDotProductAttentionWithQueryTensor:(MPSGraphTensor *)queryTensor
+                                                   keyTensor:(MPSGraphTensor *)keyTensor
+                                                 valueTensor:(MPSGraphTensor *)valueTensor
+                                                  descriptor:(MPSGraphSDPADescriptor *)descriptor
+                                                        name:(NSString *_Nullable)name
+    MPS_SWIFT_NAME(scaledDotProductAttention(query:key:value:descriptor:name:))
+        MPS_AVAILABLE_STARTING(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0));
 @end
 
 

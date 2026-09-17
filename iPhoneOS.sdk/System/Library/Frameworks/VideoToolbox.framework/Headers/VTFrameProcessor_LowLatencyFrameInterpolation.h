@@ -102,6 +102,24 @@ NS_SWIFT_SENDABLE
 /// Reports whether the system supports this processor.
 @property (class, nonatomic, readonly, getter=isSupported) BOOL supported;
 
+/// The maximum value for either dimension of the source frame, in pixels, for a given spatial scale factor.
+///
+/// Both `frameWidth` and `frameHeight` must be less than or equal to this value.
+/// Use in conjunction with ``maximumPixelCountForSpatialScaleFactor:`` to determine valid frame dimensions.
+/// For example, if ``maximumDimensionForSpatialScaleFactor:`` is 1920 and ``maximumPixelCountForSpatialScaleFactor:``
+/// corresponds to 1920×1080, then 1920×1080, 1080×1920, and 1440×1440 are all valid, but 1920×1920 is not.
+/// Pass `1` for `spatialScaleFactor` when using the processor for temporal interpolation without spatial scaling.
+/// Returns `0` if an unsupported scale factor is provided or if processor is unsupported.
++ (NSInteger)maximumDimensionForSpatialScaleFactor:(NSInteger)spatialScaleFactor API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos) NS_REFINED_FOR_SWIFT;
+
+/// The maximum total number of pixels in the source frame for a given spatial scale factor.
+///
+/// The product of `frameWidth` and `frameHeight` must be less than or equal to this value.
+/// Use in conjunction with ``maximumDimensionForSpatialScaleFactor:`` to determine valid frame dimensions.
+/// Pass `1` for `spatialScaleFactor` when using the processor for temporal interpolation without spatial scaling.
+/// Returns `0` if an unsupported scale factor is provided or if processor is unsupported.
++ (NSInteger)maximumPixelCountForSpatialScaleFactor:(NSInteger)spatialScaleFactor API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos) NS_REFINED_FOR_SWIFT;
+
 @end
 
 /// An object that contains both input and output parameters that the low-latency frame interpolation processor needs.

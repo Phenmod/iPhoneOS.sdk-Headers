@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
  @class         MXAverage
  @abstract      A class representing metric data that is averaged.
  */
-API_AVAILABLE(ios(13.0), macos(12.0)) API_UNAVAILABLE(tvos, watchos)
+API_DEPRECATED("Use AverageStatistics instead.", ios(13.0, API_TO_BE_DEPRECATED), macos(12.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos)
 @interface MXAverage<UnitType: NSUnit *> : NSObject <NSSecureCoding>
 
 /*!

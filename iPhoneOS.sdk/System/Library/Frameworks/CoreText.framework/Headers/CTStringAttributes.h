@@ -2,7 +2,7 @@
  *  CTStringAttributes.h
  *  CoreText
  *
- *  Copyright (c) 2004-2020 Apple Inc. All rights reserved.
+ *  Copyright (c) 2004-2026 Apple Inc. All rights reserved.
  *
  */
 
@@ -65,8 +65,11 @@ CT_EXPORT const CFStringRef kCTForegroundColorFromContextAttributeName CT_AVAILA
                 by the current character's font in points; a positive kern
                 indicates a shift farther along and a negative kern indicates a
                 shift closer to the current character. If this attribute is not
-                present, standard kerning will be used. If this attribute is
-                set to 0.0, no kerning will be done at all.
+                present, standard kerning features of the font's shaping tables
+                will be used. If this attribute is set to 0.0, no kerning will
+                be done at all.
+
+    @seealso    kCTTrackingAttributeName
 */
 
 CT_EXPORT const CFStringRef kCTKernAttributeName CT_AVAILABLE(macos(10.5), ios(3.2), watchos(2.0), tvos(9.0));
@@ -79,6 +82,9 @@ CT_EXPORT const CFStringRef kCTKernAttributeName CT_AVAILABLE(macos(10.5), ios(3
     @discussion Value must be a CFNumber. Default is zero (no tracking).
                 The tracking attribute indicates how much additional space, in
                 points, should be added to each character cluster after layout.
+                This added space is always applied to the right side of a glyph
+                (or bottom side, in the case of vertical layout).
+
                 The effect of this attribute is similar to kCTKernAttributeName
                 but differs in that the added tracking is treated as trailing
                 whitespace and a non-zero amount disables non-essential ligatures
@@ -105,17 +111,10 @@ CT_EXPORT const CFStringRef kCTTrackingAttributeName CT_AVAILABLE(macos(10.12), 
                 essential for proper rendering of text should be used, 1
                 indicates that standard ligatures should be used, and 2 indicates
                 that all available ligatures should be used. Which ligatures are
-                standard depends on the script and possibly the font. Arabic
-                text, for example, requires ligatures for many character
-                sequences, but has a rich set of additional ligatures that
-                combine characters. English text has no essential ligatures, and
-                typically has only two standard ligatures, those for "fi" and
-                "fl" -- all others being considered more advanced or fancy.
+                essential is determined by the font's shaping tables. For example,
+                the OpenType 'rlig' feature is treated as essential.
 
-                On iOS releases prior to 6.0 essential ligatures are applied
-                if the font contains glyphs for any of U+FB00 through U+FB04 and
-                the font lacks AAT or OpenType shaping tables, but as of 6.0
-                shaping tables (or the lack thereof) are treated as definitive.
+    @seealso    kCTTrackingAttributeName
 */
 
 CT_EXPORT const CFStringRef kCTLigatureAttributeName CT_AVAILABLE(macos(10.5), ios(3.2), watchos(2.0), tvos(9.0));
@@ -163,8 +162,9 @@ CT_EXPORT const CFStringRef kCTParagraphStyleAttributeName CT_AVAILABLE(macos(10
     @discussion Value must be a CFNumberRef. Default value is 0.0, or no stroke.
                 This attribute, interpreted as a percentage of font point size,
                 controls the text drawing mode: positive values effect drawing
-                with stroke only; negative values are for stroke and fill. A
-                typical value for outlined text is 3.0.
+                with stroke only; negative values are for stroke and fill.
+                Values are applied using the CGContextSetTextDrawingMode and
+                CGContextSetLineWidth functions.
 */
 
 CT_EXPORT const CFStringRef kCTStrokeWidthAttributeName CT_AVAILABLE(macos(10.6), ios(3.2), watchos(2.0), tvos(9.0));
@@ -200,9 +200,9 @@ CT_EXPORT const CFStringRef kCTUnderlineStyleAttributeName CT_AVAILABLE(macos(10
     @const      kCTSuperscriptAttributeName
     @abstract   Controls vertical text positioning.
 
-    @discussion Value must be a CFNumberRef. Default is int value 0. If supported
-                by the specified font, a value of 1 enables superscripting and a
-                value of -1 enables subscripting.
+    @discussion Value must be a CFNumberRef. Default is int value 0. If the font's
+                shaping tables declare the relevant typographic features, a value
+                of 1 enables superscripting and a value of -1 enables subscripting.
 */
 
 CT_EXPORT const CFStringRef kCTSuperscriptAttributeName CT_AVAILABLE(macos(10.5), ios(3.2), watchos(2.0), tvos(9.0));

@@ -57,10 +57,10 @@ BROWSERENGINE_EXPORT
 #endif
 
 /// Activates the media environment.
--(BOOL)activateWithError:(NSError* _Nullable*)error;
+-(BOOL)activateWithError:(NSError* _Nullable*)error API_DEPRECATED("Use -[BEProcessCapability activateWithError:] instead", ios(17.4, 27.0));
 
 /// Suspends the media environment.
--(BOOL)suspendWithError:(NSError* _Nullable*)error;
+-(BOOL)suspendWithError:(NSError* _Nullable*)error API_DEPRECATED("Use -[BEProcessCapability suspendWithError:] instead", ios(17.4, 27.0));
 
 /// Creates a new capture session in this media environment.
 ///
@@ -80,6 +80,8 @@ BROWSERENGINE_EXPORT
 /// The helper extension process may access AV hardware required for media capture and playback.
 +(instancetype)mediaPlaybackAndCaptureWithEnvironment:(BEMediaEnvironment*)environment API_UNAVAILABLE(macosx);
 
+/// The helper extension process may capture the contents of the screen.
++(instancetype)screenCaptureWithEnvironment:(BEMediaEnvironment*)environment API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(macosx);
 
 /// The helper extension process may run in the background to finish work.
 +(instancetype)background;
@@ -94,6 +96,22 @@ BROWSERENGINE_EXPORT
 ///
 /// Returns the granted capability or nil and an error if it can not be granted
 -(id<BEProcessCapabilityGrant>)requestWithError:(NSError* _Nullable*)error;
+
+/// Activates the capability.
+///
+/// - Parameters:
+///   - error: On failure, populated with an error if the capability cannot be activated.
+///
+/// - Returns: `YES` if the capability was activated, or `NO` if an error occurred.
+-(BOOL)activateWithError:(NSError* _Nullable*)error API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(macosx);
+
+/// Suspends the capability.
+///
+/// - Parameters:
+///   - error: On failure, populated with an error if the capability cannot be suspended.
+///
+/// - Returns: `YES` if the capability was suspended, or `NO` if an error occurred.
+-(BOOL)suspendWithError:(NSError* _Nullable*)error API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(macosx);
 
 @end
 

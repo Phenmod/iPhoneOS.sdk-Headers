@@ -10,51 +10,83 @@ NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 // The following NSMetadataItem attributes are available on Mac OS and iOS.
 
+/// The file system name of the metadata item.
 FOUNDATION_EXPORT NSString * const NSMetadataItemFSNameKey API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0)); // NSString
+/// The display name of the metadata item.
 FOUNDATION_EXPORT NSString * const NSMetadataItemDisplayNameKey API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0)); // NSString
+/// The URL of the metadata item.
 FOUNDATION_EXPORT NSString * const NSMetadataItemURLKey API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0)); // NSURL
+/// The file system path of the metadata item.
 FOUNDATION_EXPORT NSString * const NSMetadataItemPathKey API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0)); // NSString
-FOUNDATION_EXPORT NSString * const NSMetadataItemFSSizeKey API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0)); // file size in bytes; unsigned long long NSNumber
+/// The file system size, in bytes, of the metadata item.
+FOUNDATION_EXPORT NSString * const NSMetadataItemFSSizeKey API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0)); // unsigned long long NSNumber
+/// The date the metadata item was created.
 FOUNDATION_EXPORT NSString * const NSMetadataItemFSCreationDateKey API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0)); // NSDate
+/// The date the metadata item's contents last changed.
 FOUNDATION_EXPORT NSString * const NSMetadataItemFSContentChangeDateKey API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0)); // NSDate
+/// The content type (UTI) of the metadata item.
 FOUNDATION_EXPORT NSString * const NSMetadataItemContentTypeKey API_AVAILABLE(macos(10.9), ios(8.0), watchos(2.0), tvos(9.0)); // NSString
+/// The content type tree of the metadata item.
 FOUNDATION_EXPORT NSString * const NSMetadataItemContentTypeTreeKey API_AVAILABLE(macos(10.9), ios(8.0), watchos(2.0), tvos(9.0)); // NSArray of NSString
 
+/// A Boolean value indicating whether the metadata item is ubiquitous.
 FOUNDATION_EXPORT NSString * const NSMetadataItemIsUbiquitousKey API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0)); // boolean NSNumber
 
+/// A Boolean value indicating whether the ubiquitous item has unresolved conflicts.
 FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemHasUnresolvedConflictsKey API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0)); // boolean NSNumber
+/// A Boolean value indicating whether the ubiquitous item has been downloaded.
 FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemIsDownloadedKey API_DEPRECATED("Use NSMetadataUbiquitousItemDownloadingStatusKey instead", macos(10.7,10.9), ios(5.0,7.0), watchos(2.0,2.0), tvos(9.0,9.0)); // boolean NSNumber
+/// The download status of the ubiquitous item.
 FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemDownloadingStatusKey API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0)); // NSString ; download status of this item. The values are the three strings defined below:
-FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemDownloadingStatusNotDownloaded  API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0)); // this item has not been downloaded yet. Use startDownloadingUbiquitousItemAtURL:error: to download it.
-FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemDownloadingStatusDownloaded     API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0)); // there is a local version of this item available. The most current version will get downloaded as soon as possible.
-FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemDownloadingStatusCurrent        API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0)); // there is a local version of this item and it is the most up-to-date version known to this device.
+/// The item has not been downloaded yet. Use `startDownloadingUbiquitousItem(at:)` to download it.
+FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemDownloadingStatusNotDownloaded  API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0));
+/// There is a local version of this item available. The most current version will get downloaded as soon as possible.
+FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemDownloadingStatusDownloaded     API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0));
+/// There is a local version of this item and it is the most up-to-date version known to this device.
+FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemDownloadingStatusCurrent        API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0));
+/// A Boolean value indicating whether the ubiquitous item is currently being downloaded.
 FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemIsDownloadingKey API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0)); // boolean NSNumber
+/// A Boolean value indicating whether the ubiquitous item has been uploaded.
 FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemIsUploadedKey API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0)); // boolean NSNumber
+/// A Boolean value indicating whether the ubiquitous item is currently being uploaded.
 FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemIsUploadingKey API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0)); // boolean NSNumber
+/// The percentage of the ubiquitous item that has been downloaded.
 FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemPercentDownloadedKey API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0)); // double NSNumber; range [0..100]
+/// The percentage of the ubiquitous item that has been uploaded.
 FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemPercentUploadedKey API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0)); // double NSNumber; range [0..100]
+/// The error when downloading the ubiquitous item from iCloud failed.
 FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemDownloadingErrorKey API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0)); // NSError; the error when downloading the item from iCloud failed, see the NSUbiquitousFile section in FoundationErrors.h
+/// The error when uploading the ubiquitous item to iCloud failed.
 FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemUploadingErrorKey API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0)); // NSError; the error when uploading the item to iCloud failed, see the NSUbiquitousFile section in FoundationErrors.h
+/// A Boolean value indicating whether a download has been requested for the ubiquitous item.
 FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemDownloadRequestedKey API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0)); // boolean NSNumber
+/// A Boolean value indicating whether the ubiquitous item is from an external document.
 FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemIsExternalDocumentKey API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0)); // boolean NSNumber
+/// The display name of the container that stores the ubiquitous item.
 FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemContainerDisplayNameKey API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0)); // NSString
+/// The URL for the ubiquitous item in the local container.
 FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemURLInLocalContainerKey API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0)); // NSURL
 
-FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemIsSharedKey API_AVAILABLE(macosx(10.12), ios(10.0)) API_UNAVAILABLE(watchos, tvos); // true if the ubiquitous item is shared. (value type boolean NSNumber)
-FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousSharedItemCurrentUserRoleKey API_AVAILABLE(macosx(10.12), ios(10.0)) API_UNAVAILABLE(watchos, tvos); // returns the current user's role for this shared item, or nil if not shared. (value type NSString). Possible values below.
-FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousSharedItemCurrentUserPermissionsKey API_AVAILABLE(macosx(10.12), ios(10.0)) API_UNAVAILABLE(watchos, tvos); // returns the permissions for the current user, or nil if not shared. (value type NSString). Possible values below.
-FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousSharedItemOwnerNameComponentsKey API_AVAILABLE(macosx(10.12), ios(10.0)) API_UNAVAILABLE(watchos, tvos); // returns a NSPersonNameComponents, or nil if the current user. (value type NSPersonNameComponents)
-FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousSharedItemMostRecentEditorNameComponentsKey API_AVAILABLE(macosx(10.12), ios(10.0)) API_UNAVAILABLE(watchos, tvos); // returns a NSPersonNameComponents for the most recent editor of the document, or nil if it is the current user. (Read-only, value type NSPersonNameComponents)
+/// A Boolean value indicating whether the ubiquitous item is shared.
+FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousItemIsSharedKey API_AVAILABLE(macosx(10.12), ios(10.0)) API_UNAVAILABLE(watchos, tvos);
+/// The current user's role for the shared item, or `nil` if not shared.
+FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousSharedItemCurrentUserRoleKey API_AVAILABLE(macosx(10.12), ios(10.0)) API_UNAVAILABLE(watchos, tvos);
+/// The permissions for the current user, or `nil` if not shared.
+FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousSharedItemCurrentUserPermissionsKey API_AVAILABLE(macosx(10.12), ios(10.0)) API_UNAVAILABLE(watchos, tvos);
+/// The name components of the shared item's owner, or `nil` if the current user is the owner.
+FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousSharedItemOwnerNameComponentsKey API_AVAILABLE(macosx(10.12), ios(10.0)) API_UNAVAILABLE(watchos, tvos);
+/// The name components of the most recent editor of the shared document, or `nil` if it is the current user.
+FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousSharedItemMostRecentEditorNameComponentsKey API_AVAILABLE(macosx(10.12), ios(10.0)) API_UNAVAILABLE(watchos, tvos);
 
-/* The values returned for the NSMetadataUbiquitousSharedItemCurrentUserRoleKey
- */
-FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousSharedItemRoleOwner API_AVAILABLE(macosx(10.12), ios(10.0)) API_UNAVAILABLE(watchos, tvos); // the current user is the owner of this shared item.
-FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousSharedItemRoleParticipant API_AVAILABLE(macosx(10.12), ios(10.0)) API_UNAVAILABLE(watchos, tvos); // the current user is a participant of this shared item.
+/// The current user is the owner of the shared item.
+FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousSharedItemRoleOwner API_AVAILABLE(macosx(10.12), ios(10.0)) API_UNAVAILABLE(watchos, tvos);
+/// The current user is a participant of the shared item.
+FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousSharedItemRoleParticipant API_AVAILABLE(macosx(10.12), ios(10.0)) API_UNAVAILABLE(watchos, tvos);
 
-/* The values returned for the NSMetadataUbiquitousSharedItemCurrentUserPermissionsKey
- */
-FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousSharedItemPermissionsReadOnly API_AVAILABLE(macosx(10.12), ios(10.0)) API_UNAVAILABLE(watchos, tvos); // the current user is only allowed to read this item
-FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousSharedItemPermissionsReadWrite API_AVAILABLE(macosx(10.12), ios(10.0)) API_UNAVAILABLE(watchos, tvos); // the current user is allowed to both read and write this item
+/// The current user is only allowed to read this item.
+FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousSharedItemPermissionsReadOnly API_AVAILABLE(macosx(10.12), ios(10.0)) API_UNAVAILABLE(watchos, tvos);
+/// The current user is allowed to both read and write this item.
+FOUNDATION_EXPORT NSString * const NSMetadataUbiquitousSharedItemPermissionsReadWrite API_AVAILABLE(macosx(10.12), ios(10.0)) API_UNAVAILABLE(watchos, tvos);
 
 
 // The following NSMetadataItem attributes are available on Mac OS for non-ubiquitious items only. The constants are equal to the corresponding ones in <Metadata/MDItem.h>.

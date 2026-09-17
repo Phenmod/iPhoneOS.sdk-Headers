@@ -34,16 +34,16 @@ extern "C" {
 #endif
 
 /// Indicates the platforms this API is available for version 1 of the API. Used for non-exportable items, such as typedefs.
-#define EN_API_AVAILABLE			API_AVAILABLE( ios( 12.5 ) ) API_UNAVAILABLE(macos, tvos, watchos)
+#define EN_API_AVAILABLE			API_DEPRECATED( "No longer supported.", ios( 12.5, 27.0 ) ) API_UNAVAILABLE(macos, tvos, watchos)
 
 /// Indicates the platforms this API is available for version 2 of the API. Used for non-exportable items, such as typedefs.
-#define EN_API_AVAILABLE_V2			API_AVAILABLE( ios( 12.5 ) ) API_UNAVAILABLE(macos, tvos, watchos)
+#define EN_API_AVAILABLE_V2			API_DEPRECATED( "No longer supported.", ios( 12.5, 27.0 ) ) API_UNAVAILABLE(macos, tvos, watchos)
 
 /// Indicates the platforms this API is available for version 3 of the API. Used for non-exportable items, such as typedefs.
-#define EN_API_AVAILABLE_V3			API_AVAILABLE( ios( 14.4 ) ) API_UNAVAILABLE(macos, tvos, watchos)
+#define EN_API_AVAILABLE_V3			API_DEPRECATED( "No longer supported.", ios( 14.4, 27.0 ) ) API_UNAVAILABLE(macos, tvos, watchos)
 
 /// Indicates the platforms this API is available for version 5 of the API. Used for non-exportable items, such as typedefs.
-#define EN_API_AVAILABLE_V5			API_AVAILABLE( ios( 15.2 ) ) API_UNAVAILABLE(macos, tvos, watchos)
+#define EN_API_AVAILABLE_V5			API_DEPRECATED( "No longer supported.", ios( 15.2, 27.0 ) ) API_UNAVAILABLE(macos, tvos, watchos)
 
 /// Indicates the platforms this API is available for version 1 of the API and exports the symbol via the framework.
 #define EN_API_AVAILABLE_EXPORT		EN_API_AVAILABLE __attribute__( ( visibility( "default" ) ) )

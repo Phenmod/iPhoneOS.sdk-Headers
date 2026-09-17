@@ -52,7 +52,7 @@ typedef function_table_entry   *function_table_t;
 #endif /* AUTOTEST */
 
 #ifndef	memory_entry_MSG_COUNT
-#define	memory_entry_MSG_COUNT	4
+#define	memory_entry_MSG_COUNT	5
 #endif	/* memory_entry_MSG_COUNT */
 
 #include <Availability.h>
@@ -125,6 +125,21 @@ kern_return_t mach_memory_entry_get_page_counts
 	uint64_t *swapped_cnt
 );
 
+/* Routine mach_memory_entry_region_info */
+#ifdef	mig_external
+mig_external
+#else
+extern
+#endif	/* mig_external */
+kern_return_t mach_memory_entry_region_info
+(
+	mem_entry_name_port_t mem_entry,
+	mach_vm_offset_t *offset,
+	mach_vm_size_t *size,
+	vm_region_recurse_info_t info,
+	mach_msg_type_number_t *infoCnt
+);
+
 __END_DECLS
 
 /********************** Caution **************************/
@@ -194,6 +209,19 @@ __END_DECLS
 #ifdef  __MigPackStructs
 #pragma pack(pop)
 #endif
+
+#ifdef  __MigPackStructs
+#pragma pack(push, 4)
+#endif
+	typedef struct {
+		mach_msg_header_t Head;
+		NDR_record_t NDR;
+		mach_vm_offset_t offset;
+		mach_msg_type_number_t infoCnt;
+	} __Request__mach_memory_entry_region_info_t __attribute__((unused));
+#ifdef  __MigPackStructs
+#pragma pack(pop)
+#endif
 #endif /* !__Request__memory_entry_subsystem__defined */
 
 /* union of all requests */
@@ -205,6 +233,7 @@ union __RequestUnion__memory_entry_subsystem {
 	__Request__mach_memory_entry_access_tracking_t Request_mach_memory_entry_access_tracking;
 	__Request__mach_memory_entry_ownership_t Request_mach_memory_entry_ownership;
 	__Request__mach_memory_entry_get_page_counts_t Request_mach_memory_entry_get_page_counts;
+	__Request__mach_memory_entry_region_info_t Request_mach_memory_entry_region_info;
 };
 #endif /* !__RequestUnion__memory_entry_subsystem__defined */
 /* typedefs for all replies */
@@ -266,6 +295,22 @@ union __RequestUnion__memory_entry_subsystem {
 #ifdef  __MigPackStructs
 #pragma pack(pop)
 #endif
+
+#ifdef  __MigPackStructs
+#pragma pack(push, 4)
+#endif
+	typedef struct {
+		mach_msg_header_t Head;
+		NDR_record_t NDR;
+		kern_return_t RetCode;
+		mach_vm_offset_t offset;
+		mach_vm_size_t size;
+		mach_msg_type_number_t infoCnt;
+		int info[21];
+	} __Reply__mach_memory_entry_region_info_t __attribute__((unused));
+#ifdef  __MigPackStructs
+#pragma pack(pop)
+#endif
 #endif /* !__Reply__memory_entry_subsystem__defined */
 
 /* union of all replies */
@@ -277,6 +322,7 @@ union __ReplyUnion__memory_entry_subsystem {
 	__Reply__mach_memory_entry_access_tracking_t Reply_mach_memory_entry_access_tracking;
 	__Reply__mach_memory_entry_ownership_t Reply_mach_memory_entry_ownership;
 	__Reply__mach_memory_entry_get_page_counts_t Reply_mach_memory_entry_get_page_counts;
+	__Reply__mach_memory_entry_region_info_t Reply_mach_memory_entry_region_info;
 };
 #endif /* !__RequestUnion__memory_entry_subsystem__defined */
 
@@ -285,7 +331,8 @@ union __ReplyUnion__memory_entry_subsystem {
     { "mach_memory_entry_purgable_control", 4900 },\
     { "mach_memory_entry_access_tracking", 4901 },\
     { "mach_memory_entry_ownership", 4902 },\
-    { "mach_memory_entry_get_page_counts", 4903 }
+    { "mach_memory_entry_get_page_counts", 4903 },\
+    { "mach_memory_entry_region_info", 4904 }
 #endif
 
 #ifdef __AfterMigUserHeader

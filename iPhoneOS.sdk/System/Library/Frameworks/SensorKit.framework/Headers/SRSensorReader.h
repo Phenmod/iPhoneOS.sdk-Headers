@@ -17,7 +17,13 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class SRSensorReader;
-SR_EXTERN API_AVAILABLE(ios(14.0)) API_UNAVAILABLE(watchos, macos, visionos) API_UNAVAILABLE(tvos)
+
+SR_EXTERN
+#ifdef __swift__
+API_DEPRECATED("Use SRReader<Sensor> class", ios(13.0, 27.0)) API_UNAVAILABLE(watchos, macos, visionos) API_UNAVAILABLE(tvos)
+#else
+API_AVAILABLE(ios(13.0)) API_UNAVAILABLE(watchos, macos, visionos) API_UNAVAILABLE(tvos)
+#endif
 @protocol SRSensorReaderDelegate <NSObject>
 @optional
 
@@ -85,7 +91,12 @@ SR_EXTERN API_AVAILABLE(ios(14.0)) API_UNAVAILABLE(watchos, macos, visionos) API
 
 @end
 
-SR_EXTERN API_AVAILABLE(ios(14.0)) API_UNAVAILABLE(watchos, macos, visionos) API_UNAVAILABLE(tvos)
+SR_EXTERN
+#ifdef __swift__
+API_DEPRECATED("Use SRReader<Sensor> class", ios(13.0, 27.0)) API_UNAVAILABLE(watchos, macos, visionos) API_UNAVAILABLE(tvos)
+#else
+API_AVAILABLE(ios(13.0)) API_UNAVAILABLE(watchos, macos, visionos) API_UNAVAILABLE(tvos)
+#endif
 @interface SRSensorReader : NSObject
 
 /**

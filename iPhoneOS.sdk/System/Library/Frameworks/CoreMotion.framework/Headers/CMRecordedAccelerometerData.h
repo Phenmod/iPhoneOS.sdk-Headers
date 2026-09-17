@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
  * Discussion:
  *   CMRecordedAccelerometerData contains data for each accelerometer sample.
  */
-COREMOTION_EXPORT API_AVAILABLE(ios(9.0), watchos(2.0)) API_UNAVAILABLE(macos)
+COREMOTION_EXPORT API_AVAILABLE(ios(9.0), watchos(2.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos)
 @interface CMRecordedAccelerometerData : CMAccelerometerData
 
 /*

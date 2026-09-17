@@ -11,14 +11,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+API_UNAVAILABLE_BEGIN(visionos)
+
 /**
  Blend shape locations of a face geometry.
- @discussion Each location defines an area of the face that can be displaced with a provided coefficient.
- blend shape activation  by ARKit.
- @note Blend shapes are computed based on the captured image. For example, if the detected person has a closed right eye, the eye on the left side of
- the captured image will appear closed and reported as blend shape activation  by ARKit.
- @see -[ARFrame capturedImage]
- */
+
+ Each location defines an area of the face that can be displaced with a provided coefficient.
+
+ - Note: Blend shapes are computed based on the captured image. For example, if the detected person has a closed right eye, the eye on the left side
+ of the captured image will appear closed and reported as blend shape activation by ARKit.
+
+ - SeeAlso: ``ARFrame/capturedImage``
+*/
 typedef NSString *ARBlendShapeLocation NS_STRING_ENUM NS_SWIFT_NAME(ARFaceAnchor.BlendShapeLocation) API_AVAILABLE(ios(11.0));
 FOUNDATION_EXTERN ARBlendShapeLocation const ARBlendShapeLocationBrowDownLeft API_AVAILABLE(ios(11.0));
 FOUNDATION_EXTERN ARBlendShapeLocation const ARBlendShapeLocationBrowDownRight API_AVAILABLE(ios(11.0));
@@ -104,15 +108,34 @@ NS_SWIFT_SENDABLE
 
 /**
  A dictionary of blend shape coefficients for each blend shape location.
- @discussion Blend shapes coefficients define the amount of displacement of a neutral shape at a specific location on the face.
- */
-@property (nonatomic, strong, readonly) NSDictionary<ARBlendShapeLocation, NSNumber*> *blendShapes;
 
-/** Unavailable */
+ Blend shapes coefficients define the amount of displacement of a neutral shape at a specific location on the face.
+*/
+@property (nonatomic, strong, readonly) NSDictionary<ARBlendShapeLocation, NSNumber *> *blendShapes;
+
+/**
+ Unavailable.
+
+ - Parameter transform: The transformation matrix.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)initWithTransform:(simd_float4x4)transform NS_UNAVAILABLE;
+
+/**
+ Unavailable.
+
+ - Parameters:
+   - name: The anchor name.
+   - transform: The transformation matrix.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)initWithName:(NSString *)name transform:(simd_float4x4)transform NS_UNAVAILABLE;
 
 @end
+
+API_UNAVAILABLE_END
 
 NS_ASSUME_NONNULL_END
 #else

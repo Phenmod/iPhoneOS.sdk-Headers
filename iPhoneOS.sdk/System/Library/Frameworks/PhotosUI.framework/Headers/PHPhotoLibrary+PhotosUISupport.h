@@ -7,13 +7,23 @@
 
 #import <Photos/Photos.h>
 
+#if TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
+@class UIWindowScene;
 @class UIViewController;
+#else
+@class NSWindow;
+#endif
+
+NS_ASSUME_NONNULL_BEGIN
+
+#if TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
 
 API_AVAILABLE_BEGIN(ios(14))
 API_UNAVAILABLE_BEGIN(macos, tvos, watchos)
-NS_ASSUME_NONNULL_BEGIN
 
-@interface PHPhotoLibrary (PhotosUISupport)
+@interface PHPhotoLibrary (PhotosUISupport_LimitedLibraryPicker)
+
+#pragma mark - Limited library picker
 
 /**
  @abstract Prompt the user to update their limited library selection by presenting the limited library image picker when the user has opted into limited library access mode (see \c PHAuthorizationStatusLimited )
@@ -36,6 +46,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-NS_ASSUME_NONNULL_END
 API_UNAVAILABLE_END // (macos, tvos, watchos)
 API_AVAILABLE_END // (ios(14))
+
+#endif // TARGET_OS_IPHONE || TARGET_OS_MACCATALYST
+
+
+
+NS_ASSUME_NONNULL_END

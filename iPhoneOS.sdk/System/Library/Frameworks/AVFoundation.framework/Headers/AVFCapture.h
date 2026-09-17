@@ -9,8 +9,10 @@
 #import <TargetConditionals.h>
 
 #import <AVFoundation/AVCameraCalibrationData.h>
+#import <AVFoundation/AVCaptureAncillaryDataEncoder.h>
 #import <AVFoundation/AVCaptureAudioDataOutput.h>
 #import <AVFoundation/AVCaptureAudioPreviewOutput.h>
+#import <AVFoundation/AVCaptureBroadcastVideoOutput.h>
 #import <AVFoundation/AVCaptureControl.h>
 #import <AVFoundation/AVCaptureDataOutputSynchronizer.h>
 #import <AVFoundation/AVCaptureDepthDataOutput.h>
@@ -43,3 +45,4 @@
 #import <AVFoundation/AVPortraitEffectsMatte.h>
 #import <AVFoundation/AVSemanticSegmentationMatte.h>
 #import <AVFoundation/AVCaptureSpatialAudioMetadataSampleGenerator.h>
+#import <AVFoundation/AVProVideoStorage.h>

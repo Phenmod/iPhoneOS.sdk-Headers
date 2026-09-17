@@ -198,16 +198,17 @@ typedef NS_ENUM(NSInteger, MTLGPUFamily)
     MTLGPUFamilyApple8  = 1008,
     MTLGPUFamilyApple9  = 1009,
     MTLGPUFamilyApple10 = 1010,
+    MTLGPUFamilyApple11 = 1011,
 
-    MTLGPUFamilyMac1 API_DEPRECATED_WITH_REPLACEMENT("MTLGPUFamilyMac2", macos(10.15, 13.0), ios(13.0, 16.0)) = 2001,
-    MTLGPUFamilyMac2 = 2002,
+    MTLGPUFamilyMac1 API_DEPRECATED_WITH_REPLACEMENT("MTLGPUFamilyApple7", macos(10.15, 13.0), ios(13.0, 16.0)) = 2001,
+    MTLGPUFamilyMac2 API_DEPRECATED_WITH_REPLACEMENT("MTLGPUFamilyApple7", macos(10.15, 27.0), ios(13.0, 27.0)) = 2002,
     
-    MTLGPUFamilyCommon1 = 3001,
-    MTLGPUFamilyCommon2 = 3002,
-    MTLGPUFamilyCommon3 = 3003,
+    MTLGPUFamilyCommon1 API_DEPRECATED_WITH_REPLACEMENT("MTLGPUFamilyApple1", macos(10.15, 27.0), ios(13.0, 27.0)) = 3001,
+    MTLGPUFamilyCommon2 API_DEPRECATED_WITH_REPLACEMENT("MTLGPUFamilyApple3", macos(10.15, 27.0), ios(13.0, 27.0)) = 3002,
+    MTLGPUFamilyCommon3 API_DEPRECATED_WITH_REPLACEMENT("MTLGPUFamilyApple5", macos(10.15, 27.0), ios(13.0, 27.0)) = 3003,
     
-    MTLGPUFamilyMacCatalyst1 API_DEPRECATED_WITH_REPLACEMENT("MTLGPUFamilyMac2", macos(10.15, 13.0), ios(13.0, 16.0)) = 4001,
-    MTLGPUFamilyMacCatalyst2 API_DEPRECATED_WITH_REPLACEMENT("MTLGPUFamilyMac2", macos(10.15, 13.0), ios(13.0, 16.0)) = 4002,
+    MTLGPUFamilyMacCatalyst1 API_DEPRECATED_WITH_REPLACEMENT("MTLGPUFamilyApple7", macos(10.15, 13.0), ios(13.0, 16.0)) = 4001,
+    MTLGPUFamilyMacCatalyst2 API_DEPRECATED_WITH_REPLACEMENT("MTLGPUFamilyApple7", macos(10.15, 13.0), ios(13.0, 16.0)) = 4002,
     
     MTLGPUFamilyMetal3 API_AVAILABLE(macos(13.0), ios(16.0)) = 5001,
     MTLGPUFamilyMetal4 API_AVAILABLE(macos(26.0), ios(26.0)) = 5002,
@@ -436,13 +437,13 @@ API_AVAILABLE(macos(10.11), ios(8.0)) NS_SWIFT_SENDABLE
  @property lowPower
  @abstract On systems that support automatic graphics switching, this will return YES for the the low power device.
  */
-@property (readonly, getter=isLowPower) BOOL lowPower API_AVAILABLE(macos(10.11), macCatalyst(13.0)) API_UNAVAILABLE(ios);
+@property (readonly, getter=isLowPower) BOOL lowPower API_DEPRECATED("Not applicable on Apple Silicon", macos(10.11, 27.0), macCatalyst(13.0, 27.0)) API_UNAVAILABLE(ios);
 
 /*!
  @property headless
  @abstract On systems that include more that one GPU, this will return YES for any device that does not support any displays.  Only available on Mac OS X.
  */
-@property (readonly, getter=isHeadless) BOOL headless API_AVAILABLE(macos(10.11), macCatalyst(13.0)) API_UNAVAILABLE(ios);
+@property (readonly, getter=isHeadless) BOOL headless API_DEPRECATED("Not applicable on Apple Silicon", macos(10.11, 27.0), macCatalyst(13.0, 27.0)) API_UNAVAILABLE(ios);
 
 /*!
  @property removable
@@ -450,7 +451,7 @@ API_AVAILABLE(macos(10.11), ios(8.0)) NS_SWIFT_SENDABLE
  @discussion If a GPU is is removed without warning, APIs may fail even with good input, even before a notification can get posted informing
  the application that the device has been removed.
  */
-@property (readonly, getter=isRemovable) BOOL removable API_AVAILABLE(macos(10.13), macCatalyst(13.0)) API_UNAVAILABLE(ios);
+@property (readonly, getter=isRemovable) BOOL removable API_DEPRECATED("Not applicable on Apple Silicon", macos(10.13, 27.0), macCatalyst(13.0, 27.0)) API_UNAVAILABLE(ios);
 
 /*!
  @property hasUnifiedMemory
@@ -473,7 +474,7 @@ API_AVAILABLE(macos(10.11), ios(8.0)) NS_SWIFT_SENDABLE
  @property depth24Stencil8PixelFormatSupported
  @abstract If YES, device supports MTLPixelFormatDepth24Unorm_Stencil8.
  */
-@property (readonly, getter=isDepth24Stencil8PixelFormatSupported) BOOL depth24Stencil8PixelFormatSupported API_AVAILABLE(macos(10.11), macCatalyst(13.0)) API_UNAVAILABLE(ios);
+@property (readonly, getter=isDepth24Stencil8PixelFormatSupported) BOOL depth24Stencil8PixelFormatSupported API_DEPRECATED("Never supported on Apple Silicon", macos(10.11, 27.0), macCatalyst(13.0, 27.0)) API_UNAVAILABLE(ios);
 
 /*!
  @property readWriteTextureSupport
@@ -1227,21 +1228,44 @@ typedef uint64_t MTLTimestamp;
                                             error:(NSError *__nullable*)error
                                             API_AVAILABLE(macos(15.0), ios(18.0));
 
-/// Determines the size and alignment required to hold the data of a tensor you create with a descriptor in a buffer.
+/// Determines the size and alignment required to hold the data plane of a tensor you create with a descriptor in a buffer.
+///
+/// This method requires that `descriptor` does not configure any auxiliary planes.
 ///
 /// - Parameters:
-///    - descriptor: A description of the properties for the new tensor.
-/// - Returns: The size and alignment required to hold the data of a tensor you create with `descriptor` in a buffer.
+///    - descriptor: The tensor descriptor configuring the data plane.
+/// - Returns: The size and alignment required to hold the data plane of a tensor you create with `descriptor` in a buffer.
 - (MTLSizeAndAlign)tensorSizeAndAlignWithDescriptor:(MTLTensorDescriptor *)descriptor API_AVAILABLE(macos(26.0), ios(26.0));
 
-/// Creates a tensor by allocating new memory.
+/// Creates a tensor with the specified descriptor.
+///
+/// This method validates the constraints documented on ``MTLTensorDescriptor``.
 ///
 /// - Parameters:
-///   - descriptor: A description of the properties for the new tensor.
-///   - error: Metal populates this parameter with information in case an error occurs.
-/// - Returns: A new tensor instance that Metal configures using `descriptor` or `nil` if an error occurred.
+///   - descriptor: The tensor descriptor configuring the data plane and
+///     auxiliary planes.
+///   - error: On failure, an NSError instance that describes the validation failure.
+/// - Returns: A tensor, or `nil` if validation fails.
 - (nullable id <MTLTensor>)newTensorWithDescriptor:(MTLTensorDescriptor *)descriptor
                                              error:(__autoreleasing NSError * _Nullable * _Nullable)error API_AVAILABLE(macos(26.0), ios(26.0));
+
+/// Creates a tensor with the specified descriptor and per-plane buffer backing storage.
+///
+/// This method validates the constraints documented on ``MTLTensorDescriptor``
+/// and ``MTLTensorBufferAttachments``, and additionally requires that every
+/// plane configured in `descriptor` (data plane and all auxiliary planes) has
+/// a corresponding entry in `attachments`.
+///
+/// - Parameters:
+///   - descriptor: The tensor descriptor configuring the data plane and
+///     auxiliary planes.
+///   - attachments: The per-plane buffer backing storage. Must not be `nil`.
+///   - error: On failure, an NSError instance that describes the validation failure.
+/// - Returns: A tensor, or `nil` if validation fails.
+-(nullable id<MTLTensor>)newTensorWithDescriptor:(MTLTensorDescriptor *)descriptor
+                                     attachments:(MTLTensorBufferAttachments *)attachments
+                                           error:(NSError **)error API_AVAILABLE(macos(27.0), ios(27.0));
+
 
 /*!
  @method functionHandleWithFunction:

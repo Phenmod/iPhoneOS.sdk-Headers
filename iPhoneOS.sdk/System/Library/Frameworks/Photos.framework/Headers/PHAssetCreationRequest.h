@@ -35,6 +35,12 @@ OS_EXPORT
 
 + (instancetype)creationRequestForAsset;
 
+/// The original resource to use as the unadjusted base for rendering derivatives of the new asset.
+///
+/// This property applies to RAW+JPEG assets only, where it selects whether the RAW or the compressed resource serves as the original.
+/// Setting it on assets that have only a single original resource is an error.
+@property (nonatomic, assign, readwrite) PHOriginalResourceChoice originalResourceChoice API_AVAILABLE(macos(27), ios(27), tvos(27), visionos(27));
+
 // Whether we support a given combination of PHAssetResourceTypes.
 // Note: Adding resources to a creation request always succeeds; validation of the request is performed later, and any errors are reported after the performChanges block.
 + (BOOL)supportsAssetResourceTypes:(NSArray<NSNumber *> *)types;

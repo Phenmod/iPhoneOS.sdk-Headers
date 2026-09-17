@@ -33,7 +33,7 @@ API_AVAILABLE(ios(26.0), tvos(26.0)) API_UNAVAILABLE(watchos, visionos, macos)
  By default, this value is `nil`. When the current preferred participant finishes, the system sets this value to `nil`. If this value is `nil`, the arbiter doesn't impose any priority on the participants, and the participant that's unmuted is based on the existing selection mechanism.
  */
 
-@property (nonatomic, weak, nullable) id<AVRoutingPlaybackParticipant> preferredParticipantForNonMixableAudioRoutes API_AVAILABLE(tvos(26.0)) API_UNAVAILABLE(ios, watchos, visionos, macos);
+@property (nonatomic, weak, nullable) id<AVRoutingPlaybackParticipant> preferredParticipantForNonMixableAudioRoutes API_AVAILABLE(ios(27.0), tvos(26.0)) API_UNAVAILABLE(watchos, visionos, macos);
 
 /**
  The participant that has priority to play on external playback interfaces.

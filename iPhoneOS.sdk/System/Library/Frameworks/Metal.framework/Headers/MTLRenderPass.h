@@ -47,7 +47,7 @@ typedef NS_ENUM(NSUInteger, MTLStoreAction) {
 typedef NS_OPTIONS(NSUInteger, MTLStoreActionOptions) {
     MTLStoreActionOptionNone                  = 0,
     MTLStoreActionOptionCustomSamplePositions = 1 << 0,
-} API_AVAILABLE(macos(10.13), ios(11.0));
+} API_DEPRECATED("Store action options have no effect on Apple Silicon", macos(10.13, 27.0), ios(11.0, 27.0));
 
 /// This enumeration controls if Metal accumulates visibility results between render encoders or resets them.
 ///
@@ -137,7 +137,7 @@ MTL_EXPORT API_AVAILABLE(macos(10.11), ios(8.0))
  @abstract Optional configuration for the store action performed with this attachment at the end of a render pass.  Default is
  MTLStoreActionOptionNone.
  */
-@property (nonatomic) MTLStoreActionOptions storeActionOptions API_AVAILABLE(macos(10.13), ios(11.0));
+@property (nonatomic) MTLStoreActionOptions storeActionOptions API_DEPRECATED("Store action options have no effect on Apple Silicon", macos(10.13, 27.0), ios(11.0, 27.0));
 
 @end
 

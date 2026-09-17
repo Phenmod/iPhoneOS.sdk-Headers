@@ -47,7 +47,8 @@ typedef uint32_t bank_action_t;
 #define BANK_ORIGINATOR_PROXIMATE_PID 0x5
 
 
-#define PROC_PERSONA_INFO_FLAG_ADOPTION_ALLOWED 0x1
+#define PROC_PERSONA_INFO_FLAG_ADOPTION_ALLOWED     0x1
+#define PROC_PERSONA_INFO_FLAG_INHERITANCE_ALLOWED  0x2
 
 struct proc_persona_info {
 	uint64_t unique_pid;

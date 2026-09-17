@@ -146,7 +146,7 @@ API_AVAILABLE(macos(10.7), ios(4.0), tvos(9.0), watchos(1.0), visionos(1.0))
                     Specifies the source track to be inserted. Only AVAssetTracks of AVURLAssets and AVCompositions are supported (AVCompositions starting in macOS 10.10 and iOS 8.0).
     @param          startTime
                     Specifies the time at which the inserted track is to be presented by the composition track. You may pass kCMTimeInvalid for startTime to indicate that the timeRange should be appended to the end of the track.
-    @param          error
+    @param          outError
                     Describes failures that may be reported to the user, e.g. the asset that was selected for insertion in the composition is restricted by copy-protection.
     @result         A BOOL value indicating the success of the insertion.
     @discussion
@@ -165,7 +165,7 @@ API_AVAILABLE(macos(10.7), ios(4.0), tvos(9.0), watchos(1.0), visionos(1.0))
                     Specifies the source tracks to be inserted. Only AVAssetTracks of AVURLAssets and AVCompositions are supported (AVCompositions starting in macOS 10.10 and iOS 8.0).
     @param          startTime
                     Specifies the time at which the inserted tracks are to be presented by the composition track. You may pass kCMTimeInvalid for startTime to indicate that the timeRanges should be appended to the end of the track.
-    @param          error
+    @param          outError
                     Describes failures that may be reported to the user, e.g. the asset that was selected for insertion in the composition is restricted by copy-protection.
     @result         A BOOL value indicating the success of the insertion.
     @discussion
@@ -213,7 +213,7 @@ API_AVAILABLE(macos(10.7), ios(4.0), tvos(9.0), watchos(1.0), visionos(1.0))
     @abstract       Tests an array of AVCompositionTrackSegments to determine whether they conform to the timing rules noted above (see the property key @"trackSegments").
     @param          trackSegments
                     The array of AVCompositionTrackSegments to be validated.
-    @param          error
+    @param          outError
                     If validation fais, returns information about the failure.
     @result         YES if validation suceeds, otherwise NO.
     @discussion

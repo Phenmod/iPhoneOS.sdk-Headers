@@ -2,8 +2,7 @@
 //  AXRequest.h
 //  AccessibilitySharedSupport
 //
-//  Created by Daniel Golden on 5/22/24.
-//  Copyright © 2024 Apple. All rights reserved.
+//  Copyright © 2024-2026 Apple Inc. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

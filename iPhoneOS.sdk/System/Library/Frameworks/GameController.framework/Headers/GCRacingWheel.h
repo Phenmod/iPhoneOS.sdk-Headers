@@ -6,7 +6,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <GameController/GameController.h>
+
+#import <GameController/GCExtern.h>
+#import <GameController/GCDevice.h>
 
 @class GCRacingWheelInput;
 

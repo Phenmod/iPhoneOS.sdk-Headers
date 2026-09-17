@@ -35,10 +35,19 @@ NS_ASSUME_NONNULL_BEGIN
  
 		Note that when the engine is configured to operate in 
 		`AVAudioEngineManualRenderingModeRealtime`, this block will be called from a realtime 
-		context. Care should be taken not to make any blocking call (e.g. calling libdispatch,
+		context and using AVAudioIONodeInputBlockRealtimeSafe is preferred.
+		Care should be taken not to make any blocking call (e.g. calling libdispatch,
 		blocking on a mutex, allocating memory etc.) which may cause an overload at the lower layers.
 */
-typedef const AudioBufferList * __nullable (^AVAudioIONodeInputBlock)(AVAudioFrameCount inNumberOfFrames) API_AVAILABLE(macos(10.13), ios(11.0), watchos(4.0), tvos(11.0));
+typedef const AudioBufferList * __nullable (^ NS_SWIFT_NONSENDABLE AVAudioIONodeInputBlock)(AVAudioFrameCount inNumberOfFrames) API_AVAILABLE(macos(10.13), ios(11.0), watchos(4.0), tvos(11.0));
+
+/*! @typedef AVAudioIONodeInputBlockRealtimeSafe
+    @abstract
+		Identical to AVAudioIONodeInputBlock, with the addition of a realtime-safety guarantee.
+		When the engine is configured to operate in `AVAudioEngineManualRenderingModeRealtime`,
+		use of this block is preferred.
+*/
+typedef const AudioBufferList * __nullable (^AVAudioIONodeInputBlockRealtimeSafe)(AVAudioFrameCount inNumberOfFrames) CA_REALTIME_API API_AVAILABLE(macos(27.0), ios(27.0), watchos(27.0), tvos(27.0), visionos(27.0)) __SWIFT_UNAVAILABLE_MSG("Swift is not supported for use with audio realtime threads");
 
 /*!
 	@enum       AVAudioVoiceProcessingSpeechActivityEvent
@@ -100,7 +109,7 @@ typedef struct API_AVAILABLE(macos(14.0), ios(17.0)) API_UNAVAILABLE(tvos, watch
 		In the manual rendering mode, the AVAudioInputNode and AVAudioOutputNode perform the input
 		and output in the engine, in response to client's request.
 */
-API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 @interface AVAudioIONode : AVAudioNode
 
 /*!	@property presentationLatency
@@ -120,7 +129,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 	@discussion
 		This is only necessary for certain advanced usages.
 */
-@property (nonatomic, readonly, nullable) AudioUnit audioUnit;
+@property (nonatomic, readonly, nullable) AudioUnit audioUnit NS_REFINED_FOR_SWIFT;
 #endif
 
 /*! @property voiceProcessingEnabled
@@ -179,7 +188,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 		In the manual rendering mode, the format of the output scope is initially the same as that
 		of the input, but you may set it to a different format, in which case the node will convert.
 */
-API_AVAILABLE(macos(10.10), ios(8.0), watchos(4.0), tvos(11.0))
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), watchos(4.0), tvos(11.0))
 @interface AVAudioInputNode : AVAudioIONode <AVAudioMixing>
 - (instancetype)init NS_UNAVAILABLE; // fetch instance via -[AVAudioEngine inputNode].
 
@@ -200,6 +209,13 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(4.0), tvos(11.0))
 		and makes this method ineffective.
 */
 - (BOOL)setManualRenderingInputPCMFormat:(AVAudioFormat *)format inputBlock:(AVAudioIONodeInputBlock)block API_AVAILABLE(macos(10.13), ios(11.0), watchos(4.0), tvos(11.0));
+
+/*! @method setRealtimeSafeManualRenderingInputPCMFormat:inputBlock:
+    @abstract
+        Identical to setManualRenderingInputPCMFormat:inputBlock:, but requires a realtime-safe
+        input block.
+*/
+- (BOOL)setRealtimeSafeManualRenderingInputPCMFormat:(AVAudioFormat *)format inputBlock:(AVAudioIONodeInputBlockRealtimeSafe)block API_AVAILABLE(macos(27.0), ios(27.0), watchos(27.0), tvos(27.0), visionos(27.0)) __SWIFT_UNAVAILABLE_MSG("Swift is not supported for use with audio realtime threads");
 
 /*! @property voiceProcessingBypassed
     @abstract
@@ -238,7 +254,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(4.0), tvos(11.0))
 		Continuous presence of or lack of speech activity during mute will not cause redundant notification.
 		In order to use this API, it's expected to implement the mute via the voiceProcessingInputMuted.
 */
-- (BOOL)setMutedSpeechActivityEventListener:(nullable void (^)(AVAudioVoiceProcessingSpeechActivityEvent event))listenerBlock API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0)) API_UNAVAILABLE(watchos);
+- (BOOL)setMutedSpeechActivityEventListener:(nullable void (^ NS_SWIFT_SENDABLE)(AVAudioVoiceProcessingSpeechActivityEvent event))listenerBlock API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0)) API_UNAVAILABLE(watchos);
 
 /*! @property voiceProcessingOtherAudioDuckingConfiguration
 	@abstract
@@ -270,7 +286,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(4.0), tvos(11.0))
 		The format of the input scope is initially the same as that of the
 		output, but you may set it to a different format, in which case the node will convert.
 */
-API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 @interface AVAudioOutputNode : AVAudioIONode
 - (instancetype)init NS_UNAVAILABLE; // fetch instance via -[AVAudioEngine outputNode].
 

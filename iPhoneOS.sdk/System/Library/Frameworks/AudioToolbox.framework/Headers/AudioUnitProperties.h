@@ -3075,6 +3075,7 @@ typedef CF_ENUM(UInt32, AUSpatialMixerSourceMode) {
 	@enum	Reverb Room Types
 	@discussion Used to specify room type (as identified by a factory preset number) on Apple audio 
 				units that use internal reverb.
+    @note   kReverbRoomType_OutdoorGeneral is available with specific AudioUnits and AudioEngines only. Refer to corresponding AudioUnit/AudioEngines documentations to verify the support criteria.
 */
 typedef CF_ENUM(UInt32, AUReverbRoomType) {
 	kReverbRoomType_SmallRoom		= 0,
@@ -3089,7 +3090,8 @@ typedef CF_ENUM(UInt32, AUReverbRoomType) {
 	kReverbRoomType_LargeRoom2		= 9,
 	kReverbRoomType_MediumHall2		= 10,
 	kReverbRoomType_MediumHall3		= 11,
-	kReverbRoomType_LargeHall2		= 12	
+	kReverbRoomType_LargeHall2		= 12,
+    kReverbRoomType_OutdoorGeneral API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos) = 24
 };
 
 /*!

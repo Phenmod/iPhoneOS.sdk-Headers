@@ -15,56 +15,45 @@
 
 NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
-/*!  
-    @protocol NSURLAuthenticationChallengeSender 
-    @discussion This protocol represents the sender of an
-    authentication challenge. It has methods to provide a credential,
-    to continue without any credential, getting whatever failure
-    result would happen in that case, cancel a challenge, perform the default
-    action as defined by the system, or reject the currently supplied protection-space
-    in the challenge.
-*/
-
+/// The `URLAuthenticationChallengeSender` protocol represents the interface that the sender of an authentication challenge must implement.
+///
+/// The methods in the protocol are generally sent by a delegate in response to receiving a ``NSURLConnectionDelegate/connection(_:didReceive:)``: or ``NSURLDownloadDelegate/download(_:didReceive:)-1pc0v``:. The different methods provide different ways of responding to authentication challenges.
+///
+/// > Important:
+/// > This protocol is _only_ for use with the legacy ``NSURLConnection`` and ``NSURLDownload`` classes. It should not be used with ``URLSession``-based code, for which you respond to authentication challenges by passing ``URLSession/AuthChallengeDisposition`` constants to the provided completion handler blocks.
 NS_SWIFT_SENDABLE
 API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0))
 @protocol NSURLAuthenticationChallengeSender <NSObject>
 
-/*!
-    @method useCredential:forAuthenticationChallenge:
-*/
+/// Attempts to use a given credential for a given authentication challenge.
+///
+/// This method has no effect if it is called with an authentication challenge that has already been handled.
 - (void)useCredential:(NSURLCredential *)credential forAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
 
-/*!
-    @method continueWithoutCredentialForAuthenticationChallenge:
-*/
+/// Attempts to continue downloading a request without providing a credential for a given challenge.
+///
+/// This method has no effect if it is called with an authentication challenge that has already been handled.
 - (void)continueWithoutCredentialForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
 
-/*!
-    @method cancelAuthenticationChallenge:
-*/
+/// Cancels a given authentication challenge.
 - (void)cancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
 
 @optional
-/*!
- @method performDefaultHandlingForAuthenticationChallenge:
- */
+/// Causes the system-provided default behavior to be used.
 - (void)performDefaultHandlingForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
 
-/*!
- @method rejectProtectionSpaceAndContinueWithChallenge:
- */
+/// Rejects the currently supplied protection space.
 - (void)rejectProtectionSpaceAndContinueWithChallenge:(NSURLAuthenticationChallenge *)challenge;
 
 @end
 
 @class NSURLAuthenticationChallengeInternal;
 
-/*!
-    @class NSURLAuthenticationChallenge
-    @discussion This class represents an authentication challenge. It
-    provides all the information about the challenge, and has a method
-    to indicate when it's done.
-*/
+/// A challenge from a server requiring authentication from the client.
+///
+/// Your app receives authentication challenges in various ``URLSession``, ``NSURLConnection``, and ``NSURLDownload`` delegate methods, such as ``URLSessionTaskDelegate/urlSession(_:task:didReceive:completionHandler:)``. These objects provide the information you'll need when deciding how to handle a server's request for authentication.
+///
+/// At the core of that authentication challenge is a _protection space_ that defines the type of authentication being requested, the host and port number, the networking protocol, and (where applicable) the authentication realm (a group of related URLs on the same server that share a single set of credentials).
 NS_SWIFT_SENDABLE
 API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0))
 @interface NSURLAuthenticationChallenge : NSObject <NSSecureCoding>
@@ -73,76 +62,54 @@ API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0))
     NSURLAuthenticationChallengeInternal *_internal;
 }
 
-/*!
-    @method initWithProtectionSpace:proposedCredential:previousFailureCount:failureResponse:error:
-    @abstract Initialize an authentication challenge 
-    @param space The NSURLProtectionSpace to use
-    @param credential The proposed NSURLCredential for this challenge, or nil
-    @param previousFailureCount A count of previous failures attempting access.
-    @param response The NSURLResponse for the authentication failure, if applicable, else nil
-    @param error The NSError for the authentication failure, if applicable, else nil
-    @result An authentication challenge initialized with the specified parameters
-*/
+/// Initializes an authentication challenge.
+///
+/// - Parameter space: The `NSURLProtectionSpace` to use.
+/// - Parameter credential: The proposed `NSURLCredential` for this challenge, or `nil`.
+/// - Parameter previousFailureCount: A count of previous failures attempting access.
+/// - Parameter response: The `NSURLResponse` for the authentication failure, if applicable, else `nil`.
+/// - Parameter error: The `NSError` for the authentication failure, if applicable, else `nil`.
+/// - Parameter sender: The sender of this challenge.
+/// - Returns: An authentication challenge initialized with the specified parameters.
 - (instancetype)initWithProtectionSpace:(NSURLProtectionSpace *)space proposedCredential:(nullable NSURLCredential *)credential previousFailureCount:(NSInteger)previousFailureCount failureResponse:(nullable NSURLResponse *)response error:(nullable NSError *)error sender:(id<NSURLAuthenticationChallengeSender>)sender;
 
-/*!
-    @method initWithAuthenticationChallenge:
-    @abstract Initialize an authentication challenge copying all parameters from another one.
-    @result A new challenge initialized with the parameters from the passed in challenge
-    @discussion This initializer may be useful to subclassers that want to proxy
-    one type of authentication challenge to look like another type.
-*/
+/// Initializes an authentication challenge copying all parameters from another one.
+///
+/// - Parameter challenge: The existing challenge to copy.
+/// - Parameter sender: The sender of the challenge.
+/// - Returns: A new challenge initialized with the parameters from the passed in challenge.
+///
+/// This initializer may be useful to subclassers that want to proxy one type of authentication challenge to look like another type.
 - (instancetype)initWithAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge sender:(id<NSURLAuthenticationChallengeSender>)sender;
 
-/*!
-    @abstract Get a description of the protection space that requires authentication
-    @result The protection space that needs authentication
-*/
+/// A description of the protection space that requires authentication.
 @property (readonly, copy) NSURLProtectionSpace *protectionSpace;
 
-/*!
-    @abstract Get the proposed credential for this challenge
-    @result The proposed credential
-    @discussion proposedCredential may be nil, if there is no default
-    credential to use for this challenge (either stored or in the
-    URL). If the credential is not nil and returns YES for
-    hasPassword, this means the NSURLConnection thinks the credential
-    is ready to use as-is. If it returns NO for hasPassword, then the
-    credential is not ready to use as-is, but provides a default
-    username the client could use when prompting.
-*/
+/// The proposed credential for this challenge.
+///
+/// The proposed credential may be `nil`, if there is no default credential to use for this challenge (either stored
+/// or in the URL). If the credential is not `nil` and returns `YES` for `hasPassword`, it is ready to use as-is.
+/// If it returns `NO` for `hasPassword`, it provides a default username the client could use when prompting.
 @property (nullable, readonly, copy) NSURLCredential *proposedCredential;
 
-/*!
-    @abstract Get count of previous failed authentication attempts
-    @result The count of previous failures
-*/
+/// The count of previous failed authentication attempts.
 @property (readonly) NSInteger previousFailureCount;
 
-/*!
-    @abstract Get the response representing authentication failure.
-    @result The failure response or nil
-    @discussion If there was a previous authentication failure, and
-    this protocol uses responses to indicate authentication failure,
-    then this method will return the response. Otherwise it will
-    return nil.
-*/
+/// The response representing authentication failure.
+///
+/// If there was a previous authentication failure, and this protocol uses responses to indicate authentication
+/// failure, then this method will return the response. Otherwise it will return `nil`.
 @property (nullable, readonly, copy) NSURLResponse *failureResponse;
 
-/*!
-    @abstract Get the error representing authentication failure.
-    @discussion If there was a previous authentication failure, and
-    this protocol uses errors to indicate authentication failure,
-    then this method will return the error. Otherwise it will
-    return nil.
-*/
+/// The error representing authentication failure.
+///
+/// If there was a previous authentication failure, and this protocol uses errors to indicate authentication
+/// failure, then this method will return the error. Otherwise it will return `nil`.
 @property (nullable, readonly, copy) NSError *error;
 
-/*!
-    @abstract Get the sender of this challenge
-    @result The sender of the challenge
-    @discussion The sender is the object you should reply to when done processing the challenge.
-*/
+/// The sender of this challenge.
+///
+/// The sender is the object you should reply to when done processing the challenge.
 @property (nullable, readonly, retain) id<NSURLAuthenticationChallengeSender> sender;
 
 @end

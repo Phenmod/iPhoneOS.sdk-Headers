@@ -33,6 +33,8 @@ module Darwin [system] {
 
   module fts {
     header "fts.h"
+    private textual header "fts_compat.h"
+    private textual header "fts_new.h"
     export *
   }
 
@@ -112,8 +114,18 @@ module Darwin [system] {
       export *
     }
 
+    module lockdown_mode {
+      header "os/lockdown_mode.h"
+      export *
+    }
+
     module proc {
       header "os/proc.h"
+      export *
+    }
+
+    module security_config {
+      header "os/security_config.h"
       export *
     }
   }

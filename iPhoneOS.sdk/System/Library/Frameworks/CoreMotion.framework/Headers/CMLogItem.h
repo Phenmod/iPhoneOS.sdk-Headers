@@ -23,7 +23,7 @@ COREMOTION_EXPORT API_AVAILABLE(ios(4.0))
  *  timestamp
  *  
  *  Discussion:
- *    Time at which the item is valid.
+ *    Mach absolute time at which the item is valid.
  *
  */
 @property(readonly, nonatomic) NSTimeInterval timestamp;

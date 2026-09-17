@@ -30,6 +30,8 @@ Classes:
   Properties:
     - Name: headphoneSafetyAudioLevel
       SwiftPrivate: true
+- Name: SRHeadphoneSettingsHearingAssistance
+  SwiftName: SRHeadphoneSettings.HearingAssistance
 Typedefs:
 - Name: SRAbsoluteTime
   SwiftWrapper: struct
@@ -101,6 +103,12 @@ Tags:
   SwiftName: SRSleepSession.StartReason
 - Name: SRSleepSessionEndReason
   SwiftName: SRSleepSession.EndReason
+- Name: SRHeadphoneSettingsSettingEnablement
+  SwiftName: SRHeadphoneSettings.SettingEnablement
+- Name: SRHeadphoneSettingsListeningMode
+  SwiftName: SRHeadphoneSettings.ListeningMode
+- Name: SRHeadphoneSettingsAdaptiveAudioStrength
+  SwiftName: SRHeadphoneSettings.AdaptiveAudioStrength
 # Local Variables:
 # mode: yaml
 # End:

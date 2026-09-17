@@ -1,4 +1,5 @@
 #if (defined(USE_ARKIT_PUBLIC_HEADERS) && USE_ARKIT_PUBLIC_HEADERS) || !__has_include(<ARKitCore/ARAppClipCodeAnchor.h>)
+#import <TargetConditionals.h>
 //
 //  ARAppClipCodeAnchor.h
 //  ARKit
@@ -9,6 +10,8 @@
 #import <ARKit/ARAnchor.h>
 
 NS_ASSUME_NONNULL_BEGIN
+
+API_UNAVAILABLE_BEGIN(visionos)
 
 /**
 A value describing app clip code URL decoding state.
@@ -32,7 +35,6 @@ API_AVAILABLE(ios(14.3))
 NS_SWIFT_SENDABLE
 @interface ARAppClipCodeAnchor : ARAnchor <ARTrackable>
 
-
 /**
 The URL encoded in this app clip code. Not nil only if urlDecodingState is .decoded.
  */
@@ -48,11 +50,29 @@ The estimated radius of the app clip code in meters.
  */
 @property (nonatomic, assign, readonly) float radius;
 
-/** Unavailable */
+/**
+ Unavailable. App Clip Code anchors are created by the system.
+
+ - Parameter transform: The transformation matrix.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)initWithTransform:(simd_float4x4)transform NS_UNAVAILABLE;
+
+/**
+ Unavailable. App Clip Code anchors are created by the system.
+
+ - Parameters:
+   - name: The anchor name.
+   - transform: The transformation matrix.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)initWithName:(NSString *)name transform:(simd_float4x4)transform NS_UNAVAILABLE;
 
 @end
+
+API_UNAVAILABLE_END
 
 NS_ASSUME_NONNULL_END
 

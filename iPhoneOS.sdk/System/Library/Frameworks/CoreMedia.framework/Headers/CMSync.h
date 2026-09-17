@@ -3,7 +3,7 @@
  
 	Framework:  CoreMedia
  
-	Copyright © 2006-2021 Apple Inc. All rights reserved.
+	Copyright © 2006-2026 Apple Inc. All rights reserved.
  
 */
 
@@ -13,6 +13,17 @@
 #include <CoreMedia/CMBase.h>
 #include <CoreMedia/CMTime.h>
 #include <dispatch/dispatch.h>
+
+
+#ifndef COREMEDIA_SUPPORTS_GENLOCK_CLOCK
+#if TARGET_OS_MACCATALYST
+	#define COREMEDIA_SUPPORTS_GENLOCK_CLOCK (__IPHONE_OS_VERSION_MIN_REQUIRED >= 270000)
+#elif TARGET_OS_OSX
+	#define COREMEDIA_SUPPORTS_GENLOCK_CLOCK (__MAC_OS_X_VERSION_MIN_REQUIRED >= 270000)
+#else
+	#define COREMEDIA_SUPPORTS_GENLOCK_CLOCK 0
+#endif
+#endif // not defined COREMEDIA_SUPPORTS_GENLOCK_CLOCK
 
 #ifdef __cplusplus
 extern "C" {
@@ -64,7 +75,7 @@ CM_SWIFT_INIT_FOR_CF_TYPE(CMTimebase, API_AVAILABLE(macos(10.8), ios(6.0), tvos(
 typedef CM_BRIDGED_TYPE(id) CFTypeRef CMClockOrTimebaseRef API_AVAILABLE(macos(10.8), ios(6.0), tvos(9.0), watchos(6.0), visionos(1.0)) CM_SWIFT_SENDABLE; // used in argument lists and function results to indicate that either may be passed
 
 #ifndef CMTIMEBASE_USE_SOURCE_TERMINOLOGY
-#if (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ >= __MAC_12_0) || (__ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__ >= __IPHONE_15_0) || (__ENVIRONMENT_TV_OS_VERSION_MIN_REQUIRED__ >= __TVOS_15_0) || (__ENVIRONMENT_WATCH_OS_VERSION_MIN_REQUIRED__ >= __WATCHOS_8_0) || 0
+#if (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ >= __MAC_12_0) || (__ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__ >= __IPHONE_15_0) || (__ENVIRONMENT_TV_OS_VERSION_MIN_REQUIRED__ >= __TVOS_15_0) || (__ENVIRONMENT_WATCH_OS_VERSION_MIN_REQUIRED__ >= __WATCHOS_8_0) || TARGET_OS_VISION || 0
 #define CMTIMEBASE_USE_SOURCE_TERMINOLOGY 1 // When using the SDK that includes this header file, apps may adopt the newer terminology and continue to deploy to prior OS versions.
 #else
 #define CMTIMEBASE_USE_SOURCE_TERMINOLOGY 0 // Prior to 2021, the source clock or source timebase was referred to as a master clock or master timebase.
@@ -84,6 +95,15 @@ enum
 	kCMClockError_AllocationFailed			= -12747,
 	kCMClockError_UnsupportedOperation		= -12756,
 } API_AVAILABLE(macos(10.8), ios(6.0), tvos(9.0), watchos(6.0), visionos(1.0));
+
+#if COREMEDIA_USE_DERIVED_ENUMS_FOR_CONSTANTS
+enum : OSStatus
+#else
+enum
+#endif
+{
+	kCMClockError_PreferredStartTimeNotAvailable	= -12758,
+} API_AVAILABLE(macos(27.0), macCatalyst(27.0), ios(27.0), tvos(27.0), watchos(27.0), visionos(27.0));
 
 // CMTimebase error codes
 #if COREMEDIA_USE_DERIVED_ENUMS_FOR_CONSTANTS
@@ -187,6 +207,33 @@ CMClockMightDrift(
 		CMClockRef CM_NONNULL clock,
 		CMClockRef CM_NONNULL otherClock )
 			API_AVAILABLE(macos(10.8), ios(6.0), tvos(9.0), watchos(6.0), visionos(1.0));
+
+/// Indicates whether a clock implements the `CMClockGetPreferredStartTimePattern` function.
+CM_EXPORT Boolean
+CMClockImplementsGetPreferredStartTimePattern(
+		CMClockRef CM_NONNULL clock ) CM_REFINED_FOR_SWIFT
+	API_AVAILABLE(macos(27.0), macCatalyst(27.0), ios(27.0), tvos(27.0), watchos(27.0), visionos(27.0));
+
+/// Retrieves a description of the pattern of preferred start times, such as for synchronization with an external genlock signal.
+///
+/// When the system is disciplined to a sync signal, this function returns a
+/// matched time pair in the near future and the delta between successive times.
+/// - Parameters:
+///   - outClockStartTime: Points to a CMTime to receive the clock time of the next preferred start time pair.
+///   - outHostClockStartTime: Points to a CMTime to receive the host clock time of the next preferred start time pair.
+///   - outDeltaBetweenPreferredStartTimes: Points to a CMTime to receive the delta between successive preferred start times.
+///     Integer multiples of this delta may be added to the clock start time and
+///     host clock start time to calculate near future preferred start times.
+/// - Returns: `noErr` on success, `kCMClockError_UnsupportedOperation` if the clock does not
+///   support this function, or `kCMClockError_PreferredStartTimeNotAvailable` if the system is
+///   not disciplined to a present signal.
+CM_EXPORT OSStatus
+CMClockGetPreferredStartTimePattern(
+		CMClockRef CM_NONNULL clock,
+		CMTime * CM_NULLABLE outClockStartTime,
+		CMTime * CM_NULLABLE outHostClockStartTime,
+		CMTime * CM_NULLABLE outDeltaBetweenPreferredStartTimes ) CM_REFINED_FOR_SWIFT
+	API_AVAILABLE(macos(27.0), macCatalyst(27.0), ios(27.0), tvos(27.0), watchos(27.0), visionos(27.0));
 
 /*!
 	@function	CMClockInvalidate

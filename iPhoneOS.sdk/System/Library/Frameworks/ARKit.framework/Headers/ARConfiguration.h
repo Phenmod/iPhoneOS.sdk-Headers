@@ -14,6 +14,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+API_UNAVAILABLE_BEGIN(visionos)
+
 @class ARReferenceImage;
 @class ARReferenceObject;
 @class ARVideoFormat;
@@ -29,40 +31,50 @@ typedef NS_OPTIONS(NSUInteger, ARFrameSemantics) {
 
     /**
      Person segmentation.
-     @discussion A pixel in the image frame that gets classified as person will have an intensity value equal to 'ARSegmentationClassPerson'.
-     @see -[ARFrame segmentationBuffer]
-     @see ARSegmentationClass
+
+     A pixel in the image frame that gets classified as person will have an intensity value equal to 'ARSegmentationClassPerson'.
+
+     - SeeAlso: ``ARFrame/segmentationBuffer``
+     - SeeAlso: ``ARSegmentationClass``
     */
     ARFrameSemanticPersonSegmentation = (1 << 0),
 
     /**
      Person segmentation with depth.
-     @discussion A pixel in the image frame that gets classified as person will have an intensity value equal to 'ARSegmentationClassPerson'.
+
+     A pixel in the image frame that gets classified as person will have an intensity value equal to 'ARSegmentationClassPerson'.
      Additionally, every pixel in the image frame that gets classified as person will also have a depth value.
-     @see -[ARFrame estimatedDepthData]
-     @see -[ARFrame segmentationBuffer]
+
+     - SeeAlso: ``ARFrame/estimatedDepthData``
+     - SeeAlso: ``ARFrame/segmentationBuffer``
      */
     ARFrameSemanticPersonSegmentationWithDepth = (1 << 1) | (1 << 0),
 
     /**
      Body detection.
-     @discussion Once activated an ARFrame will contain information about a detected body.
-     @see -[ARFrame detectedBody]
-     @see ARBody2D
-     */
+
+     Once activated an `ARFrame` will contain information about a detected body.
+
+     - SeeAlso: ``ARFrame/detectedBody``
+     - SeeAlso: ``ARBody2D``
+    */
     ARFrameSemanticBodyDetection = (1 << 2),
 
     /**
      Scene Depth.
-     @discussion Each capturedImage will have an associated scene depth data.
-     @see - [ARFrame sceneDepth]
+
+     Each `capturedImage` will have an associated scene depth data.
+
+     - SeeAlso: ``ARFrame/sceneDepth``
     */
     ARFrameSemanticSceneDepth API_AVAILABLE(ios(14.0)) = (1 << 3),
 
     /**
      Smoothed Scene Depth.
-     @discussion Each capturedImage will have an associated scene depth data that is temporally smoothed.
-     @see - [ARFrame smoothedSceneDepth]
+
+     Each `capturedImage` will have an associated scene depth data that is temporally smoothed.
+
+     - SeeAlso: ``ARFrame/smoothedSceneDepth``
     */
     ARFrameSemanticSmoothedSceneDepth API_AVAILABLE(ios(14.0)) = (1 << 4),
 
@@ -128,8 +140,9 @@ API_AVAILABLE(ios(11.0))
 
 /**
  A list of supported video formats for this configuration and device.
- @discussion The first element in the list is the default format for session output.
- */
+
+ The first element in the list is the default format for session output.
+*/
 @property (class, nonatomic, readonly) NSArray<ARVideoFormat *> *supportedVideoFormats API_AVAILABLE(ios(11.3));
 
 /**
@@ -139,73 +152,96 @@ API_AVAILABLE(ios(11.0))
 
 /**
  Determines how the coordinate system should be aligned with the world.
- @discussion The default is ARWorldAlignmentGravity.
- */
+
+ The default is `ARWorldAlignmentGravity`.
+*/
 @property (nonatomic, assign) ARWorldAlignment worldAlignment;
 
 /**
  Enable or disable light estimation.
- @discussion Enabled by default.
- */
+
+ Enabled by default.
+*/
 @property (nonatomic, assign, getter=isLightEstimationEnabled) BOOL lightEstimationEnabled;
 
 /**
  Determines whether to capture and provide audio data.
- @discussion Disabled by default.
- */
+
+ Disabled by default.
+*/
 @property (nonatomic, assign) BOOL providesAudioData;
 
 /**
  The type of semantic understanding to provide with each frame.
 
- @discussion Use the `supportsFrameSemantics` class method to check if the configuration type you intend to run supports the set of frame semantics.
- For example, when running a session with a configuration of type ARWorldTrackingConfiguration one would need to use `+[ ARWorldTrackingConfiguration
- supportsFrameSemantics:]` to perform said check. An exception is thrown if the option is not supported. Defaults to ARFrameSemanticNone.
- @see ARFrameSemantics
- @see +[ARConfiguration supportsFrameSemantics:]
+ Use the `supportsFrameSemantics` class method to check if the configuration type you intend to run supports the set of frame semantics.
+ For example, when running a session with a configuration of type `ARWorldTrackingConfiguration` one would need to use `+[
+ ARWorldTrackingConfiguration supportsFrameSemantics:]` to perform said check. An exception is thrown if the option is not supported. Defaults to
+ `ARFrameSemanticNone`.
+
+ - SeeAlso: ``ARFrameSemantics``
+ - SeeAlso: ``ARConfiguration/supportsFrameSemantics:``
 */
 @property (nonatomic, assign) ARFrameSemantics frameSemantics API_AVAILABLE(ios(13.0));
 
 /**
  Determines whether the type of frame semantics is supported by the device and ARConfiguration class.
 
- @discussion Semantic frame understanding is not supported on all devices. Use the `supportsFrameSemantics` class method to check if the configuration
+ Semantic frame understanding is not supported on all devices. Use the `supportsFrameSemantics` class method to check if the configuration
  type you intend to run supports the set of frame semantics. For example, when running a session with a configuration of type
  ARWorldTrackingConfiguration one would need to use
  `+[ ARWorldTrackingConfiguration supportsFrameSemantics:]` to perform said check.
- @see ARFrameSemantics
+
+ - Parameter frameSemantics: The frame semantics to check for support.
+
+ - Returns: `YES` if the frame semantics are supported on this device and configuration class, `NO` otherwise.
+
+ - SeeAlso: ``ARFrameSemantics``
 */
 + (BOOL)supportsFrameSemantics:(ARFrameSemantics)frameSemantics API_AVAILABLE(ios(13.0));
 
 /**
  Returns a pointer to the capture device of the camera that's used for rendering, so developers can adjust capture settings.
- @discussion May return nil if it is not recommended to modify capture settings, for example if the primary camera is used for tracking.
- */
-@property (class, nonatomic, nullable, readonly) AVCaptureDevice *configurableCaptureDeviceForPrimaryCamera
-        API_AVAILABLE(ios(16.0));
+
+ Note: Modifying capture settings can impact performance of tracking or other algorithms, particularly on devices with a single rear camera.
+*/
+@property (class, nonatomic, nullable, readonly) AVCaptureDevice *configurableCaptureDeviceForPrimaryCamera API_AVAILABLE(ios(16.0));
 
 /**
  Returns a video format using a 4K resolution from the list of supported video formats.
- @discussion May return nil if 4K is not supported for this configuration or device.
- */
+
+ May return `nil` if 4K is not supported for this configuration or device.
+*/
 @property (class, nonatomic, nullable, readonly) ARVideoFormat *recommendedVideoFormatFor4KResolution API_AVAILABLE(ios(16.0));
 
 /**
  Returns a recommended video format that supports capturing high resolution frames with a significantly higher resolution than the streaming camera
  resolution.
- @discussion Using this format may consume more power. Other video formats may support capturing high resolution frames as well, albeit at a lower
+
+ Using this format may consume more power. Other video formats may support capturing high resolution frames as well, albeit at a lower
  quality or resolution.
- @see [ARSession captureHighResolutionFrameWithCompletion:]
- */
+
+ - SeeAlso: ``ARSession/captureHighResolutionFrameWithCompletion:``
+*/
 @property (class, nonatomic, nullable, readonly) ARVideoFormat *recommendedVideoFormatForHighResolutionFrameCapturing API_AVAILABLE(ios(16.0));
 
 /**
- Whether HDR capturing is allowed if the current video format supports it. Defaults to @c NO.
+ Whether HDR capturing is allowed if the current video format supports it. Defaults to `NO`.
  */
 @property (nonatomic, assign, readwrite) BOOL videoHDRAllowed API_AVAILABLE(ios(16.0));
 
-/** Unavailable */
+/**
+ Unavailable. Use configuration subclasses instead.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)init NS_UNAVAILABLE;
+
+/**
+ Unavailable. Use configuration subclasses instead.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_UNAVAILABLE;
 
 @end
@@ -213,25 +249,27 @@ API_AVAILABLE(ios(11.0))
 /**
  A configuration for running world tracking.
 
- @discussion World tracking provides 6 degrees of freedom tracking of the device.
+ World tracking provides `6` degrees of freedom tracking of the device.
  By finding feature points in the scene, world tracking enables performing hit-tests against the frame.
  Tracking can no longer be resumed once the session is paused.
- */
+*/
 API_AVAILABLE(ios(11.0))
 @interface ARWorldTrackingConfiguration : ARConfiguration
 
 /**
  Enable or disable continuous auto focus.
- @discussion Enabled by default.
- */
+
+ Enabled by default.
+*/
 @property (nonatomic, assign, getter=isAutoFocusEnabled) BOOL autoFocusEnabled API_AVAILABLE(ios(11.3));
 
 /**
  The mode of environment texturing to run.
- @discussion If set, texture information will be accumulated and updated. Adding an AREnvironmentProbeAnchor to the session
+
+ If set, texture information will be accumulated and updated. Adding an `AREnvironmentProbeAnchor` to the session
  will get the current environment texture available from that probe's perspective which can be used for lighting
- virtual objects in the scene. Defaults to AREnvironmentTexturingNone.
- */
+ virtual objects in the scene. Defaults to `AREnvironmentTexturingNone`.
+*/
 @property (nonatomic, assign) AREnvironmentTexturing environmentTexturing API_AVAILABLE(ios(12.0));
 
 /**
@@ -241,56 +279,86 @@ API_AVAILABLE(ios(11.0))
 
 /**
  Type of planes to detect in the scene.
- @discussion If set, new planes will continue to be detected and updated over time. Detected planes will be added to the session as
+
+ If set, new planes will continue to be detected and updated over time. Detected planes will be added to the session as
  ARPlaneAnchor objects. In the event that two planes are merged, the newer plane will be removed. Defaults to ARPlaneDetectionNone.
- */
+*/
 @property (nonatomic, assign) ARPlaneDetection planeDetection;
 
 /**
  The initial map of the physical space that world tracking will localize to and track.
- @discussion If set, the session will attempt to localize to the provided map with
+
+ If set, the session will attempt to localize to the provided map with
  a limited tracking state until localization is successful or run is called again
  with a different (or no) initial map specified. Once localized, the map will be extended
  and can again be saved using the `getCurrentWorldMap` method on the session.
- */
+*/
 @property (nonatomic, strong, nullable) ARWorldMap *initialWorldMap API_AVAILABLE(ios(12.0));
 
 /**
  Images to detect in the scene.
- @discussion If set the session will attempt to detect the specified images. When an image is detected an ARImageAnchor will be added to the session.
- */
+
+ If set the session will attempt to detect the specified images. When an image is detected an `ARImageAnchor` will be added to the session.
+*/
 @property (nonatomic, copy, null_resettable) NSSet<ARReferenceImage *> *detectionImages API_AVAILABLE(ios(11.3));
 
 /**
  Enables the estimation of a scale factor which may be used to correct the physical size of an image.
- @discussion If set to true ARKit will attempt to use the computed camera positions in order to compute the scale by which the given physical size
+
+ If set to `true` ARKit will attempt to use the computed camera positions in order to compute the scale by which the given physical size
  differs from the estimated one. The information about the estimated scale can be found as the property estimatedScaleFactor on the ARImageAnchor.
- @note When set to true the transform of a returned ARImageAnchor will use the estimated scale factor to correct the translation. Default value is NO.
-  */
+
+ - Note: When set to true the transform of a returned `ARImageAnchor` will use the estimated scale factor to correct the translation. Default value is
+ `NO`.
+*/
 @property (nonatomic, assign) BOOL automaticImageScaleEstimationEnabled API_AVAILABLE(ios(13.0));
 
 /**
  Maximum number of images to track simultaneously.
- @discussion Setting the maximum number of tracked images will limit the number of images that can be tracked in a given frame.
+
+ Setting the maximum number of tracked images will limit the number of images that can be tracked in a given frame.
  If more than the maximum is visible, only the images already being tracked will continue to track until tracking is lost or another image is removed.
  Images will continue to be detected regardless of images tracked. Default value is zero.
- */
+*/
 @property (nonatomic, assign) NSInteger maximumNumberOfTrackedImages API_AVAILABLE(ios(12.0));
 
 /**
  Objects to detect in the scene.
- @discussion If set the session will attempt to detect the specified objects. When an object is detected an ARObjectAnchor will be added to the
- session.
- */
+
+ The system keeps the object's pose stable in world space, consuming less power. Virtual content stays aligned with the
+ object as long as it doesn't move; if the object moves, the system may delay the pose update. When an object is
+ detected, an `ARObjectAnchor` is added to the session.
+
+ Use this property for objects that are mostly stationary. For moving or handheld objects that need precise, per-frame
+ updates, use `trackingObjects` instead.
+
+ - Note: Supports both the `.arobject` format (introduced in iOS 12) and the `.referenceobject` format (introduced in
+ iOS 27). A single session can't use both formats.
+*/
 @property (nonatomic, copy) NSSet<ARReferenceObject *> *detectionObjects API_AVAILABLE(ios(12.0));
+
+/**
+ Objects to track in the scene.
+
+ The system tracks the object at the full frame rate of the selected `videoFormat`. When an object is tracked, an
+ `ARObjectAnchor` is added to the session.
+
+ Use this property for moving or handheld objects that require precise, per-frame pose updates. High frame-rate tracking
+ significantly increases power consumption and processing load. For mostly stationary objects, use `detectionObjects`
+ instead.
+
+ - Note: Only the `.referenceobject` format (introduced in iOS 27) is supported; the older `.arobject` format works only
+ with `detectionObjects`. A single session can't use both formats.
+*/
+@property (nonatomic, copy) NSSet<ARReferenceObject *> *trackingObjects API_AVAILABLE(ios(27.0));
 
 /**
  Enable/disable a collaborative session. Disabled by default.
 
- @discussion When enabled, ARSession will output collaboration data for other participants using its delegate didOutputCollaborationData.
+ When enabled, `ARSession` will output collaboration data for other participants using its delegate `didOutputCollaborationData`.
  It is the responsibility of the caller to send the data to each participant. When data is received by a participant, it
  should be passed to the ARSession by calling updateWithCollaborationData.
- */
+*/
 @property (nonatomic, assign, getter=isCollaborationEnabled) BOOL collaborationEnabled API_AVAILABLE(ios(13.0));
 
 /**
@@ -300,12 +368,14 @@ API_AVAILABLE(ios(11.0))
 
 /**
  Enable or disable running Face Tracking using the front facing camera. Disabled by default.
+
  When enabled, ARSession detects faces (if visible in the front-facing camera image) and adds to its list of anchors,
  an ARFaceAnchor object representing each face.
 
- @discussion The transform of the ARFaceAnchor objects will be in the world coordinate space.
- @see ARFaceAnchor
- */
+ The transform of the `ARFaceAnchor` objects will be in the world coordinate space.
+
+ - SeeAlso: ``ARFaceAnchor``
+*/
 @property (nonatomic, assign, getter=userFaceTrackingEnabled) BOOL userFaceTrackingEnabled API_AVAILABLE(ios(13.0));
 
 /**
@@ -320,18 +390,35 @@ API_AVAILABLE(ios(11.0))
 
 /**
  Indicates whether the scene reconstruction type is supported for the configuration on this device.
- */
+
+ - Parameter sceneReconstruction: The scene reconstruction type to check for support.
+
+ - Returns: `YES` if the scene reconstruction type is supported on this device, `NO` otherwise.
+*/
 + (BOOL)supportsSceneReconstruction:(ARSceneReconstruction)sceneReconstruction API_AVAILABLE(ios(13.4));
 
 /**
  Type of scene reconstruction to run. Defaults to ARSceneReconstructionNone.
- @see ARMeshAnchor
- @discussion If set to a value other than ARSceneReconstructionNone, output of scene reconstruction will be added to the session as
+
+ If set to a value other than `ARSceneReconstructionNone`, output of scene reconstruction will be added to the session as
  ARMeshAnchor objects.
- */
+
+ - SeeAlso: ``ARMeshAnchor``
+*/
 @property (nonatomic, assign) ARSceneReconstruction sceneReconstruction API_AVAILABLE(ios(13.4));
 
+/**
+ Initializes a new world tracking configuration.
+
+ - Returns: An initialized world tracking configuration.
+*/
 - (instancetype)init;
+
+/**
+ Unavailable. Use init instead.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_SWIFT_UNAVAILABLE("Use init() instead");
 
 @end
@@ -339,18 +426,30 @@ API_AVAILABLE(ios(11.0))
 /**
  A configuration for running orientation tracking.
 
- @discussion Orientation tracking provides 3 degrees of freedom tracking of the device.
- */
+ Orientation tracking provides `3` degrees of freedom tracking of the device.
+*/
 API_AVAILABLE(ios(11.0))
 @interface AROrientationTrackingConfiguration : ARConfiguration
 
 /**
  Enable or disable continuous auto focus.
- @discussion Enabled by default.
- */
+
+ Enabled by default.
+*/
 @property (nonatomic, assign, getter=isAutoFocusEnabled) BOOL autoFocusEnabled API_AVAILABLE(ios(11.3));
 
+/**
+ Initializes a new orientation tracking configuration.
+
+ - Returns: An initialized orientation tracking configuration.
+*/
 - (instancetype)init;
+
+/**
+ Unavailable. Use init instead.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_SWIFT_UNAVAILABLE("Use init() instead");
 
 @end
@@ -358,10 +457,10 @@ API_AVAILABLE(ios(11.0))
 /**
  A configuration for running face tracking.
 
- @discussion Face tracking uses the front facing camera to track the face in 3D providing details on the topology and expression of the face.
+ Face tracking uses the front facing camera to track the face in 3D providing details on the topology and expression of the face.
  A detected face will be added to the session as an ARFaceAnchor object which contains information about head pose, mesh, eye pose, and blend shape
  coefficients. If light estimation is enabled the detected face will be treated as a light probe and used to estimate the direction of incoming light.
- */
+*/
 API_AVAILABLE(ios(11.0))
 @interface ARFaceTrackingConfiguration : ARConfiguration
 
@@ -372,10 +471,11 @@ API_AVAILABLE(ios(11.0))
 
 /**
  Maximum number of faces to track simultaneously.
- @discussion Setting the maximum number of tracked faces will limit the number of faces that can be tracked in a given frame.
+
+ Setting the maximum number of tracked faces will limit the number of faces that can be tracked in a given frame.
  If more than the maximum is visible, only the faces already being tracked will continue to track until tracking is lost or another face is removed.
  Default value is one.
- */
+*/
 @property (nonatomic, assign) NSInteger maximumNumberOfTrackedFaces API_AVAILABLE(ios(13.0));
 
 /**
@@ -386,12 +486,30 @@ API_AVAILABLE(ios(11.0))
 /**
  Enable or disable World Tracking. Disabled by default.
 
- @discussion When enabled, ARSession uses the back facing camera to track the device's orientation and position in the world. The camera transform and
+ When enabled, `ARSession` uses the back facing camera to track the device's orientation and position in the world. The camera transform and
  the ARFaceAnchor transform will be in the world coordinate space.
- */
+*/
 @property (nonatomic, assign, getter=isWorldTrackingEnabled) BOOL worldTrackingEnabled API_AVAILABLE(ios(13.0));
 
+/**
+ Enable or disable environment texturing.
+
+ When enabled, the system automatically generates and updates the environment texture at the device position. Disabled by default.
+*/
+@property (nonatomic, assign, getter=isEnvironmentTexturingEnabled) BOOL environmentTexturingEnabled API_AVAILABLE(ios(27.0));
+
+/**
+ Initializes a new face tracking configuration.
+
+ - Returns: An initialized face tracking configuration.
+*/
 - (instancetype)init;
+
+/**
+ Unavailable. Use init instead.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_SWIFT_UNAVAILABLE("Use init() instead");
 
 @end
@@ -399,15 +517,16 @@ API_AVAILABLE(ios(11.0))
 /**
  A configuration for running image tracking.
 
- @discussion Image tracking provides 6 degrees of freedom tracking of known images. Four images may be tracked simultaneously.
- */
+ Image tracking provides 6 degrees of freedom tracking of known images. Four images may be tracked simultaneously.
+*/
 API_AVAILABLE(ios(12.0))
 @interface ARImageTrackingConfiguration : ARConfiguration
 
 /**
  Enable or disable continuous auto focus.
- @discussion Enabled by default.
- */
+
+ Enabled by default.
+*/
 @property (nonatomic, assign, getter=isAutoFocusEnabled) BOOL autoFocusEnabled;
 
 /**
@@ -417,13 +536,25 @@ API_AVAILABLE(ios(12.0))
 
 /**
  Maximum number of images to track simultaneously.
- @discussion Setting the maximum number of tracked images will limit the number of images that can be tracked in a given frame.
+
+ Setting the maximum number of tracked images will limit the number of images that can be tracked in a given frame.
  If more than the maximum is visible, only the images already being tracked will continue to track until tracking is lost or another image is removed.
  Default value is one.
- */
+*/
 @property (nonatomic, assign) NSInteger maximumNumberOfTrackedImages;
 
+/**
+ Initializes a new image tracking configuration.
+
+ - Returns: An initialized image tracking configuration.
+*/
 - (instancetype)init;
+
+/**
+ Unavailable. Use init instead.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_SWIFT_UNAVAILABLE("Use init() instead");
 
 @end
@@ -431,27 +562,40 @@ API_AVAILABLE(ios(12.0))
 /**
  A configuration for scanning objects.
 
- @discussion The object scanning configuration runs world tracking, capturing additional detail in order to create reference objects.
+ The object scanning configuration runs world tracking, capturing additional detail in order to create reference objects.
  Running object scanning will consume additional power in order to provide more detailed features.
  The createReferenceObject method can be called on the session to capture a scan of an object in the world.
- */
-API_AVAILABLE(ios(12.0))
+*/
+API_DEPRECATED("Please consider migrating to the new reference object format.", ios(12.0, 27.0));
 @interface ARObjectScanningConfiguration : ARConfiguration
 
 /**
  Enable or disable continuous auto focus.
- @discussion Enabled by default.
- */
+
+ Enabled by default.
+*/
 @property (nonatomic, assign, getter=isAutoFocusEnabled) BOOL autoFocusEnabled;
 
 /**
  Type of planes to detect in the scene.
- @discussion If set, new planes will continue to be detected and updated over time. Detected planes will be added to the session as
+
+ If set, new planes will continue to be detected and updated over time. Detected planes will be added to the session as
  ARPlaneAnchor objects. In the event that two planes are merged, the newer plane will be removed. Defaults to ARPlaneDetectionNone.
- */
+*/
 @property (nonatomic, assign) ARPlaneDetection planeDetection;
 
+/**
+ Initializes a new object scanning configuration.
+
+ - Returns: An initialized object scanning configuration.
+*/
 - (instancetype)init;
+
+/**
+ Unavailable. Use init instead.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_SWIFT_UNAVAILABLE("Use init() instead");
 
 @end
@@ -459,35 +603,39 @@ API_AVAILABLE(ios(12.0))
 /**
  A configuration for running body tracking.
 
- @discussion Body tracking provides 6 degrees of freedom tracking of a detected body in the scene. By default, ARFrameSemanticBodyDetection will be
+ Body tracking provides 6 degrees of freedom tracking of a detected body in the scene. By default, `ARFrameSemanticBodyDetection` will be
  enabled.
- @see ARBodyAnchor
- @see -[ARFrame detectedBody]
- */
+
+ - SeeAlso: ``ARBodyAnchor``
+ - SeeAlso: ``ARFrame/detectedBody``
+*/
 API_AVAILABLE(ios(13.0))
 @interface ARBodyTrackingConfiguration : ARConfiguration
 
 /**
  Enable or disable continuous auto focus.
- @discussion Enabled by default.
- */
+
+ Enabled by default.
+*/
 @property (nonatomic, assign, getter=isAutoFocusEnabled) BOOL autoFocusEnabled;
 
 /**
  The initial map of the physical space that world tracking will localize to and track.
- @discussion If set, the session will attempt to localize to the provided map with
+
+ If set, the session will attempt to localize to the provided map with
  a limited tracking state until localization is successful or run is called again
  with a different (or no) initial map specified. Once localized, the map will be extended
  and can again be saved using the `getCurrentWorldMap` method on the session.
- */
+*/
 @property (nonatomic, strong, nullable) ARWorldMap *initialWorldMap;
 
 /**
  The mode of environment texturing to run.
- @discussion If set, texture information will be accumulated and updated. Adding an AREnvironmentProbeAnchor to the session
+
+ If set, texture information will be accumulated and updated. Adding an `AREnvironmentProbeAnchor` to the session
  will get the current environment texture available from that probe's perspective which can be used for lighting
  virtual objects in the scene. Defaults to AREnvironmentTexturingNone.
- */
+*/
 @property (nonatomic, assign) AREnvironmentTexturing environmentTexturing;
 
 /**
@@ -497,38 +645,47 @@ API_AVAILABLE(ios(13.0))
 
 /**
  Type of planes to detect in the scene.
- @discussion If set, new planes will continue to be detected and updated over time. Detected planes will be added to the session as
+
+ If set, new planes will continue to be detected and updated over time. Detected planes will be added to the session as
  ARPlaneAnchor objects. In the event that two planes are merged, the newer plane will be removed. Defaults to ARPlaneDetectionNone.
- */
+*/
 @property (nonatomic, assign) ARPlaneDetection planeDetection;
 
 /**
-Images to detect in the scene.
-@discussion If set the session will attempt to detect the specified images. When an image is detected an ARImageAnchor will be added to the session.
+ Images to detect in the scene.
+
+ If set the session will attempt to detect the specified images. When an image is detected an `ARImageAnchor` will be added to the session.
 */
 @property (nonatomic, copy) NSSet<ARReferenceImage *> *detectionImages;
 
 /**
  Enables the estimation of a scale factor which may be used to correct the physical size of an image.
- @discussion If set to true ARKit will attempt to use the computed camera positions in order to compute the scale by which the given physical size
+
+ If set to true ARKit will attempt to use the computed camera positions in order to compute the scale by which the given physical size
  differs from the estimated one. The information about the estimated scale can be found as the property estimatedScaleFactor on the ARImageAnchor.
- @note When set to true the transform of a returned ARImageAnchor will use the estimated scale factor to correct the translation. Default value is NO.
- */
+
+ - Note: When set to true the transform of a returned `ARImageAnchor` will use the estimated scale factor to correct the translation. Default value is
+ `NO`.
+*/
 @property (nonatomic, assign) BOOL automaticImageScaleEstimationEnabled;
 
 /**
  Enables the estimation of a scale factor which may be used to correct the physical size of a skeleton in 3D.
- @discussion If set to true ARKit will attempt to use the computed camera positions in order to compute the scale by which the given physical size
+
+ If set to true ARKit will attempt to use the computed camera positions in order to compute the scale by which the given physical size
  differs from the default one. The information about the estimated scale can be found as the property estimatedScaleFactor on the ARBodyAnchor.
- @note When set to true the transform of a returned ARBodyAnchor will use the estimated scale factor to correct the translation. Default value is NO.
- */
+
+ - Note: When set to true the transform of a returned `ARBodyAnchor` will use the estimated scale factor to correct the translation. Default value is
+ `NO`.
+*/
 @property (nonatomic, assign) BOOL automaticSkeletonScaleEstimationEnabled;
 /**
  Maximum number of images to track simultaneously.
- @discussion Setting the maximum number of tracked images will limit the number of images that can be tracked in a given frame.
+
+ Setting the maximum number of tracked images will limit the number of images that can be tracked in a given frame.
  If more than the maximum is visible, only the images already being tracked will continue to track until tracking is lost or another image is removed.
  Images will continue to be detected regardless of images tracked. Default value is zero.
- */
+*/
 @property (nonatomic, assign) NSInteger maximumNumberOfTrackedImages;
 
 /**
@@ -541,7 +698,18 @@ Images to detect in the scene.
  */
 @property (class, nonatomic, readonly) BOOL supportsAppClipCodeTracking API_AVAILABLE(ios(14.3));
 
+/**
+ Initializes a new body tracking configuration.
+
+ - Returns: An initialized body tracking configuration.
+*/
 - (instancetype)init;
+
+/**
+ Unavailable. Use init instead.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_SWIFT_UNAVAILABLE("Use init() instead");
 
 @end
@@ -549,29 +717,42 @@ Images to detect in the scene.
 /**
  A configuration for running positional tracking.
 
- @discussion Positional tracking provides 6 degrees of freedom tracking of the device by running the camera at lowest possible resolution and frame
+ Positional tracking provides `6` degrees of freedom tracking of the device by running the camera at lowest possible resolution and frame
  rate.
- */
+*/
 API_AVAILABLE(ios(13.0))
 @interface ARPositionalTrackingConfiguration : ARConfiguration
 
 /**
  Type of planes to detect in the scene.
- @discussion If set, new planes will continue to be detected and updated over time. Detected planes will be added to the session as
+
+ If set, new planes will continue to be detected and updated over time. Detected planes will be added to the session as
  ARPlaneAnchor objects. In the event that two planes are merged, the newer plane will be removed. Defaults to ARPlaneDetectionNone.
- */
+*/
 @property (nonatomic, assign) ARPlaneDetection planeDetection;
 
 /**
  The initial map of the physical space that world tracking will localize to and track.
- @discussion If set, the session will attempt to localize to the provided map with
+
+ If set, the session will attempt to localize to the provided map with
  a limited tracking state until localization is successful or run is called again
  with a different (or no) initial map specified. Once localized, the map will be extended
  and can again be saved using the `getCurrentWorldMap` method on the session.
- */
+*/
 @property (nonatomic, strong, nullable) ARWorldMap *initialWorldMap;
 
+/**
+ Initializes a new positional tracking configuration.
+
+ - Returns: An initialized positional tracking configuration.
+*/
 - (instancetype)init;
+
+/**
+ Unavailable. Use init instead.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_SWIFT_UNAVAILABLE("Use init() instead");
 
 @end
@@ -579,8 +760,8 @@ API_AVAILABLE(ios(13.0))
 /**
  A configuration for running geographical world tracking.
 
- @discussion It allows placing geo-referenced anchors (ARGeoAnchor) in the scene by running world tracking with location and compass.
- */
+ It allows placing geo-referenced anchors (ARGeoAnchor) in the scene by running world tracking with location and compass.
+*/
 API_AVAILABLE(ios(14.0))
 @interface ARGeoTrackingConfiguration : ARConfiguration
 
@@ -589,10 +770,11 @@ API_AVAILABLE(ios(14.0))
 
 /**
  The mode of environment texturing to run.
- @discussion If set, texture information will be accumulated and updated. Adding an AREnvironmentProbeAnchor to the session
+
+ If set, texture information will be accumulated and updated. Adding an `AREnvironmentProbeAnchor` to the session
  will get the current environment texture available from that probe's perspective which can be used for lighting
  virtual objects in the scene. Defaults to AREnvironmentTexturingNone.
- */
+*/
 @property (nonatomic, assign) AREnvironmentTexturing environmentTexturing;
 
 /**
@@ -602,39 +784,68 @@ API_AVAILABLE(ios(14.0))
 
 /**
  Type of planes to detect in the scene.
- @discussion If set, new planes will continue to be detected and updated over time. Detected planes will be added to the session as
+
+ If set, new planes will continue to be detected and updated over time. Detected planes will be added to the session as
  ARPlaneAnchor objects. In the event that two planes are merged, the newer plane will be removed. Defaults to ARPlaneDetectionNone.
- */
+*/
 @property (nonatomic, assign) ARPlaneDetection planeDetection;
 
 /**
  Images to detect in the scene.
- @discussion If set the session will attempt to detect the specified images. When an image is detected an ARImageAnchor will be added to the session.
- */
+
+ If set the session will attempt to detect the specified images. When an image is detected an `ARImageAnchor` will be added to the session.
+*/
 @property (nonatomic, copy, null_resettable) NSSet<ARReferenceImage *> *detectionImages;
 
 /**
  Enables the estimation of a scale factor which may be used to correct the physical size of an image.
- @discussion If set to true ARKit will attempt to use the computed camera positions in order to compute the scale by which the given physical size
+
+ If set to true ARKit will attempt to use the computed camera positions in order to compute the scale by which the given physical size
  differs from the estimated one. The information about the estimated scale can be found as the property estimatedScaleFactor on the ARImageAnchor.
- @note When set to true the transform of a returned ARImageAnchor will use the estimated scale factor to correct the translation. Default value is NO.
-  */
+
+ - Note: When set to true the transform of a returned `ARImageAnchor` will use the estimated scale factor to correct the translation. Default value is
+ `NO`.
+*/
 @property (nonatomic, assign) BOOL automaticImageScaleEstimationEnabled;
 
 /**
  Maximum number of images to track simultaneously.
- @discussion Setting the maximum number of tracked images will limit the number of images that can be tracked in a given frame.
+
+ Setting the maximum number of tracked images will limit the number of images that can be tracked in a given frame.
  If more than the maximum is visible, only the images already being tracked will continue to track until tracking is lost or another image is removed.
  Images will continue to be detected regardless of images tracked. Default value is zero.
- */
+*/
 @property (nonatomic, assign) NSInteger maximumNumberOfTrackedImages;
 
 /**
  Objects to detect in the scene.
- @discussion If set the session will attempt to detect the specified objects. When an object is detected an ARObjectAnchor will be added to the
- session.
- */
+
+ The system keeps the object's pose stable in world space, consuming less power. Virtual content stays aligned with the
+ object as long as it doesn't move; if the object moves, the system may delay the pose update. When an object is
+ detected, an `ARObjectAnchor` is added to the session.
+
+ Use this property for objects that are mostly stationary. For moving or handheld objects that need precise, per-frame
+ updates, use `trackingObjects` instead.
+
+ - Note: Supports both the `.arobject` format (introduced in iOS 12) and the `.referenceobject` format (introduced in
+ iOS 27). A single session can't use both formats.
+*/
 @property (nonatomic, copy) NSSet<ARReferenceObject *> *detectionObjects;
+
+/**
+ Objects to track in the scene.
+
+ The system tracks the object at the full frame rate of the selected `videoFormat`. When an object is tracked, an
+ `ARObjectAnchor` is added to the session.
+
+ Use this property for moving or handheld objects that require precise, per-frame pose updates. High frame-rate tracking
+ significantly increases power consumption and processing load. For mostly stationary objects, use `detectionObjects`
+ instead.
+
+ - Note: Only the `.referenceobject` format (introduced in iOS 27) is supported; the older `.arobject` format works only
+ with `detectionObjects`. A single session can't use both formats.
+*/
+@property (nonatomic, copy) NSSet<ARReferenceObject *> *trackingObjects API_AVAILABLE(ios(27.0));
 
 /**
  Enable or disable app clip code tracking. Disabled by default. When enabled, detected app clip codes will be surfaced as an ARAppClipCodeAnchor.
@@ -649,29 +860,43 @@ API_AVAILABLE(ios(14.0))
 /**
  Determines the availability of geo tracking at the current location.
 
- @discussion This method will attempt to acquire a location fix on a background thread, then check availability.
+ This method will attempt to acquire a location fix on a background thread, then check availability.
 
- @param completionHandler Completion handler that is called when availability has been determined. This handler is executed on an arbitrary serial
- queue. It takes the following parameters: isAvailable - True if geo tracking is available at the current location, otherwise false. error - An error
- that indicates why geo tracking is not available at the current location.
- */
+ - Parameter completionHandler: Completion handler that is called when availability has been determined. This handler is executed on an arbitrary
+ serial queue. It takes the following parameters: isAvailable - True if geo tracking is available at the current location, otherwise false. error - An
+ error that indicates why geo tracking is not available at the current location.
+*/
 + (void)checkAvailabilityWithCompletionHandler:(void (^)(BOOL isAvailable, NSError *_Nullable error))completionHandler NS_SWIFT_DISABLE_ASYNC;
 
 /**
-Determines the availability of geo tracking at the given location.
+ Determines the availability of geo tracking at the given location.
 
-@param coordinate Location at which to check.
-@param completionHandler Completion handler that is called when availability has been determined. This handler is executed on an arbitrary serial
-queue. It takes the following parameters: isAvailable - True if geo tracking is available at the given location, otherwise false. error - An error
-that indicates why geo tracking is not available at the given location.
+ - Parameters:
+   - coordinate: Location at which to check.
+   - completionHandler: Completion handler that is called when availability has been determined. This handler is executed on an arbitrary serial
+    queue. It takes the following parameters: isAvailable - True if geo tracking is available at the given location, otherwise false. error - An error
+    that indicates why geo tracking is not available at the given location.
 */
 + (void)checkAvailabilityAtCoordinate:(CLLocationCoordinate2D)coordinate
                     completionHandler:(void (^)(BOOL isAvailable, NSError *_Nullable error))completionHandler NS_SWIFT_DISABLE_ASYNC;
 
+/**
+ Initializes a new geo tracking configuration.
+
+ - Returns: An initialized geo tracking configuration.
+*/
 - (instancetype)init;
+
+/**
+ Unavailable. Use init instead.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_SWIFT_UNAVAILABLE("Use init() instead");
 
 @end
+
+API_UNAVAILABLE_END
 
 NS_ASSUME_NONNULL_END
 #else

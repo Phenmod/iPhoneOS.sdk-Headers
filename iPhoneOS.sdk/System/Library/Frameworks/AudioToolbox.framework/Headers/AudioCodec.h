@@ -1008,7 +1008,7 @@ extern OSStatus
 AudioCodecGetPropertyInfo(	AudioCodec				inCodec,
 							AudioCodecPropertyID	inPropertyID,
 							UInt32* __nullable		outSize,
-							Boolean* __nullable		outWritable)		API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0));
+							Boolean* __nullable		outWritable)		API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0)) ;
 
 
 /*!
@@ -1033,7 +1033,7 @@ extern OSStatus
 AudioCodecGetProperty(	AudioCodec				inCodec,
 						AudioCodecPropertyID	inPropertyID,
 						UInt32*					ioPropertyDataSize,
-						void*					outPropertyData)		API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0));
+						void*					outPropertyData)		API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0)) ;
 
 
 /*!
@@ -1056,7 +1056,7 @@ extern OSStatus
 AudioCodecSetProperty(	AudioCodec				inCodec,
 						AudioCodecPropertyID	inPropertyID,
 						UInt32					inPropertyDataSize,
-						const void*				inPropertyData)			API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0));
+						const void*				inPropertyData)			API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0)) ;
 
 
 //=============================================================================
@@ -1091,7 +1091,7 @@ AudioCodecInitialize(	AudioCodec										inCodec,
 						const AudioStreamBasicDescription* __nullable	inOutputFormat,
 						const void*	__nullable							inMagicCookie,
 						UInt32											inMagicCookieByteSize)
-																		API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0));
+																		API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0)) ;
 
 
 /*!
@@ -1107,7 +1107,7 @@ AudioCodecInitialize(	AudioCodec										inCodec,
 	@result			The OSStatus value
 */
 extern OSStatus
-AudioCodecUninitialize(AudioCodec inCodec)								API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0));
+AudioCodecUninitialize(AudioCodec inCodec)								API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0)) ;
 
 
 /*!
@@ -1144,7 +1144,7 @@ AudioCodecAppendInputData(	AudioCodec										inCodec,
 							UInt32*											ioInputDataByteSize,
 							UInt32*											ioNumberPackets,
 							const AudioStreamPacketDescription*	__nullable	inPacketDescription)
-																		API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0));
+																		API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0)) ;
 
 
 /*!
@@ -1183,7 +1183,7 @@ AudioCodecProduceOutputPackets(	AudioCodec									inCodec,
 								UInt32*										ioNumberPackets,
 								AudioStreamPacketDescription* __nullable	outPacketDescription,
 								UInt32*										outStatus)
-																		API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0));
+																		API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0)) ;
 
 extern OSStatus
 AudioCodecAppendInputBufferList(	AudioCodec							inCodec,
@@ -1191,7 +1191,7 @@ AudioCodecAppendInputBufferList(	AudioCodec							inCodec,
 									UInt32*								ioNumberPackets,
 									const AudioStreamPacketDescription*	__nullable	inPacketDescription,
 									UInt32*								outBytesConsumed)
-																		API_AVAILABLE(macos(10.7), ios(4.0), watchos(2.0), tvos(9.0));
+																		API_AVAILABLE(macos(10.7), ios(4.0), watchos(2.0), tvos(9.0)) ;
 
 extern OSStatus
 AudioCodecProduceOutputBufferList(	AudioCodec									inCodec,
@@ -1199,7 +1199,7 @@ AudioCodecProduceOutputBufferList(	AudioCodec									inCodec,
 									UInt32*										ioNumberPackets,
 									AudioStreamPacketDescription* __nullable	outPacketDescription,
 									UInt32*										outStatus)
-																		API_AVAILABLE(macos(10.7), ios(4.0), watchos(2.0), tvos(9.0));
+																		API_AVAILABLE(macos(10.7), ios(4.0), watchos(2.0), tvos(9.0)) ;
 
 /*!
 	@function		AudioCodecReset
@@ -1213,7 +1213,7 @@ AudioCodecProduceOutputBufferList(	AudioCodec									inCodec,
 	@result			the OSStatus value
 */
 extern OSStatus
-AudioCodecReset(AudioCodec inCodec)										API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0));
+AudioCodecReset(AudioCodec inCodec)										API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0)) ;
 
 //=====================================================================================================================
 typedef OSStatus

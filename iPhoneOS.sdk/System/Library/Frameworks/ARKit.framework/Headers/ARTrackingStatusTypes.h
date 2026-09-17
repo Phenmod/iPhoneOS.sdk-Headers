@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+API_UNAVAILABLE_BEGIN(visionos)
+
 /**
  A value describing the camera’s tracking state.
  */
@@ -42,8 +44,9 @@ typedef NS_ENUM(NSInteger, ARTrackingStateReason) {
 
     /** Tracking is limited due to a relocalization in progress. */
     ARTrackingStateReasonRelocalizing API_AVAILABLE(ios(11.3)),
-
 } NS_REFINED_FOR_SWIFT;
+
+API_UNAVAILABLE_END
 #else
 #import <ARKitCore/ARTrackingStatusTypes.h> 
 #endif // #if (defined(USE_ARKIT_PUBLIC_HEADERS) \&\& USE_ARKIT_PUBLIC_HEADERS) || !__has_include(<ARKitCore/ARTrackingStatusTypes.h>)

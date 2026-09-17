@@ -94,6 +94,50 @@ MPS_CLASS_AVAILABLE_STARTING( macos(15.0), ios(18.0), macCatalyst(18.0), tvos(18
                                      dimensionSizes: (NSUInteger*__nonnull) dimensionSizes
                                    destinationArray: (MPSNDArray * __nullable) destinationArray;
 
+/*! @abstract   Do a reshape operation on the CPU.
+ *  @param      sourceArray         The source NDArray.
+ *  @param      shape               The new shape in Tensorflow dimension order.
+ *  @result     A new array view of `sourceArray` is returned. Or `nil` If aliasing is not possible.
+ *   */
+-(nullable MPSNDArray *) reshapeWithSourceArray: (nonnull MPSNDArray *) sourceArray
+                                          shape: (nonnull MPSShape *) shape
+MPS_AVAILABLE_STARTING(macos(27.0), ios(27.0), tvos(27.0));
+
+#if !TARGET_IPHONE_SIMULATOR
+
+/*! @abstract   Encode a reshape operation.
+ *              The encoder associates the commands with MTLStageDispatch. Synchronize your
+ *              workloads against this stage when using this function to prevent race conditions.
+ *  @param      encoder          The MTL4ComputeCommandEncoder to encode the kernel with.
+ *  @param      sourceArray      The source NDArray.
+ *  @param      shape            The new shape in Tensorflow dimension order.
+ *  @param      destinationArray The destination NDArray. The shape of `destinationArray` must match `shape`.
+ *   */
+-(void) reshapeWithMTL4CommandEncoder: (nonnull id <MTL4ComputeCommandEncoder>) encoder
+                          sourceArray: (nonnull MPSNDArray *) sourceArray
+                                shape: (nonnull MPSShape *) shape
+                     destinationArray: (nonnull MPSNDArray *) destinationArray
+MPS_AVAILABLE_STARTING(macos(27.0), ios(27.0), tvos(27.0));
+
+/*! @abstract   Encode a reshape operation.
+ *              The encoder associates the commands with MTLStageDispatch. Synchronize your
+ *              workloads against this stage when using this function to prevent race conditions.
+ *  @param      encoder            The MTL4ComputeCommandEncoder to encode the kernel with.
+ *  @param      sourceArray        The source NDArray.
+ *  @param      numberOfDimensions The NDArray's dimension count.
+ *  @param      dimensionSizes     The extents of each dimension of the NDArray.
+ *  @param      destinationArray   The destination NDArray. The shape of `destinationArray` must match `numberOfDimensions`
+                                   and `dimensionSizes`.
+ *   */
+-(void) reshapeWithMTL4CommandEncoder: (nonnull id <MTL4ComputeCommandEncoder>) encoder
+                          sourceArray: (nonnull MPSNDArray *) sourceArray
+                       dimensionCount: (NSUInteger) numberOfDimensions
+                       dimensionSizes: (nonnull NSUInteger *) dimensionSizes
+                     destinationArray: (nonnull MPSNDArray *) destinationArray
+MPS_AVAILABLE_STARTING(macos(27.0), ios(27.0), tvos(27.0));
+
+#endif
+
 @end    // MPSNDArrayIdentity
 
 #endif /* MPSNDArrayIdentity_h */

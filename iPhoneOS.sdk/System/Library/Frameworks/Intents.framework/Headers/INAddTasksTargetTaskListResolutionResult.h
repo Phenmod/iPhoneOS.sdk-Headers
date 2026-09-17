@@ -9,11 +9,11 @@
 
 typedef NS_ENUM(NSInteger, INAddTasksTargetTaskListConfirmationReason) {
     INAddTasksTargetTaskListConfirmationReasonListShouldBeCreated = 1,
-} API_AVAILABLE(ios(13.0), watchos(6.0)) API_UNAVAILABLE(macos, tvos);
+} API_DEPRECATED("", ios(13.0, 27.0), watchos(6.0, 27.0)) API_UNAVAILABLE(macos, tvos);
 
 NS_ASSUME_NONNULL_BEGIN
 
-API_AVAILABLE(ios(13.0), watchos(6.0))
+API_DEPRECATED("", ios(13.0, 27.0), watchos(6.0, 27.0))
 API_UNAVAILABLE(macos, tvos)
 @interface INAddTasksTargetTaskListResolutionResult : INTaskListResolutionResult
 

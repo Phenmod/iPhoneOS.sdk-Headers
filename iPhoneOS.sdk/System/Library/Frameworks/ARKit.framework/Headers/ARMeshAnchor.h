@@ -10,6 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+API_UNAVAILABLE_BEGIN(visionos)
+
 @class ARMeshGeometry;
 
 /*
@@ -24,11 +26,29 @@ NS_SWIFT_SENDABLE
  */
 @property (nonatomic, readonly) ARMeshGeometry *geometry;
 
-/** Unavailable */
+/**
+ Unavailable.
+
+ - Parameter transform: The transformation matrix.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)initWithTransform:(simd_float4x4)transform NS_UNAVAILABLE;
+
+/**
+ Unavailable.
+
+ - Parameters:
+   - name: The anchor name.
+   - transform: The transformation matrix.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)initWithName:(NSString *)name transform:(simd_float4x4)transform NS_UNAVAILABLE;
 
 @end
+
+API_UNAVAILABLE_END
 
 NS_ASSUME_NONNULL_END
 #else

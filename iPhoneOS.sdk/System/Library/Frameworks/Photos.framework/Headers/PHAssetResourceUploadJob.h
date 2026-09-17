@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// The maximum number of jobs that can be in flight is limited to the ``jobLimit``. To make space for new jobs, you must call ``PHAssetResourceUploadJobChangeRequest/fetchJobsWithAction:options:`` and retry/acknowledge them with ``PHAssetResourceUploadJobChangeRequest/acknowledge:`` or ``PHAssetResourceUploadJobChangeRequest/retryWithDestination:`` respectively.
 NS_SWIFT_SENDABLE
-API_AVAILABLE(ios(26.1)) API_UNAVAILABLE(macos, macCatalyst, tvos, visionos, watchos)
+API_AVAILABLE(ios(26.1), macCatalyst(27.0), macos(27.0)) API_UNAVAILABLE(tvos, visionos, watchos)
 @interface PHAssetResourceUploadJob : PHObject
 
 /// The maximum number of unacknowledged upload jobs allowed.
@@ -32,7 +32,7 @@ API_AVAILABLE(ios(26.1)) API_UNAVAILABLE(macos, macCatalyst, tvos, visionos, wat
 @property (class, readonly) NSInteger jobLimit;
 
 /// The asset resource this job promises to upload.
-@property (strong, readonly) PHAssetResource *resource;
+@property (strong, readonly) PHAssetResource *resource API_DEPRECATED("Use +[PHAssetResource assetResourceForUploadJob:] instead", ios(26.1, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(macos, macCatalyst);
 
 /// The destination to send the job's resource.
 @property (strong, readonly) NSURLRequest *destination;

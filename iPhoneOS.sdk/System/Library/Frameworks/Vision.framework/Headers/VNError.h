@@ -37,4 +37,6 @@ typedef NS_ENUM(NSInteger, VNErrorCode)
     VNErrorTimeout  API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0)),
     VNErrorUnsupportedComputeStage API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0)),
     VNErrorUnsupportedComputeDevice API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0)),
+    VNErrorResourceUnavailable API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0), watchos(27.0)),
+    VNErrorResourceCorrupted API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0), watchos(27.0)),
 };

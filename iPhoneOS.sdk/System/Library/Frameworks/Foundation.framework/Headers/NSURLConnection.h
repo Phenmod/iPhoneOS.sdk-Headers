@@ -28,82 +28,37 @@ NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 /*** DEPRECATED: The NSURLConnection class should no longer be used.  NSURLSession is the replacement for NSURLConnection ***/
 
-/*!
-    @class NSURLConnection
-    
-    @abstract An NSURLConnection object provides support to perform
-        asynchronous loads of a URL request, providing data to a
-        client supplied delegate.
-    
-    @discussion The interface for NSURLConnection is very sparse, providing
-        only the controls to start and cancel asynchronous loads of a
-        URL request.<p>
-
-        An NSURLConnection may be used for loading of resource data
-        directly to memory, in which case an
-        NSURLConnectionDataDelegate should be supplied, or for
-        downloading of resource data directly to a file, in which case
-        an NSURLConnectionDownloadDelegate is used.  The delegate is
-        retained by the NSURLConnection until a terminal condition is
-        encountered.  These two delegates are logically subclasses of
-        the base protocol, NSURLConnectionDelegate.<p>
-
-        A terminal condition produced by the loader will result in a
-        connection:didFailWithError: in the case of an error, or
-        connectionDidFinishLoading: or connectionDidFinishDownloading:
-        delegate message.<p>
-
-        The -cancel message hints to the loader that a resource load
-        should be abandoned but does not guarantee that more delegate
-        messages will not be delivered.  If -cancel does cause the
-        load to be abandoned, the delegate will be released without
-        further messages.  In general, a caller should be prepared for
-        -cancel to have no effect, and internally ignore any delegate
-        callbacks until the delegate is released.
-
-        Scheduling of an NSURLConnection specifies the context in
-        which delegate callbacks will be made, but the actual IO may
-        occur on a separate thread and should be considered an
-        implementation detail.<p>
-
-        When created, an NSURLConnection performs a deep-copy of the
-        NSURLRequest.  This copy is available through the
-        -originalRequest method.  As the connection performs the load,
-        this request may change as a result of protocol
-        canonicalization or due to following redirects.
-        -currentRequest can be used to retrieve this value.<p>
-
-        An NSURLConnections created with the
-        +connectionWithRequest:delegate: or -initWithRequest:delegate:
-        methods are scheduled on the current runloop immediately, and
-        it is not necessary to send the -start message to begin the
-        resource load.<p>
-
-        NSURLConnections created with
-        -initWithRequest:delegate:startImmediately: are not
-        automatically scheduled.  Use -scheduleWithRunLoop:forMode: or
-        -setDelegateQueue: to specify the context for delegate
-        callbacks, and -start to begin the load.  If you do not
-        explicitly schedule the connection before -start, it will be
-        scheduled on the current runloop and mode automatically.<p>
-
-        The NSURLConnectionSynchronousLoading category adds
-        +sendSynchronousRequest:returningResponse:error, which blocks
-        the current thread until the resource data is available or an
-        error occurs.  It should be noted that using this method on an
-        applications main run loop may result in an unacceptably long
-        delay in a user interface and its use is strongly
-        discourage.<p>
-
-        The NSURLConnectionQueuedLoading category implements
-        +sendAsynchronousRequest:queue:completionHandler, providing
-        similar simplicity but provides a mechanism where the current
-        runloop is not blocked.<p>
-
-        Both of the immediate loading categories do not provide for
-        customization of resource load, and do not allow the caller to
-        respond to, e.g., authentication challenges.<p>
-*/
+/// An object that enables you to start and stop URL requests.
+///
+/// > Important:
+/// > This API is considered legacy. Use ``URLSession`` instead.
+///
+/// An `NSURLConnection` object lets you load the contents of a URL by providing a URL request object. The interface for `NSURLConnection` is sparse, providing only the controls to start and cancel asynchronous loads of a URL request. You perform most of your configuration on the URL request object itself.
+///
+/// > Note:
+/// > Although instances of this class are commonly called "connections", there is not a 1:1 correlation between these objects and the underlying network connections.
+///
+/// The `NSURLConnection` class provides convenience class methods to load URL requests both asynchronously using a callback block and synchronously.
+///
+/// For greater control, you can create a URL connection object with a delegate object that conforms to the ``NSURLConnectionDelegate`` and ``NSURLConnectionDataDelegate`` protocols. The connection calls methods on that delegate to provide you with progress and status as the URL request is loaded asynchronously. The connection also calls delegate methods to let you override the connection's default behavior (for example, specifying how a particular redirect should be handled). These delegate methods are called on the thread that initiated the asynchronous load operation.
+///
+/// > Note:
+/// > During a request, the connection maintains a strong reference to its delegate. It releases that strong reference when the connection finishes loading, fails, or is canceled.
+///
+/// For more information about errors, see the `NSURLError.h` header, <doc:foundation-constants>, and URL Loading System Error Codes in [Error Handling Programming Guide](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ErrorHandlingCocoa/ErrorHandling/ErrorHandling.html#//apple_ref/doc/uid/TP40001806).
+///
+/// ### NSURLConnection Protocols
+///
+/// The `NSURLConnection` class works in tandem with three formal protocols: ``NSURLConnectionDelegate``, ``NSURLConnectionDataDelegate``, and ``NSURLConnectionDownloadDelegate``. To use these protocols, you write a class that conforms to them and implement any methods that are appropriate, then provide an instance of that class as the delegate when you create a connection object.
+///
+/// The ``NSURLConnectionDelegate`` protocol is primarily used for credential handling, but also handles connection completion. Because it handles connection failure during data transfers, all connection delegates must typically implement this protocol.
+///
+/// In addition, unless you're using Newsstand Kit, your delegate must also conform to the ``NSURLConnectionDataDelegate`` protocol, because this protocol provides methods that the `NSURLConnection` class calls with progress information during an upload, with fragments of the response data during a download, and to provide a new upload body stream if the server's response necessitates a second connection attempt—for example, if `NSURLConnection` must retry the request with different credentials.
+///
+/// Finally, if you're using Newsstand Kit, your delegate can conform to the ``NSURLConnectionDownloadDelegate`` protocol. This protocol provides support for continuing interrupted file downloads and receiving a notification whenever a download finishes. This protocol is solely for use with `NSURLConnection` objects created using Newsstand Kit's `download(with:)` method.
+///
+/// > Note:
+/// > Some methods in these protocols were previously part of other formal protocols or were previously part of an informal protocol on `NSObject`.
 API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0))
 @interface NSURLConnection : NSObject
 {
@@ -111,49 +66,50 @@ API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0))
     NSURLConnectionInternal *_internal;
 }
 
-/* Designated initializer */
+/// The designated initializer.
 - (nullable instancetype)initWithRequest:(NSURLRequest *)request delegate:(nullable id)delegate startImmediately:(BOOL)startImmediately API_DEPRECATED("Use NSURLSession (see NSURLSession.h)", macos(10.5,10.11), ios(2.0,9.0), tvos(9.0,9.0)) API_UNAVAILABLE(watchos);
 
+/// Creates and returns a URL connection and begins loading the data for the URL request.
 - (nullable instancetype)initWithRequest:(NSURLRequest *)request delegate:(nullable id)delegate API_DEPRECATED("Use NSURLSession (see NSURLSession.h)", macos(10.3,10.11), ios(2.0,9.0), tvos(9.0,9.0)) API_UNAVAILABLE(watchos);
+/// Returns a URL connection that loads the data for a URL request and begins loading the data, if specified.
 + (nullable NSURLConnection*)connectionWithRequest:(NSURLRequest *)request delegate:(nullable id)delegate API_DEPRECATED("Use NSURLSession (see NSURLSession.h)", macos(10.3,10.11), ios(2.0,9.0), tvos(9.0,9.0)) API_UNAVAILABLE(watchos);
 
+/// A deep copy of the original connection request.
+///
+/// As the connection performs the load, the request may change as a result of protocol canonicalization or due to following redirects.
 @property (readonly, copy) NSURLRequest *originalRequest API_AVAILABLE(macos(10.8), ios(5.0), watchos(2.0), tvos(9.0));
+/// The current connection request.
+///
+/// As the connection performs the load, the request may change as a result of protocol canonicalization or due to following redirects. This property provides the current value of the request.
 @property (readonly, copy) NSURLRequest *currentRequest API_AVAILABLE(macos(10.8), ios(5.0), watchos(2.0), tvos(9.0));
 
+/// Causes the connection to begin loading data, if it has not already.
+///
+/// Calling this method is necessary only if you create a connection with the `-initWithRequest:delegate:startImmediately:` method and provide `NO` for the `startImmediately` parameter. If you don't schedule the connection in a run loop or an operation queue before calling this method, the connection is scheduled in the current run loop in the default mode.
 - (void)start API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0));
+/// Cancels an asynchronous load of a request.
+///
+/// After this method is called, the connection makes no further delegate method calls. If you want to reattempt the connection, you should create a new connection object.
 - (void)cancel;
 
+/// Determines the run loop and mode that the connection uses to call methods on its delegate.
+///
+/// By default, a connection is scheduled on the current thread in the default mode when it is created. You cannot reschedule a connection after it has started.
 - (void)scheduleInRunLoop:(NSRunLoop *)aRunLoop forMode:(NSRunLoopMode)mode API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0));
+/// Removes the connection from the specified run loop and mode.
 - (void)unscheduleFromRunLoop:(NSRunLoop *)aRunLoop forMode:(NSRunLoopMode)mode API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0));
+/// Determines the operation queue that is used to call methods on the connection's delegate.
+///
+/// By default, a connection is scheduled on the current thread in the default mode when it is created. You cannot reschedule a connection after it has started.
 - (void)setDelegateQueue:(nullable NSOperationQueue*) queue API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0));
 
 
-/*! 
-    @method         canHandleRequest:
-
-    @abstract
-                    Performs a "preflight" operation that performs
-                    some speculative checks to see if a connection can
-                    be initialized, and the associated I/O that is
-                    started in the initializer methods can begin.
-
-    @discussion
-                    The result of this method is valid only as long as
-                    no protocols are registered or unregistered, and
-                    as long as the request is not mutated (if the
-                    request is mutable). Hence, clients should be
-                    prepared to handle failures even if they have
-                    performed request preflighting by calling this
-                    method.
-
-    @param 
-        request     The request to preflight.
-
-    @result         YES if it is likely that the given request can be used to
-                    initialize a connection and the associated I/O can be
-                    started, NO otherwise.
- 
-*/
+/// Returns whether a request can be handled based on a preflight evaluation.
+///
+/// The result of this method is valid as long as no ``NSURLProtocol`` classes are registered or unregistered, and `request` remains unchanged. Applications should be prepared to handle failures even if they have performed request preflighting by calling this method.
+///
+/// - Parameter request: The request to evaluate. The connection deep-copies the request on creation.
+/// - Returns: `YES` if a preflight operation determines that a connection with `request` can be created and the associated I/O can be started, `NO` otherwise.
 + (BOOL)canHandleRequest:(NSURLRequest *)request;
 
 @end
@@ -200,14 +156,29 @@ API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0))
                     compatibility, but incur more latency in dealing
                     with the authentication challenge.
 */
+
+/// A protocol that most delegates of a URL connection implement to receive data associated with the connection.
+///
+/// The `NSURLConnectionDataDelegate` protocol describes methods that should be implemented by the delegate for an instance of the ``NSURLConnection`` class. Many methods in this protocol existed as part of an informal protocol in previous versions of macOS and iOS.
+///
+/// In addition to the methods described in this protocol, an `NSURLConnection` delegate should also implement the methods described in the ``NSURLConnectionDelegate`` protocol.
+///
+/// > Note:
+/// > If you are using `NSURLConnection` as part of Newsstand Kit on iOS, you should also implement the methods in the ``NSURLConnectionDownloadDelegate`` protocol.
 API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0))
 @protocol NSURLConnectionDelegate <NSObject>
 @optional
+/// Sent when a connection fails to load its request successfully.
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
+/// Sent to determine whether the URL loader should consult the credential storage to authenticate the connection.
 - (BOOL)connectionShouldUseCredentialStorage:(NSURLConnection *)connection;
+/// Sent when a connection must authenticate a challenge in order to download its request.
 - (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
+/// Sent to determine whether the delegate is able to respond to a protection space's form of authentication.
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace API_DEPRECATED("Use -connection:willSendRequestForAuthenticationChallenge: instead.", macos(10.6,10.10), ios(3.0,8.0), watchos(2.0,2.0), tvos(9.0,9.0));
+/// Sent when a connection receives an authentication challenge.
 - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge API_DEPRECATED("Use -connection:willSendRequestForAuthenticationChallenge: instead.", macos(10.2,10.10), ios(2.0,8.0), watchos(2.0,2.0), tvos(9.0,9.0));
+/// Sent when a connection cancels an authentication challenge.
 - (void)connection:(NSURLConnection *)connection didCancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge API_DEPRECATED("Use -connection:willSendRequestForAuthenticationChallenge: instead.", macos(10.2,10.10), ios(2.0,8.0), watchos(2.0,2.0), tvos(9.0,9.0));
 @end
 
@@ -289,21 +260,36 @@ API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0))
                     connection.<p>
 */
 
+/// A protocol that most delegates of a URL connection implement to receive data associated with the connection.
+///
+/// The `NSURLConnectionDataDelegate` protocol describes methods that should be implemented by the delegate for an instance of the ``NSURLConnection`` class. Many methods in this protocol existed as part of an informal protocol in previous versions of macOS and iOS.
+///
+/// In addition to the methods described in this protocol, an `NSURLConnection` delegate should also implement the methods described in the ``NSURLConnectionDelegate`` protocol.
+///
+/// > Note:
+/// > If you are using `NSURLConnection` as part of Newsstand Kit on iOS, you should also implement the methods in the ``NSURLConnectionDownloadDelegate`` protocol.
 API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0))
 @protocol NSURLConnectionDataDelegate <NSURLConnectionDelegate>
 @optional
+/// Sent when the connection determines that it must change URLs in order to continue loading a request.
 - (nullable NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(nullable NSURLResponse *)response;
+/// Sent when the connection has received sufficient data to construct the URL response for its request.
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response;
 
+/// Sent as a connection loads data incrementally.
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data;
 
+/// Sent when the connection needs to retransmit a request body stream to the server.
 - (nullable NSInputStream *)connection:(NSURLConnection *)connection needNewBodyStream:(NSURLRequest *)request;
+/// Sent as the body of a message is sent to the server, providing progress information for uploads.
 - (void)connection:(NSURLConnection *)connection   didSendBodyData:(NSInteger)bytesWritten
                                                  totalBytesWritten:(NSInteger)totalBytesWritten
                                          totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite;
 
+/// Sent before the connection stores a cached response in the cache, to give the delegate an opportunity to alter it.
 - (nullable NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse;
 
+/// Sent when a connection has finished loading successfully.
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection;
 @end
 
@@ -344,13 +330,24 @@ API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0))
                     desired.
 */
 
+/// A protocol that delegates of a URL connection created with Newsstand Kit implement to receive data associated with a download.
+///
+/// The `NSURLConnectionDownloadDelegate` protocol describes methods that should be implemented by the delegate of instances of `NSURLConnection` created using Newsstand Kit's `download(with:)` method. The methods in this protocol provide progress information about the download of a URL asset and, when downloading concludes, provide a file URL where the downloaded file can be accessed.
+///
+/// In addition to the methods described in this protocol, an `NSURLConnection` delegate should also implement the methods described in the ``NSURLConnectionDelegate`` protocol.
+///
+/// > Note:
+/// > If you are using `NSURLConnection` directly, your delegate class should instead implement the methods defined in the ``NSURLConnectionDataDelegate`` protocol.
 API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0))
 @protocol NSURLConnectionDownloadDelegate <NSURLConnectionDelegate>
 @optional
+/// Sent as the connection writes data to a disk file, providing progress information for downloads.
 - (void)connection:(NSURLConnection *)connection didWriteData:(long long)bytesWritten totalBytesWritten:(long long)totalBytesWritten expectedTotalBytes:(long long) expectedTotalBytes;
+/// Sent when a connection resumes an in-progress download.
 - (void)connectionDidResumeDownloading:(NSURLConnection *)connection totalBytesWritten:(long long)totalBytesWritten expectedTotalBytes:(long long) expectedTotalBytes;
 
 @required
+/// Sent when a download connection finishes loading and provides the location of the downloaded file.
 - (void)connectionDidFinishDownloading:(NSURLConnection *)connection destinationURL:(NSURL *) destinationURL;
 @end
 
@@ -364,44 +361,19 @@ API_AVAILABLE(macos(10.2), ios(2.0), watchos(2.0), tvos(9.0))
 */
 @interface NSURLConnection (NSURLConnectionSynchronousLoading)
 
-/*! 
-    @method      sendSynchronousRequest:returningResponse:error:
-
-    @abstract 
-                 Performs a synchronous load of the given request,
-                 returning an NSURLResponse in the given out
-                 parameter.
-
-    @discussion
-                 A synchronous load for the given request is built on
-                 top of the asynchronous loading code made available
-                 by the class.  The calling thread is blocked while
-                 the asynchronous loading system performs the URL load
-                 on a thread spawned specifically for this load
-                 request. No special threading or run loop
-                 configuration is necessary in the calling thread in
-                 order to perform a synchronous load. For instance,
-                 the calling thread need not be running its run loop.
-
-    @param
-       request   The request to load. Note that the request is
-                 deep-copied as part of the initialization
-                 process. Changes made to the request argument after
-                 this method returns do not affect the request that is
-                 used for the loading process.
-
-    @param
-       response  An out parameter which is filled in with the
-                 response generated by performing the load.
-
-    @param
-       error     Out parameter (may be NULL) used if an error occurs
-                 while processing the request. Will not be modified if the 
-                 load succeeds.
-
-    @result      The content of the URL resulting from performing the load,
-                 or nil if the load failed.
-*/
+/// Performs a synchronous load of the specified URL request.
+///
+/// A synchronous load is built on top of the asynchronous loading code made available by the class. The calling thread is blocked while the asynchronous loading system performs the URL load on a thread spawned specifically for this load request. No special threading or run loop configuration is necessary in the calling thread in order to perform a synchronous load.
+///
+/// > Important: Because this call can potentially take several minutes to complete (particularly when using a cellular network in iOS), you should never call this function from the main thread of your application. The solution is to migrate to URL loading using ``NSURLSession``.
+///
+/// If authentication is required in order to download the request, the required credentials must be specified as part of the URL. If authentication fails, or credentials are missing, the connection will attempt to continue without credentials.
+///
+/// - Parameters:
+///   - request: The URL request to load. The `request` object is deep-copied as part of the initialization process. Changes made to `request` after this method returns do not affect the request that is used for the loading process.
+///   - response: Out parameter for the URL response returned by the server.
+///   - error: Out parameter used if an error occurs while processing the request. May be `NULL`.
+/// - Returns: The downloaded data for the URL request. Returns `nil` if a connection could not be created or if the download fails.
 + (nullable NSData *)sendSynchronousRequest:(NSURLRequest *)request returningResponse:(NSURLResponse * _Nullable * _Nullable)response error:(NSError **)error API_DEPRECATED("Use [NSURLSession dataTaskWithRequest:completionHandler:] (see NSURLSession.h", macos(10.3,10.11), ios(2.0,9.0), tvos(9.0,9.0)) API_UNAVAILABLE(watchos);
 
 @end

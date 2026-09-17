@@ -136,6 +136,29 @@ API_AVAILABLE(ios(8.0), watchos(2.0), macCatalyst(13.0), macos(13.0))
 - (NSDate *)earliestPermittedSampleDate API_AVAILABLE(ios(9.0), watchos(2.0), macCatalyst(13.0), macos(13.0));
 
 /*!
+ @method        earliestAuthorizedSampleDateForTypes:completion:
+ @abstract      Reports, for each of the given object types, the earliest date from which the caller is
+                authorized to read samples when the user has granted only limited access.
+ @discussion    Use this method to discover the lower time bound that the user has imposed on the caller's
+                read access — for example, to clamp the startDate of a query predicate so it does not
+                request data the caller is not authorized to read.
+
+                A type appears in the returned dictionary only when the caller has been granted limited
+                read access to that type with a specific earliest readable date. For an included type,
+                the value is that earliest date — samples older than it may not be read.
+
+                The completion is invoked on an arbitrary background queue. On failure, earliestDates
+                will be nil and error will describe the failure; on success, earliestDates is
+                non-nil but may be empty if no requested type has a limited-access earliest date.
+ @param         types       The set of object types to query. Types without a limited-access earliest
+                            date are silently omitted from the result.
+ @param         completion  Block invoked with a dictionary mapping each qualifying type to its earliest
+                            readable date, or with a non-nil error on failure.
+ */
+- (void)getEarliestAuthorizedSampleDateForTypes:(NSSet<HKObjectType *> *)types
+                                     completion:(void(^ NS_SWIFT_SENDABLE)(NSDictionary<HKObjectType *, NSDate *> * _Nullable earliestDates, NSError * _Nullable error))completion NS_REFINED_FOR_SWIFT_ASYNC(2) API_AVAILABLE(ios(27.0), watchos(27.0), macCatalyst(27.0), macos(27.0), visionos(27.0));
+
+/*!
  @method        saveObject:withCompletion:
  @abstract      Saves an HKObject.
  @discussion    After an object is saved, on subsequent retrievals the sourceRevision property of the object will be set

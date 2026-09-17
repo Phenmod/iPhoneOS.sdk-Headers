@@ -2,7 +2,7 @@
 //  AXBrailleTranslator.h
 //  Accessibility
 //
-//  Copyright © 2025 Apple. All rights reserved.
+//  Copyright © 2025-2026 Apple Inc. All rights reserved.
 //
 
 #import <Accessibility/AXFoundation.h>

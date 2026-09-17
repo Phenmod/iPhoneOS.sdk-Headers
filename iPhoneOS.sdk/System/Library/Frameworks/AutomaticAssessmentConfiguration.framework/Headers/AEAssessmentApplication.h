@@ -14,12 +14,12 @@ API_UNAVAILABLE(visionos)
 @interface AEAssessmentApplication : NSObject <NSCopying>
 
 @property (nonatomic, copy, readonly) NSString *bundleIdentifier API_AVAILABLE(ios(17.5), macCatalyst(15.0), macos(12.0));
-@property (nonatomic, copy, readonly, nullable) NSString *teamIdentifier API_AVAILABLE(macCatalyst(15.0), macos(12.0)) API_UNAVAILABLE(ios);
+@property (nonatomic, copy, readonly, nullable) NSString *teamIdentifier API_AVAILABLE(ios(27.0), macCatalyst(15.0), macos(12.0));
 @property (nonatomic, assign) BOOL requiresSignatureValidation API_AVAILABLE(macCatalyst(15.0), macos(12.0)) API_UNAVAILABLE(ios);
 
 - (instancetype)initWithBundleIdentifier:(NSString *)bundleIdentifier API_AVAILABLE(ios(17.5), macCatalyst(15.0), macos(12.0));
 - (instancetype)initWithBundleIdentifier:(NSString *)bundleIdentifier
-                          teamIdentifier:(nullable NSString *)teamIdentifier API_AVAILABLE(macCatalyst(15.0), macos(12.0)) API_UNAVAILABLE(ios);
+                          teamIdentifier:(nullable NSString *)teamIdentifier API_AVAILABLE(ios(27.0), macCatalyst(15.0), macos(12.0));
 
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;

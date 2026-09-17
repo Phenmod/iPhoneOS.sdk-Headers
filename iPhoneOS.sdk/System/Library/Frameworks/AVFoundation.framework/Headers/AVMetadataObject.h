@@ -4,13 +4,14 @@
  
     Framework:  AVFoundation
  
-    Copyright 2012-2022 Apple Inc. All rights reserved.
+    Copyright 2012-2026 Apple Inc. All rights reserved.
 */
 
 #import <AVFoundation/AVBase.h>
 #import <AVFoundation/AVCaptureDevice.h>
 #import <Foundation/Foundation.h>
 #import <CoreMedia/CMTime.h>
+#import <CoreMedia/CMFormatDescription.h>
 #import <CoreGraphics/CGGeometry.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -27,6 +28,7 @@ typedef NSString * AVMetadataObjectType NS_TYPED_ENUM API_AVAILABLE(macos(10.10)
 #pragma mark - AVMetadataObject
 
 @class AVMetadataObjectInternal;
+@class AVTimedMetadataGroup;
 
 /*!
  @class AVMetadataObject
@@ -92,9 +94,10 @@ AV_INIT_UNAVAILABLE
 /// When presented with a collection of ``AVMetadataObject`` instances of different types, you may use the objects' ``groupID`` to combine them into groups. For example, a human body and face belonging to the same person have the same ``groupID``.  If an object's ``groupID`` property is set to -1, it is invalid. When set to a value of >=0, it is unique across all object groups.
 @property(readonly) NSInteger groupID API_AVAILABLE(macos(26.0), ios(26.0), macCatalyst(26.0), tvos(26.0)) API_UNAVAILABLE(visionos, watchos);
 
-/// A unique identifier for each detected object type (face, body, hands, heads and salient objects) in a collection.
+
+/// A unique identifier for each detected object type (face, body, hands, heads, salient objects and focus-tracked objects) in a collection.
 ///
-/// Defaults to a value of -1 when invalid or not available. When used in conjunction with an ``AVCaptureMetadataOutput``, each newly detected object that enters the scene is assigned a unique identifier. ``objectID``s are never re-used as objects leave the picture and new ones enter. Objects that leave the picture and then re-enter are assigned a new ``objectID``.
+/// Defaults to a value of -1 when invalid or not available. When used in conjunction with an ``AVCaptureMetadataOutput``, each newly detected object that enters the scene is assigned a unique identifier. ``objectID``s are never re-used as objects leave the picture and new ones enter. Objects that leave the picture and then re-enter are assigned a new ``objectID``. Focus-tracked objects are an exception. They retain the same ``objectID`` when leaving and re-entering the picture.
 @property(readonly) NSInteger objectID API_AVAILABLE(macos(26.0), ios(26.0), macCatalyst(26.0), tvos(26.0)) API_UNAVAILABLE(visionos, watchos);
 
 @end
@@ -112,6 +115,47 @@ API_AVAILABLE(macos(26.0), ios(26.0), macCatalyst(26.0), tvos(26.0)) API_UNAVAIL
 
 @end
 
+#pragma mark - AVMetadataFocusTrackedObject
+
+/// An identifier for an instance of ``AVMetadataFocusTrackedObject``.
+///
+/// This metadata object type is only available when the source ``AVCaptureDevice``'s `activeFormat` has ``AVCaptureDeviceFormat/isContinuousAutoFocusTrackingSupported`` equal to `true`. It can therefore appear and disappear from ``AVCaptureMetadataOutput/availableMetadataObjectTypes`` as the active format changes; observers should not assume it is statically available for the lifetime of the session.
+AVF_EXPORT AVMetadataObjectType const AVMetadataObjectTypeFocusTrackedObject API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
+
+/// A metadata object that is maintained in focus by the camera's auto focus system continuously tracking it.
+///
+/// ``AVMetadataFocusTrackedObject`` represents a single tracked object in a picture. It is an immutable object describing the focus-tracked object.
+///
+/// On supported platforms, ``AVCaptureMetadataOutput`` outputs arrays of focus-tracked objects. See AVCaptureOutput.h.
+API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos)
+@interface AVMetadataFocusTrackedObject : AVMetadataObject <NSCopying>
+
+@end
+
+#pragma mark - AVMetadataCinematicVideoMetadataObject
+
+/// A constant that identifies Cinematic video metadata for post-capture Cinematic video editing.
+///
+/// This metadata object type is only available when the source ``AVCaptureDevice``'s `activeFormat` has ``AVCaptureDeviceFormat/isCinematicVideoMetadataCaptureSupported`` equal to `true`. It can therefore appear and disappear from ``AVCaptureMetadataOutput/availableMetadataObjectTypes`` as the active format changes; observers should not assume it is statically available for the lifetime of the session.
+AVF_EXPORT AVMetadataObjectType const AVMetadataObjectTypeCinematicVideoMetadata API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
+
+/// A metadata object containing opaque Cinematic video metadata for Cinematic video editing.
+///
+/// This object represents Cinematic video metadata captured during a recording session using ``AVCaptureMetadataOutput``.
+API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos)
+@interface AVMetadataCinematicVideoMetadataObject : AVMetadataObject <NSCopying>
+
+/// The format description for Cinematic video timed metadata sample buffers.
+///
+/// Use this format description when creating your ``AVAssetWriterInput`` for the Cinematic video timed metadata track.
+@property(class, nonatomic, readonly, nullable) CMFormatDescriptionRef cinematicVideoMetadataFormatDescription;
+
+/// A timed metadata group containing the Cinematic video metadata.
+///
+/// Append this group to an ``AVAssetWriterInputMetadataAdaptor`` to write the Cinematic video metadata track.
+@property(readonly, nonatomic, nullable) AVTimedMetadataGroup *timedMetadataGroup;
+
+@end
 
 #pragma mark - AVMetadataBodyObject
 

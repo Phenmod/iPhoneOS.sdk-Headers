@@ -2,22 +2,26 @@
 //  CSSearchableItemAttributeSet_Messaging.h
 //  CoreSpotlight
 //
-//  Copyright © 2015 Apple. All rights reserved.
+//  Copyright © 2015–2026 Apple. All rights reserved.
 //
 
 #import <CoreSpotlight/CSSearchableItemAttributeSet.h>
+#import <CoreSpotlight/CSPerson.h>
+
+#import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 //Well-known mailbox identifiers
-CORESPOTLIGHT_EXPORT NSString * const CSMailboxInbox NS_AVAILABLE(10_11, 9_0);
-CORESPOTLIGHT_EXPORT NSString * const CSMailboxDrafts NS_AVAILABLE(10_11, 9_0);
-CORESPOTLIGHT_EXPORT NSString * const CSMailboxSent NS_AVAILABLE(10_11, 9_0);
-CORESPOTLIGHT_EXPORT NSString * const CSMailboxJunk NS_AVAILABLE(10_11, 9_0);
-CORESPOTLIGHT_EXPORT NSString * const CSMailboxTrash NS_AVAILABLE(10_11, 9_0);
-CORESPOTLIGHT_EXPORT NSString * const CSMailboxArchive NS_AVAILABLE(10_11, 9_0);
+extern NSString * const CSMailboxInbox API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
+extern NSString * const CSMailboxDrafts API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
+extern NSString * const CSMailboxSent API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
+extern NSString * const CSMailboxJunk API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
+extern NSString * const CSMailboxTrash API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
+extern NSString * const CSMailboxArchive API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
 
-CS_AVAILABLE(10_13, 9_0) CS_TVOS_UNAVAILABLE
+API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0))
+API_UNAVAILABLE(tvos, watchos)
 @interface CSSearchableItemAttributeSet (CSMessaging)
 
 //Unique identifier for the account the item is associated with, if any
@@ -88,7 +92,7 @@ CS_AVAILABLE(10_13, 9_0) CS_TVOS_UNAVAILABLE
 //This attribute indicates if the document is likely to be considered junk.  Should be 1 if true, 0 otherwise
 @property(nonatomic, strong, getter=isLikelyJunk) NSNumber *likelyJunk;
 
-@property(nonatomic, nullable, strong, readonly) NSNumber *isPriority NS_AVAILABLE(15_4, 18_4);
+@property(nonatomic, nullable, strong, readonly) NSNumber *isPriority API_AVAILABLE(macos(15.4), ios(18.4), visionos(2.4)) API_UNAVAILABLE(tvos, watchos);
 
 @end
 

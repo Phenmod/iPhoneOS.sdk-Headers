@@ -2,7 +2,7 @@
 //  AXBrailleMap.h
 //  Accessibility
 //
-//  Copyright © 2021 Apple Inc. All rights reserved.
+//  Copyright © 2021-2026 Apple Inc. All rights reserved.
 //
 
 #import <Accessibility/AXFoundation.h>

@@ -138,6 +138,10 @@
 #endif // __OBJC__ && objc_arc && objc_externally_retained
 #endif // !NW_EXTERNALLY_RETAINED
 
+#ifndef NW_EXPORT
+#  define NW_EXPORT __attribute__((visibility("default")))
+#endif // !NW_EXPORT
+
 #ifndef NW_EXPORT_PROJECT
 #  define NW_EXPORT_PROJECT __attribute__((visibility("default")))
 #endif // !NW_EXPORT_PROJECT

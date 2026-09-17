@@ -69,7 +69,7 @@ BG_EXTERN API_AVAILABLE(ios(13.0), tvos(13.0)) API_UNAVAILABLE(macos) API_UNAVAI
 @property (class, readonly, strong) __kindof BGTaskScheduler *sharedScheduler;
 
 /// A bitfield of the resources the device supports for ``BackgroundTasks/BGContinuedProcessingTaskRequest`` instances.
-@property (class, readonly) BGContinuedProcessingTaskRequestResources supportedResources API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(macos, tvos, visionos, watchos, macCatalyst);
+@property (class, readonly) BGContinuedProcessingTaskRequestResources supportedResources API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(macos, tvos, visionos, macCatalyst) API_UNAVAILABLE(watchos);
 
 /// Register a launch handler for the task with the associated identifier that’s executed on the specified queue.
 ///
@@ -94,7 +94,7 @@ BG_EXTERN API_AVAILABLE(ios(13.0), tvos(13.0)) API_UNAVAILABLE(macos) API_UNAVAI
 
 /// Submit a previously registered background task for execution.
 ///
-/// Submitting a task request for an unexecuted task that’s already in the queue replaces the previous task request.
+/// Submitting a task request for an unexecuted task that's already in the queue replaces the previous task request.
 ///
 /// There can be a total of 1 refresh task and 10 processing tasks scheduled at any time. Trying to schedule more tasks
 /// returns ``BGTaskSchedulerErrorCode/BGTaskSchedulerErrorCodeTooManyPendingTaskRequests``.
@@ -104,7 +104,46 @@ BG_EXTERN API_AVAILABLE(ios(13.0), tvos(13.0)) API_UNAVAILABLE(macos) API_UNAVAI
 ///   - error: If an error occurs, upon return contains an error object that indicates why the request was rejected
 /// - Returns: `YES` if the request was successfully submitted; `NO` if there was an error
 - (BOOL)submitTaskRequest:(BGTaskRequest *)taskRequest
-                    error:(NSError * _Nullable *)error;
+                    error:(NSError * _Nullable *)error
+    API_DEPRECATED("Use -submitTaskRequest:completionHandler: (Swift: submitTaskRequest(_:completionHandler:), "
+                   "or 'try await submitTaskRequest(_:)') to capture all error conditions",
+                   ios(13.0, 27.0), tvos(13.0, 27.0))
+    API_UNAVAILABLE(watchos)
+    API_UNAVAILABLE(macos);
+
+/// Submits a background task request to be scheduled with a completion handler.
+///
+/// This method asynchronously submits the task request and invokes the completion
+/// handler with any errors that occur during submission.
+///
+/// Submitting a task request for an unexecuted task that's already in the queue replaces the previous task request.
+///
+/// There can be a total of 1 refresh task and 10 processing tasks scheduled at any time. Trying to schedule more tasks
+/// will result in an error with code ``BGTaskSchedulerErrorCode/BGTaskSchedulerErrorCodeTooManyPendingTaskRequests``.
+///
+/// - Parameters:
+///   - taskRequest: The task request object representing the parameters of the background task to be scheduled.
+///   - completionHandler: A block that is called when submission completes. The block receives an optional error parameter:
+///     - `nil` if the task was submitted successfully
+///     - An `NSError` if submission failed
+///
+/// Common errors include:
+/// - ``BGTaskSchedulerErrorCode/BGTaskSchedulerErrorCodeNotPermitted``: Task identifier not permitted or unsupported resources requested
+/// - ``BGTaskSchedulerErrorCode/BGTaskSchedulerErrorCodeTooManyPendingTaskRequests``: Too many pending tasks of this type
+/// - ``BGTaskSchedulerErrorCode/BGTaskSchedulerErrorCodeUnavailable``: Background refresh disabled or app not permitted
+/// - ``BGTaskSchedulerErrorCode/BGTaskSchedulerErrorCodeImmediateRunIneligible``: Immediate run not eligible due to system conditions
+///
+/// The completion handler is called on an arbitrary queue.
+///
+/// - Note: The completion handler may be invoked on an arbitrary queue after an arbitrary amount of delay.
+///         Do not call this method from the main thread or performance-critical contexts.
+///
+/// This method replaces the deprecated ``BGTaskScheduler/submitTaskRequest:error:`` method.
+- (void)submitTaskRequest:(BGTaskRequest *)taskRequest
+        completionHandler:(void (^)(NSError * _Nullable error))completionHandler
+    NS_SWIFT_ASYNC_NAME(submitTaskRequest(_:))
+    API_AVAILABLE(ios(27.0), tvos(27.0))
+    API_UNAVAILABLE(macos) API_UNAVAILABLE(watchos);
 
 /// Cancel a previously scheduled task request.
 ///
@@ -121,7 +160,7 @@ BG_EXTERN API_AVAILABLE(ios(13.0), tvos(13.0)) API_UNAVAILABLE(macos) API_UNAVAI
 /// objects. The array is empty if there are no scheduled tasks.
 ///
 /// The objects passed in the array are copies of the existing requests. Changing the attributes of a request has no
-/// effect. To change the attributes submit a new task request using ``BGTaskScheduler/submitTaskRequest:error:``.
+/// effect. To change the attributes submit a new task request using ``BGTaskScheduler/submitTaskRequest:completionHandler:``.
 ///
 /// - Parameters:
 ///   - completionHandler: The completion handler called with the pending tasks.

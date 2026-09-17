@@ -61,10 +61,12 @@ typedef NS_ENUM(NSInteger, CBConnectionEvent) {
  *  @discussion The set of device specific features.
  *
  *	@constant CBCentralManagerFeatureExtendedScanAndConnect      The hardware supports extended scans and enhanced connection creation
+ *    @constant CBCentralManagerFeatureChannelSounding             The hardware and region supports channel sounding
  *
  */
 typedef NS_OPTIONS(NSUInteger, CBCentralManagerFeature) {
 	CBCentralManagerFeatureExtendedScanAndConnect CB_CM_API_AVAILABLE = 1UL << 0,
+    CBCentralManagerFeatureChannelSounding API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(macos, watchos, tvos, visionos) = 1UL << 10
 } NS_SWIFT_NAME(CBCentralManager.Feature);
 
 @protocol CBCentralManagerDelegate;

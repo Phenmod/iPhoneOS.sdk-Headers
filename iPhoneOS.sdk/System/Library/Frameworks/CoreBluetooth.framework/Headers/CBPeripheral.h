@@ -43,8 +43,19 @@ typedef NS_ENUM(NSInteger, CBCharacteristicWriteType) {
 	CBCharacteristicWriteWithoutResponse,
 };
 
+/*!
+ *  @enum CBChannelSoundingSessionConfigurationRole
+ *
+ *  @discussion Specifies which channel sounding role a CBPeripheral should assume for a given session.
+ *
+ */
+typedef NS_ENUM(NSInteger, CBChannelSoundingSessionConfigurationRole) {
+    CBChannelSoundingSessionConfigurationRoleInitiator = 0
+} API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(macos, watchos, tvos, visionos) NS_SWIFT_NAME(CBChannelSoundingSessionConfiguration.Role);
+
 @protocol CBPeripheralDelegate;
 @class CBService, CBCharacteristic, CBDescriptor, CBUUID;
+@class CBChannelSoundingSessionConfiguration, CBChannelSoundingProcedureResults;
 
 /*!
  *  @class CBPeripheral
@@ -258,6 +269,27 @@ CB_EXTERN_CLASS @interface CBPeripheral : CBPeer
  *  @see				peripheral:didWriteValueForCharacteristic:error:
  */
 - (void)openL2CAPChannel:(CBL2CAPPSM)PSM NS_AVAILABLE(10_14, 11_0);
+
+/*!
+ *  @method startChannelSoundingSession:
+ *
+ *  @param configuration    An object specifying the channel sounding session configuration.
+ *
+ *  @discussion             Initiate a channel sounding session.
+ *
+ *  @see                    peripheral:didReceiveChannelSoundingProcedureResults:error
+ */
+- (void)startChannelSoundingSession:(CBChannelSoundingSessionConfiguration *)configuration API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(macos, watchos, tvos, visionos);
+
+/*!
+ *  @method cancelChannelSoundingSession
+ *
+ *  @discussion             Cancels the active channel sounding session, if it exists.
+ *
+ *  @see                    peripheral:didCompleteChannelSoundingSession:
+ */
+- (void)cancelChannelSoundingSession API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(macos, watchos, tvos, visionos);
+
 @end
 
 
@@ -441,6 +473,57 @@ CB_EXTERN_CLASS @interface CBPeripheral : CBPeer
  */
 - (void)peripheral:(CBPeripheral *)peripheral didOpenL2CAPChannel:(nullable CBL2CAPChannel *)channel error:(nullable NSError *)error;
 
+/*!
+ *  @method peripheral:didReceiveChannelSoundingProcedureResults:error:
+ *
+ *  @param peripheral    The peripheral providing this update.
+ *  @param results       An object containing the results of a channel sounding procedure.
+ *  @param error         If an error occurred, the cause of the failure.
+ *
+ *  @discussion          This method returns the results of a channel sounding procedure.
+ */
+- (void)peripheral:(CBPeripheral *)peripheral didReceiveChannelSoundingProcedureResults:(nullable CBChannelSoundingProcedureResults *)results error:(nullable NSError *)error API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(macos, watchos, tvos, visionos);
+
+/*!
+ *  @method peripheral:didCompleteChannelSoundingSession:
+ *
+ *  @param peripheral    The peripheral providing this update.
+ *  @param error         If an error occurred, the cause of the failure.
+ *
+ *  @discussion          This method is called when a channel sounding session completes.
+ */
+- (void)peripheral:(CBPeripheral *)peripheral didCompleteChannelSoundingSession:(nullable NSError *)error API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(macos, watchos, tvos, visionos);
+
+
+@end
+
+CB_EXTERN_CLASS
+API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(macos, watchos, tvos, visionos)
+__attribute__((objc_subclassing_restricted))
+@interface CBChannelSoundingSessionConfiguration : NSObject
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/*!
+ * The channel sounding role a CBPeripheral should assume for a given session.
+ */
+@property (nonatomic, readonly) CBChannelSoundingSessionConfigurationRole role;
+
+- (instancetype)initWithRole:(CBChannelSoundingSessionConfigurationRole)role NS_DESIGNATED_INITIALIZER;
+
+@end
+
+CB_EXTERN_CLASS
+API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(macos, watchos, tvos, visionos)
+__attribute__((objc_subclassing_restricted))
+@interface CBChannelSoundingProcedureResults : NSObject
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/*!
+ * The measured distance in meters of a CBPeripheral.
+ */
+@property (nonatomic, readonly) double distance;
 
 @end
 

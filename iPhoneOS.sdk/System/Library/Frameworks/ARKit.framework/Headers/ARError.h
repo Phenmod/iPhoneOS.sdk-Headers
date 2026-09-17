@@ -7,8 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <TargetConditionals.h>
 
 NS_ASSUME_NONNULL_BEGIN
+
+API_UNAVAILABLE_BEGIN(visionos)
 
 API_AVAILABLE(ios(11.0))
 FOUNDATION_EXTERN NSString *const ARErrorDomain;
@@ -51,7 +54,10 @@ typedef NS_ERROR_ENUM(ARErrorDomain, ARErrorCode){
     /** Invalid reference image */
     ARErrorCodeInvalidReferenceImage API_AVAILABLE(ios(11.3)) = 300,
 
-    /** Invalid reference object. */
+    /** Invalid reference object. Occurs when the framework can't load a reference object,
+     when the reference object's format doesn't support a requested operation, or when a
+     configuration mixes legacy `.arobject` and `.referenceobject` reference objects in
+     the same session. Inspect `userInfo` for the specific reason. */
     ARErrorCodeInvalidReferenceObject API_AVAILABLE(ios(12.0)) = 301,
 
     /** Invalid world map. */
@@ -74,9 +80,9 @@ typedef NS_ERROR_ENUM(ARErrorDomain, ARErrorCode){
 
     /** Generic request failure. */
     ARErrorCodeRequestFailed API_AVAILABLE(ios(14.0)) = 501,
-
-
 };
+
+API_UNAVAILABLE_END
 
 NS_ASSUME_NONNULL_END
 #else

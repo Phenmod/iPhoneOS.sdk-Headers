@@ -123,7 +123,7 @@ NS_SWIFT_SENDABLE
 /// - An error if a problem occurs, or `nil` if the fetch completes successfully.
 ///
 /// For information on a more convenient way to fetch specific records, see ``CKDatabase/records(for:desiredKeys:)``.
-- (void)fetchRecordWithID:(CKRecordID *)recordID completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKRecord * _Nullable record, NSError * _Nullable error))completionHandler NS_SWIFT_ASYNC_NAME(record(for:));
+- (void)fetchRecordWithID:(CKRecordID *)recordID completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKRecord * _Nullable record, NSError * _Nullable error))completionHandler NS_REFINED_FOR_SWIFT_ASYNC(2);
 
 /// Saves a specific record.
 ///
@@ -139,7 +139,7 @@ NS_SWIFT_SENDABLE
 /// The save succeeds only when the specified record is new, or is a more recent version than the one on the server.
 ///
 /// For information on a more convenient way to save records, see ``CKDatabase/modifyRecords(saving:deleting:savePolicy:atomically:)``.
-- (void)saveRecord:(CKRecord *)record completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKRecord * _Nullable record, NSError * _Nullable error))completionHandler;
+- (void)saveRecord:(CKRecord *)record completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKRecord * _Nullable record, NSError * _Nullable error))completionHandler NS_REFINED_FOR_SWIFT_ASYNC(2);
 
 /// Deletes a specific record.
 ///
@@ -155,7 +155,7 @@ NS_SWIFT_SENDABLE
 /// Deleting a record may cause additional deletions if other records in the database reference the deleted record. CloudKit doesn't provide the identifiers of any additional records it deletes.
 ///
 /// For information on a more convenient way to delete records, see ``CKDatabase/modifyRecords(saving:deleting:savePolicy:atomically:)``.
-- (void)deleteRecordWithID:(CKRecordID *)recordID completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKRecordID * _Nullable recordID, NSError * _Nullable error))completionHandler NS_SWIFT_ASYNC_NAME(deleteRecord(withID:));
+- (void)deleteRecordWithID:(CKRecordID *)recordID completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKRecordID * _Nullable recordID, NSError * _Nullable error))completionHandler NS_REFINED_FOR_SWIFT_ASYNC(2);
 
 #pragma mark - Query Convenience Method
 
@@ -173,7 +173,7 @@ NS_SWIFT_SENDABLE
 ///
 /// For information on a more convenient way to search a database, see ``CKDatabase/records(matching:inZoneWith:desiredKeys:resultsLimit:)``.
 - (void)performQuery:(CKQuery *)query inZoneWithID:(nullable CKRecordZoneID *)zoneID completionHandler:(void (NS_SWIFT_SENDABLE ^)(NSArray<CKRecord *> * _Nullable results, NSError * _Nullable error))completionHandler
-CK_SWIFT_DEPRECATED("renamed to fetch(withQuery:inZoneWith:desiredKeys:resultsLimit:completionHandler:)", macos(10.10, 12.0), ios(8.0, 15.0), tvos(9.0, 15.0), watchos(3.0, 8.0));
+CK_SWIFT_DEPRECATED("renamed to fetch(withQuery:inZoneWith:desiredKeys:resultsLimit:completionHandler:)", macos(10.10, 12.0), ios(8.0, 15.0), tvos(9.0, 15.0), watchos(3.0, 8.0)) NS_REFINED_FOR_SWIFT_ASYNC(3);
 
 #pragma mark - Record Zone Convenience Methods
 
@@ -186,7 +186,7 @@ CK_SWIFT_DEPRECATED("renamed to fetch(withQuery:inZoneWith:desiredKeys:resultsLi
 ///
 /// - An array of fetched record zones, or `nil` if there's an error. When present, the array contains at least one record zone, the default zone.
 /// - An error if a problem occurs, or `nil` if CloudKit successfully fetches all record zones.
-- (void)fetchAllRecordZonesWithCompletionHandler:(void (NS_SWIFT_SENDABLE ^)(NSArray<CKRecordZone *> * _Nullable zones, NSError * _Nullable error))completionHandler NS_SWIFT_ASYNC_NAME(allRecordZones());
+- (void)fetchAllRecordZonesWithCompletionHandler:(void (NS_SWIFT_SENDABLE ^)(NSArray<CKRecordZone *> * _Nullable zones, NSError * _Nullable error))completionHandler NS_REFINED_FOR_SWIFT_ASYNC(1);
 
 /// Fetches a specific record zone.
 ///
@@ -200,7 +200,7 @@ CK_SWIFT_DEPRECATED("renamed to fetch(withQuery:inZoneWith:desiredKeys:resultsLi
 /// - An error if a problem occurs, or `nil` if CloudKit successfully fetches the specified record zone.
 ///
 /// For information on a more convenient way to fetch specific record zones, see ``CKDatabase/recordZones(for:)`` in Swift or ``CKFetchRecordZonesOperation`` in Objective-C.
-- (void)fetchRecordZoneWithID:(CKRecordZoneID *)zoneID completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKRecordZone * _Nullable zone, NSError * _Nullable error))completionHandler NS_SWIFT_ASYNC_NAME(recordZone(for:));
+- (void)fetchRecordZoneWithID:(CKRecordZoneID *)zoneID completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKRecordZone * _Nullable zone, NSError * _Nullable error))completionHandler NS_REFINED_FOR_SWIFT_ASYNC(2);
 
 /// Saves a specific record zone.
 ///
@@ -214,7 +214,7 @@ CK_SWIFT_DEPRECATED("renamed to fetch(withQuery:inZoneWith:desiredKeys:resultsLi
 /// - An error if a problem occurs, or `nil` if CloudKit successfully saves the record zone.
 ///
 /// For information on a more convenient way to save record zones, see ``CKDatabase/modifyRecordZones(saving:deleting:)``.
-- (void)saveRecordZone:(CKRecordZone *)zone completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKRecordZone * _Nullable zone, NSError * _Nullable error))completionHandler;
+- (void)saveRecordZone:(CKRecordZone *)zone completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKRecordZone * _Nullable zone, NSError * _Nullable error))completionHandler NS_REFINED_FOR_SWIFT_ASYNC(2);
 
 /// Deletes a specific record zone.
 ///
@@ -230,7 +230,7 @@ CK_SWIFT_DEPRECATED("renamed to fetch(withQuery:inZoneWith:desiredKeys:resultsLi
 /// - An error if a problem occurs, or `nil` if CloudKit successfully deletes the record zone.
 ///
 /// For information on a more convenient way to delete record zones, see ``CKDatabase/modifyRecordZones(saving:deleting:)``.
-- (void)deleteRecordZoneWithID:(CKRecordZoneID *)zoneID completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKRecordZoneID * _Nullable zoneID, NSError * _Nullable error))completionHandler NS_SWIFT_ASYNC_NAME(deleteRecordZone(withID:));
+- (void)deleteRecordZoneWithID:(CKRecordZoneID *)zoneID completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKRecordZoneID * _Nullable zoneID, NSError * _Nullable error))completionHandler NS_REFINED_FOR_SWIFT_ASYNC(2);
 
 #pragma mark - Subscription Convenience Methods
 
@@ -259,7 +259,7 @@ CK_SWIFT_DEPRECATED("renamed to fetch(withQuery:inZoneWith:desiredKeys:resultsLi
 /// - An error if a problem occurs, or `nil` if the fetch completes successfully.
 ///
 /// For information on a more configurable way to fetch all subscriptions from a specific database, see ``CKFetchSubscriptionsOperation/fetchAllSubscriptionsOperation()``.
-- (void)fetchAllSubscriptionsWithCompletionHandler:(void (NS_SWIFT_SENDABLE ^)(NSArray<CKSubscription *> * _Nullable subscriptions, NSError * _Nullable error))completionHandler API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0), watchos(6.0)) NS_SWIFT_ASYNC_NAME(allSubscriptions());
+- (void)fetchAllSubscriptionsWithCompletionHandler:(void (NS_SWIFT_SENDABLE ^)(NSArray<CKSubscription *> * _Nullable subscriptions, NSError * _Nullable error))completionHandler API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0), watchos(6.0)) NS_REFINED_FOR_SWIFT_ASYNC(1);
 
 /// Saves a specific subscription.
 ///
@@ -273,7 +273,7 @@ CK_SWIFT_DEPRECATED("renamed to fetch(withQuery:inZoneWith:desiredKeys:resultsLi
 /// - An error if a problem occurs, or `nil` if CloudKit successfully saves the subscription.
 ///
 /// For information on a more convenient way to save subscriptions, see ``CKDatabase/modifySubscriptions(saving:deleting:)``.
-- (void)saveSubscription:(CKSubscription *)subscription completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKSubscription * _Nullable subscription, NSError * _Nullable error))completionHandler API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0), watchos(6.0));
+- (void)saveSubscription:(CKSubscription *)subscription completionHandler:(void (NS_SWIFT_SENDABLE ^)(CKSubscription * _Nullable subscription, NSError * _Nullable error))completionHandler API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0), watchos(6.0)) NS_REFINED_FOR_SWIFT_ASYNC(2);
 
 /// Deletes a specific subscription and delivers the deleted subscription's identifier to a completion handler.
 ///

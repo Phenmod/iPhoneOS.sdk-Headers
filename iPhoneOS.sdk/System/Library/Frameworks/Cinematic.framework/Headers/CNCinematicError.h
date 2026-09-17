@@ -34,6 +34,10 @@ typedef NS_ERROR_ENUM(CNCinematicErrorDomain, CNCinematicErrorCode)
 
     // operation was cancelled
     CNCinematicErrorCodeCancelled       = 7,
+    
+    // Download of resources failed
+    CNCinematicErrorCodeDownloadFailed API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0)) API_UNAVAILABLE(watchos) = 8,
+
 } API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0)) API_UNAVAILABLE(watchos);
 
 NS_ASSUME_NONNULL_END

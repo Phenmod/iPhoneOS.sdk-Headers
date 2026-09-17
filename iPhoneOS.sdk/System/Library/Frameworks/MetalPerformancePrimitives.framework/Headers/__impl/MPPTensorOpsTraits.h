@@ -50,6 +50,9 @@ template <typename T>
 using __remove_cv_t = metal::remove_cv_t<T>;
 
 template <typename T>
+using __remove_coherent_t = metal::remove_coherent_t<T>;
+
+template <typename T>
 using __remove_ref_ptr_t = __remove_reference_t<__remove_pointer_t<T>>;
 
 template <typename T>
@@ -83,6 +86,9 @@ constant auto __is_constant_addrspace_v = metal::__tensor_detail::__is_constant_
 
 template <typename T>
 constant auto __is_thread_addrspace_v = metal::__tensor_detail::__is_thread_addrspace_v<__remove_cv_t<__remove_ref_ptr_t<T>>>;
+
+template <typename T>
+constant auto __is_unqualified_v = __is_same_v<T, __remove_cv_t<__remove_coherent_t<__remove_addrspace_t<__remove_ref_ptr_t<T>>>>>;
 
 template <typename T>
 struct __assert_false : __false_type
@@ -123,6 +129,63 @@ constexpr constant bool __is_tensorops_execution_scope_v = metal::is_execution_t
 
 template <typename T>
 using __remove_cvref_t = __remove_cv_t<__remove_reference_t<T>>;
+
+#if defined(__HAVE_TENSOR_MULTIPLANE__)
+template<typename T>
+struct is_tensor_blockwise : metal::false_type {};
+
+template<class PlaneTag, class ElementType, size_t... BlockSizes>
+struct is_tensor_blockwise<metal::tensor_blockwise<PlaneTag, ElementType, BlockSizes...>> : metal::true_type {};
+
+template<typename T>
+inline constant constexpr bool is_tensor_blockwise_v = is_tensor_blockwise<T>::value;
+
+template<typename T>
+struct tensor_plane_tag {};
+
+template<class PlaneTag, class ElementType, size_t... BlockSizes>
+struct tensor_plane_tag<metal::tensor_blockwise<PlaneTag, ElementType, BlockSizes...>> : metal::__type_traits_detail::type_identity<PlaneTag> {};
+
+template<class PlaneTag, typename Tag, bool = is_tensor_blockwise_v<Tag>>
+struct tag_matches_plane : metal::false_type {};
+
+template<class PlaneTag, typename Tag>
+struct tag_matches_plane<PlaneTag, Tag, true>
+    : metal::bool_constant<metal::is_same_v<typename tensor_plane_tag<Tag>::type, PlaneTag>>
+{};
+
+template<class PlaneTag, typename... Tags>
+struct find_tensor_blockwise_tag;
+
+template<class PlaneTag>
+struct find_tensor_blockwise_tag<PlaneTag> {};
+
+template<class PlaneTag, typename Head, typename... Tail>
+struct find_tensor_blockwise_tag<PlaneTag, Head, Tail...>
+    : metal::conditional_t<tag_matches_plane<PlaneTag, Head>::value,
+                           metal::__type_traits_detail::type_identity<Head>,
+                           find_tensor_blockwise_tag<PlaneTag, Tail...>>
+{};
+
+template<class PlaneTag, typename T>
+struct tensor_blockwise_tag {};
+
+template<class PlaneTag, class ElementType, class Extents, class... Tags>
+struct tensor_blockwise_tag<PlaneTag, metal::tensor<ElementType, Extents, Tags...>>
+    : find_tensor_blockwise_tag<PlaneTag, Tags...>
+{};
+
+template<class PlaneTag, typename T>
+struct has_tensor_blockwise : metal::false_type {};
+
+template<class PlaneTag, class ElementType, class Extents, class... Tags>
+struct has_tensor_blockwise<PlaneTag, metal::tensor<ElementType, Extents, Tags...>>
+    : metal::bool_constant<(tag_matches_plane<PlaneTag, Tags>::value || ...)>
+{};
+
+template<class PlaneTag, typename T>
+inline constant constexpr bool has_tensor_blockwise_v = has_tensor_blockwise<PlaneTag, T>::value;
+#endif
 
 } // namespace __tensor_ops_detail
 } // namespace tensor_ops

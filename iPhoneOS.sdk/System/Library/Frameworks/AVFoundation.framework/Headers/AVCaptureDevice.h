@@ -4,7 +4,7 @@
  
     Framework:  AVFoundation
  
-    Copyright 2010-2023 Apple Inc. All rights reserved.
+    Copyright 2010-2026 Apple Inc. All rights reserved.
 */
 
 #import <AVFoundation/AVBase.h>
@@ -50,6 +50,67 @@ AVF_EXPORT NSNotificationName const AVCaptureDeviceWasDisconnectedNotification N
   */
 AVF_EXPORT NSNotificationName const AVCaptureDeviceSubjectAreaDidChangeNotification NS_SWIFT_NAME(AVCaptureDevice.subjectAreaDidChangeNotification) API_AVAILABLE(ios(5.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE(watchos);
 
+
+/// A special value that may be passed as the lensAperture parameter of a device's `setExposureModeCustom...` methods to lock at the current position.
+///
+/// This value may be passed to ``AVCaptureDevice/setExposureModeCustomWithLensAperture:duration:ISO:completionHandler:`` to lock it to its current value. Note that the device may be adjusting the aperture at the time of the call, in which case ``AVCaptureDevice/lensAperture`` may be locked to different value than the value obtained by querying the property.
+AVF_EXPORT const float AVCaptureLensApertureCurrent NS_SWIFT_NAME(AVCaptureDevice.currentLensAperture) API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE(watchos);
+
+/// A special value that may be passed as the duration parameter of a device's `setExposureModeCustom...` methods to lock at the current duration.
+///
+/// This value may be passed to ``AVCaptureDevice/setExposureModeCustomWithDuration:ISO:completionHandler:`` or ``AVCaptureDevice/setExposureModeCustomWithLensAperture:duration:ISO:completionHandler:`` to lock it to its current value. Note that the device may be adjusting exposure duration at the time of the call, in which case ``AVCaptureDevice/exposureDuration`` may be locked to different value than the value obtained by querying the property.
+AVF_EXPORT const CMTime AVCaptureExposureDurationCurrent API_AVAILABLE(ios(8.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE(watchos);
+
+/// A special value that may be passed as the ISO parameter of a device's `setExposureModeCustom...` methods to lock at the current gain value.
+///
+/// This value may be passed to ``AVCaptureDevice/setExposureModeCustomWithDuration:ISO:completionHandler:`` or ``AVCaptureDevice/setExposureModeCustomWithLensAperture:duration:ISO:completionHandler:`` to lock it to its current value. Note that the device may be adjusting ISO at the time of the call, in which case ``AVCaptureDevice/ISO`` may be locked to different value than the value obtained by querying the property.
+AVF_EXPORT const float AVCaptureISOCurrent API_AVAILABLE(ios(8.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE(watchos);
+
+/// A special value that may be passed as the lensAperture parameter of a device's `setExposureModeCustom...` methods to allow the system's auto-exposure system to manage the aperture.
+///
+/// This value may be passed to ``AVCaptureDevice/setExposureModeCustomWithLensAperture:duration:ISO:completionHandler:`` to enable "priority" modes, where some parameters are locked to specified values (given "priority"), whereas the ones specified as "auto" will be continually adjusted by the system to maintain image brightness.
+AVF_EXPORT const float AVCaptureLensApertureAuto NS_SWIFT_NAME(AVCaptureDevice.autoLensAperture) API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE(watchos);
+
+/// A special value that may be passed as the duration parameter of a device's `setExposureModeCustom...` methods to allow the system's auto-exposure system to manage the exposure duration.
+///
+/// This value may be passed to ``AVCaptureDevice/setExposureModeCustomWithDuration:ISO:completionHandler:`` or ``AVCaptureDevice/setExposureModeCustomWithLensAperture:duration:ISO:completionHandler:`` to enable "priority" modes, where some parameters are locked to specified values (given "priority"), whereas the ones specified as "auto" will be continually adjusted by the system to maintain image brightness.
+AVF_EXPORT const CMTime AVCaptureExposureDurationAuto NS_SWIFT_NAME(AVCaptureDevice.autoExposureDuration) API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE(watchos);
+
+/// A special value that may be passed as the ISO parameter of a device's `setExposureModeCustom...` methods to allow the system's auto-exposure system to manage the gain value.
+///
+/// This value may be passed to ``AVCaptureDevice/setExposureModeCustomWithDuration:ISO:completionHandler:`` or ``AVCaptureDevice/setExposureModeCustomWithLensAperture:duration:ISO:completionHandler:`` to enable "priority" modes, where some parameters are locked to specified values (given "priority"), whereas the ones specified as "auto" will be continually adjusted by the system to maintain image brightness.
+AVF_EXPORT const float AVCaptureISOAuto NS_SWIFT_NAME(AVCaptureDevice.autoISO) API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE(watchos);
+
+
+/// Values that can be used to configure the auto exposure system via ``AVCaptureDevice/enabledExposureSignals`` and associated methods.
+typedef NSString *AVCaptureDeviceExposureSignal NS_TYPED_ENUM API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE( watchos);
+
+/// When enabled, auto exposure may close the aperture or decrease the exposure duration to reduce motion blur when there is a lot of motion in the scene.
+AVF_EXPORT AVCaptureDeviceExposureSignal const AVCaptureDeviceExposureSignalSubjectMotion API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE( watchos);
+
+/// When enabled, auto exposure may close the aperture to increase depth of field when multiple faces are in the scene.
+AVF_EXPORT AVCaptureDeviceExposureSignal const AVCaptureDeviceExposureSignalGroupPhoto API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE( watchos);
+
+/// When enabled, auto exposure may close the aperture to improve sharpness of textual scenes.
+AVF_EXPORT AVCaptureDeviceExposureSignal const AVCaptureDeviceExposureSignalDocument API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE( watchos);
+
+/// When enabled, auto exposure may open the aperture to remove diffraction artifacts from point light sources.
+AVF_EXPORT AVCaptureDeviceExposureSignal const AVCaptureDeviceExposureSignalStarburst API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE( watchos);
+
+/// When enabled, auto exposure may adjust the aperture to help exposure duration avoid synchronization with artificial lighting frequencies.
+AVF_EXPORT AVCaptureDeviceExposureSignal const AVCaptureDeviceExposureSignalFlicker API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE( watchos);
+
+/// Constants indicating video orientation, for use with AVCaptureDeviceRotationCoordinator.
+typedef NS_ENUM(NSInteger, AVCaptureVideoOrientation) {
+    /// Indicates that video should be oriented vertically, port on the bottom.
+    AVCaptureVideoOrientationPortrait           = 1,
+    /// Indicates that video should be oriented vertically, port on the top.
+    AVCaptureVideoOrientationPortraitUpsideDown = 2,
+    /// Indicates that video should be oriented horizontally, port on the right.
+    AVCaptureVideoOrientationLandscapeRight     = 3,
+    /// Indicates that video should be oriented horizontally, port on the left.
+    AVCaptureVideoOrientationLandscapeLeft      = 4,
+} API_AVAILABLE(ios(4.0)) API_DEPRECATED("Use AVCaptureDeviceRotationCoordinator instead", macos(10.7, 14.0), macCatalyst(14.0, 17.0)) API_UNAVAILABLE(tvos, visionos) API_UNAVAILABLE(watchos);
 
 #pragma mark - AVCaptureDevice
 
@@ -392,6 +453,11 @@ AV_INIT_UNAVAILABLE
 /// Use this property as the minimum allowable frame duration to pass to ``AVCaptureDeviceInput/follow:externalSyncDevice:videoFrameDuration:delegate:`` when you want to follow an external sync device. This property returns `kCMTimeInvalid` when the device's' current configuration does not support external sync device following.
 @property(nonatomic, readonly) CMTime minSupportedExternalSyncFrameDuration API_AVAILABLE(macos(26.0), ios(26.0), macCatalyst(26.0), tvos(26.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
 
+/// Whether adjusting the signal compensation delay property of an external sync device is supported while the session is running.
+///
+/// This property returns `true` if the ``signalCompensationDelay`` of an ``AVExternalSyncDevice`` being followed by this device's ``AVCaptureDeviceInput`` can be adjusted while the ``AVCaptureSession`` is running.
+@property(nonatomic, readonly, getter=isAdjustingSignalCompensationDelayWhileRunningSupported) BOOL adjustingSignalCompensationDelayWhileRunningSupported API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
+
 /// Indicates whether the receiver should enable auto video frame rate.
 ///
 /// When you enable this property, the device automatically adjusts the active frame rate, depending on light level. Under low light conditions, it decreases the frame rate to properly expose the scene. For formats with a maximum frame rate of 30 fps, the device switches the frame rate between 30 - 24. For formats with a maximum frame rate of 60 fps, the device switches the frame rate between 60 - 30 - 24.
@@ -592,6 +658,7 @@ AVF_EXPORT AVCaptureDeviceType const AVCaptureDeviceTypeContinuityCamera API_AVA
  */
 AVF_EXPORT AVCaptureDeviceType const AVCaptureDeviceTypeDeskViewCamera API_AVAILABLE(macos(13.0)) API_UNAVAILABLE(ios, macCatalyst, tvos, visionos) API_UNAVAILABLE(watchos);
 
+
 /*!
  @constant AVCaptureDeviceTypeExternalUnknown
     A deprecated synonym for AVCaptureDeviceTypeExternal. Please use AVCaptureDeviceTypeExternal instead.
@@ -783,6 +850,20 @@ API_AVAILABLE(macos(10.7), ios(4.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILA
     This array contains zoom factors at which one of the constituent device's field of view matches the next constituent device's full field of view. The number of switch over video zoom factors is always one less than the count of the constituentDevices property, and the factors progress in the same order as the devices listed in that property. On non-virtual devices this property returns an empty array.
  */
 @property(nonatomic, readonly) NSArray<NSNumber *> *virtualDeviceSwitchOverVideoZoomFactors API_AVAILABLE(ios(13.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE(watchos);
+
+/// Whether locking to a particular primary constituent device is supported.
+///
+/// This property returns `true` if ``setPrimaryConstituentDeviceSwitchingBehaviorLockedWithDevice:`` is supported.
+@property(nonatomic, readonly, getter=isPrimaryConstituentDeviceSwitchingBehaviorLockedWithDeviceSupported) BOOL primaryConstituentDeviceSwitchingBehaviorLockedWithDeviceSupported API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
+
+/// Sets the switching behavior of the primary constituent device to locked with the specified device.
+///
+/// - Parameter device: The constituent device to lock.
+///
+/// Before locking a virtual camera's primary constituent device, check that ``primaryConstituentDeviceSwitchingBehaviorLockedWithDeviceSupported`` is `true`. If locking is not supported, attempting to lock throws an `NSInvalidArgumentException`. Call ``lockForConfiguration:`` to acquire exclusive access to the device’s configuration properties. Once a constituent device is locked, it becomes the ``activePrimaryConstituentDevice``, and ``primaryConstituentDeviceSwitchingBehavior`` is updated to ``AVCapturePrimaryConstituentDeviceSwitchingBehaviorLocked``. The virtual camera’s properties remain unchanged. Their effective values can be obtained from the ``activePrimaryConstituentDevice``. To unlock the primary constituent device, set ``primaryConstituentDeviceSwitchingBehavior`` to ``AVCapturePrimaryConstituentDeviceSwitchingBehaviorAuto``. This may trigger an immediate update of ``activePrimaryConstituentDevice``. Locking a different primary constituent device without first unlocking the current one is allowed.
+///
+/// If the current ``videoZoomFactor`` is within the constituent device's supported range, it will remain unchanged. If it falls outside the range, the zoom factor will automatically be clamped to the nearest supported value. If a zoom ramp is in progress, the ramp target and current position will similarly be updated to stay within the supported range.  If both the target and position are thus clamped to the same value, this will cancel the ramp at that value, otherwise the ramp will continue within the remaining available range at its current velocity.
+- (void)setPrimaryConstituentDeviceSwitchingBehaviorLockedWithDevice:(AVCaptureDevice *)device API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
 
 /*!
  @method setPrimaryConstituentDeviceSwitchingBehavior:restrictedSwitchingBehaviorConditions:
@@ -1272,19 +1353,13 @@ API_AVAILABLE(macos(10.7), ios(4.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILA
  */
 AVF_EXPORT const float AVCaptureLensPositionCurrent API_AVAILABLE(ios(8.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE(watchos);
 
-/*!
- @method setFocusModeLockedWithLensPosition:completionHandler:
- @abstract
-    Sets focusMode to AVCaptureFocusModeLocked and locks lensPosition at an explicit value.
- 
- @param lensPosition
-    The lens position, as described in the documentation for the lensPosition property. A value of AVCaptureLensPositionCurrent can be used to indicate that the caller does not wish to specify a value for lensPosition.
- @param handler
-    A block to be called when lensPosition has been set to the value specified and focusMode is set to AVCaptureFocusModeLocked. If setFocusModeLockedWithLensPosition:completionHandler: is called multiple times, the completion handlers will be called in FIFO order. The block receives a timestamp which matches that of the first buffer to which all settings have been applied. Note that the timestamp is synchronized to the device clock, and thus must be converted to the `AVCaptureSession/synchronizationClock` prior to comparison with the timestamps of buffers delivered via an AVCaptureVideoDataOutput. The client may pass nil for the handler parameter if knowledge of the operation's completion is not required.
- 
- @discussion
-    This is the only way of setting lensPosition. This method throws an NSRangeException if lensPosition is set to an unsupported level. This method throws an NSGenericException if called without first obtaining exclusive access to the receiver using lockForConfiguration:.
- */
+/// Sets focusMode to AVCaptureFocusModeLocked and locks lensPosition at an explicit value.
+///
+/// - Parameter lensPosition: The lens position, as described in the documentation for the ``lensPosition`` property. A value of ``AVCaptureLensPositionCurrent`` can be used to indicate that the caller does not wish to specify a value for ``lensPosition``.
+/// - Parameter handler: A block to be called when ``lensPosition`` has been set to the value specified and ``focusMode`` is set to ``AVCaptureFocusModeLocked``. If ``setFocusModeLockedWithLensPosition:completionHandler:`` is called multiple times, the completion handlers will be called in FIFO order. The block receives a timestamp which matches that of the first buffer to which all settings have been applied. Note that the timestamp is synchronized to the device clock, and thus must be converted to the ``AVCaptureSession/synchronizationClock`` prior to comparison with the timestamps of buffers delivered via an ``AVCaptureVideoDataOutput``. The client may pass nil for the handler parameter if knowledge of the operation's completion is not required.
+///
+/// This is the only way of setting ``lensPosition``. This method throws an NSRangeException if ``lensPosition`` is set to an unsupported level. This method throws an NSGenericException if called without first obtaining exclusive access to the receiver using ``lockForConfiguration:``. Before setting custom lens position value, check ``lockingFocusWithCustomLensPositionSupported`` first.
+/// For a virtual camera, locking to a custom lens position value is not supported if spatial video capture is enabled. When switching a virtual camera's ``activePrimaryConstituentDevice`` using ``setPrimaryConstituentDeviceSwitchingBehaviorLockedWithDevice:`` while focus mode is locked, the custom lens position is preserved across the constituent devices. However, the same lens position does not correspond to the same focus distance. If consistent focus behavior is required on a virtual camera (e.g. stereo depth data delivery is enabled), do not lock to a custom lens position.
 - (void)setFocusModeLockedWithLensPosition:(float)lensPosition completionHandler:(nullable void (^)(CMTime syncTime))handler API_AVAILABLE(ios(8.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILABLE(macos, visionos);
 
 /*!
@@ -1446,15 +1521,19 @@ API_AVAILABLE(macos(10.7), ios(4.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILA
  */
 @property(nonatomic, getter=isFaceDrivenAutoExposureEnabled) BOOL faceDrivenAutoExposureEnabled API_AVAILABLE(ios(15.4), macCatalyst(15.4), tvos(17.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE(watchos);
 
-/*!
- @constant activeMaxExposureDuration
- @abstract
-    The maximum exposure (integration) time that may be used by the auto exposure algorithm.
+/** The maximum exposure (integration) time that may be used by the auto exposure algorithm.
  
- @discussion
-    When an AVCaptureDevice's exposureMode is set to AVCaptureExposureModeAutoExpose or AVCaptureExposureModeContinuousAutoExposure, the auto exposure algorithm picks a default max exposure duration that is tuned for the current configuration, balancing low light image quality with motion preservation. By querying or key-value observing this property, you may find out the current max exposure duration in use. You may also override the default value by setting this property to a value between activeFormat.maxExposureDuration and activeFormat.minExposureDuration. An NSRangeException is thrown if you pass an out-of-bounds exposure duration. Setting the property to the special value of kCMTimeInvalid resets the auto exposure max duration to the device's default for your current configuration. When the device's activeFormat or the AVCaptureSession's sessionPreset changes, this property resets to the default max exposure duration for the new format or session preset.
+ When ``automaticallyAdjustsExposureDuration`` is true, the auto exposure algorithm picks an exposure duration that is tuned for the current scene, balancing low light image quality with motion preservation, up to the maximum specified by this property.
+ When custom exposure durations are specified via ``setExposureModeCustomWithLensAperture:duration:ISO:completionHandler:``, if the duration exceeds `activeMaxExposureDuration`, the behavior depends on whether any of the other custom parameters are set to Auto:
+ - If either aperture or ISO are set to Auto, then the applied exposure duration will be capped to `activeMaxExposureDuration` for streaming frames, but the full exposure duration may be applied during still capture.
+ - If no parameters are set to Auto, then activeMaxExposureDuration is ignored, the custom exposure duration is applied as specified.
+
+ By querying or key-value observing this property, you may find out the current max exposure duration. You may also override the default value by setting this property. Setting the property to the special value of kCMTimeInvalid resets the auto exposure max duration to the device's default for your current configuration. When the device's activeFormat or the AVCaptureSession's sessionPreset changes, this property resets to the default max exposure duration for the new format or session preset.
  
-    On some devices, the auto exposure algorithm picks a different max exposure duration for a given format depending whether you used the -[AVCaptureSession setSessionPreset:] API or the -[AVCaptureDevice setActiveFormat:] API to set the format. To ensure uniform default handling of max exposure duration, you can set your AVCaptureDeviceInput's unifiedAutoExposureDefaultsEnabled property to YES.
+ On some devices, the auto exposure algorithm picks a different max exposure duration for a given format depending whether you set the ``AVCaptureSession/sessionPreset`` property or the ``AVCaptureDevice/activeFormat`` property to set the format. To ensure ``activeMaxExposureDuration`` stays consistent between preset or format changes, you can set your AVCaptureDeviceInput's ``AVCaptureDeviceInput/unifiedAutoExposureDefaultsEnabled`` property to true.
+ 
+ - Throws: `NSRangeException` if the assigned value is not between activeFormat's ``AVCaptureDeviceFormat/minExposureDuration`` and ``AVCaptureDeviceFormat/maxExposureDuration``
+ - Throws: `NSGenericException` if called without first obtaining exclusive access to the receiver using ``lockForConfiguration:``.
  */
 @property(nonatomic) CMTime activeMaxExposureDuration API_AVAILABLE(ios(12.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE(watchos);
 
@@ -1468,64 +1547,108 @@ API_AVAILABLE(macos(10.7), ios(4.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILA
  */
 @property(nonatomic, readonly, getter=isAdjustingExposure) BOOL adjustingExposure;
 
-/*!
- @property lensAperture
- @abstract
-    The size of the lens diaphragm.
- 
- @discussion
-    The value of this property is a float indicating the size (f number) of the lens diaphragm. This property does not change.
- */
+/// The current 𝑓 number (𝑓-stop) of the lens diaphragm.
+///
+/// The aperture's 𝑓 number is the ratio of the focal length to the diameter of the aperture opening. Higher values correspond to closing the aperture, which increases depth of field, but darkens the image unless exposure duration or ISO are increased as well. This property is key-value observable. It can be read at any time, regardless of exposure mode, but can only be set by ``setExposureModeCustomWithLensAperture:duration:ISO:completionHandler:``. This value reports the physical aperture position and may not exactly match the target value passed to the setter.
 @property(nonatomic, readonly) float lensAperture API_AVAILABLE(ios(8.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILABLE(macos, visionos);
 
-/*!
- @property exposureDuration
- @abstract
-    The length of time over which exposure takes place.
- 
- @discussion
-    Only exposure duration values between activeFormat.minExposureDuration and activeFormat.maxExposureDuration are supported. This property is key-value observable. It can be read at any time, regardless of exposure mode, but can only be set via setExposureModeCustomWithDuration:ISO:completionHandler:.
- */
+/// The length of time over which exposure takes place.
+///
+/// Lower values increases the sharpness of objects in motion, but darkens the image unless the aperture is opened or ISO is increased. Exposure duration may be less than the frame duration, providing an anagolue to the shutter angle of film video cameras. This property is key-value observable. It can be read at any time, regardless of exposure mode, but can only be set by either ``AVCaptureDevice/setExposureModeCustomWithDuration:ISO:completionHandler:`` or ``AVCaptureDevice/setExposureModeCustomWithLensAperture:duration:ISO:completionHandler:``.
 @property(nonatomic, readonly) CMTime exposureDuration API_AVAILABLE(ios(8.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILABLE(macos, visionos);
 
-/*!
- @property ISO
- @abstract
-    The current exposure ISO value.
- 
- @discussion
-    This property controls the sensor's sensitivity to light by means of a gain value applied to the signal. Only ISO values between activeFormat.minISO and activeFormat.maxISO are supported. Higher values will result in noisier images. This property is key-value observable. It can be read at any time, regardless of exposure mode, but can only be set via setExposureModeCustomWithDuration:ISO:completionHandler:.
- */
+/// The current exposure ISO value.
+///
+/// This property indicates the sensor's sensitivity to light by means of a gain value applied to the signal.  Higher values correspond to brighter but noisier images. This property is key-value observable. It can be read at any time, regardless of exposure mode, but can only be set by either ``AVCaptureDevice/setExposureModeCustomWithDuration:ISO:completionHandler:`` or ``AVCaptureDevice/setExposureModeCustomWithLensAperture:duration:ISO:completionHandler:``.
 @property(nonatomic, readonly) float ISO API_AVAILABLE(ios(8.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILABLE(macos, visionos);
 
-/*!
- @constant AVCaptureExposureDurationCurrent
-    A special value that may be passed as the duration parameter of setExposureModeCustomWithDuration:ISO:completionHandler: to indicate that the caller does not wish to specify a value for the exposureDuration property, and that it should instead be set to its current value. Note that the device may be adjusting exposureDuration at the time of the call, in which case the value to which exposureDuration is set may differ from the value obtained by querying the exposureDuration property.
- */
-AVF_EXPORT const CMTime AVCaptureExposureDurationCurrent API_AVAILABLE(ios(8.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE(watchos);
+/// Specifies a rate limit for aperture motion, whenever auto-exposure is active.
+///
+/// This rate limit is enforced whenever the auto-exposure system has control of one or more exposure parameters, to ensure smooth transitions between target values with coordinated management of the automatically adjusted parameters to maintain image brightness.
+/// However, if a full set of explicit (not "auto") positions are passed to `setExposureModeCustomWithLensAperture:duration:ISO:completionHandler:`, any change to aperture is immediately applied without rate limit.
+/// In this case, the client has full control of the exposure parameters, and can implement arbitrary exposure transitions by repeated calls to the setter.
+///
+/// This value limits the maximum frame-to-frame change of aperture size, as the ratio of aperture area between consecutive frames.
+/// For example, a value of 1.1 limits the aperture to accepting 10% additional light on each consecutive frame (or reducing by 10% when closing). A value of 1.0 does not allow any aperture motion.
+/// A special value of 0 (the default) allows the system to adjust the aperture speed automatically, such as faster motion in preview and slower when recording. When assigned to a value other than 0, the value must be greater than or equal to 1.0.
+/// 
+/// - Throws: `NSGenericException` if assigned without first obtaining exclusive access to the receiver using ``lockForConfiguration:``.
+@property(nonatomic) float autoExposureLensApertureRateLimit API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE(watchos);
 
-/*!
- @constant AVCaptureISOCurrent
-    A special value that may be passed as the ISO parameter of setExposureModeCustomWithDuration:ISO:completionHandler: to indicate that the caller does not wish to specify a value for the ISO property, and that it should instead be set to its current value. Note that the device may be adjusting ISO at the time of the call, in which case the value to which ISO is set may differ from the value obtained by querying the ISO property.
- */
-AVF_EXPORT const float AVCaptureISOCurrent API_AVAILABLE(ios(8.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE(watchos);
-
-/*!
- @method setExposureModeCustomWithDuration:ISO:completionHandler:
- @abstract
-    Sets exposureMode to AVCaptureExposureModeCustom and locks exposureDuration and ISO at explicit values.
+/** Sets a custom exposure mode with the specified lens exposure duration and ISO values.
  
- @param duration
-    The exposure duration, as described in the documentation for the exposureDuration property. A value of AVCaptureExposureDurationCurrent can be used to indicate that the caller does not wish to specify a value for exposureDuration. Note that changes to this property may result in changes to activeVideoMinFrameDuration and/or activeVideoMaxFrameDuration.
- @param ISO
-    The exposure ISO value, as described in the documentation for the ISO property. A value of AVCaptureISOCurrent can be used to indicate that the caller does not wish to specify a value for ISO.
- @param handler
-    A block to be called when both exposureDuration and ISO have been set to the values specified and exposureMode is set to AVCaptureExposureModeCustom. If setExposureModeCustomWithDuration:ISO:completionHandler: is called multiple times, the completion handlers will be called in FIFO order. The block receives a timestamp which matches that of the first buffer to which all settings have been applied. Note that the timestamp is synchronized to the device clock, and thus must be converted to the `AVCaptureSession/synchronizationClock` prior to comparison with the timestamps of buffers delivered via an AVCaptureVideoDataOutput. The client may pass nil for the handler parameter if knowledge of the operation's completion is not required.
+ - Parameter duration: The exposure duration, as described in the documentation for the ``exposureDuration`` property. You may specify one of the special Current or Auto constants listed in the discussion section below, or values between the ``AVCaptureDeviceFormat/minExposureDuration`` and ``AVCaptureDeviceFormat/maxExposureDuration`` of the ``activeFormat``.
  
- @discussion
-    This is the only way of setting exposureDuration and ISO. This method throws an NSRangeException if either exposureDuration or ISO is set to an unsupported level. This method throws an NSGenericException if called without first obtaining exclusive access to the receiver using lockForConfiguration:. When using AVCapturePhotoOutput to capture photos, note that the photoQualityPrioritization property of AVCapturePhotoSettings defaults to AVCapturePhotoQualityPrioritizationBalanced, which allows photo capture to temporarily override the capture device's ISO and exposureDuration values if the scene is dark enough to warrant some form of multi-image fusion to improve quality. To ensure that the receiver's ISO and exposureDuration values are honored while in AVCaptureExposureModeCustom or AVCaptureExposureModeLocked, you must set your AVCapturePhotoSettings.photoQualityPrioritization property to AVCapturePhotoQualityPrioritizationSpeed. The same rule applies if you use the deprecated AVCapturePhotoSettings.autoStillImageStabilizationEnabled property or AVCaptureStillImageOutput.automaticallyEnablesStillImageStabilizationWhenAvailable property. You must set them to NO to preserve your custom or locked exposure settings.
+ - Parameter ISO: The exposure ISO value, as described in the documentation for the ``ISO`` property. You may specify one of the special Current or Auto constants listed in the discussion section below, or values between the ``AVCaptureDeviceFormat/minISO`` and ``AVCaptureDeviceFormat/maxISO`` of the ``activeFormat``.
+ 
+ - Parameter handler: A block to be called when all parameters have been set to the values specified and ``exposureMode`` is set to ``AVCaptureExposureMode/AVCaptureExposureModeCustom``. If the `setExposureModeCustom...` methods are called multiple times, their completion handlers are always called in FIFO order. The block receives a timestamp which matches that of the first buffer to which all settings have been applied. Note that the timestamp is synchronized to the device clock, and thus must be converted to the ``AVCaptureSession/synchronizationClock`` prior to comparison with the timestamps of buffers delivered via an ``AVCaptureVideoDataOutput``. The client may pass nil for the handler parameter if knowledge of the operation's completion is not required.
+ 
+ Besides a numeric value, each of the exposure parameters can be set to either of these special constants:
+ 
+ > Lock To Current Value:
+ > A value of ``AVFCapture/AVCaptureExposureDurationCurrent`` can be passed for `duration`, or ``AVFCapture/AVCaptureISOCurrent`` for `ISO`, to indicate the caller does not wish to modify the current value. When auto-exposure is active, it is preferable to use these constants rather than querying the property getter, as auto-exposure system may be asynchronously changing the value as the command is processed.
+ 
+ > Priority Modes:
+ > A value of ``AVFCapture/AVCaptureExposureDurationAuto`` can be passed for `duration`, or ``AVFCapture/AVCaptureISOAuto`` for `ISO`, to indicate the auto-exposure system should continue to manage that parameter to produce balanced image brightness. This allows you to lock one of the exposure parameters (the "priority") while the system will automatically adjust the other.
+ >
+ > Not all priority mode combinations may be supported. Use ``AVCaptureDeviceFormat/supportsExposureModeCustomWithLensAperture:duration:ISO:`` to validate whether a given configuration will be accepted.
+ 
+ The applied exposure duration of streaming frames are limited to ``activeMaxExposureDuration`` when ISO is set to "Auto", but the full exposure duration may be applied during still capture.  Auto parameter(s) will attempt to simulate how a still capture will appear, while maintaining the current frame rate for responsive preview.  If none of the parameters are "Auto", changes to the exposure duration may result in changes to ``activeVideoMaxFrameDuration``.
+ 
+ If you wish to use the custom locked values for ``AVCapturePhotoOutput`` captures, you must set the ``AVCapturePhotoSettings/photoQualityPrioritization`` property to ``AVCapturePhotoQualityPrioritization/AVCapturePhotoQualityPrioritizationSpeed``. The default value of ``AVCapturePhotoQualityPrioritization/AVCapturePhotoQualityPrioritizationBalanced`` allows photo capture to temporarily override the capture device's ISO and exposureDuration values if the scene is dark enough to warrant some form of multi-image fusion to improve quality.
+ 
+ Note selecting speed prioritization disables image stabilization. If you then re-enable image stabilization via the deprecated ``AVCapturePhotoSettings/autoStillImageStabilizationEnabled`` property or ``AVCaptureStillImageOutput/automaticallyEnablesStillImageStabilizationWhenAvailable`` property, this counteracts speed prioritization and can result in image capture adopting different exposure settings.
+ 
+ Calling this method equivalent to passing ``AVFCapture/AVCaptureLensApertureCurrent`` to ``setExposureModeCustomWithLensAperture:duration:ISO:completionHandler:``.
+ 
+ - Throws: `NSRangeException` if any parameter is set to an unsupported level.
+ - Throws: `NSInvalidArgumentException` if the custom mode is not supported.  (See ``AVCaptureDeviceFormat/supportsExposureModeCustomWithLensAperture:duration:ISO:``)
+ - Throws: `NSGenericException` if called without first obtaining exclusive access to the receiver using ``lockForConfiguration:``.
  */
 - (void)setExposureModeCustomWithDuration:(CMTime)duration ISO:(float)ISO completionHandler:(nullable void (^)(CMTime syncTime))handler API_AVAILABLE(ios(8.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILABLE(macos, visionos);
+
+/** Sets a custom exposure mode with the specified lens aperture, exposure duration, and ISO values.
+ 
+ - Parameter lensAperture: The lens aperture, as described in the documentation for the ``lensAperture`` property. You may specify one of the special ``AVFCapture/AVCaptureLensApertureCurrent`` or ``AVFCapture/AVCaptureLensApertureAuto`` constants listed in the discussion section below, or values between the ``AVCaptureDeviceFormat/minLensAperture`` and ``AVCaptureDeviceFormat/maxLensAperture`` of the ``activeFormat``.
+ 
+ - Parameter duration: The exposure duration, as described in the documentation for the ``exposureDuration`` property. You may specify one of the special ``AVFCapture/AVCaptureExposureDurationCurrent`` or ``AVFCapture/AVCaptureExposureDurationAuto`` constants listed in the discussion section below, or values between the ``AVCaptureDeviceFormat/minExposureDuration`` and ``AVCaptureDeviceFormat/maxExposureDuration`` of the ``activeFormat``.
+ 
+ - Parameter ISO: The exposure ISO value, as described in the documentation for the ``ISO`` property. You may specify one of the special ``AVFCapture/AVCaptureISOCurrent`` or ``AVFCapture/AVCaptureISOAuto`` constants listed in the discussion section below, or values between the ``AVCaptureDeviceFormat/minISO`` and ``AVCaptureDeviceFormat/maxISO`` of the ``activeFormat``.
+ 
+ - Parameter handler: A block to be called when all parameters have been set to the values specified and ``exposureMode`` is set to ``AVCaptureExposureMode/AVCaptureExposureModeCustom``. If the `setExposureModeCustom...` methods are called multiple times, their completion handlers are always called in FIFO order. The block receives a timestamp which matches that of the first buffer to which all settings have been applied. Note that the timestamp is synchronized to the device clock, and thus must be converted to the ``AVCaptureSession/synchronizationClock`` prior to comparison with the timestamps of buffers delivered via an ``AVCaptureVideoDataOutput``. The client may pass nil for the handler parameter if knowledge of the operation's completion is not required.
+ 
+ Besides a numeric value, each of the exposure parameters can be set to either of these special constants:
+ 
+ > Lock To Current Value:
+ > A value of ``AVFCapture/AVCaptureLensApertureCurrent`` can be passed for `lensAperture`, or ``AVFCapture/AVCaptureExposureDurationCurrent`` for `duration`, or ``AVFCapture/AVCaptureISOCurrent`` for `ISO`, to indicate you wish to lock that parameter at the current value.  When auto-exposure is active, it is preferable to use these constants rather than querying the property getter, as auto-exposure system may be asynchronously changing the value as the command is processed.
+ >
+ > Passing ``AVFCapture/AVCaptureLensApertureCurrent`` is equivalent to calling ``setExposureModeCustomWithDuration:ISO:completionHandler:``.
+ 
+ > Priority Modes:
+ > A value of ``AVFCapture/AVCaptureLensApertureAuto`` can be passed for `lensAperture`, or ``AVFCapture/AVCaptureExposureDurationAuto``  for `duration`, or ``AVFCapture/AVCaptureISOAuto`` for `ISO`, to indicate the auto-exposure system should continue to manage that parameter to produce balanced image brightness.  This allows you to lock one of the exposure parameters (the "priority") while the system will automatically adjust the other.
+ >
+ > Not all priority mode combinations may be supported. Use ``AVCaptureDeviceFormat/supportsExposureModeCustomWithLensAperture:duration:ISO:`` to validate whether a given configuration will be accepted.
+ 
+ The applied exposure duration of streaming frames are limited to ``activeMaxExposureDuration`` when either lensAperture or ISO is set to "Auto", but the full exposure duration may be applied during still capture.  Auto parameter(s) will attempt to simulate how a still capture will appear, while maintaining the current frame rate for responsive preview.  If none of the parameters are "Auto", changes to the exposure duration may result in changes to ``activeVideoMaxFrameDuration``.
+ 
+ If you wish to use the custom locked values for ``AVCapturePhotoOutput`` captures, you must set the ``AVCapturePhotoSettings/photoQualityPrioritization`` property to ``AVCapturePhotoQualityPrioritization/AVCapturePhotoQualityPrioritizationSpeed``. The default value of ``AVCapturePhotoQualityPrioritization/AVCapturePhotoQualityPrioritizationBalanced`` allows photo capture to temporarily override the capture device's ISO and exposureDuration values if the scene is dark enough to warrant some form of multi-image fusion to improve quality.
+ 
+ Note selecting speed prioritization disables image stabilization. If you then re-enable image stabilization via the deprecated ``AVCapturePhotoSettings/autoStillImageStabilizationEnabled`` property or ``AVCaptureStillImageOutput/automaticallyEnablesStillImageStabilizationWhenAvailable`` property, this counteracts speed prioritization and can result in image capture adopting different exposure settings.
+ 
+ - Throws: `NSRangeException` if any parameter is set to an unsupported level.
+ - Throws: `NSInvalidArgumentException` if the custom mode is not supported.  (See ``AVCaptureDeviceFormat/supportsExposureModeCustomWithLensAperture:duration:ISO:``)
+ - Throws: `NSGenericException` if called without first obtaining exclusive access to the receiver using ``lockForConfiguration:``.
+ */
+- (void)setExposureModeCustomWithLensAperture:(float)lensAperture duration:(CMTime)duration ISO:(float)ISO completionHandler:(nullable void (^)(CMTime syncTime))handler NS_SWIFT_NAME(setExposureModeCustom(lensAperture:duration:iso:completionHandler:)) API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos);
+
+/// This property reports true whenever lensAperture is unlocked, either by setting exposureMode to one of the automatic modes, or by passing `AVCaptureLensApertureAuto` to the aperture parameter of ``AVCaptureDevice/setExposureModeCustomWithLensAperture:duration:ISO:completionHandler:``.
+@property(nonatomic, readonly) BOOL automaticallyAdjustsLensAperture API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos);
+
+/// This property reports true whenever exposureDuration is unlocked, either by setting exposureMode to one of the automatic modes, or by passing `AVCaptureExposureDurationAuto` to the duration parameter of ``AVCaptureDevice/setExposureModeCustomWithDuration:ISO:completionHandler:`` or ``AVCaptureDevice/setExposureModeCustomWithLensAperture:duration:ISO:completionHandler:``.
+@property(nonatomic, readonly) BOOL automaticallyAdjustsExposureDuration API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos);
+
+/// This property reports true whenever ISO is unlocked, either by setting exposureMode to one of the automatic modes, or by passing `AVCaptureISOAuto` to the ISO parameter of ``AVCaptureDevice/setExposureModeCustomWithDuration:ISO:completionHandler:`` or ``AVCaptureDevice/setExposureModeCustomWithLensAperture:duration:ISO:completionHandler:``.
+@property(nonatomic, readonly) BOOL automaticallyAdjustsISO API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos);
 
 /*!
  @property exposureTargetOffset
@@ -1537,14 +1660,11 @@ AVF_EXPORT const float AVCaptureISOCurrent API_AVAILABLE(ios(8.0), macCatalyst(1
  */
 @property(nonatomic, readonly) float exposureTargetOffset API_AVAILABLE(ios(8.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILABLE(macos, visionos);
 
-/*!
- @property exposureTargetBias
- @abstract
-    Bias applied to the target exposure value, in EV units.
- 
- @discussion
-    When exposureMode is AVCaptureExposureModeContinuousAutoExposure or AVCaptureExposureModeLocked, the bias will affect both metering (exposureTargetOffset), and the actual exposure level (exposureDuration and ISO). When the exposure mode is AVCaptureExposureModeCustom, it will only affect metering. This property is key-value observable. It can be read at any time, but can only be set via setExposureTargetBias:completionHandler:.
- */
+/// Bias applied to the target exposure value, in EV units.
+///
+/// When exposureMode is AVCaptureExposureModeContinuousAutoExposure or AVCaptureExposureModeLocked, the bias will affect both metering (`exposureTargetOffset`), and the actual exposure level (`lensAperture`, `exposureDuration` and `ISO`).
+/// When the exposure mode is AVCaptureExposureModeCustom and none of the custom parameters are "Auto", bias is disabled and will only affect metering.  In custom modes with "Auto" parameters, those parameters will be adjusted to apply the requested bias.
+/// This property is key-value observable. It can be read at any time, but can only be set via setExposureTargetBias:completionHandler:.
 @property(nonatomic, readonly) float exposureTargetBias API_AVAILABLE(ios(8.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILABLE(macos, visionos);
 
 /*!
@@ -1588,6 +1708,26 @@ AVF_EXPORT const float AVCaptureExposureTargetBiasCurrent API_AVAILABLE(ios(8.0)
  */
 - (void)setExposureTargetBias:(float)bias completionHandler:(nullable void (^)(CMTime syncTime))handler API_AVAILABLE(ios(8.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILABLE(macos, visionos);
 
+/// Reports which characteristics the auto exposure system associates with the current scene. Auto exposure may adjust properties such as lens aperture size based on these factors. This property is key-value observable.
+@property(nonatomic, readonly, nonnull) NSSet<AVCaptureDeviceExposureSignal> *activeExposureSignals API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE( watchos);
+
+/// Can be assigned to control which characteristics AE should use in its decision making, must be a subset of supportedExposureSignals.
+///
+/// When `automaticallyEnablesExposureSignals` is true, the system may automatically change the enabled signals based on other enabled device properties. When `automaticallyEnablesExposureSignals` is false, you may assign a custom set of exposure signals to this property. This property is key-value observable.
+///
+/// - Throws: `NSInvalidArgumentException` if assigned while `automaticallyEnablesExposureSignals` is true
+/// - Throws: `NSGenericException` if assigned without first obtaining exclusive access to the receiver using ``lockForConfiguration:``.
+@property(nonatomic, nonnull) NSSet<AVCaptureDeviceExposureSignal> *enabledExposureSignals API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE( watchos);
+
+/// Indicates what values can be included in `enabledExposureSignals`. This property is key-value observable.
+@property(nonatomic, readonly, nonnull) NSSet<AVCaptureDeviceExposureSignal> *supportedExposureSignals API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE( watchos);
+
+/// When true (the default), capture sessions may automatically modify `enabledExposureSignals` based on changes to other device or session properties.
+///
+/// The `enabledExposureSignals` property can only be assigned when `automaticallyEnablesExposureSignals` is false, otherwise assignments to `enabledExposureSignals` will throw an exception.
+///
+/// - Throws: `NSGenericException` if assigned without first obtaining exclusive access to the receiver using ``lockForConfiguration:``.
+@property(nonatomic) BOOL automaticallyEnablesExposureSignals API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE( watchos);
 @end
 
 
@@ -1686,7 +1826,6 @@ AVF_EXPORT AVCaptureWhiteBalanceTemperatureAndTintValues const AVCaptureWhiteBal
 
 /// Temperature and tint values ideal for scenes illuminated with daylight but in heavy shade.
 AVF_EXPORT AVCaptureWhiteBalanceTemperatureAndTintValues const AVCaptureWhiteBalanceTemperatureAndTintValuesShadow NS_SWIFT_NAME(AVCaptureWhiteBalanceTemperatureAndTintValues.shadow) API_AVAILABLE(ios(26.0), macCatalyst(26.0), tvos(26.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE(watchos);
-
 
 API_AVAILABLE(macos(10.7), ios(4.0), macCatalyst(14.0), tvos(17.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos)
 @interface AVCaptureDevice (AVCaptureDeviceWhiteBalance)
@@ -2824,6 +2963,38 @@ AV_INIT_UNAVAILABLE
 @property(nonatomic, readonly) float nominalFocalLengthIn35mmFilm API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(macos, macCatalyst, tvos, visionos) API_UNAVAILABLE(watchos);
 @end
 
+API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos)
+@interface AVCaptureDevice (AVCaptureDeviceContinuousAutoFocusTracking)
+
+/// Indicates whether the device should use continuous autofocus tracking.
+///
+/// The default value for this property is `false`. On a device with an active format where ``isContinuousAutoFocusTrackingSupported`` returns `true` and ``continuousAutoFocusTrackingEnabled`` is set to `true`, continuous autofocus tracking will be engaged when the device's focus mode is set to ``AVCaptureFocusModeContinuousAutoFocus``. When engaged, the subject at the current ``focusPointOfInterest`` will be tracked as it moves within the scene and will be kept in focus automatically. The device's ``isContinuousAutoFocusTrackingSubjectAcquired`` property will return `true` while any tracked subject remains in the scene. However, the device's ``focusPointOfInterest`` and ``focusRectOfInterest`` are not updated while continuous autofocus tracking is active. Continuous autofocus tracking can be made inactive by setting ``continuousAutoFocusTrackingEnabled`` to `false` and then setting the device's focus mode to ``AVCaptureFocusModeContinuousAutoFocus`` or by setting the focus mode to a value other than ``AVCaptureFocusModeContinuousAutoFocus``. When made inactive, ``isContinuousAutoFocusTrackingSubjectAcquired`` changes to `false`, as no subject is being tracked. For virtual cameras, continuous autofocus tracking only works on the ``activePrimaryConstituentDevice``.
+///
+/// To receive continuous autofocus tracking updates, it is required to connect this device to an ``AVCaptureMetadataOutput`` that is configured to deliver ``AVMetadataObjectTypeFocusTrackedObject``. If ``AVMetadataObjectTypeFocusTrackedObject`` is not subscribed, no updates will be provided for continuous autofocus tracking and the device's ``isContinuousAutoFocusTrackingSubjectAcquired`` property remains to be `false`.
+///
+/// - Throws: `NSInvalidArgumentException` if this property is set to `true` when the active format's ``isContinuousAutoFocusTrackingSupported`` returns `false`.
+/// - Throws: `NSInvalidArgumentException` if this property is set to `true` when the device is configured for cinematic video capture.
+/// - Throws: `NSGenericException` if the device is not locked for configuration using ``lockForConfiguration:``.
+@property(nonatomic, getter=isContinuousAutoFocusTrackingEnabled) BOOL continuousAutoFocusTrackingEnabled API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
+
+/// Bias applied to the lens position during continuous autofocus tracking, normalized between -1 and 1.
+///
+/// While the device is actively tracking a subject to keep in focus, this property may be used to specify a bias applied to the lens position so that different portions of the subject are in focus. This property's default value is 0 which aims to keep the median of the subject's depth profile in focus. Values approaching -1 bias the lens position towards the closest portion of the depth profile while values approaching 1 bias the lens position towards the furthest portion of the profile. As the subject moves, the bias continues to apply to the subject's new depth profile.
+///
+/// To apply bias updates, set the device's focus mode to ``AVCaptureFocusModeContinuousAutoFocus`` after each change. The bias value has no effect otherwise. The value will only be automatically reset to 0 if cinematic video capture is enabled.
+///
+/// - Throws: `NSInvalidArgumentException` if this property is set to a value other than 0 when the device's ``continuousAutoFocusTrackingEnabled`` is `false`.
+/// - Throws: `NSInvalidArgumentException` if this property is set to a value less than -1 or greater than 1.
+/// - Throws: `NSInvalidArgumentException` if this property is set to a non-zero value when the device is configured for cinematic video capture.
+/// - Throws: `NSGenericException` if the device is not locked for configuration using ``lockForConfiguration:``.
+@property(nonatomic) float continuousAutoFocusTrackingLensPositionBias API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
+
+/// Indicates whether the device is actively tracking a subject in the scene to maintain focus.
+///
+/// Returns `true` when the capture device is actively tracking a subject in the scene, and `false` otherwise. The subject is initially identified by ``focusPointOfInterest`` when focus mode is set to ``AVCaptureFocusModeContinuousAutoFocus`` with ``continuousAutoFocusTrackingEnabled`` set to `true`. This property is key-value observable and reflects only whether a subject is actively tracked, not which one. To identify the tracked subject, include ``AVMetadataObjectTypeFocusTrackedObject`` in the ``metadataObjectTypes`` of ``AVCaptureMetadataOutput``. The ``AVMetadataFocusTrackedObject`` delivered by the metadata output represents the subject currently tracked for continuous autofocus.
+@property(nonatomic, readonly, getter=isContinuousAutoFocusTrackingSubjectAcquired) BOOL continuousAutoFocusTrackingSubjectAcquired API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
+
+@end
 
 #pragma mark - AVCaptureDeviceDiscoverySession
 
@@ -2954,6 +3125,16 @@ AV_INIT_UNAVAILABLE
     The video rotation angle represents by how much the photos or movies captured from the camera should be rotated to be horizon-level relative to gravity. A video rotation angle of 0 degrees means that the output will be in the camera's unrotated, native sensor orientation. The video rotation angle for capture may differ between cameras. For example when an iOS device is held in portrait orientation, photos and movies captured from built-in cameras may need to be rotated by 90 degrees while the photos and movies from an external camera should not be rotated. External cameras return 0 degrees of rotation even if they physically rotate when their position in physical space is unknown. The video rotation angle returned from this property is distinct from the angle returned by -videoRotationAngleForHorizonLevelPreview because in certain combinations of device and interface orientations, the video rotation angle needed for horizon-level preview may not match the amount of rotation needed for horizon-level capture. This property is key-value observable and delivers updates on the main queue.
  */
 @property(nonatomic, readonly) CGFloat videoRotationAngleForHorizonLevelCapture;
+
+
+/// Returns a video rotation angle in degrees from this camera relative to the provided orientation.
+///
+/// - Parameter orientation: Specify the device orientation, represented with the ``AVCaptureVideoOrientation`` enum.
+///
+/// The returned video rotation angle represents the amount by which photos or movies captured from the camera should be rotated to be upright relative to the provided orientation. A returned video rotation angle of 0 degrees means that the output will be in the camera's unrotated, native sensor orientation. The returned video rotation angle for an orientation may differ between cameras. For example, some cameras are upright when the device is held with the port on the bottom, while others are upright when holding the device with the port on the left or right. External cameras return 0 degrees for all given video orientations because the relationship between the device and the camera is unknown.
+///
+/// The angle returned from this property is distinct from the angles returned by -videoRotationAngleForHorizonLevelCapture and -videoRotationAngleForHorizonLevelPreview because those return angles relative to the horizon which change dynamically as the device is physically rotated, while this returns the static angle relative to the provided orientation regardless of how the device is physically oriented at the time this method is called.
+- (CGFloat)videoRotationAngleRelativeToDeviceOrientation:(AVCaptureVideoOrientation)deviceOrientation API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(macos, macCatalyst, tvos, visionos, watchos);
 
 @end
 
@@ -3279,6 +3460,37 @@ AV_INIT_UNAVAILABLE
     The value of this property is also used for the AVCaptureSystemZoomSlider's range.
  */
 @property(nonatomic, readonly, nullable) AVZoomRange *systemRecommendedVideoZoomRange API_AVAILABLE(macos(15.0), ios(18.0), macCatalyst(18.0), tvos(18.0)) API_UNAVAILABLE(visionos) NS_REFINED_FOR_SWIFT;
+/** Reports if the given set of exposure parameters are supported by this format.
+ 
+ The intended use of this method is to query which combinations of "Auto" parameters (``AVFCapture/AVCaptureLensApertureAuto``, ``AVFCapture/AVCaptureExposureDurationAuto``, ``AVFCapture/AVCaptureISOAuto``) are supported by this format.
+ If you pass a numeric constant it will be range checked against the parameter's supported min and max. However you can also pass the "Current" constants (``AVFCapture/AVCaptureLensApertureCurrent``, ``AVFCapture/AVCaptureExposureDurationCurrent``, ``AVFCapture/AVCaptureISOCurrent``) to generically query locked vs. auto parameter support without picking arbitrary lock values.
+ 
+ > Example: to query support for "shutter priority" where the exposure duration is locked but auto-exposure continues to manage aperture and ISO:
+ > ```swift
+ > format.supportsExposureModeCustom(lensAperture: AVCaptureDevice.autoLensAperture, duration: AVCaptureDevice.currentExposureDuration, iso: AVCaptureDevice.autoISO)
+ > ```
+
+ Devices that have fixed aperture will have equivalent support for ``AVFCapture/AVCaptureLensApertureAuto`` and ``AVFCapture/AVCaptureLensApertureCurrent``.
+ */
+- (BOOL)supportsExposureModeCustomWithLensAperture:(float)lensAperture duration:(CMTime)duration ISO:(float)ISO NS_SWIFT_NAME(supportsExposureModeCustom(lensAperture:duration:iso:)) API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos);
+
+/** A sorted array of recommended values for the ``AVCaptureDevice/lensAperture`` property.
+
+ If this array contains a single item, the aperture is fixed at that value and cannot be changed.
+ If this array contains multiple items, the first will be the minimum recommended 𝑓-stop and the last will be the maximum recommended 𝑓-stop.
+ 
+ Using values from this list may provide optimal calibration and lens characteristics.
+ */
+@property(nonatomic, readonly) NSArray<NSNumber *> *recommendedLensApertureStops API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE(watchos) NS_REFINED_FOR_SWIFT;
+
+/// The minimum supported value for the ``AVCaptureDevice/lensAperture`` property.
+@property(nonatomic, readonly) float minLensAperture API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE(watchos);
+
+/// The maximum supported value for the ``AVCaptureDevice/lensAperture`` property.
+@property(nonatomic, readonly) float maxLensAperture API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE(watchos);
+
+/// The default value for the ``AVCaptureDevice/lensAperture`` property.
+@property(nonatomic, readonly) float defaultLensAperture API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(macos, visionos) API_UNAVAILABLE(watchos);
 
 /*!
  @property minExposureDuration
@@ -3815,6 +4027,11 @@ API_AVAILABLE(macos(26.0), ios(26.0), macCatalyst(26.0), tvos(26.0)) API_UNAVAIL
 /// Devices may support a limited frame rate range when Cinematic Video capture is active. If this device format does not support Cinematic Video capture, this property returns `nil`.
 @property(nonatomic, readonly, nullable) AVFrameRateRange *videoFrameRateRangeForCinematicVideo API_AVAILABLE(macos(26.0), ios(26.0), macCatalyst(26.0), tvos(26.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
 
+/// Indicates whether the format supports Cinematic Video Metadata capture.
+///
+/// This property returns `true` if the format supports capturing cinematic video metadata alongside video. The metadata enables post-capture cinematic video editing using the Cinematic framework.
+@property(nonatomic, readonly, getter=isCinematicVideoMetadataCaptureSupported) BOOL cinematicVideoMetadataCaptureSupported API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
+
 @end
 
 API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(macos, macCatalyst, tvos, visionos) API_UNAVAILABLE(watchos)
@@ -3891,6 +4108,27 @@ typedef NS_ENUM(NSInteger, AVCaptureCameraLensSmudgeDetectionStatus) {
 ///
 /// During initial detection execution, ``cameraLensSmudgeDetectionStatus`` returns ``AVCaptureCameraLensSmudgeDetectionStatusUnknown`` until the detection result settles. Once a detection result is produced, ``cameraLensSmudgeDetectionStatus`` returns the most recent detection result. This property can be key-value observed.
 @property(nonatomic, readonly) AVCaptureCameraLensSmudgeDetectionStatus cameraLensSmudgeDetectionStatus API_AVAILABLE(macos(26.0), ios(26.0), macCatalyst(26.0), tvos(26.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
+
+@end
+
+
+API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos)
+@interface AVCaptureDeviceFormat (AVCaptureDeviceFormatContinuousAutoFocusTracking)
+
+/// Indicates whether the device format supports continuous autofocus tracking.
+///
+/// Continuous autofocus tracking allows the device to keep a subject in focus by monitoring it as it moves throughout the scene. The device's ``continuousAutoFocusTrackingEnabled`` property can only be set if this property returns `true`.
+@property(nonatomic, readonly, getter=isContinuousAutoFocusTrackingSupported) BOOL continuousAutoFocusTrackingSupported API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
+
+@end
+
+API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos)
+@interface AVCaptureDeviceFormat (AVCaptureDeviceFormatLowLightVideoNoiseReduction)
+
+/// Indicates whether the format supports low light video noise reduction.
+///
+/// This property returns `true` if the format supports low light video noise reduction.
+@property(nonatomic, readonly, getter=isLowLightVideoNoiseReductionSupported) BOOL lowLightVideoNoiseReductionSupported API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos);
 
 @end
 

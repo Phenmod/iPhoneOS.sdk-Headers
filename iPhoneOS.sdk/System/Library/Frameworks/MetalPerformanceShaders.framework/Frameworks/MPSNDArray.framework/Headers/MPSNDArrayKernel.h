@@ -176,6 +176,23 @@ MPS_CLASS_AVAILABLE_STARTING( macos(10.15), ios(13.0), macCatalyst(13.0), tvos(1
               destinationArray: (nonnull MPSNDArray *) destination
 MPS_AVAILABLE_STARTING(macos(15.0), ios(18.0), macCatalyst(18.0), tvos(18.0), visionos(2.0));
 
+#if !TARGET_IPHONE_SIMULATOR
+
+/*! @abstract   Encode a simple inference NDArray kernel.
+ *              The encoder associates the commands with MTLStageDispatch. Synchronize your
+ *              workloads against this stage when using this function to prevent race conditions.
+ *  @param      encoder      The MTL4ComputeCommandEncoder to encode the kernel with.
+ *  @param      sourceArrays The source NDArray instances in a NSArray. Make sure the instances
+ *                           are arranged in the order required by the MPSNDArrayMultiaryKernel
+ *                           subclass.
+ *  @param      destination  The destination NDArray. */
+-(void) encodeWithMTL4CommandEncoder: (nonnull id <MTL4ComputeCommandEncoder>) encoder
+                        sourceArrays: (nonnull NSArray <MPSNDArray *> *) sourceArrays
+                    destinationArray: (nonnull MPSNDArray *) destination
+MPS_AVAILABLE_STARTING(macos(27.0), ios(27.0), tvos(27.0));
+
+#endif
+
 @end
 
 
@@ -318,6 +335,21 @@ MPS_CLASS_AVAILABLE_STARTING( macos(10.15), ios(13.0), macCatalyst(13.0), tvos(1
                   sourceArray: (MPSNDArray *__nonnull) sourceArray
                   resultState: (MPSState * __nullable) outGradientState
              destinationArray: (MPSNDArray * __nonnull) destination;
+
+#if !TARGET_IPHONE_SIMULATOR
+
+/*! @abstract   Encode a simple inference NDArray kernel.
+ *              The encoder associates the commands with MTLStageDispatch. Synchronize your
+ *              workloads against this stage when using this function to prevent race conditions.
+ *  @param      encoder     The MTL4ComputeCommandEncoder to encode the kernel with.
+ *  @param      sourceArray The source NDArray.
+ *  @param      destination The destination NDArray. */
+-(void) encodeWithMTL4CommandEncoder: (nonnull id <MTL4ComputeCommandEncoder>) encoder
+                         sourceArray: (nonnull MPSNDArray *) sourceArray
+                    destinationArray: (nonnull MPSNDArray *) destination
+MPS_AVAILABLE_STARTING(macos(27.0), ios(27.0), tvos(27.0));
+
+#endif
 
 @end
 

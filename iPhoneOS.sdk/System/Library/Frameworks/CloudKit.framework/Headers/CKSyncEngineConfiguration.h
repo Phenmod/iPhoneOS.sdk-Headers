@@ -42,14 +42,14 @@ NS_SWIFT_SENDABLE
 /// For example, you may use one sync engine for a person's private database and another for their shared database.
 ///
 /// - Important: When using CloudKit's production environment, don't create multiple sync engines that target the same database.
-/// You can, however, do this in the development environment to help testing — for example, to simulate multiple devices syncing back, and forth.
+/// You can, however, do this in the development environment to help testing — for example, to simulate multiple devices syncing back and forth.
 @property (strong) CKDatabase *database;
 
 /// The sync engine's serialized state.
 ///
 /// This property returns the value you specify for the initializer's `stateSerialization` parameter.
 /// If you choose to set this property after initialization, assign the state from the most recent ``CKSyncEngineStateUpdateEvent`` handled by your delegate.
-/// However, If this is the first initialization of the associated sync engine, specify `nil` instead.
+/// However, if this is the first initialization of the associated sync engine, specify `nil` instead.
 ///
 /// The default value is `nil`.
 @property (nullable, copy) CKSyncEngineStateSerialization *stateSerialization;

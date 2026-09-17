@@ -16,7 +16,10 @@ NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 @class BEScrollView, BEScrollViewScrollUpdate;
 
 
-BROWSERENGINE_EXPORT API_AVAILABLE(ios(17.4)) API_UNAVAILABLE(watchos) NS_SWIFT_UI_ACTOR
+API_AVAILABLE(ios(17.4))
+API_UNAVAILABLE(watchos)
+BROWSERENGINE_EXPORT
+NS_SWIFT_UI_ACTOR
 @protocol BEScrollViewDelegate <UIScrollViewDelegate>
 
 @optional
@@ -43,7 +46,10 @@ BROWSERENGINE_EXPORT API_AVAILABLE(ios(17.4)) API_UNAVAILABLE(watchos) NS_SWIFT_
 
 
 // A scroll view with features specific to browsers.
-BROWSERENGINE_EXPORT API_AVAILABLE(ios(17.4)) API_UNAVAILABLE(watchos) NS_SWIFT_UI_ACTOR
+API_AVAILABLE(ios(17.4))
+API_UNAVAILABLE(watchos)
+BROWSERENGINE_EXPORT
+NS_SWIFT_UI_ACTOR
 @interface BEScrollView : UIScrollView
 
 @property (nonatomic, weak, nullable) id<BEScrollViewDelegate> delegate;
@@ -61,7 +67,10 @@ typedef NS_ENUM(NSInteger, BEScrollViewScrollUpdatePhase) {
 
 
 // An update from a scroll view issued during a scroll event (e.g. trackpad or mouse wheel) or deceleration after a scroll event.
-BROWSERENGINE_EXPORT API_AVAILABLE(ios(17.4)) NS_SWIFT_UI_ACTOR
+API_AVAILABLE(ios(17.4))
+API_UNAVAILABLE(watchos)
+BROWSERENGINE_EXPORT
+NS_SWIFT_UI_ACTOR
 @interface BEScrollViewScrollUpdate : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;

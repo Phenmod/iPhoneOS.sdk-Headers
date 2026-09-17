@@ -219,15 +219,56 @@ typedef NS_ENUM(NSInteger, AVPlayerInterstitialEventSkippableEventState) {
 @end
 
 @interface AVPlayerInterstitialEvent (MutableEvents)
+/// The player item that represents the primary content.
+///
+/// The item must contain an AVAsset that provides intrinsic mappings from its timeline to realtime dates.
 @property (nonatomic, readwrite, weak) AVPlayerItem *primaryItem API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0), watchos(9.0), visionos(1.0));
+
+/// An identifier for the event.
+///
+/// Setting an event on the interstitial event controller replaces any existing event with the same identifier.
 @property (nonatomic, readwrite, copy) NSString *identifier API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0), watchos(9.0), visionos(1.0));
+
+/// A time within the timeline of the primary content that playback of interstitial content begins.
+///
+/// This property value is kCMTimeInvalid if you initialized the event with a date instead of a time.
 @property (nonatomic, readwrite) CMTime time API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0), watchos(9.0), visionos(1.0));
+
+/// A date within the date range of the primary content that playback of interstitial content begins.
+///
+/// This property value is nil if you initialized the event with a time instead of a date.
 @property (nonatomic, readwrite, copy, nullable) NSDate *date API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0), watchos(9.0), visionos(1.0));
+
+/// An array of player item configurations to use as templates for player items that play interstitial content.
+///
+/// If you require the system to create new player items using the same asset instance as the template item, create the asset with an AVURLAssetPrimarySessionIdentifierKey value equal to the httpSessionIdentifier of the primary item's asset. Creating assets this way simplifies cases where you require loading their data with a custom AVAssetResourceLoader delegate.
+///
+/// > Important: The system raises an exception if template items contain assets that aren't URL based, such as an AVComposition.
 @property (nonatomic, readwrite, copy) NSArray<AVPlayerItem *> *templateItems API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0), watchos(9.0), visionos(1.0));
+
+/// The restrictions the event imposes on the playback of interstitial content.
 @property (nonatomic, readwrite) AVPlayerInterstitialEventRestrictions restrictions API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0), watchos(9.0), visionos(1.0));
+
+/// A time offset at which playback of primary content resumes after interstitial content finishes.
+///
+/// This property supports definite time values. Specify kCMTimeIndefinite to indicate that the effective resumption time offset should align with the clock time elapsed during interstitial playback; this value is typically suitable for live broadcasts.
+///
+/// The default value is kCMTimeZero.
 @property (nonatomic, readwrite) CMTime resumptionOffset API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0), watchos(9.0), visionos(1.0));
+
+/// The time offset at which playback of the interstitial ends.
+///
+/// This value can be any positive numeric value, or kCMTimeInvalid (the default) which indicates no limit.
 @property (nonatomic, readwrite) CMTime playoutLimit API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0), watchos(9.0), visionos(1.0));
+
+/// A Boolean value that indicates whether the start time of interstitial playback should snap to a segment boundary of the primary asset.
+///
+/// If the value is YES, the system adjusts the start time or date of the interstitial to the nearest segment boundary when the primary player is playing an HTTP Live Streaming asset.
 @property (nonatomic, readwrite) BOOL alignsStartWithPrimarySegmentBoundary API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0), watchos(9.0), visionos(1.0));
+
+/// A Boolean value that indicates whether the resumption time of primary playback should snap to a segment boundary of the primary asset.
+///
+/// If the value is YES, the system adjusts the resumption time of primary playback following an interstitial to the nearest segment boundary when the primary player is playing an HTTP Live Streaming asset.
 @property (nonatomic, readwrite) BOOL alignsResumptionWithPrimarySegmentBoundary API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0), watchos(9.0), visionos(1.0));
 @property (nonatomic, readwrite, retain) AVPlayerInterstitialEventCue cue API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0), watchos(9.0), visionos(1.0));
 @property (nonatomic, readwrite) BOOL willPlayOnce API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0), watchos(9.0), visionos(1.0));
@@ -259,6 +300,9 @@ API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0), watchos(8.0), visionos(1.0))
 /// - Returns: An instance of AVPlayerInterstitialEventMonitor.
 + (instancetype)interstitialEventMonitorWithPrimaryPlayer:(AVPlayer *)primaryPlayer;
 
+/// Creates an observer with a player item.
+///
+/// - Parameter primaryPlayer: An object that plays the primary content.
 - (instancetype)initWithPrimaryPlayer:(AVPlayer *)primaryPlayer  NS_DESIGNATED_INITIALIZER;
 
 /// The AVPlayer that will play the primaryItems of the receiver's interstitial events.

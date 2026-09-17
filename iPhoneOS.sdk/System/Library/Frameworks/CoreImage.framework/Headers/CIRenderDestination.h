@@ -189,7 +189,7 @@ typedef NS_ENUM(NSUInteger, CIRenderDestinationAlphaMode) {
 /// If this property is set to a file-based URL, then the next render using this 
 /// destination will capture a Metal trace, deleting any existing file if present.
 /// This property is nil by default.
-@property (nullable, nonatomic, retain) NSURL* captureTraceURL NS_AVAILABLE(16_0, 19_0);
+@property (nullable, nonatomic, retain) NSURL* captureTraceURL NS_AVAILABLE(26_0, 26_0);
 
 @end
 
@@ -226,6 +226,25 @@ NS_CLASS_AVAILABLE(10_13, 11_0)
 {
     void *_priv;
 }
+
+// This property will return the planned number of pixels a render will produce executing kernels.
+@property (readonly) NSInteger plannedPixelsProcessed
+API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos);
+
+// This property will return the planned number of pixels that are overdrawn during the render.
+@property (readonly) NSInteger plannedPixelsOverdrawn
+API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos);
+
+// This property will return the planned number of passes the render requires.
+@property (readonly) NSInteger plannedPassCount
+API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos);
+
+// This property will return the planned peak memory allocated (in megaBytes) for intermediates during the render.
+// This value represents the maximum amount of memory needed at any point during execution,
+// accounting for texture allocations, fragmentation, and alignment requirements.
+// This is useful for understanding memory pressure and optimizing render graphs.
+@property (readonly) NSInteger plannedPeakMemory
+API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos);
 
 - (nullable CIRenderInfo*) waitUntilCompletedAndReturnError:(NSError**)error;
 
@@ -286,6 +305,33 @@ NS_CLASS_AVAILABLE(10_13, 11_0)
          toDestination:(CIRenderDestination*)destination
                atPoint:(CGPoint)atPoint
                  error:(NSError**)error NS_AVAILABLE(10_13, 11_0);
+
+/// Returns a task with estimated resource statistics for a render, without executing the render.
+///
+/// Call this method to analyze the cost of a render before you execute it. Query the
+/// returned task's `plannedPixelsProcessed`, `plannedPixelsOverdrawn`, `plannedPassCount`,
+/// and `plannedPeakMemory` properties to get the estimated statistics.
+///
+/// The method renders as if the image is cropped to `fromRect` and places the origin of
+/// `fromRect` at `atPoint` in the destination.
+///
+/// - Parameters:
+///    - image: The ``CIImage`` to estimate the render for.
+///    - fromRect: The region of ``CIImage`` to render.
+///    - destination: The ``CIRenderDestination`` to estimate the render to.
+///    - atPoint: The point in the destination where the origin of `fromRect` is placed.
+///    - error: On output, the error that caused estimation to fail, or `nil` if estimation succeeded.
+///
+/// - Returns:
+///    A ``CIRenderTask`` you can query for estimated statistics, or `nil` if `fromRect`
+///    doesn't intersect `image.extent` or if estimation fails.
+///    
+- (nullable CIRenderTask*) estimateRender:(CIImage*)image
+                                 fromRect:(CGRect)fromRect
+                            toDestination:(CIRenderDestination*)destination
+                                  atPoint:(CGPoint)atPoint
+                                    error:(NSError** _Nullable)error
+API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos);
 
 // Fill the entire destination with black (0,0,0,1) if its alphaMode is None
 // or clear (0,0,0,0) if its alphaMode is Premultiplied or Unpremultiplied.

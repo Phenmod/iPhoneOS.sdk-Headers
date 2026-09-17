@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Configure the distribution of audio channels in 3D space.
 ///
 /// The Objective-C version of the ``SpatialAudioExperiences.SoundStageSize`` Swift type.
-API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios, watchos, tvos, macos)
+API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios) API_UNAVAILABLE(watchos, tvos, macos)
 typedef NS_ENUM(NSInteger, CASoundStageSize) {
     
     /// A system-defined sound stage size.
@@ -45,7 +45,7 @@ typedef NS_ENUM(NSInteger, CASoundStageSize) {
 ///
 /// The Objective-C version of the ``SpatialAudioExperiences.AnchoringStrategy`` Swift type.
 NS_REFINED_FOR_SWIFT
-API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios, watchos, tvos, macos)
+API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios) API_UNAVAILABLE(watchos, tvos, macos)
 @interface CAAnchoringStrategy : NSObject <NSSecureCoding, NSCopying>
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -55,7 +55,7 @@ API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios, watchos, tvos, macos)
 
 /// A system-defined anchoring strategy.
 NS_REFINED_FOR_SWIFT
-API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios, watchos, tvos, macos)
+API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios) API_UNAVAILABLE(watchos, tvos, macos)
 @interface CAAutomaticAnchoringStrategy : CAAnchoringStrategy
 
 - (instancetype)init;
@@ -65,7 +65,7 @@ API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios, watchos, tvos, macos)
 
 /// Anchor to the front of the user's space.
 NS_REFINED_FOR_SWIFT
-API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios, watchos, tvos, macos)
+API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios) API_UNAVAILABLE(watchos, tvos, macos)
 @interface CAFrontAnchoringStrategy : CAAnchoringStrategy
 
 - (instancetype)init;
@@ -75,7 +75,7 @@ API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios, watchos, tvos, macos)
 
 /// Anchor to the visual center of a particular UIScene.
 NS_REFINED_FOR_SWIFT
-API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios, watchos, tvos, macos)
+API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios) API_UNAVAILABLE(watchos, tvos, macos)
 @interface CASceneAnchoringStrategy : CAAnchoringStrategy
 
 - (instancetype)initWithSceneIdentifier:(NSString*)sceneIdentifier;
@@ -91,7 +91,7 @@ API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios, watchos, tvos, macos)
 ///
 /// The Objective-C version of the ``SpatialAudioExperience`` Swift type.
 NS_REFINED_FOR_SWIFT
-API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios, watchos, tvos, macos)
+API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios) API_UNAVAILABLE(watchos, tvos, macos)
 @interface CASpatialAudioExperience : NSObject <NSSecureCoding, NSCopying>
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -103,7 +103,7 @@ API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios, watchos, tvos, macos)
 ///
 /// The Objective-C version of the ``AutomaticSpatialAudio`` Swift type.
 NS_REFINED_FOR_SWIFT
-API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios, watchos, tvos, macos)
+API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios) API_UNAVAILABLE(watchos, tvos, macos)
 @interface CAAutomaticSpatialAudio : CASpatialAudioExperience
 
 - (instancetype)init;
@@ -115,7 +115,7 @@ API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios, watchos, tvos, macos)
 ///
 /// The Objective-C version of the ``BypassedSpatialAudio`` Swift type.
 NS_REFINED_FOR_SWIFT
-API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios, watchos, tvos, macos)
+API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios) API_UNAVAILABLE(watchos, tvos, macos)
 @interface CABypassedSpatialAudio : CASpatialAudioExperience
 
 - (instancetype)init;
@@ -127,7 +127,7 @@ API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios, watchos, tvos, macos)
 ///
 /// The Objective-C version of the ``FixedSpatialAudio`` Swift type.
 NS_REFINED_FOR_SWIFT
-API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios, watchos, tvos, macos)
+API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios) API_UNAVAILABLE(watchos, tvos, macos)
 @interface CAFixedSpatialAudio : CASpatialAudioExperience
 
 - (instancetype)initWithSoundStageSize:(CASoundStageSize)soundStageSize;
@@ -142,7 +142,7 @@ API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios, watchos, tvos, macos)
 ///
 /// The Objective-C version of the ``HeadTrackedSpatialAudio`` Swift type.
 NS_REFINED_FOR_SWIFT
-API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios, watchos, tvos, macos)
+API_AVAILABLE(visionos(26.0)) API_UNAVAILABLE(ios) API_UNAVAILABLE(watchos, tvos, macos)
 @interface CAHeadTrackedSpatialAudio : CASpatialAudioExperience
 
 - (instancetype)initWithSoundStageSize:(CASoundStageSize)soundStageSize

@@ -32,7 +32,7 @@ Classes:
   Methods:
   - Selector: "boundingBoxForRange:error:"
     MethodKind: Instance
-    SwiftName: "__boundingBox"
+    SwiftName: "__boundingBox(for:error:)"
     SwiftPrivate: true
     NullabilityOfRet: N
     
@@ -48,12 +48,12 @@ Classes:
   Methods:
   - Selector: "supportedJointNamesAndReturnError:"
     MethodKind: Instance
-    SwiftName: "__supportedJointNames"
+    SwiftName: "__supportedJointNames()"
     SwiftPrivate: true
     NullabilityOfRet: O
   - Selector: "supportedJointsGroupNamesAndReturnError:"
     MethodKind: Instance
-    SwiftName: "__supportedJointsGroupNames"
+    SwiftName: "__supportedJointsGroupNames()"
     SwiftPrivate: true
     NullabilityOfRet: O
 
@@ -61,12 +61,12 @@ Classes:
   Methods:
   - Selector: "supportedJointNamesAndReturnError:"
     MethodKind: Instance
-    SwiftName: "__supportedJointNames"
+    SwiftName: "__supportedJointNames()"
     SwiftPrivate: true
     NullabilityOfRet: O
   - Selector: "supportedJointsGroupNamesAndReturnError:"
     MethodKind: Instance
-    SwiftName: "__supportedJointsGroupNames"
+    SwiftName: "__supportedJointsGroupNames()"
     SwiftPrivate: true
     NullabilityOfRet: O
 
@@ -74,12 +74,12 @@ Classes:
   Methods:
   - Selector: "supportedJointNamesAndReturnError:"
     MethodKind: Instance
-    SwiftName: "__supportedJointNames"
+    SwiftName: "__supportedJointNames()"
     SwiftPrivate: true
     NullabilityOfRet: O
   - Selector: "supportedJointsGroupNamesAndReturnError:"
     MethodKind: Instance
-    SwiftName: "__supportedJointsGroupNames"
+    SwiftName: "__supportedJointsGroupNames()"
     SwiftPrivate: true
     NullabilityOfRet: O
 
@@ -95,12 +95,12 @@ Classes:
   Methods:
   - Selector: "supportedJointNamesAndReturnError:"
     MethodKind: Instance
-    SwiftName: "__supportedJointNames"
+    SwiftName: "__supportedJointNames()"
     SwiftPrivate: true
     NullabilityOfRet: O
   - Selector: "supportedJointsGroupNamesAndReturnError:"
     MethodKind: Instance
-    SwiftName: "__supportedJointsGroupNames"
+    SwiftName: "__supportedJointsGroupNames()"
     SwiftPrivate: true
     NullabilityOfRet: O
 

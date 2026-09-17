@@ -3,7 +3,7 @@
 
     Contains:   AltiVec DSP Interfaces
 
-    Version:    vecLib-1126.100
+    Version:    vecLib-1155.0
 
     Copyright:  Copyright (c) 2000-2026 by Apple Inc. All rights reserved.
 
@@ -258,8 +258,8 @@ extern "C" {
     vDSP_Version0 is a major version number.
     vDSP_Version1 is a minor version number.
 */
-#define vDSP_Version0   1126
-#define vDSP_Version1   100
+#define vDSP_Version0   1155
+#define vDSP_Version1   0
 
 
 /*  Define types:
@@ -2463,9 +2463,9 @@ extern void vDSP_mtransD(
             API_AVAILABLE(macos(10.2), ios(4.0));
     /*  Maps:
 
-            A is regarded as a two-dimensional matrix with dimemnsions
+            A is regarded as a two-dimensional matrix with dimensions
             [N][M] and stride IA.  C is regarded as a two-dimensional matrix
-            with dimemnsions [M][N] and stride IC:
+            with dimensions [M][N] and stride IC:
 
             Pseudocode:     Memory:
             A[n][m]         A[(n*M + m)*IA]
@@ -2505,10 +2505,10 @@ extern void vDSP_mmulD(
         API_AVAILABLE(macos(10.2), ios(4.0));
     /*  Maps:
 
-            A is regarded as a two-dimensional matrix with dimemnsions [M][P]
+            A is regarded as a two-dimensional matrix with dimensions [M][P]
             and stride IA.  B is regarded as a two-dimensional matrix with
-            dimemnsions [P][N] and stride IB.  C is regarded as a
-            two-dimensional matrix with dimemnsions [M][N] and stride IC.
+            dimensions [P][N] and stride IB.  C is regarded as a
+            two-dimensional matrix with dimensions [M][N] and stride IC.
 
             Pseudocode:     Memory:
             A[m][p]         A[(m*P+p)*IA]

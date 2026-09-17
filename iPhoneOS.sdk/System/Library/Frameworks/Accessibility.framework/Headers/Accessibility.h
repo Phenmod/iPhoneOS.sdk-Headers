@@ -2,10 +2,11 @@
 //  Accessibility.h
 //  Accessibility
 //
-//  Copyright © 2020 Apple Inc. All rights reserved.
+//  Copyright © 2020-2026 Apple Inc. All rights reserved.
 //
 
 #import <Accessibility/AXFoundation.h>
+#import <Accessibility/AXAttributeConstants.h>
 #import <Accessibility/AXAudiograph.h>
 #import <Accessibility/AXBrailleMap.h>
 #import <Accessibility/AXColorUtilities.h>

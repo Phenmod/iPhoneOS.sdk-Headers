@@ -247,7 +247,7 @@ API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), visionos(1.0)) API_UNAVAILABL
 /// - Parameter completionHandler: A block that is invoked when the new video composition has finished being created. If the `videoComposition` parameter is nil, the `error` parameter describes the failure that occurred.
 + (void)videoCompositionWithAsset:(AVAsset *)asset applyingCIFiltersWithHandler:(void (^ NS_SWIFT_SENDABLE)(AVAsynchronousCIImageFilteringRequest *request))applier completionHandler:(void (^ NS_SWIFT_SENDABLE)(AVVideoComposition * _Nullable videoComposition, NSError * _Nullable error))completionHandler
 #if __swift__
-API_DEPRECATED("Use init(applyingFiltersTo:applier:)", macos(13.0, API_TO_BE_DEPRECATED), ios(16.0, API_TO_BE_DEPRECATED), tvos(16.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(watchos)
+API_DEPRECATED("Use init(applyingFiltersTo:applier:)", macos(13.0, 27.0), ios(16.0, 27.0), tvos(16.0, 27.0), visionos(1.0, 27.0)) API_UNAVAILABLE(watchos)
 #else
 API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0), visionos(1.0)) API_UNAVAILABLE(watchos)
 #endif
@@ -812,7 +812,7 @@ API_AVAILABLE(macos(10.7), ios(4.0), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(w
 /// as when using it to back a UIView.
 + (instancetype)videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer:(CALayer *) videoLayer inLayer:(CALayer *) animationLayer
 #if __swift__
-API_DEPRECATED("Use .init(configuration: AVVideoCompositionCoreAnimationTool.Configuration) instead", macos(10.7, API_TO_BE_DEPRECATED), ios(4.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(watchos);
+API_DEPRECATED("Use .init(configuration: AVVideoCompositionCoreAnimationTool.Configuration) instead", macos(10.7, 27.0), ios(4.0, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0)) API_UNAVAILABLE(watchos);
 #endif
 ;
 
@@ -827,7 +827,7 @@ API_DEPRECATED("Use .init(configuration: AVVideoCompositionCoreAnimationTool.Con
 /// as when using it to back a UIView.
 + (instancetype)videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayers:(NSArray<CALayer *> *) videoLayers inLayer:(CALayer *) animationLayer API_AVAILABLE(macos(10.9), ios(7.0), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(watchos)
 #if __swift__
-API_DEPRECATED("Use .init(configuration: AVVideoCompositionCoreAnimationTool.Configuration) instead", macos(10.9, API_TO_BE_DEPRECATED), ios(7.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(watchos);
+API_DEPRECATED("Use .init(configuration: AVVideoCompositionCoreAnimationTool.Configuration) instead", macos(10.9, 27.0), ios(7.0, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0)) API_UNAVAILABLE(watchos);
 #endif
 ;
 

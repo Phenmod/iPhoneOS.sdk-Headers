@@ -1,22 +1,23 @@
 /* VideoToolbox.h
 
-   Copyright (c) 2008-2023 Apple Computer, Inc.
+   Copyright (c) 2008-2025 Apple Computer, Inc.
    All rights reserved. */
 
 #include <VideoToolbox/VTCompressionProperties.h>
 #include <VideoToolbox/VTCompressionSession.h>
 #include <VideoToolbox/VTDecompressionProperties.h>
 #include <VideoToolbox/VTDecompressionSession.h>
+#include <VideoToolbox/VTPixelTransferProperties.h>
+#include <VideoToolbox/VTPixelTransferSession.h>
+#include <VideoToolbox/VTVideoEncoderList.h>
+#include <VideoToolbox/VTPixelRotationSession.h>
 #include <VideoToolbox/VTErrors.h>
 #include <VideoToolbox/VTSession.h>
 #include <VideoToolbox/VTFrameSilo.h>
 #include <VideoToolbox/VTMultiPassStorage.h>
-#include <VideoToolbox/VTVideoEncoderList.h>
 #include <VideoToolbox/VTUtilities.h>
-#include <VideoToolbox/VTPixelTransferProperties.h>
-#include <VideoToolbox/VTPixelTransferSession.h>
 #include <VideoToolbox/VTPixelRotationProperties.h>
-#include <VideoToolbox/VTPixelRotationSession.h>
+#if !TARGET_OS_WINDOWS
 #if ( !TARGET_OS_IPHONE || TARGET_OS_MACCATALYST )
 #include <VideoToolbox/VTRAWProcessingSession.h>
 #include <VideoToolbox/VTRAWProcessingProperties.h>
@@ -37,3 +38,4 @@
 #include <VideoToolbox/VTFrameProcessor_SuperResolutionScaler.h>
 #include <VideoToolbox/VTFrameProcessor_LowLatencySuperResolutionScaler.h>
 #include <VideoToolbox/VTFrameProcessor_LowLatencyFrameInterpolation.h>
+#endif // !TARGET_OS_WINDOWS

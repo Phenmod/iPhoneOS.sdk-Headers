@@ -37,8 +37,17 @@ typedef NS_ENUM(NSInteger, PHCollectionListSubtype) {
     PHCollectionListSubtypeMomentListYear       API_DEPRECATED("Will be removed in a future release", ios(8, 13), tvos(10, 13)) API_UNAVAILABLE(macos) = 2,
 
     // PHCollectionListTypeFolder subtypes
+
+    /// A user-configurable folder containing albums or other folders.
+    ///
+    /// Can be created, or modified via ``/Photos/PHCollectionListChangeRequest``
     PHCollectionListSubtypeRegularFolder        = 100,
-    
+
+    /// The collection list that contains the top-level user collections.
+    ///
+    /// There is always one root folder in the library and does not allow ``/Photos/PHCollectionEditOperation/PHCollectionEditOperationRename`` or ``/Photos/PHCollectionEditOperation/PHCollectionEditOperationDelete``
+    PHCollectionListSubtypeRootFolder           API_AVAILABLE(macos(27), ios(27), tvos(27), visionos(27)) = 101,
+
     // PHCollectionListTypeSmartFolder subtypes
     PHCollectionListSubtypeSmartFolderEvents    = 200,
     PHCollectionListSubtypeSmartFolderFaces     = 201,
@@ -103,7 +112,11 @@ typedef NS_ENUM(NSInteger, PHAssetCollectionSubtype) {
     PHAssetCollectionSubtypeSmartAlbumUnableToUpload API_AVAILABLE(macos(10.15), ios(13), tvos(13)) = 216,
     PHAssetCollectionSubtypeSmartAlbumRAW API_AVAILABLE(macos(12), ios(15), tvos(15)) = 217,
     PHAssetCollectionSubtypeSmartAlbumCinematic API_AVAILABLE(macos(12), ios(15), tvos(15)) = 218,
+
+    /// A Smart Album that groups all photos and videos captured as spatial media.
     PHAssetCollectionSubtypeSmartAlbumSpatial API_AVAILABLE(macos(15), ios(18), tvos(18)) = 219,
+    
+    /// A Smart Album that groups all videos captured using the device’s screenrecordings function.
     PHAssetCollectionSubtypeSmartAlbumScreenRecordings API_AVAILABLE(macos(11), ios(14), tvos(14)) = 220,
 
     
@@ -130,6 +143,15 @@ typedef NS_ENUM(NSInteger, PHAssetPlaybackStyle) {
     PHAssetPlaybackStyleVideoLooping    = 5,
 } API_AVAILABLE(macos(10.13), ios(11), tvos(11)) NS_SWIFT_NAME(PHAsset.PlaybackStyle);
 
+// Playback variation describes the Live Photo presentation effect applied to an asset (for example, Long Exposure).
+// This MUST stay in sync with PFMetadataPlaybackVariation (PhotosFormats/PFMetadataDefine.h)
+typedef NS_ENUM(NSInteger, PHAssetPlaybackVariation) {
+    PHAssetPlaybackVariationNone            = 0,   // Default Live Photo presentation.
+    PHAssetPlaybackVariationAutoloop        = 1,   // Loop variation.
+    PHAssetPlaybackVariationMirror          = 2,   // Bounce variation.
+    PHAssetPlaybackVariationLongExposure    = 3,   // Long Exposure variation.
+} API_AVAILABLE(macos(10.15), ios(11), tvos(11)) NS_SWIFT_NAME(PHAsset.PlaybackVariation);
+
 typedef NS_ENUM(NSInteger, PHAssetMediaType) {
     PHAssetMediaTypeUnknown = 0,
     PHAssetMediaTypeImage   = 1,
@@ -146,6 +168,7 @@ typedef NS_OPTIONS(NSUInteger, PHAssetMediaSubtype) {
     PHAssetMediaSubtypePhotoScreenshot API_AVAILABLE(ios(9)) = (1UL << 2),
     PHAssetMediaSubtypePhotoLive API_AVAILABLE(ios(9.1)) = (1UL << 3),
     PHAssetMediaSubtypePhotoDepthEffect API_AVAILABLE(macos(10.12.2), ios(10.2), tvos(10.1)) = (1UL << 4),
+    PHAssetMediaSubtypePhotoAnimation API_AVAILABLE(macos(10.15), ios(11), tvos(11), visionos(1)) = (1UL << 6),   /// The media subtype is a photo animation such as a GIF, animated PNGs, etc.
     PHAssetMediaSubtypeSpatialMedia API_AVAILABLE(macos(13), ios(16), tvos(16)) = (1UL << 10),
 
     // Video subtypes
@@ -163,6 +186,22 @@ typedef NS_OPTIONS(NSUInteger, PHAssetBurstSelectionType) {
     PHAssetBurstSelectionTypeUserPick = (1UL << 1),
 };
 
+/// This value determines which original resource is used for unadjusted asset derivatives and as the unadjusted resource provided/used for content adjustments.
+///
+/// This choice is only meaningful for assets that have a RAW alternate, such as
+/// RAW+JPEG assets. For all other assets, the asset has a single original resource
+/// and the value is always ``PHOriginalResourceChoiceCompressed``.
+
+typedef NS_ENUM(NSInteger, PHOriginalResourceChoice) {
+    /// The compressed original resource, such as a JPEG or HEIC, is used.
+    PHOriginalResourceChoiceCompressed = 0,
+    /// The RAW original resource is used.
+    PHOriginalResourceChoiceRaw = 1,
+
+} NS_SWIFT_NAME(PHAsset.OriginalResourceChoice)
+API_AVAILABLE(macos(27), ios(27), tvos(27), visionos(27));
+
+
 typedef NS_OPTIONS(NSUInteger, PHAssetSourceType) {
     PHAssetSourceTypeNone            = 0,
     PHAssetSourceTypeUserLibrary     = (1UL << 0),
@@ -171,8 +210,29 @@ typedef NS_OPTIONS(NSUInteger, PHAssetSourceType) {
 
 } API_AVAILABLE(ios(9));
 
+
+typedef NS_ENUM(NSInteger, PHAssetAdjustmentsState) {
+    PHAssetAdjustmentsStateNone = 0,  // Asset has no adjustments applied
+
+
+
+    PHAssetAdjustmentsStateUserAdjusted = 2,  // Asset has a user adjustment applied
+    PHAssetAdjustmentsStateCameraAutoAdjusted = 3,  // Asset has a automatic Camera adjustment applied, no user adjustments
+} NS_SWIFT_NAME(PHAsset.AdjustmentsState) API_AVAILABLE(macos(15), ios(18), tvos(18), visionos(2));
+
 #pragma mark - PHAssetResourceType
 
+/// Identifies a specific type of resource associated with a photo or video asset.
+///
+/// The set of resource types may expand in future OS releases. Additionally, assets synced from a device running
+/// a newer OS may contain resource types that are not defined in the SDK version your app was built with.
+///
+/// When switching over resource type values, always include an `@unknown default` case that handles
+/// unrecognized types gracefully — for example, by skipping the resource or preserving it as opaque data.
+/// Do not use `fatalError` or other trapping assertions for unknown values.
+///
+/// If your app performs backup and restore of photo library assets, preserve all resources including those with
+/// unrecognized types to maintain full fidelity when restoring to a device that may understand those types.
 typedef NS_ENUM(NSInteger, PHAssetResourceType) {
     PHAssetResourceTypePhoto                             = 1,
     PHAssetResourceTypeVideo                             = 2,
@@ -189,7 +249,12 @@ typedef NS_ENUM(NSInteger, PHAssetResourceType) {
 
     PHAssetResourceTypePhotoProxy API_AVAILABLE(macos(14), ios(17))= 19,
 
+
+
+
+
 } API_AVAILABLE(ios(9));
+
 
 #pragma mark - PHAssetResourceUploadJob types
 
@@ -204,9 +269,9 @@ typedef NS_ENUM(NSInteger, PHAssetResourceUploadJobState) {
     /// The job has sent over successfully.
     PHAssetResourceUploadJobStateSucceeded = 4,
     /// The job has been cancelled.
-    PHAssetResourceUploadJobStateCancelled API_AVAILABLE(ios(26.4)) API_UNAVAILABLE(macos, macCatalyst, tvos, visionos, watchos) = 5,
+    PHAssetResourceUploadJobStateCancelled API_AVAILABLE(ios(26.4)) = 5,
 
-} NS_SWIFT_NAME(PHAssetResourceUploadJob.State) API_AVAILABLE(ios(26.1)) API_UNAVAILABLE(macos, macCatalyst, tvos, visionos);
+} NS_SWIFT_NAME(PHAssetResourceUploadJob.State) API_AVAILABLE(ios(26.1), macCatalyst(27.0), macos(27.0)) API_UNAVAILABLE(tvos, visionos, watchos);
 
 
 /// The types of an upload job
@@ -215,7 +280,7 @@ typedef NS_ENUM(int16_t, PHAssetResourceUploadJobType) {
     PHAssetResourceUploadJobTypeUpload = 0,
     /// A download job type (will download the resource from iCloud if required)
     PHAssetResourceUploadJobTypeDownloadOnly = 1,
-} NS_SWIFT_NAME(PHAssetResourceUploadJob.Type) API_AVAILABLE(ios(26.4)) API_UNAVAILABLE(macos, macCatalyst, tvos, visionos);
+} NS_SWIFT_NAME(PHAssetResourceUploadJob.Type) API_AVAILABLE(ios(26.4), macCatalyst(27.0), macos(27.0)) API_UNAVAILABLE(tvos, visionos, watchos);
 
 /// An action to perform on an upload job.
 ///
@@ -242,9 +307,17 @@ typedef NS_ENUM(NSInteger, PHAssetResourceUploadJobAction) {
     ///
     /// A processable job has a ``PHAssetResourceUploadJob/state`` of `registered` or `pending`.
     PHAssetResourceUploadJobActionProcess API_AVAILABLE(ios(26.5)) = 3,
-} NS_SWIFT_NAME(PHAssetResourceUploadJob.Action) API_AVAILABLE(ios(26.1)) API_UNAVAILABLE(macos, macCatalyst, tvos, visionos);
+} NS_SWIFT_NAME(PHAssetResourceUploadJob.Action) API_AVAILABLE(ios(26.1), macCatalyst(27.0), macos(27.0)) API_UNAVAILABLE(tvos, visionos, watchos);
 
-API_AVAILABLE_END
+/// Describes a rating for an asset.
+typedef NS_ENUM(NSInteger, PHAssetRating) {
+    PHAssetRatingUnset = 0,
+    PHAssetRatingOne,
+    PHAssetRatingTwo,
+    PHAssetRatingThree,
+    PHAssetRatingFour,
+    PHAssetRatingFive
+} NS_SWIFT_NAME(PHAsset.Rating) API_AVAILABLE(macos(27), ios(27), tvos(27), visionos(27));
 
 #pragma mark - PHObjectTypes
 
@@ -253,5 +326,7 @@ typedef NS_ENUM(NSInteger, PHObjectType) {
     PHObjectTypeAssetCollection      = 2,
     PHObjectTypeCollectionList       = 3,
 } API_AVAILABLE(macos(13), ios(16), tvos(16));
+
+API_AVAILABLE_END
 
 #endif

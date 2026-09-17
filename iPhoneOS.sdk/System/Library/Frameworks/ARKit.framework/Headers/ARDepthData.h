@@ -6,8 +6,10 @@
 //  Copyright © 2020 Apple Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <CoreVideo/CoreVideo.h>
+#import <Foundation/Foundation.h>
+
+API_UNAVAILABLE_BEGIN(visionos)
 
 NS_ASSUME_NONNULL_BEGIN
 /**
@@ -38,6 +40,9 @@ NS_SWIFT_SENDABLE
 @property (nonatomic, assign, nullable, readonly) CVPixelBufferRef confidenceMap;
 
 @end
+
+API_UNAVAILABLE_END
+
 NS_ASSUME_NONNULL_END
 #else
 #import <ARKitFoundation/ARDepthData.h> 

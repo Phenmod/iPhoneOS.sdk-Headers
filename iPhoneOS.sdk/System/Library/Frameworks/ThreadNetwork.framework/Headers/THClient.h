@@ -79,6 +79,31 @@ API_AVAILABLE(ios(15.0))
 /// > For information about concurrency and asynchronous code in Swift, see <doc://com.apple.documentation/documentation/swift/calling-objective-c-apis-asynchronously>.
 - (void)retrieveAllActiveCredentials:(void (^)(NSSet<THCredentials*>* _Nullable credentials, NSError* _Nullable error))completion API_AVAILABLE(ios(16.4)) NS_SWIFT_ASYNC_NAME(allActiveCredentials());
 
+/// Requests all active Thread credentials with active border routers around from the framework.
+///
+/// When calling this method, you will receive credentials for active border routers around.
+/// You receive all credentials agnostic to team ID.
+/// Unlike ``retrieveAllActiveCredentials:``, this method returns active credentials
+/// on the device regardless of who actually stored it.
+///
+/// - Parameters:
+///   - completion: The completion handler the framework calls when the
+///     credentials become available.
+///
+/// - Note: This method asks for user permission to share available credentials.
+///         If user denies the permission then the completion will contain error with code 15.
+///
+/// > Concurrency Note: You can call this method from synchronous code using a completion handler,
+/// > as shown on this page, or you can call it as an asynchronous method that has the
+/// > following declaration:
+/// >
+/// > ```swift
+/// > var activeCredentialsForNearbyNetworks: Set<THCredentials> { get async throws }
+/// > ```
+/// >
+/// > For information about concurrency and asynchronous code in Swift, see <doc://com.apple.documentation/documentation/swift/calling-objective-c-apis-asynchronously>.
+- (void)retrieveActiveCredentialsForNearbyNetworksWithCompletion:(void (^)(NSSet<THCredentials*>* _Nullable credentials, NSError* _Nullable error))completion API_AVAILABLE(ios(27.0)) NS_SWIFT_ASYNC_NAME(getter:activeCredentialsForNearbyNetworks());
+
 /// Deletes Thread network credentials from the framework database for a Border
 /// Agent.
 ///
@@ -232,6 +257,31 @@ API_AVAILABLE(ios(15.0))
 /// > For information about concurrency and asynchronous code in Swift, see <doc://com.apple.documentation/documentation/swift/calling-objective-c-apis-asynchronously>.
 - (void)isPreferredNetworkAvailableWithCompletion:(void (^)(BOOL isPreferredAvailable))completion API_AVAILABLE(ios(16.4))   NS_SWIFT_ASYNC_NAME(isPreferredAvailable());
 
+/// Triggers Credential Share mode on a nearby eligible Apple Border Router (tvOS(27.0)).
+///
+/// This method scans for Thread credential sharing capable Apple Border Routers, selects an eligible device, and requests to generate an ephemeral 9-digit code and start credential sharing mode.
+///
+/// When you call this method, the ephemeral 9-digit code appears on screen along with a warning message; it is not returned to the caller.
+///
+/// - Parameters:
+///   - extendedPANID: The extended PAN identifier of the Thread network.
+///   - completion: The completion handler the framework calls once credential
+///     sharing mode has started. The `error` parameter is nil on success, or
+///     non-nil if credential sharing mode could not be enabled.
+///
+/// > Concurrency Note: You can call this method from synchronous code using a completion handler,
+/// > as shown on this page, or you can call it as an asynchronous method that has the
+/// > following declarations:
+/// >
+/// > ```swift
+/// > // Completion handler form:
+/// > func enableCredentialSharingMode(forExtendedPANID extendedPANID: Data, completion: @escaping (Error?) -> Void)
+/// >
+/// > // Async form (throws on failure):
+/// > func enableCredentialSharingMode(forExtendedPANID extendedPANID: Data) async throws
+/// > ```
+/// > For information about concurrency and asynchronous code in Swift, see <doc://com.apple.documentation/documentation/swift/calling-objective-c-apis-asynchronously>.
+- (void)enableCredentialSharingModeForExtendedPANID:(nonnull NSData*)extendedPANID completion:(void (^)(NSError * _Nullable error))completion API_AVAILABLE(ios(27.0)) NS_SWIFT_ASYNC_NAME(enableCredentialSharingMode(forExtendedPANID:));
 @end
 
 NS_ASSUME_NONNULL_END

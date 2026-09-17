@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @abstract      An MXDiagnostic subclass that encapsulates disk write exception reports.
 @discussion    Disk write exceptions occur when your application writes data excessively to disk.
 */
-API_AVAILABLE(ios(14.0), macos(12.0)) API_UNAVAILABLE(tvos, watchos)
+API_DEPRECATED("Use DiagnosticResult instead.", ios(14.0, API_TO_BE_DEPRECATED), macos(12.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos)
 @interface MXDiskWriteExceptionDiagnostic : MXDiagnostic
 
 /*!

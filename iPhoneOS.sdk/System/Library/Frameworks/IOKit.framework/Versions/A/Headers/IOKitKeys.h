@@ -101,6 +101,7 @@
 
 #define kIOMatchCategoryKey             "IOMatchCategory"
 #define kIODefaultMatchCategoryKey      "IODefaultMatchCategory"
+#define kIOConfigOrderKey               "IOConfigOrder"
 
 #define kIOMatchedPersonalityKey        "IOMatchedPersonality"
 #define kIORematchPersonalityKey        "IORematchPersonality"
@@ -156,6 +157,8 @@
 #define kIONVRAMWriteAccessKey           "com.apple.private.iokit.nvram-write-access"
 // Entitlement required to set properties on the IOResources object as non-root user
 #define kIOResourcesSetPropertyKey       "com.apple.private.iokit.ioresources.setproperty"
+// Entitlement required to set properties on the IOUserResources object as non-root user
+#define kIOUserResourcesSetPropertyKey   "com.apple.private.iokit.iouserresources.setproperty"
 // Entitlement required to read/write to the system nvram region
 #define kIONVRAMSystemAllowKey           "com.apple.private.iokit.system-nvram-allow"
 
@@ -190,6 +193,7 @@
 #define kIOUserServerOneProcessKey      "IOUserServerOneProcess"
 #define kIOUserServerPreserveUserspaceRebootKey "IOUserServerPreserveUserspaceReboot"
 
+#define kIOUserPlatformFunctionHandlerGet       "IOUserPlatformFunctionHandlerGet"
 
 // IOService notification types
 #define kIOPublishNotification          "IOServicePublish"

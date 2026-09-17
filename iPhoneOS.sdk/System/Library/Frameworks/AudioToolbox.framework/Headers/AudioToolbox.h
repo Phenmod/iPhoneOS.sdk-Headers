@@ -19,6 +19,7 @@
 #include <AudioToolbox/AUAudioUnitImplementation.h>
 #include <AudioToolbox/AUComponent.h>
 #include <AudioToolbox/AUGraph.h>
+#include <AudioToolbox/AUHeadTrackingBinauralRenderer.h>
 #include <AudioToolbox/AUParameters.h>
 #include <AudioToolbox/AudioComponent.h>
 #include <AudioToolbox/AudioConverter.h>

@@ -62,8 +62,8 @@ API_AVAILABLE(macos(10.7), ios(4.0), tvos(9.0), watchos(1.0), visionos(1.0))
 /// 
 /// Implicitly creates an AVPlayerItem. Clients can obtain the AVPlayerItem as it becomes the player's currentItem.
 /// 
-/// - Parameter URL:
-/// 
+/// - Parameter URL: A URL that identifies an audiovisual resource.
+///
 /// - Returns: An instance of AVPlayer
 + (instancetype)playerWithURL:(NSURL *)URL NS_SWIFT_NONISOLATED;
 
@@ -71,8 +71,8 @@ API_AVAILABLE(macos(10.7), ios(4.0), tvos(9.0), watchos(1.0), visionos(1.0))
 /// 
 /// Useful in order to play items for which an AVAsset has previously been created. See -[AVPlayerItem initWithAsset:].
 /// 
-/// - Parameter item:
-/// 
+/// - Parameter item: The player item to play.
+///
 /// - Returns: An instance of AVPlayer
 + (instancetype)playerWithPlayerItem:(nullable AVPlayerItem *)item NS_SWIFT_NONISOLATED;
 
@@ -80,8 +80,8 @@ API_AVAILABLE(macos(10.7), ios(4.0), tvos(9.0), watchos(1.0), visionos(1.0))
 /// 
 /// Implicitly creates an AVPlayerItem. Clients can obtain the AVPlayerItem as it becomes the player's currentItem.
 /// 
-/// - Parameter URL:
-/// 
+/// - Parameter URL: A URL that identifies an audiovisual resource.
+///
 /// - Returns: An instance of AVPlayer
 - (instancetype)initWithURL:(NSURL *)URL NS_SWIFT_NONISOLATED;
 
@@ -91,8 +91,8 @@ API_AVAILABLE(macos(10.7), ios(4.0), tvos(9.0), watchos(1.0), visionos(1.0))
 /// This method throws an exception if the item is not an AVPlayerItem, or if the item is
 /// associated with another AVPlayer.
 /// 
-/// - Parameter item:
-/// 
+/// - Parameter item: The player item to play.
+///
 /// - Returns: An instance of AVPlayer
 - (instancetype)initWithPlayerItem:(nullable AVPlayerItem *)item NS_SWIFT_NONISOLATED;
 
@@ -127,14 +127,19 @@ AVF_EXPORT NSString *const AVPlayerRateDidChangeReasonKey API_AVAILABLE(macos(12
 /// Informs the receiver of an AVPlayerRateDidChangeNotification about a rate change originated from another AVCoordinatedPlaybackParticipant connected through AVPlayerPlaybackCoordinator. This can be used to inform UI showing why the playback rate changed. The type of the value for this key is an AVCoordinatedPlaybackParticipant, which is part of the AVPlayerPlaybackCoordinator.otherParticipants array.
 AVF_EXPORT NSString *const AVPlayerRateDidChangeOriginatingParticipantKey API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0), visionos(1.0)) API_UNAVAILABLE(watchos);
 
+/// A structure that represents a rate change reason.
 typedef NSString * AVPlayerRateDidChangeReason NS_STRING_ENUM;
+/// An app makes a call to set the player's rate.
 AVF_EXPORT AVPlayerRateDidChangeReason const AVPlayerRateDidChangeReasonSetRateCalled API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0), visionos(1.0)) API_UNAVAILABLE(watchos);
+/// An attempt to change the player's rate fails.
 AVF_EXPORT AVPlayerRateDidChangeReason const AVPlayerRateDidChangeReasonSetRateFailed API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0), visionos(1.0)) API_UNAVAILABLE(watchos);
+/// The system interrupts the app's audio session.
 AVF_EXPORT AVPlayerRateDidChangeReason const AVPlayerRateDidChangeReasonAudioSessionInterrupted API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0), visionos(1.0)) API_UNAVAILABLE(watchos);
+/// An app transitions to the background.
 AVF_EXPORT AVPlayerRateDidChangeReason const AVPlayerRateDidChangeReasonAppBackgrounded API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0), visionos(1.0)) API_UNAVAILABLE(watchos);
-// Indicates that the player automatically switched the playback rate from > 1.0 back to 1.0 when the playhead reached the live edge during live streaming.
+/// Indicates that the player automatically switched the playback rate from > 1.0 back to 1.0 when the playhead reached the live edge during live streaming.
 AVF_EXPORT AVPlayerRateDidChangeReason const AVPlayerRateDidChangeReasonPlayheadReachedLiveEdge API_AVAILABLE(macos(26.4), ios(26.4), tvos(26.4), watchos(26.4), visionos(26.4));
-// Indicates that the player automatically switched rate to 1.0 when the reverse playback reached start of seekable range. only for live.
+/// Indicates that the player automatically switched rate to 1.0 when the reverse playback reached start of seekable range. only for live.
 AVF_EXPORT AVPlayerRateDidChangeReason const AVPlayerRateDidChangeReasonReversePlaybackReachedStartOfSeekableRange API_AVAILABLE(macos(26.4), ios(26.4), tvos(26.4), watchos(26.4), visionos(26.4));
 
 @interface AVPlayer (AVPlayerPlaybackControl)
@@ -206,19 +211,19 @@ typedef NSString * AVPlayerWaitingReason NS_STRING_ENUM;
 
 /// Indicates that the player is waiting for appropriate playback buffer conditions before starting playback
 /// 
-/// The player is waiting for playback because automaticallyWaitToMinimizeStalling is YES and playback at the specified rate would likely cause the playback buffer to become empty before playback completes. Playback will resume when 1) playback at the specified rate will likely complete without a stall or 2) the playback buffer becomes full, meaning no forther buffering of media data is possible.
+/// The player is waiting for playback because automaticallyWaitsToMinimizeStalling is YES and playback at the specified rate would likely cause the playback buffer to become empty before playback completes. Playback will resume when 1) playback at the specified rate will likely complete without a stall or 2) the playback buffer becomes full, meaning no forther buffering of media data is possible.
 /// When the value of automaticallyWaitsToMinimizeStalling is NO, timeControlStatus cannot become AVPlayerTimeControlStatusWaitingToPlayAtSpecifiedRate for this reason.
 AVF_EXPORT AVPlayerWaitingReason const AVPlayerWaitingToMinimizeStallsReason API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0), visionos(1.0));
 
 /// Indicates that the player is monitoring the playback buffer fill rate to determine if playback is likely to complete without interruptions.
 /// 
-/// The player is waiting for playback because automaticallyWaitToMinimizeStalling is YES and it has not yet determined if starting playback at the specified rate would likely cause the buffer to become empty. When the brief initial monitoring period is over, either playback will begin or the value of reasonForWaitingToPlayAtSpecifiedRate will switch to AVPlayerWaitingToMinimizeStallsReason.
+/// The player is waiting for playback because automaticallyWaitsToMinimizeStalling is YES and it has not yet determined if starting playback at the specified rate would likely cause the buffer to become empty. When the brief initial monitoring period is over, either playback will begin or the value of reasonForWaitingToPlayAtSpecifiedRate will switch to AVPlayerWaitingToMinimizeStallsReason.
 /// Recommended practice is not to show UI indicating the waiting state to the user while the value of reasonForWaitingToPlayAtSpecifiedRate is AVPlayerWaitingWhileEvaluatingBufferingRateReason.
 AVF_EXPORT AVPlayerWaitingReason const AVPlayerWaitingWhileEvaluatingBufferingRateReason API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0), visionos(1.0));
 
 /// Indicates that the AVPlayer is waiting because its currentItem is nil
 /// 
-/// The player is waiting for playback because automaticallyWaitToMinimizeStalling is YES and the value of currentItem is nil. When an item becomes available, either because of a call to -replaceCurrentItemWithPlayerItem: or -insertItem: afterItem:, playback will begin or the value of reasonForWaitingToPlay will change.
+/// The player is waiting for playback because automaticallyWaitsToMinimizeStalling is YES and the value of currentItem is nil. When an item becomes available, either because of a call to -replaceCurrentItemWithPlayerItem: or -insertItem: afterItem:, playback will begin or the value of reasonForWaitingToPlay will change.
 AVF_EXPORT AVPlayerWaitingReason const AVPlayerWaitingWithNoItemToPlayReason API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0), visionos(1.0));
 
 /// Indicates that the player is waiting for another participant connected through its AVPlayerPlaybackCoordinator.
@@ -295,7 +300,7 @@ typedef NS_ENUM(NSInteger, AVPlayerActionAtItemEnd)
 /// Use this method to seek to a specified time for the current player item.
 /// The time seeked to may differ from the specified time for efficiency. For sample accurate seeking see seekToTime:toleranceBefore:toleranceAfter:.
 /// 
-/// - Parameter date:
+/// - Parameter date: The time to which to seek.
 - (void)seekToDate:(NSDate *)date NS_SWIFT_NONISOLATED;
 
 /// Moves the playback cursor and invokes the specified block when the seek operation has either been completed or been interrupted.
@@ -306,8 +311,8 @@ typedef NS_ENUM(NSInteger, AVPlayerActionAtItemEnd)
 /// completion handler will be invoked with the finished parameter set to YES. If no item is attached, the completion handler will be
 /// invoked immediately with the finished parameter set to NO.
 /// 
-/// - Parameter date:
-/// - Parameter completionHandler:
+/// - Parameter date: The time to which to seek.
+/// - Parameter completionHandler: The block to invoke when the seek operation has either been completed or been interrupted. The block takes one argument, finished, which indicates whether the seek operation completed.
 - (void)seekToDate:(NSDate *)date completionHandler:(void (^ NS_SWIFT_SENDABLE)(BOOL finished))completionHandler NS_SWIFT_NONISOLATED API_AVAILABLE(macos(10.7), ios(5.0), tvos(9.0), watchos(1.0), visionos(1.0));
 
 /// Moves the playback cursor.
@@ -491,6 +496,44 @@ API_AVAILABLE(macos(10.8), ios(6.0), tvos(9.0), watchos(1.0), visionos(1.0));
 
 /// Indicates whether or not audio output of the player is muted. Only affects audio muting for the player instance and not for the device.
 @property (getter=isMuted) BOOL muted NS_SWIFT_NONISOLATED API_AVAILABLE(macos(10.7), ios(7.0), tvos(9.0), watchos(1.0), visionos(1.0));
+
+@end
+
+
+@interface AVPlayer (AVPlayerAudioSessionParticipation)
+
+/// Indicates whether the player is disconnected from system audio.
+///
+/// When NO (the default), the player is connected to system audio and coordinates with the application's shared `AVAudioSession`.
+/// This implies that the player will activate the audio session when playback starts, render audio, and automatically reconfigure itself after events like route changes.
+///
+/// When YES, the player is disconnected from system audio and will not interact with the audio session. It will not activate the audio session when starting and it does not reconfigure after route changes.
+/// Specifically, this implies that such a player will not play audio until the property changes back to NO.
+///
+/// The value of this property can be changed dynamically during playback using
+/// setDisconnectedFromSystemAudio:completionHandler:.
+@property (nonatomic, readonly) BOOL disconnectedFromSystemAudio NS_SWIFT_NONISOLATED API_AVAILABLE(ios(27.0), tvos(27.0), watchos(27.0), visionos(27.0)) API_UNAVAILABLE(macos, macCatalyst);
+
+/// Changes whether the player is disconnected from system audio.
+///
+/// This method allows you to dynamically change the player's system audio connection.
+/// The operation is asynchronous. Each call to this method will invoke its own completion handler when the operation completes.
+/// When changing from NO to YES, you should typically call this method first, then deactivate
+/// the AVAudioSession in the completion handler to allow other audio to resume.
+///
+/// ## Using the completion handler
+/// In a scenario where changing the value from NO to YES should also allow other system audio to resume, you should only deactivate the audio session once the player has disconnected from system audio.
+/// ```objective-c
+/// // Disconnect from system audio and let other audio resume
+/// [player setDisconnectedFromSystemAudio:YES completionHandler:^{
+///     [[AVAudioSession sharedInstance] setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:nil];
+/// }];
+/// ```
+///
+/// - Parameter disconnected: YES to disconnect from system audio, NO to connect to it.
+/// - Parameter completionHandler: A block that is called when the connection state change is complete. This block is called on an arbitrary queue. The completion handler may be nil.
+- (void)setDisconnectedFromSystemAudio:(BOOL)disconnected
+                     completionHandler:(nullable void (^ NS_SWIFT_SENDABLE)(void))completionHandler NS_REFINED_FOR_SWIFT NS_SWIFT_NONISOLATED API_AVAILABLE(ios(27.0), tvos(27.0), watchos(27.0), visionos(27.0)) API_UNAVAILABLE(macos, macCatalyst);
 
 @end
 
@@ -751,7 +794,7 @@ typedef NS_ENUM(NSInteger, AVPlayerNetworkResourcePriority) {
 	AVPlayerNetworkResourcePriorityHigh = 2,
 } NS_SWIFT_NAME(AVPlayer.NetworkResourcePriority) API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
 
-API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
+API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0))
 @interface AVPlayer (AVPlayerResourceArbitrationSupport)
 
 /// Indicates the priority of this player for network bandwidth resource distribution.

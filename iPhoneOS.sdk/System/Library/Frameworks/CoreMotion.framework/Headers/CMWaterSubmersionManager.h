@@ -31,6 +31,7 @@ COREMOTION_EXPORT API_AVAILABLE(watchos(9.0), ios(16.0)) API_UNAVAILABLE(macos, 
  *     When the delegate is first set, this method will invoked immediately so
  *     that the client always has the current state.
  */
+@optional
 - (void)manager:(CMWaterSubmersionManager*)manager didUpdateEvent:(CMWaterSubmersionEvent*)event;
 
 /*
@@ -43,6 +44,7 @@ COREMOTION_EXPORT API_AVAILABLE(watchos(9.0), ios(16.0)) API_UNAVAILABLE(macos, 
  *
  *
  */
+@optional
 - (void)manager:(CMWaterSubmersionManager*)manager didUpdateMeasurement:(CMWaterSubmersionMeasurement*)measurement;
 
 /*
@@ -52,6 +54,7 @@ COREMOTION_EXPORT API_AVAILABLE(watchos(9.0), ios(16.0)) API_UNAVAILABLE(macos, 
  * 	   Delegate method is called when there is a new temperature measurement available.
  *     New measurements will only be available while device is in the WaterSubmerged state.
  */
+@optional
 - (void)manager:(CMWaterSubmersionManager*)manager didUpdateTemperature:(CMWaterTemperature*)measurement;
 
 /*
@@ -59,6 +62,7 @@ COREMOTION_EXPORT API_AVAILABLE(watchos(9.0), ios(16.0)) API_UNAVAILABLE(macos, 
  * Discussion:
  * 	   Delegate method is called when an error has occurred.
  */
+@optional
 - (void)manager:(CMWaterSubmersionManager*)manager errorOccurred:(NSError*)error;
 @end
 

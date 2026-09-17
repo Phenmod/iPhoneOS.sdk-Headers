@@ -50,10 +50,10 @@ AV_INIT_UNAVAILABLE
 	@abstract	Retrieves a tagged buffer group that is appropriate for display at the specified host time.
 	@param		hostTime
 				A CMTime that expresses a desired host time.
-	@param		presentationTimeStamp
+	@param		presentationTimeStampOut
 				On return points to a CMTime whose value is the presentation time in terms of the corresponding AVPlayerItem's timebase for the copied tagged buffer group, or kCMTimeInvalid if no sample is available for the provided hostTime.
 				Note: This timestamp is in terms of the timebase of the AVPlayerItem for which this sample is associated.
- 	@param		activeConfiguration
+	@param		activeConfigurationOut
  				On return points to the active configuration associated with the copied tagged buffer group, or nil, if no sample is available for the provided hostTime.
 	@result		A tagged buffer group for the specified host time if a sample is available, and NULL otherwise.
 	@discussion The client is responsible for releasing the returned CMTaggedBufferGroup.
@@ -131,7 +131,7 @@ AV_INIT_UNAVAILABLE
  					Namely, if you set pixel buffer attributes for a tag collection and then output settings for that same tag collection, your pixel buffer attributes will be overridden and vice-versa.
  	*/
 - (void)setOutputPixelBufferAttributes:(nullable NSDictionary<NSString *, id> *)pixelBufferAttributes forTagCollection:(CMTagCollectionRef)tagCollection
-		NS_REFINED_FOR_SWIFT API_DEPRECATED_WITH_REPLACEMENT("setOutputSettings:forTagCollection:", macos(14.2, API_TO_BE_DEPRECATED), ios(17.2, API_TO_BE_DEPRECATED), tvos(17.2, API_TO_BE_DEPRECATED), watchos(10.2, API_TO_BE_DEPRECATED), visionos(1.1, API_TO_BE_DEPRECATED));
+		NS_REFINED_FOR_SWIFT API_DEPRECATED_WITH_REPLACEMENT("setOutputSettings:forTagCollection:", macos(14.2, 27.0), ios(17.2, 27.0), tvos(17.2, 27.0), watchos(10.2, 27.0), visionos(1.1, 27.0));
 
 /*!
 	@method			setOutputSettings:forTagCollection
@@ -165,7 +165,7 @@ AV_INIT_UNAVAILABLE
  	@note 			Pixel buffer attributes are translated into output settings, therefore, the rules of defaultOutputSettings apply to defaultPixelBufferAttributes as well.  If defaultPixelBufferAttributes are set after setting defaultOutputSettings, the set output settings will be overridden and vice-versa.
  */
 @property (nonatomic, readwrite, copy, nullable) NSDictionary<NSString *, id> *defaultPixelBufferAttributes
-	API_DEPRECATED_WITH_REPLACEMENT("defaultOutputSettings", macos(14.2, API_TO_BE_DEPRECATED), ios(17.2, API_TO_BE_DEPRECATED), tvos(17.2, API_TO_BE_DEPRECATED), watchos(10.2, API_TO_BE_DEPRECATED), visionos(1.1, API_TO_BE_DEPRECATED));
+	API_DEPRECATED_WITH_REPLACEMENT("defaultOutputSettings", macos(14.2, 27.0), ios(17.2, 27.0), tvos(17.2, 27.0), watchos(10.2, 27.0), visionos(1.1, 27.0));
 
 /*!
  	@property		defaultOutputSettings

@@ -5,10 +5,9 @@
 //  Copyright © 2020 Apple Inc. All rights reserved.
 //
 
-#include <TargetConditionals.h>
+#import <TargetConditionals.h>
 
 #ifdef __OBJC__
-
 
 #import <ARKit/ARKitFoundation.h>
 

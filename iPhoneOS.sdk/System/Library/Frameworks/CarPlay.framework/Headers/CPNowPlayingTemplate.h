@@ -81,6 +81,15 @@ CARPLAY_TEMPLATE_UI_ACTOR
 @property (nonatomic, assign, getter=isUpNextButtonEnabled) BOOL upNextButtonEnabled;
 
 /**
+ A Boolean value indicating whether the mini player is allowed to appear.
+
+ @discussion Set the value of this property to @c NO to hide the mini player.
+
+ Defaults to YES.
+ */
+@property (nonatomic, assign) BOOL allowsMiniPlayer API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(tvos);
+
+/**
  If your template elects to display the "Up Next" button, you may optionally specify a string
  indicating the title for the up next button. If no title is specified, a default system title
  will be used.

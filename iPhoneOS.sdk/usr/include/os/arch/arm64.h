@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Apple Inc. All rights reserved.
+ * Copyright (c) 2025-2026 Apple Inc. All rights reserved.
  *
  * @APPLE_OSREFERENCE_LICENSE_HEADER_START@
  *
@@ -32,10 +32,12 @@
 #if defined(__arm64__)
 
 #include <stdbool.h>
+#include <stdint.h>
 
 #include <sys/cdefs.h>
 
 #include <os/availability.h>
+#include <os/base.h>
 
 __BEGIN_DECLS
 
@@ -137,6 +139,50 @@ void os_set_custom_x18_abi_enabled(bool custom);
 API_UNAVAILABLE(ios, tvos, watchos) API_AVAILABLE(macos(26.4))
 extern
 bool os_custom_x18_abi_enabled(void);
+
+/*!
+ * @typedef os_cross_arch_t
+ *
+ * @abstract
+ *
+ * Identifies a CPU architecture for cross-architecture support
+ * queries via `os_cross_arch_is_supported()`.
+ */
+OS_ENUM(os_cross_arch, uint32_t,
+    OS_CROSS_ARCH_X86_64 = 1,
+    );
+
+/*!
+ * @function os_cross_arch_is_supported
+ *
+ * @abstract
+ *
+ * Returns whether cross-architecture compatibility for the specified
+ * architecture is supported on this system.
+ *
+ * On Apple Silicon Macs, this indicates that the kernel provides the
+ * set of cross-architecture features required by a user-space
+ * compatibility layer to run processes built for the given CPU
+ * architecture via translation (e.g. x86_64 binaries).
+ *
+ * Note that a `true` return value does not imply that any particular
+ * compatibility layer is installed, enabled, or functional on the
+ * running system; it only reports whether the underlying kernel
+ * features that such a layer depends on are present.
+ *
+ * The return value is constant for the lifetime of the system and
+ * may be safely cached by callers.
+ *
+ * @param arch
+ * The architecture to query.
+ *
+ * @result
+ * `true` if cross-architecture compatibility for `arch` is
+ * supported, `false` otherwise.
+ */
+API_UNAVAILABLE(ios, tvos, watchos) API_AVAILABLE(macos(26.6))
+extern
+bool os_cross_arch_is_supported(os_cross_arch_t arch);
 
 __END_DECLS
 

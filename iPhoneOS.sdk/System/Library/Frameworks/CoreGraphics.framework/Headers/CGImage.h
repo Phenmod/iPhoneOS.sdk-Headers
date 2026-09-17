@@ -93,7 +93,7 @@ CG_INLINE CGBitmapInfo CGBitmapInfoMake(
     CGImageComponentInfo component,
     CGImageByteOrderInfo byteOrder,
     CGImagePixelFormatInfo pixelFormat) {
-    return alpha | component | byteOrder | pixelFormat;
+    return (CGBitmapInfo)(alpha | component | byteOrder | pixelFormat);
 }
 
 /* Return the CFTypeID for CGImageRefs. */

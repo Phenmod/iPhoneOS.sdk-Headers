@@ -83,6 +83,52 @@ AV_INIT_UNAVAILABLE
 @property(nullable, nonatomic, readonly) NSUUID *uuid;
 
 /*!
+ @group AVExternalStorageDeviceReasonNotRecommendedForCaptureUse string constants
+
+ @discussion
+    Constants indicating the reasons external storage device is not recommended for capturing high data rate videos based on https://support.apple.com/en-us/109041.
+ */
+typedef NSString *AVExternalStorageDeviceReasonNotRecommendedForCaptureUse NS_TYPED_ENUM NS_SWIFT_NAME(AVExternalStorageDevice.ReasonNotRecommendedForCaptureUse) API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
+
+/*!
+ @constant AVExternalStorageDeviceReasonNotRecommendedForCaptureUseEncrypted
+ @abstract
+    Indicates that the storage device is not recommended for capture as it is encrypted.
+ */
+AVF_EXPORT AVExternalStorageDeviceReasonNotRecommendedForCaptureUse AVExternalStorageDeviceReasonNotRecommendedForCaptureUseEncrypted API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
+
+/*!
+ @constant AVExternalStorageDeviceReasonNotRecommendedForCaptureUseUnsupportedFileSystem
+ @abstract
+    Indicates that the storage device is not recommended for capture as it is not a supported file system.
+ */
+AVF_EXPORT AVExternalStorageDeviceReasonNotRecommendedForCaptureUse AVExternalStorageDeviceReasonNotRecommendedForCaptureUseUnsupportedFileSystem API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
+
+/*!
+ @constant AVExternalStorageDeviceReasonNotRecommendedForCaptureUseSlowWritingSpeed
+ @abstract
+    Indicates that the storage device is not recommended for capture as it doesn't support the recommended writing speed.
+ */
+AVF_EXPORT AVExternalStorageDeviceReasonNotRecommendedForCaptureUse AVExternalStorageDeviceReasonNotRecommendedForCaptureUseSlowWritingSpeed API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
+
+/*!
+ @constant AVExternalStorageDeviceReasonNotRecommendedForCaptureUseUnknownWritingSpeed
+ @abstract
+    Indicates that the storage device is not recommended for capture as its writing speed is unknown.
+ */
+AVF_EXPORT AVExternalStorageDeviceReasonNotRecommendedForCaptureUse AVExternalStorageDeviceReasonNotRecommendedForCaptureUseUnknownWritingSpeed API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
+
+/*!
+ @property reasonsNotRecommendedForCaptureUse
+ @abstract
+    A set of reasons why the storage device is not recommended for capture.
+
+ @discussion
+    Contains one or more AVExternalStorageDeviceReasonNotRecommendedForCaptureUse values indicating the issues with the device. Returns an empty set if there are no known issues.
+ */
+@property(nonatomic, readonly) NSSet<AVExternalStorageDeviceReasonNotRecommendedForCaptureUse> *reasonsNotRecommendedForCaptureUse API_AVAILABLE(macos(27.0), ios(27.0), macCatalyst(27.0), tvos(27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
+
+/*!
  @property notRecommendedForCaptureUse
  @abstract
     Indicates whether the external storage device is not recommended for capture use.
@@ -90,7 +136,7 @@ AV_INIT_UNAVAILABLE
  @discussion
     This property is used to let the client know if the external storage device is not suitable for camera capture.
  */
-@property(nonatomic, readonly, getter=isNotRecommendedForCaptureUse) BOOL notRecommendedForCaptureUse;
+@property(nonatomic, readonly, getter=isNotRecommendedForCaptureUse) BOOL notRecommendedForCaptureUse API_DEPRECATED("Use reasonsNotRecommendedForCaptureUse instead", ios(17.0, 27.0), macos(14.0, 27.0), macCatalyst(17.0, 27.0), tvos(17.0, 27.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
 
 /*!
  @method nextAvailableURLsWithPathExtensions:error:

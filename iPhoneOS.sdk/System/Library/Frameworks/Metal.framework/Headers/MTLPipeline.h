@@ -30,6 +30,12 @@ typedef NS_ENUM(NSInteger, MTLShaderValidation)
     MTLShaderValidationDisabled = 2,
 } API_AVAILABLE(macos(15.0), ios(18.0));
 
+typedef NS_ENUM(NSInteger, MTLForwardProgressUsage) {
+  MTLForwardProgressUsageAutomatic = 0,
+  MTLForwardProgressUsageWeak = 1,
+  MTLForwardProgressUsageSIMDGroupParallel = 2,
+} API_AVAILABLE(macos(27.0), ios(27.0));
+
 MTL_EXPORT API_AVAILABLE(macos(10.13), ios(11.0))
 @interface MTLPipelineBufferDescriptor : NSObject <NSCopying>
 

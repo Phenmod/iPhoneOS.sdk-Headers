@@ -14,6 +14,10 @@
 #include <CoreGraphics/CGDataConsumer.h>
 #include <CoreFoundation/CFDictionary.h>
 
+// Forward Declarations
+typedef struct CF_BRIDGED_TYPE(id) CGPDFMarkedContentItem *CGPDFMarkedContentItemRef;
+typedef struct CF_BRIDGED_TYPE(id) CGPDFStructureElement *CGPDFStructureElementRef;
+
 CF_IMPLICIT_BRIDGING_ENABLED
 
 CF_ASSUME_NONNULL_BEGIN
@@ -310,8 +314,11 @@ CG_EXTERN const CFStringRef  kCGPDFContextCreatePDFA API_AVAILABLE(macos(11.0), 
  - Tagged PDF (Section 10.7) defines the properties of tags, and focuses on the accessibility
    features they provide. */
 
-/* All CGPDFTagType reflect official "Role Types" defined in the Adobe Portable Document
-   Format Version 1.7 November 2006. The enums below are defined between pages 899 to 912. */
+/* Most CGPDFTagType values reflect official "Role Types" defined in the Adobe Portable
+   Document Format Version 1.7 November 2006. The enums below are defined between pages
+   899 to 912. Values at 900 and above are non-structural marked content tags (see
+   CGPDFTagTypeArtifact); they are not role types and must not be used with structure
+   tree APIs. */
 typedef CF_ENUM (int32_t, CGPDFTagType) {
     
     /* Page 899 - 901, TABLE 10.20 Standard structure types for grouping elements */
@@ -380,13 +387,24 @@ typedef CF_ENUM (int32_t, CGPDFTagType) {
     CGPDFTagTypeForm,
     
     /* Page , TABLE 10.12 Type for object reference*/
-    CGPDFTagTypeObject = 800
-    
+    CGPDFTagTypeObject = 800,
+
+    /* 10.7.1, Real Content and Artifacts
+     Non-structural marked content tag. Only valid with
+     CGPDFContextBeginNonStructuralMarkedContentSequence(). Tags content (page numbers,
+     headers/footers, watermarks, cut marks) that should be excluded from reading order,
+     reflow, text extraction, and search. */
+    CGPDFTagTypeArtifact API_AVAILABLE(macos(27.0), ios(27.0), visionos(27.0)) API_UNAVAILABLE(watchos, tvos) = 900
+
 } API_AVAILABLE(macos(10.15), ios(13.0));
 
-/* For a given CGPDFTagType, return a C-string that matches the names defined in section 10.7.3: Standard Structure Types.
-   These are defined on pages 899 - 912. Returns NULL for an unknown value. */
+/* For a given CGPDFTagType, return a C-string matching the PDF name used in the
+   content stream. For structure types these match section 10.7.3: Standard Structure
+   Types (pages 899 - 912). For non-structural tags the returned name matches the
+   corresponding marked content tag (e.g. "/Artifact"). Returns NULL for an unknown value. */
 CG_EXTERN const char* cg_nullable CGPDFTagTypeGetName(CGPDFTagType tagType) API_AVAILABLE(macos(10.15), ios(13.0));
+
+#pragma mark --- Legacy Tagged PDF Authoring ---
 
 /* The following CGPDFTagProperty keys are to be paired with CFStringRef values in
    CGPDFContextBeginTag(...)'s optional tagProperties dictionary. These key-value pairs
@@ -446,6 +464,69 @@ CG_EXTERN void CGPDFContextBeginTag(CGContextRef _Nonnull context, CGPDFTagType 
 /* Pop the current tag. Sets the current tag to the previous tag on the tag-stack. If there was no previous tag, then the
    current tag will be set to the root document tag (of type CGPDFTagTypeDocument). */
 CG_EXTERN void CGPDFContextEndTag(CGContextRef _Nonnull context) API_AVAILABLE(macos(10.15), ios(13.0));
+
+#pragma mark --- New Tagged PDF Authoring ---
+
+/* Begin a structural marked content sequence of the given tag type.
+   The tag type must be a structure type (e.g. CGPDFTagTypeParagraph, CGPDFTagTypeSpan).
+   For content that should be excluded from the structure tree (artifacts, etc.),
+   use `CGPDFContextBeginNonStructuralMarkedContentSequence' instead.
+   
+   Returns NULL if a structural sequence is already open. Otherwise, returns a new
+   marked content item. You are responsible for releasing this object using CFRelease.
+   The returned item can be added to the logical structure tree using
+   `CGPDFStructureElementAddMarkedContentItem'. */
+
+CG_EXTERN CF_RETURNS_RETAINED CGPDFMarkedContentItemRef _Nullable CGPDFContextBeginMarkedContentSequence(CGContextRef context, CGPDFTagType tagType)
+    CF_SWIFT_NAME(CGContext.beginMarkedContentSequence(self:_:))
+    API_AVAILABLE(macos(27.0), ios(27.0), visionos(27.0))
+    API_UNAVAILABLE(watchos, tvos);
+
+/* Begin a non-structural marked content sequence with the given tag type. The tagged
+   content is NOT added to the structure tree; this is for content that should be labeled
+   in the content stream but excluded from logical structure (e.g. artifacts such as page
+   numbers, headers, watermarks).
+
+   Valid tag types: CGPDFTagTypeArtifact. Do NOT pass CGPDFTagTypeNonStructure — that is
+   a *structure tree grouping element* (/NonStruct), not a non-structural marked content tag.
+   The two sound similar but are unrelated PDF concepts; passing a structure type here will
+   produce a malformed PDF. */
+
+CG_EXTERN void CGPDFContextBeginNonStructuralMarkedContentSequence(CGContextRef context, CGPDFTagType tagType)
+    CF_SWIFT_NAME(CGContext.beginNonStructuralMarkedContentSequence(self:_:))
+    API_AVAILABLE(macos(27.0), ios(27.0), visionos(27.0))
+    API_UNAVAILABLE(watchos, tvos);
+
+/* End a marked content sequence (structural or non-structural). */
+
+CG_EXTERN void CGPDFContextEndMarkedContentSequence(CGContextRef context)
+    CF_SWIFT_NAME(CGContext.endMarkedContentSequence(self:))
+    API_AVAILABLE(macos(27.0), ios(27.0), visionos(27.0))
+    API_UNAVAILABLE(watchos, tvos);
+
+/* Begin an object reference. Exactly one object should be drawn before the End.
+   The returned CGPDFMarkedContentItemRef object must be added to a single
+   CGPDFStructureElementRef object. */
+
+CG_EXTERN CF_RETURNS_RETAINED CGPDFMarkedContentItemRef _Nullable CGPDFContextBeginObjectReference(CGContextRef context)
+    CF_SWIFT_NAME(CGContext.beginObjectReference(self:))
+    API_AVAILABLE(macos(27.0), ios(27.0), visionos(27.0))
+    API_UNAVAILABLE(watchos, tvos);
+
+/* End an object reference. Exactly one object should be drawn before this is called. */
+
+CG_EXTERN void CGPDFContextEndObjectReference(CGContextRef context)
+    CF_SWIFT_NAME(CGContext.endObjectReference(self:))
+    API_AVAILABLE(macos(27.0), ios(27.0), visionos(27.0))
+    API_UNAVAILABLE(watchos, tvos);
+
+/* Add a CGPDFStructureElementRef object to the document structure tree root. */
+
+CG_EXTERN OSStatus CGPDFContextAddStructureTreeRootChild(CGContextRef context, CGPDFStructureElementRef structureElement)
+    CF_SWIFT_NAME(CGContext.addStructureTreeRootChild(self:_:))
+    API_AVAILABLE(macos(27.0), ios(27.0), visionos(27.0))
+    API_UNAVAILABLE(watchos, tvos);
+
 
 CF_ASSUME_NONNULL_END
 

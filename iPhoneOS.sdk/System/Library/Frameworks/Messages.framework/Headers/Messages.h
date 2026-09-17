@@ -26,3 +26,5 @@
 #import <Messages/MSStickerView.h>
 
 #import <Messages/MSMessageError.h>
+
+#import <Messages/MSUPIRequest.h>

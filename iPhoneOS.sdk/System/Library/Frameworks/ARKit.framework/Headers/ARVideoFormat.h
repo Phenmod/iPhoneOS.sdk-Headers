@@ -12,8 +12,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+API_UNAVAILABLE_BEGIN(visionos)
+
 @class AVCapturePhotoSettings;
 
+/**
+ A video format supported by an AR configuration.
+ */
 API_AVAILABLE(ios(11.3))
 NS_SWIFT_NAME(ARConfiguration.VideoFormat)
 @interface ARVideoFormat : NSObject <NSCopying>
@@ -21,14 +26,12 @@ NS_SWIFT_NAME(ARConfiguration.VideoFormat)
 /**
  Indicates the physical position of an AVCaptureDevice's hardware on the system.
  */
-@property (nonatomic, readonly) AVCaptureDevicePosition captureDevicePosition
-        API_AVAILABLE(ios(13.0));
+@property (nonatomic, readonly) AVCaptureDevicePosition captureDevicePosition API_AVAILABLE(ios(13.0));
 
 /**
  Indicates the type of AVCaptureDevice.
  */
-@property (nonatomic, readonly) AVCaptureDeviceType captureDeviceType
-        API_AVAILABLE(ios(14.5));
+@property (nonatomic, readonly) AVCaptureDeviceType captureDeviceType API_AVAILABLE(ios(14.5));
 
 /**
  Image resolution.
@@ -53,22 +56,37 @@ NS_SWIFT_NAME(ARConfiguration.VideoFormat)
 /**
  The color space ARKit uses to configure the capture session when this video format is selected.
  */
-@property (nonatomic, readonly) AVCaptureColorSpace defaultColorSpace API_AVAILABLE(ios(26.0));
+@property (nonatomic, readonly) AVCaptureColorSpace defaultColorSpace API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(visionos);
 
 /**
  The default AVCapturePhotoSettings object that ARKit uses when capturing a high resolution frame using this video format.
- @discussion Calling this getter will return a new instance that may be mutated to customize settings. Pass that instance to
- `captureHighResolutionFrameUsingPhotoSettings:completion:` to capture a high resolution frame with custom settings.
- @see [ARSession captureHighResolutionFrameUsingPhotoSettings:completion:]
- @return An AVCapturePhotoSettings object.
- */
-@property (nonatomic, readonly) AVCapturePhotoSettings *defaultPhotoSettings API_AVAILABLE(ios(26.0));
 
-/** Unavailable */
+ Calling this getter will return a new instance that may be mutated to customize settings. Pass that instance to
+ `captureHighResolutionFrameUsingPhotoSettings:completion:` to capture a high resolution frame with custom settings.
+
+ - Returns: An `AVCapturePhotoSettings` object.
+
+ - SeeAlso: ``ARSession/captureHighResolutionFrameUsingPhotoSettings:completion:``
+*/
+@property (nonatomic, readonly) AVCapturePhotoSettings *defaultPhotoSettings API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(visionos);
+
+/**
+ Unavailable.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)init NS_UNAVAILABLE;
+
+/**
+ Unavailable.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_UNAVAILABLE;
 
 @end
+
+API_UNAVAILABLE_END
 
 NS_ASSUME_NONNULL_END
 #else

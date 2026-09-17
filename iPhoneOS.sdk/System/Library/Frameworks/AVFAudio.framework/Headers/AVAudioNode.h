@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 	@discussion
 		CAUTION: This callback may be invoked on a thread other than the main thread.
 */
-typedef void (^AVAudioNodeTapBlock)(AVAudioPCMBuffer *buffer, AVAudioTime *when);
+typedef void (^ NS_SWIFT_NONSENDABLE AVAudioNodeTapBlock)(AVAudioPCMBuffer *buffer, AVAudioTime *when);
 
 /*!
 	@class AVAudioNode
@@ -48,7 +48,7 @@ typedef void (^AVAudioNodeTapBlock)(AVAudioPCMBuffer *buffer, AVAudioTime *when)
 
 		Nodes do not currently provide useful functionality until attached to an engine.
 */
-API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 @interface AVAudioNode : NSObject {
 @protected
 	void *_impl;
@@ -114,13 +114,57 @@ AVAudioFormat *format = [input outputFormatForBus: 0];
 // start engine
 </pre>
 */
-- (void)installTapOnBus:(AVAudioNodeBus)bus bufferSize:(AVAudioFrameCount)bufferSize format:(AVAudioFormat * __nullable)format block:(AVAudioNodeTapBlock)tapBlock;
+- (void)installTapOnBus:(AVAudioNodeBus)bus bufferSize:(AVAudioFrameCount)bufferSize format:(AVAudioFormat * __nullable)format block:(AVAudioNodeTapBlock)tapBlock API_DEPRECATED_WITH_REPLACEMENT("installTapOnBus:bufferSize:format:error:block", ios(8.0, 27.0), watchos(2.0, 27.0), macos(10.10, 27.0), tvos(9.0, 27.0));
+
+/*! @method installTapOnBus:bufferSize:forma:errort:block:
+	@abstract Create a "tap" to record/monitor/observe the output of the node.
+	@param bus
+		the node output bus to which to attach the tap
+	@param bufferSize
+		the requested size of the incoming buffers in sample frames. Supported range is [100, 400] ms.
+	@param format
+		If non-nil, attempts to apply this as the format of the specified output bus. This should
+		only be done when attaching to an output bus which is not connected to another node; an
+		error will result otherwise.
+		The tap and connection formats (if non-nil) on the specified bus should be identical.
+		Otherwise, the latter operation will override any previously set format.
+	@param outError
+		on exit, if an error occurs, a description of the error.
+	@param tapBlock
+		a block to be called with audio buffers.
+	@return
+		YES for success.
+
+	@discussion
+		Only one tap may be installed on any bus. Taps may be safely installed and removed while
+		the engine is running.
+ 
+		Note that if you have a tap installed on AVAudioOutputNode, there could be a mismatch
+		between the tap buffer format and AVAudioOutputNode's output format, depending on the
+		underlying physical device. Hence, instead of tapping the AVAudioOutputNode, it is
+		advised to tap the node connected to it.
+
+		E.g. to capture audio from input node:
+<pre>
+AVAudioEngine *engine = [[AVAudioEngine alloc] init];
+AVAudioInputNode *input = [engine inputNode];
+AVAudioFormat *format = [input outputFormatForBus: 0];
+NSError *error = nil;
+BOOL success = [input installTapOnBus: 0 bufferSize: 8192 format: format error:&error block: ^(AVAudioPCMBuffer *buf, AVAudioTime *when) {
+// ‘buf' contains audio captured from input node at time 'when'
+}];
+....
+// start engine
+</pre>
+*/
+- (BOOL)installTapOnBus:(AVAudioNodeBus)bus bufferSize:(AVAudioFrameCount)bufferSize format:(AVAudioFormat * __nullable)format error:(NSError **)outError block:(AVAudioNodeTapBlock)tapBlock NS_REFINED_FOR_SWIFT API_AVAILABLE(macos(27.0), ios(27.0), watchos(27.0), tvos(27.0));
 
 /*!	@method removeTapOnBus:
 	@abstract Destroy a tap.
 	@param bus
 		the node output bus whose tap is to be destroyed
 */
+
 - (void)removeTapOnBus:(AVAudioNodeBus)bus;
 
 /*!	@property engine
@@ -158,7 +202,7 @@ AVAudioFormat *format = [input outputFormatForBus: 0];
 		directly on the audio unit. These include changing initialization state, stream formats, 
 		channel layouts or connections to other audio units.
 */
-@property (nonatomic, readonly) AUAudioUnit *AUAudioUnit API_AVAILABLE(macos(10.13), ios(11.0), watchos(4.0), tvos(11.0));
+@property (nonatomic, readonly) AUAudioUnit *AUAudioUnit API_AVAILABLE(macos(10.13), ios(11.0), watchos(4.0), tvos(11.0)) NS_REFINED_FOR_SWIFT;
 #endif // AVAUDIONODE_HAVE_AUAUDIOUNIT
 
 /*!	@property latency

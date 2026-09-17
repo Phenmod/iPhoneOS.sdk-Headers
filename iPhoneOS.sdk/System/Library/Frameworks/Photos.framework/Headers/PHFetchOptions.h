@@ -37,6 +37,11 @@ OS_EXPORT
 // Defaults to YES
 @property (nonatomic, assign) BOOL wantsIncrementalChangeDetails;
 
+/// A Boolean value to fetch `PHAssetExtendedMetadata` when the asset is also fetched.
+///
+/// By default `extendedMetadata` is fetched on demand, with the dot accessor. Prefetching will fetch it as part of the `PHAsset` in a single fetch, rather than incurring fetch overhead for each `PHAsset`.
+@property (nonatomic, assign) BOOL prefetchAssetExtendedMetadata API_AVAILABLE(macos(27), ios(27), tvos(27), visionos(27));
+
 @end
 
 API_AVAILABLE_END

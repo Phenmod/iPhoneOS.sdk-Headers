@@ -8,6 +8,11 @@
 #ifndef __BNNS_GRAPH_HEADER__
 #define __BNNS_GRAPH_HEADER__
 
+#include "bnns_structures.h"
+
+#include <stddef.h>
+#include <stdint.h>
+
 #if __has_include(<TargetConditionals.h>)
 # include <TargetConditionals.h>
 #endif // __has_include(<TargetConditionals.h>)
@@ -580,7 +585,7 @@ bnns_graph_context_t BNNSGraphContextMakeStreaming(bnns_graph_t graph,
                                                    BNNSTensor const *_Nullable initial_states)
 __API_AVAILABLE(macos(15.0), ios(18.0), watchos(11.0), tvos(18.0));
 
-/// Destroys a graph context created through a call to `BNNSGraphContextCreate`
+/// Destroys a graph context created through a call to `BNNSGraphContextMake` or `BNNSGraphContextMakeStreaming`
 ///
 /// Arguments:
 /// `context`: object to be destroyed

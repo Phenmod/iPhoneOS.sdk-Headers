@@ -2,7 +2,7 @@
  *  CTTypesetter.h
  *  CoreText
  *
- *  Copyright (c) 2003-2018 Apple Inc. All rights reserved.
+ *  Copyright (c) 2003-2024 Apple Inc. All rights reserved.
  *
  */
 

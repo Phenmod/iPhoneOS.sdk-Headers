@@ -120,7 +120,7 @@ class convolution2d : __tensor_ops_detail::op
                 "only group size 1 supported currently");
 
 private:
-  thread int2 __offset;
+  int2 __offset;
 
 public:
   convolution2d() thread : __offset(0)

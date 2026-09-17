@@ -22,6 +22,7 @@ typedef NS_ERROR_ENUM(TKErrorDomain, TKErrorCode) {
     TKErrorCodeTokenNotFound         = -7,
     TKErrorCodeBadParameter          = -8,
     TKErrorCodeAuthenticationNeeded  = -9,
+    TKErrorCodeInvalidatedDeviceKey API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), watchos(27.0), visionos(27.0)) = -10,
 
     TKErrorAuthenticationFailed API_DEPRECATED_WITH_REPLACEMENT("TKErrorCodeAuthenticationFailed", macos(10.10, 10.11), ios(9.0, 9.0), tvos(9.0, 9.0), watchos(2.0, 2.0)) = TKErrorCodeAuthenticationFailed,
     TKErrorObjectNotFound API_DEPRECATED_WITH_REPLACEMENT("TKErrorCodeObjectNotFound", macos(10.10, 10.11), ios(9.0, 9.0), tvos(9.0, 9.0), watchos(2.0, 2.0)) = TKErrorCodeObjectNotFound,

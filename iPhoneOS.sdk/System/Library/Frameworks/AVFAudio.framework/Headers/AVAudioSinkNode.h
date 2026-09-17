@@ -30,7 +30,14 @@ NS_ASSUME_NONNULL_BEGIN
         An OSStatus result code. If an error is returned, the input data should be assumed to be
         invalid.
  */
-typedef OSStatus (^AVAudioSinkNodeReceiverBlock)(const AudioTimeStamp *timestamp, AVAudioFrameCount frameCount, const AudioBufferList *inputData) API_AVAILABLE(macos(10.15), ios(13.0), tvos(13.0), watchos(6.0)) ;
+typedef OSStatus (^ NS_SWIFT_NONSENDABLE AVAudioSinkNodeReceiverBlock)(const AudioTimeStamp *timestamp, AVAudioFrameCount frameCount, const AudioBufferList *inputData) API_AVAILABLE(macos(10.15), ios(13.0), tvos(13.0), watchos(6.0)) ;
+
+/*! @typedef AVAudioSinkNodeReceiverBlockRealtimeSafe
+    @abstract
+        Identical to AVAudioSinkNodeReceiverBlock, with the addition of a realtime-safety
+        guarantee.
+*/
+typedef OSStatus (^AVAudioSinkNodeReceiverBlockRealtimeSafe)(const AudioTimeStamp *timestamp, AVAudioFrameCount frameCount, const AudioBufferList *inputData) CA_REALTIME_API API_AVAILABLE(macos(27.0), ios(27.0), watchos(27.0), tvos(27.0), visionos(27.0))  __SWIFT_UNAVAILABLE_MSG("Swift is not supported for use with audio realtime threads");
 
 /*! @class AVAudioSinkNode
     @abstract AVAudioSinkNode wraps a client provided block to receive input audio on the audio IO thread.
@@ -49,7 +56,7 @@ typedef OSStatus (^AVAudioSinkNodeReceiverBlock)(const AudioTimeStamp *timestamp
 
         AVAudioSinkNode does not have an output bus and therefore it does not support tapping.
  */
-API_AVAILABLE(macos(10.15), ios(13.0), tvos(13.0), watchos(6.0)) 
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.15), ios(13.0), tvos(13.0), watchos(6.0)) 
 @interface AVAudioSinkNode : AVAudioNode
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -59,6 +66,8 @@ API_AVAILABLE(macos(10.15), ios(13.0), tvos(13.0), watchos(6.0))
     @param block
         The block that receives audio data from the input.
     @discussion
+        The preferred initializer is initWithRealtimeSafeReceiverBlock: and should be used instead.
+ 
         The receiver block is called when the input data is available.
 
         The block will be called on the realtime thread and it is the client's responsibility to
@@ -70,6 +79,12 @@ API_AVAILABLE(macos(10.15), ios(13.0), tvos(13.0), watchos(6.0))
         The audio format for the data received by the block will be set to the node's input format.
  */
 - (instancetype)initWithReceiverBlock:(AVAudioSinkNodeReceiverBlock)block NS_DESIGNATED_INITIALIZER;
+
+/*! @method initWithRealtimeSafeReceiverBlock:
+    @abstract
+        Identical to initWithReceiverBlock:, but requires a realtime-safe block and is the preferred initializer.
+*/
+- (instancetype)initWithRealtimeSafeReceiverBlock:(AVAudioSinkNodeReceiverBlockRealtimeSafe)block NS_DESIGNATED_INITIALIZER API_AVAILABLE(macos(27.0), ios(27.0), watchos(27.0), tvos(27.0), visionos(27.0)) __SWIFT_UNAVAILABLE_MSG("Swift is not supported for use with audio realtime threads");
 
 @end
 

@@ -76,7 +76,7 @@ API_AVAILABLE(macos(10.9), ios(7.0), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(w
 /// The buffer will have its kCVImageBufferCleanApertureKey and kCVImageBufferPixelAspectRatioKey attachments set to match the current composition processor properties.
 - (nullable CVPixelBufferRef)newPixelBuffer CF_RETURNS_RETAINED // caller must CFRelease
 #if __swift__
-API_DEPRECATED("Use newReadOnlyPixelBuffer() instead", macos(10.9, API_TO_BE_DEPRECATED), ios(7.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(watchos)
+API_DEPRECATED("Use newReadOnlyPixelBuffer() instead", macos(10.9, 27.0), ios(7.0, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0)) API_UNAVAILABLE(watchos)
 #endif
 ;
 
@@ -263,7 +263,7 @@ API_AVAILABLE(macos(10.9), ios(7.0), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(w
 /// - Parameter trackID: The track ID for the requested source frame
 - (nullable CVPixelBufferRef)sourceFrameByTrackID:(CMPersistentTrackID)trackID CF_RETURNS_NOT_RETAINED
 #if __swift__
-API_DEPRECATED("Use sourceReadOnlyPixelBuffer(byTrackID:) instead", macos(10.9, API_TO_BE_DEPRECATED), ios(7.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(watchos)
+API_DEPRECATED("Use sourceReadOnlyPixelBuffer(byTrackID:) instead", macos(10.9, 27.0), ios(7.0, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0)) API_UNAVAILABLE(watchos)
 #endif
 ;
 
@@ -272,7 +272,7 @@ API_DEPRECATED("Use sourceReadOnlyPixelBuffer(byTrackID:) instead", macos(10.9, 
 /// - Parameter trackID: The track ID for the requested source sample buffer
 - (nullable CMSampleBufferRef)sourceSampleBufferByTrackID:(CMPersistentTrackID)trackID CF_RETURNS_NOT_RETAINED
 #if __swift__
-API_DEPRECATED("Use sourceReadySampleBuffer(byTrackID:) instead", macos(10.9, API_TO_BE_DEPRECATED), ios(7.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(watchos)
+API_DEPRECATED("Use sourceReadySampleBuffer(byTrackID:) instead", macos(10.9, 27.0), ios(7.0, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0)) API_UNAVAILABLE(watchos)
 #endif
 ;
 
@@ -286,7 +286,7 @@ API_DEPRECATED("Use sourceReadySampleBuffer(byTrackID:) instead", macos(10.9, AP
 /// - Parameter composedVideoFrame: The video frame to finish with. Call finishWithComposedTaggedBufferGroup: instead if outputBufferDescription is non-nil.
 - (void)finishWithComposedVideoFrame:(CVPixelBufferRef)composedVideoFrame
 #if __swift__
-API_DEPRECATED("Use finish(withComposedVideoFrame: CVReadOnlyPixelBuffer) instead", macos(10.9, API_TO_BE_DEPRECATED), ios(7.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(watchos)
+API_DEPRECATED("Use finish(withComposedVideoFrame: CVReadOnlyPixelBuffer) instead", macos(10.9, 27.0), ios(7.0, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0)) API_UNAVAILABLE(watchos)
 #endif
 ;
 
@@ -325,7 +325,7 @@ API_DEPRECATED("Use finish(withComposedVideoFrame: CVReadOnlyPixelBuffer) instea
 
 /// An AVAsynchronousCIImageFilteringRequest instance contains the information necessary for a filter to render an output CIImage.
 #if __swift__
-API_DEPRECATED("Use AVCIImageFilteringParameters instead", macos(10.11, API_TO_BE_DEPRECATED), ios(9.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(watchos)
+API_DEPRECATED("Use AVCIImageFilteringParameters instead", macos(10.11, 27.0), ios(9.0, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0)) API_UNAVAILABLE(watchos)
 #else
 API_AVAILABLE(macos(10.11), ios(9.0), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(watchos)
 #endif

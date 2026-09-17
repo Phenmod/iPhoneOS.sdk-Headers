@@ -6,12 +6,12 @@
 //
 
 #import <Foundation/Foundation.h>
-extern NSString *const __nonnull RPRecordingErrorDomain;
-extern NSString *const __nonnull SCStreamErrorDomain;
+extern NSErrorDomain const __nonnull RPRecordingErrorDomain API_DEPRECATED("Use ScreenCaptureKit instead", ios(9.0, 27.0), tvos(10.0, 27.0), macos(11.0, 27.0));
+extern NSErrorDomain const __nonnull SCStreamErrorDomain;
 
 NS_ASSUME_NONNULL_BEGIN
 
-NS_ENUM_AVAILABLE(11_0, 9_0)
+API_DEPRECATED("Use ScreenCaptureKit instead", ios(9.0, 27.0), tvos(10.0, 27.0), macos(11.0, 27.0))
 typedef NS_ENUM (NSInteger, RPRecordingErrorCode) {
     RPRecordingErrorUnknown = -5800,
     RPRecordingErrorUserDeclined = -5801,                           // The user declined app recording.

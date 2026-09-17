@@ -1,6 +1,6 @@
 /* CoreAnimation - CABase.h
 
-   Copyright (c) 2006-2025, Apple Inc.
+   Copyright (c) 2006-2026, Apple Inc.
    All rights reserved. */
 
 #ifndef CABASE_H

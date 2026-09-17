@@ -10,55 +10,77 @@
 // C can be tensor_handle, tensor_offset, tensor_inline or cooperative_tensor.
 // Data type combinations supported by this operation are as follows:
 //
-//  Left     Right          Destination
-//  -------  -------------  -----------
-//  half     half           half
-//  half     int8_t         half
-//  half     uint8_t        half
-//  int8_t   half           half
-//  uint8_t  half           half
-//  half     half           float
-//  half     float          float
-//  half     int8_t         float
-//  half     uint8_t        float
-//  float    half           float
-//  float    float          float
-//  float    int8_t         float
-//  float    uint8_t        float
-//  int8_t   half           float
-//  uint8_t  half           float
-//  int8_t   float          float
-//  uint8_t  float          float
-//  int8_t   int8_t         int32_t
-//  uint8_t  uint8_t        int32_t
-//  bfloat   bfloat         bfloat
-//  bfloat   bfloat         float
-//  bfloat   float          float
-//  bfloat   int8_t         bfloat
-//  bfloat   int8_t         float
-//  float    bfloat         float
-//  int8_t   bfloat         bfloat
-//  int8_t   bfloat         float
-//  bfloat   half           bfloat
-//  bfloat   half           half
-//  bfloat   half           float
-//  half     bfloat         bfloat
-//  half     bfloat         half
-//  half     bfloat         float
-//  bfloat   uint8_t        bfloat
-//  bfloat   uint8_t        float
-//  uint8_t  bfloat         bfloat
-//  uint8_t  bfloat         float
-//  half     int4b_format   half
-//  half     int4b_format   float
-//  half     uint4b_format  half
-//  half     uint4b_format  float
-//  int8_t   int4b_format   int32_t
-//  uint8_t  uint4b_format  int32_t
-//  bfloat   int4b_format   bfloat
-//  bfloat   uint4b_format  bfloat
-//  bfloat   int4b_format   float
-//  bfloat   uint4b_format  float
+//  Left                   Right                  Destination
+//  ---------------------  ---------------------  -----------
+//  half                   half                   half
+//  half                   int8_t                 half
+//  half                   uint8_t                half
+//  int8_t                 half                   half
+//  uint8_t                half                   half
+//  half                   half                   float
+//  half                   float                  float
+//  half                   int8_t                 float
+//  half                   uint8_t                float
+//  float                  half                   float
+//  float                  float                  float
+//  float                  int8_t                 float
+//  float                  uint8_t                float
+//  int8_t                 half                   float
+//  uint8_t                half                   float
+//  int8_t                 float                  float
+//  uint8_t                float                  float
+//  int8_t                 int8_t                 int32_t
+//  uint8_t                uint8_t                int32_t
+//  bfloat                 bfloat                 bfloat
+//  bfloat                 bfloat                 float
+//  bfloat                 float                  float
+//  bfloat                 int8_t                 bfloat
+//  bfloat                 int8_t                 float
+//  float                  bfloat                 float
+//  int8_t                 bfloat                 bfloat
+//  int8_t                 bfloat                 float
+//  bfloat                 half                   bfloat
+//  bfloat                 half                   half
+//  bfloat                 half                   float
+//  half                   bfloat                 bfloat
+//  half                   bfloat                 half
+//  half                   bfloat                 float
+//  bfloat                 uint8_t                bfloat
+//  bfloat                 uint8_t                float
+//  uint8_t                bfloat                 bfloat
+//  uint8_t                bfloat                 float
+//  half                   int4b_format           half
+//  half                   int4b_format           float
+//  half                   uint4b_format          half
+//  half                   uint4b_format          float
+//  int8_t                 int4b_format           int32_t
+//  uint8_t                uint4b_format          int32_t
+//  bfloat                 int4b_format           bfloat
+//  bfloat                 uint4b_format          bfloat
+//  bfloat                 int4b_format           float
+//  bfloat                 uint4b_format          float
+//  int8_t                 int2b_format           int32_t
+//  uint8_t                uint2b_format          int32_t
+//  half                   int2b_format           half
+//  half                   int2b_format           float
+//  half                   uint2b_format          half
+//  half                   uint2b_format          float
+//  bfloat                 int2b_format           bfloat
+//  bfloat                 uint2b_format          bfloat
+//  bfloat                 int2b_format           float
+//  bfloat                 uint2b_format          float
+//  half                   metal_fp4_e2m1_format  half
+//  half                   metal_fp4_e2m1_format  float
+//  half                   metal_fp8_e4m3_format  half
+//  half                   metal_fp8_e4m3_format  float
+//  half                   metal_fp8_e5m2_format  half
+//  half                   metal_fp8_e5m2_format  float
+//  metal_fp4_e2m1_format  metal_fp4_e2m1_format  half
+//  metal_fp4_e2m1_format  metal_fp4_e2m1_format  float
+//  metal_fp8_e4m3_format  metal_fp8_e4m3_format  half
+//  metal_fp8_e4m3_format  metal_fp8_e4m3_format  float
+//  metal_fp8_e5m2_format  metal_fp8_e5m2_format  half
+//  metal_fp8_e5m2_format  metal_fp8_e5m2_format  float
 //
 // Basic usage is in the following example which takes M x K matrix A of type
 // half, K x N matrix B of type half, both in device memory and produces M x N
@@ -249,7 +271,7 @@
 //    // be valid. Use the valid element check shown below to guard
 //    // access to elements of cooperative_tensor
 //
-//    auto cT = matmulOp.get_destination_cooperative_tensor<decltype(mA), decltype(mB), float>();
+//    auto cT = matmulOp.get_destination_cooperative_tensor<__remove_addrspace_t<decltype(mA)>, __remove_addrspace_t<decltype(mB)>, float>();
 //
 //    // Loop over all the elements of cooperative_tensor thread elements owned
 //    // by "this" thread and initialize to zero.
@@ -268,7 +290,7 @@
 //
 //    // create cooperative bias tensor with same layout as destination
 //    // cooperative_tensor of matmul
-//    auto biasT = matmulOp.get_destination_cooperative_tensor<decltype(mA), decltype(mB), float>();
+//    auto biasT = matmulOp.get_destination_cooperative_tensor<__remove_addrspace_t<decltype(mA)>, __remove_addrspace_t<decltype(mB)>, float>();
 //
 //    // load data from bias tensor_handle into biasT cooperative_tensor using
 //    // layout and distribution of element among threads of scope on which matmul was created.
@@ -425,9 +447,9 @@ public:
   template <typename LeftElementType, typename RightElementType,
             typename ElementType, typename CoordType = int,
             typename U = __tensor_ops_detail::__enable_if_t<
-                __tensor_ops_detail::__is_thread_addrspace_v<LeftElementType> &&
-                __tensor_ops_detail::__is_thread_addrspace_v<RightElementType> &&
-                __tensor_ops_detail::__is_thread_addrspace_v<ElementType> &&
+                __tensor_ops_detail::__is_unqualified_v<LeftElementType> &&
+                __tensor_ops_detail::__is_unqualified_v<RightElementType> &&
+                __tensor_ops_detail::__is_unqualified_v<ElementType> &&
                 __tensor_ops_detail::__is_integral_v<CoordType>>,
             typename... CoopArgs>
   INLINE cooperative_tensor_left_input_t<LeftElementType, RightElementType, ElementType, CoordType, CoopArgs...>
@@ -441,10 +463,10 @@ public:
             typename ElementType, typename CoordType = int,
             typename SrcElemType, typename SrcExtents, typename SrcLayout,
             typename U = __tensor_ops_detail::__enable_if_t<
-                __tensor_ops_detail::__is_thread_addrspace_v<LeftElementType> &&
-                __tensor_ops_detail::__is_thread_addrspace_v<RightElementType> &&
-                __tensor_ops_detail::__is_thread_addrspace_v<ElementType> &&
-                __tensor_ops_detail::__is_thread_addrspace_v<SrcElemType> &&
+                __tensor_ops_detail::__is_unqualified_v<LeftElementType> &&
+                __tensor_ops_detail::__is_unqualified_v<RightElementType> &&
+                __tensor_ops_detail::__is_unqualified_v<ElementType> &&
+                __tensor_ops_detail::__is_unqualified_v<SrcElemType> &&
                 __tensor_ops_detail::__is_integral_v<CoordType>>,
             typename... CoopArgs>
   INLINE cooperative_tensor_left_input_t<LeftElementType, RightElementType, ElementType, CoordType, CoopArgs...>
@@ -458,10 +480,10 @@ public:
   template <typename LeftElementType, typename RightElementType, typename ElementType,
             typename SrcElemType, typename SrcExtents, typename SrcLayout,
             typename U = __tensor_ops_detail::__enable_if_t<
-                __tensor_ops_detail::__is_thread_addrspace_v<LeftElementType> &&
-                __tensor_ops_detail::__is_thread_addrspace_v<RightElementType> &&
-                __tensor_ops_detail::__is_thread_addrspace_v<ElementType> &&
-                __tensor_ops_detail::__is_thread_addrspace_v<SrcElemType>>>
+                __tensor_ops_detail::__is_unqualified_v<LeftElementType> &&
+                __tensor_ops_detail::__is_unqualified_v<RightElementType> &&
+                __tensor_ops_detail::__is_unqualified_v<ElementType> &&
+                __tensor_ops_detail::__is_unqualified_v<SrcElemType>>>
   INLINE bool
   is_compatible_as_left_input(const thread metal::cooperative_tensor<SrcElemType, SrcExtents, SrcLayout> & src) thread const
   {
@@ -478,9 +500,9 @@ public:
   template <typename LeftElementType, typename RightElementType,
             typename ElementType, typename CoordType = int,
             typename U = __tensor_ops_detail::__enable_if_t<
-                __tensor_ops_detail::__is_thread_addrspace_v<LeftElementType> &&
-                __tensor_ops_detail::__is_thread_addrspace_v<RightElementType> &&
-                __tensor_ops_detail::__is_thread_addrspace_v<ElementType> &&
+                __tensor_ops_detail::__is_unqualified_v<LeftElementType> &&
+                __tensor_ops_detail::__is_unqualified_v<RightElementType> &&
+                __tensor_ops_detail::__is_unqualified_v<ElementType> &&
                 __tensor_ops_detail::__is_integral_v<CoordType>>,
             typename... CoopArgs>
   INLINE cooperative_tensor_right_input_t<LeftElementType, RightElementType, ElementType, CoordType, CoopArgs...>
@@ -494,10 +516,10 @@ public:
             typename ElementType, typename CoordType = int,
             typename SrcElemType, typename SrcExtents, typename SrcLayout,
             typename U = __tensor_ops_detail::__enable_if_t<
-                __tensor_ops_detail::__is_thread_addrspace_v<LeftElementType> &&
-                __tensor_ops_detail::__is_thread_addrspace_v<RightElementType> &&
-                __tensor_ops_detail::__is_thread_addrspace_v<ElementType> &&
-                __tensor_ops_detail::__is_thread_addrspace_v<SrcElemType> &&
+                __tensor_ops_detail::__is_unqualified_v<LeftElementType> &&
+                __tensor_ops_detail::__is_unqualified_v<RightElementType> &&
+                __tensor_ops_detail::__is_unqualified_v<ElementType> &&
+                __tensor_ops_detail::__is_unqualified_v<SrcElemType> &&
                 __tensor_ops_detail::__is_integral_v<CoordType>>,
             typename... CoopArgs>
   INLINE cooperative_tensor_right_input_t<LeftElementType, RightElementType, ElementType, CoordType, CoopArgs...>
@@ -511,10 +533,10 @@ public:
   template <typename LeftElementType, typename RightElementType, typename ElementType,
             typename SrcElemType, typename SrcExtents, typename SrcLayout,
             typename U = __tensor_ops_detail::__enable_if_t<
-                __tensor_ops_detail::__is_thread_addrspace_v<LeftElementType> &&
-                __tensor_ops_detail::__is_thread_addrspace_v<RightElementType> &&
-                __tensor_ops_detail::__is_thread_addrspace_v<ElementType> &&
-                __tensor_ops_detail::__is_thread_addrspace_v<SrcElemType>>>
+                __tensor_ops_detail::__is_unqualified_v<LeftElementType> &&
+                __tensor_ops_detail::__is_unqualified_v<RightElementType> &&
+                __tensor_ops_detail::__is_unqualified_v<ElementType> &&
+                __tensor_ops_detail::__is_unqualified_v<SrcElemType>>>
   INLINE bool
   is_compatible_as_right_input(const thread metal::cooperative_tensor<SrcElemType, SrcExtents, SrcLayout> & src) thread const
   {
@@ -533,7 +555,7 @@ public:
             typename U = __tensor_ops_detail::__enable_if_t<
                 (__tensor_ops_detail::__is_tensor_type_v<LeftOperandType> || __tensor_ops_detail::__is_cooperative_tensor_type_v<LeftOperandType>) &&
                 (__tensor_ops_detail::__is_tensor_type_v<RightOperandType> || __tensor_ops_detail::__is_cooperative_tensor_type_v<RightOperandType>) &&
-                __tensor_ops_detail::__is_thread_addrspace_v<ElementType> &&
+                __tensor_ops_detail::__is_unqualified_v<ElementType> &&
                 __tensor_ops_detail::__is_integral_v<CoordType>>,
             typename... CoopArgs>
   INLINE cooperative_tensor_destination_t<LeftOperandType, RightOperandType, ElementType, CoordType, CoopArgs...>

@@ -29,8 +29,10 @@ NS_ASSUME_NONNULL_BEGIN
 @class VNFaceLandmarks2D;
 @class VNPixelBufferObservation;
 @class VNImageRequestHandler;
+#if !TARGET_OS_WATCH
 @class VNRecognizedPoint3D;
 @class VNHumanBodyRecognizedPoint3D;
+#endif
 
 
 /*!
@@ -357,6 +359,7 @@ API_AVAILABLE(macos(10.13), ios(11.0), tvos(11.0))
 
 @end
 
+#if !TARGET_OS_WATCH
 /*!
  @class VNRecognizedText
  @brief VNRecognizedText A block of recognized text. There can be multiple VNRecognizedText objects returned in a VNRecognizedTextObservation - one for each candidate.
@@ -400,6 +403,7 @@ API_AVAILABLE(macos(10.15), ios(13.0), tvos(13.0))
 
 
 @end
+#endif // !TARGET_OS_WATCH
 
 
 /*!
@@ -654,6 +658,7 @@ API_AVAILABLE(macos(11.0), ios(14.0), tvos(14.0))
 @end
 
 
+#if !TARGET_OS_WATCH
 #pragma mark ---- VNRecognizedPointsObservation ----
 
 
@@ -718,6 +723,7 @@ API_AVAILABLE(macos(11.0), ios(14.0), tvos(14.0))
 - (nullable MLMultiArray*) keypointsMultiArrayAndReturnError:(NSError**)error;
 
 @end
+#endif // !TARGET_OS_WATCH
 
 
 /*!
@@ -734,7 +740,6 @@ API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0))
 @property(readonly, nonatomic) BOOL upperBodyOnly API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0));
 
 @end
-
 
 #pragma mark ---- VNInstanceMaskObservation ----
 
@@ -785,7 +790,7 @@ API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0))
 
 @end
 
-
+#if !TARGET_OS_WATCH
 API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0))
 @interface VNAnimalBodyPoseObservation : VNRecognizedPointsObservation
 
@@ -962,6 +967,7 @@ API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0))
                              error:(NSError**)error;
 
 @end
+#endif // !TARGET_OS_WATCH
 
 #pragma mark ---- VNImageAestheticsScoresObservation ----
 

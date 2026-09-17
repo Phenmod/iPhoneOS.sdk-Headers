@@ -15,6 +15,6 @@ typedef NS_ENUM(NSInteger, INTaskPriority) {
     INTaskPriorityUnknown = 0,
     INTaskPriorityNotFlagged,
     INTaskPriorityFlagged,
-} API_AVAILABLE(ios(13.0), watchos(6.0)) API_UNAVAILABLE(macos, tvos);
+} API_DEPRECATED("INTaskPriority is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.", ios(13.0, 27.0), watchos(6.0, 27.0)) API_UNAVAILABLE(macos, tvos);
 
 #endif // INTaskPriority_h

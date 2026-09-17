@@ -16,11 +16,11 @@ typedef NS_ENUM(NSInteger, INSnoozeTasksIntentResponseCode) {
     INSnoozeTasksIntentResponseCodeSuccess,
     INSnoozeTasksIntentResponseCodeFailure,
     INSnoozeTasksIntentResponseCodeFailureRequiringAppLaunch,
-} API_AVAILABLE(ios(13.0), watchos(6.0)) API_UNAVAILABLE(macos, tvos);
+} API_DEPRECATED("INSnoozeTasksIntentResponseCode is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.", ios(13.0, 27.0), watchos(6.0, 27.0)) API_UNAVAILABLE(macos, tvos);
 
 NS_ASSUME_NONNULL_BEGIN
 
-API_AVAILABLE(ios(13.0), watchos(6.0))
+API_DEPRECATED("INSnoozeTasksIntentResponse is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.", ios(13.0, 27.0), watchos(6.0, 27.0))
 API_UNAVAILABLE(macos, tvos)
 @interface INSnoozeTasksIntentResponse : INIntentResponse
 

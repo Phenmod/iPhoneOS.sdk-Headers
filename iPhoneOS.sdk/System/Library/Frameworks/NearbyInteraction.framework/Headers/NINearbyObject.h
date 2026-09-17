@@ -43,6 +43,21 @@ typedef NS_ENUM(NSInteger, NINearbyObjectVerticalDirectionEstimate) {
 } NS_SWIFT_NAME(NINearbyObject.VerticalDirectionEstimate);
 
 /**
+ An enumeration of the possible motion activity states.
+ */
+API_AVAILABLE(ios(15.0)) API_UNAVAILABLE(watchos, tvos, macos)
+typedef NS_ENUM(NSInteger, NIMotionActivityState) {
+    /** Motion activity state is unknown */
+    NIMotionActivityStateUnknown      = 0,
+
+    /** Motion activity state is stationary */
+    NIMotionActivityStateStationary   = 1,
+
+    /** Motion activity state is moving */
+    NIMotionActivityStateMoving       = 2
+};
+
+/**
  A nearby object with distance and direction measurements.
 */
 API_AVAILABLE(ios(14.0), watchos(7.3)) API_UNAVAILABLE(macos, tvos)

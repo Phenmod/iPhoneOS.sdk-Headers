@@ -3,7 +3,7 @@
 
 	Framework:  CoreMedia
  
-	Copyright © 2005-2025 Apple Inc. All rights reserved.
+	Copyright © 2005-2026 Apple Inc. All rights reserved.
 
 */
 
@@ -27,6 +27,9 @@
 #include <CoreGraphics/CGBase.h>
 #include <CoreGraphics/CGGeometry.h>
 #include <CoreVideo/CoreVideo.h>
+#if TARGET_OS_WINDOWS
+#include <AudioToolbox/AudioFormat.h>
+#endif // TARGET_OS_WINDOWS
 
 #ifdef __cplusplus
 extern "C" {
@@ -329,6 +332,7 @@ enum
 	SYnonym type used for manipulating audio CMFormatDescriptions
 */
 typedef CMFormatDescriptionRef CMAudioFormatDescriptionRef API_AVAILABLE(macos(10.7), ios(4.0), tvos(9.0), watchos(6.0), visionos(1.0)) CM_SWIFT_SENDABLE;
+
 
 CF_IMPLICIT_BRIDGING_DISABLED
 
@@ -924,14 +928,20 @@ CM_EXPORT const CFStringRef kCMFormatDescriptionExtension_HorizontalFieldOfView	
 	@discussion
 		The value is a CFString holding fully specified reverse DNS identifier.
 		Content captured in Apple Log will have this key set to kCMFormatDescriptionLogTransferFunction_AppleLog.
-	@constant    kCMFormatDescriptionLogTransferFunction_AppleLog
-		Indicates the Apple Log identifier.
-	@discussion
-		You can download the Apple Log Profile White Paper from the Apple Developer Downloads website.
 */
 CM_EXPORT const CFStringRef kCMFormatDescriptionExtension_LogTransferFunction API_AVAILABLE(macos(14.2), ios(17.2), tvos(17.2), watchos(10.2), visionos(1.1));
+
+/// Log Transfer Function identifier for Apple Log.
+///
+/// You can download the Apple Log Profile and Apple Log 2 Profile White Papers from the Apple Developer Downloads website.
 CM_EXPORT const CFStringRef kCMFormatDescriptionLogTransferFunction_AppleLog					// same as kCVImageBufferLogTransferFunction_AppleLog
 							API_AVAILABLE(macos(14.2), ios(17.2), tvos(17.2), watchos(10.2), visionos(1.1));
+
+/// Log Transfer Function identifier for Apple Log 2.
+///
+/// You can download the Apple Log Profile and Apple Log 2 Profile White Papers from the Apple Developer Downloads website.
+CM_EXPORT const CFStringRef kCMFormatDescriptionLogTransferFunction_AppleLog2					// same as kCVImageBufferLogTransferFunction_AppleLog2
+							API_AVAILABLE(macos(27), ios(27), tvos(27), watchos(27), visionos(27));
 
 /*!
 	@constant    kCMFormatDescriptionExtension_HeroEye
@@ -1039,50 +1049,90 @@ CM_EXPORT const CFStringRef kCMFormatDescriptionExtension_ViewPackingKind API_AV
 	@discussion
 		The property value is an array of dictionaries describing the camera calibration data for each lens. The camera calibration data includes intrinsics and extrinics with other parameters.
 		For a stereoscopic camera system, the left and right lens signaling can be done with the kCMFormatDescriptionCameraCalibration_LensRole key and its value.
+		The following keys are required in each kCMFormatDescriptionExtension_CameraCalibrationDataLensCollection dictionary.
+			kCMFormatDescriptionCameraCalibration_LensAlgorithmKind
+			kCMFormatDescriptionCameraCalibration_LensDomain
+			kCMFormatDescriptionCameraCalibration_LensIdentifier
+			kCMFormatDescriptionCameraCalibration_LensRole
+			kCMFormatDescriptionCameraCalibration_LensDistortions
+			kCMFormatDescriptionCameraCalibration_LensFrameAdjustmentsPolynomialX
+			kCMFormatDescriptionCameraCalibration_LensFrameAdjustmentsPolynomialY
+			kCMFormatDescriptionCameraCalibration_RadialAngleLimit
+			kCMFormatDescriptionCameraCalibration_IntrinsicMatrix
+			kCMFormatDescriptionCameraCalibration_IntrinsicMatrixProjectionOffset
+			kCMFormatDescriptionCameraCalibration_IntrinsicMatrixReferenceDimensions
+			kCMFormatDescriptionCameraCalibration_ExtrinsicOriginSource
 */
 CM_EXPORT const CFStringRef kCMFormatDescriptionExtension_CameraCalibrationDataLensCollection API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFArray of CFDictionaries
 
 /*!
-	The following keys are required in each kCMFormatDescriptionExtension_CameraCalibrationDataLensCollection dictionary.
-
 	@constant kCMFormatDescriptionCameraCalibration_LensAlgorithmKind
 	@abstract	Specifies the camera calibration methodology.
 	@discussion
 		If the algorithm kind is ParametricLens, the camera lens collection requires camera intrinsic and extrinsic parameters.
+*/
+CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_LensAlgorithmKind API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFString one of
+	CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibrationLensAlgorithmKind_ParametricLens API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
 
+/*!
 	@constant kCMFormatDescriptionCameraCalibration_LensDomain
 	@abstract	Specifies the kind of lens (e.g., color).
+*/
+CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_LensDomain API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFString one of
+	CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibrationLensDomain_Color API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
 
+/*!
 	@constant kCMFormatDescriptionCameraCalibration_LensIdentifier
 	@abstract	Specifies a unique number associated with a lens.
+*/
+CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_LensIdentifier API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFNumber(int32)
 
+/*!
 	@constant kCMFormatDescriptionCameraCalibration_LensRole
 	@abstract	Specifies the particular use of the lens in the camera system (e.g., left or right for a stereo system).
 	@discussion
 		For a stereoscopic camera system, one lens should have the left role and another should have the right role.
- 
+*/
+CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_LensRole API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFString one of
+	CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibrationLensRole_Mono API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
+	CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibrationLensRole_Left API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
+	CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibrationLensRole_Right API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
+
+/*!
 	@constant kCMFormatDescriptionCameraCalibration_LensDistortions
 	@abstract	Specifies the first and second radial distortion coefficients(k1 and k2) used to correct the distortion that appeared as curved lines for straight lines and the first and second tangential distortion coefficients(p1 and p2) used to correct the distortion caused by a lens's improper alignment of physical elements.
 	@discussion
 		The values are in a CFArray of four CFNumbers in k1, k2, p1 and p2 order.
+*/
+CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_LensDistortions API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFArray[CFNumber(float)], k1, k2, p1 & p2 order
 
-    @constant kCMFormatDescriptionCameraCalibration_LensFrameAdjustmentsPolynomialX
-    @abstract    Specifies a three element polynomial for mapping x axis UV parameters with an adjustment using the equation `x' = polynomialX[0] + polynomialX[1]*x + polynomialX[2]*x^3`.
-    @discussion
+/*!
+	@constant kCMFormatDescriptionCameraCalibration_LensFrameAdjustmentsPolynomialX
+	@abstract    Specifies a three element polynomial for mapping x axis UV parameters with an adjustment using the equation `x' = polynomialX[0] + polynomialX[1]*x + polynomialX[2]*x^3`.
+	@discussion
 		The values are in a CFArray of three CFNumbers(float) in the order polynomialX[0], polynomialX[1] & polynomialX[2].
 		The polynomial transform origin is at the center of the frame. The default values of elements of polynomialX[] are [0.0, 1.0, 0.0].
+*/
+CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_LensFrameAdjustmentsPolynomialX API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFArray[CFNumber(float)], polynomialX[0], polynomialX[1] & polynomialX[2] order
 
-    @constant kCMFormatDescriptionCameraCalibration_LensFrameAdjustmentsPolynomialY
-    @abstract    Specifies a three element polynomial for mapping y axis UV parameters with an adjustment using the equation `y' = polynomialY[0] + polynomialY[1]*y + polynomialY[2]*y^3`.
-    @discussion
+/*!
+	@constant kCMFormatDescriptionCameraCalibration_LensFrameAdjustmentsPolynomialY
+	@abstract    Specifies a three element polynomial for mapping y axis UV parameters with an adjustment using the equation `y' = polynomialY[0] + polynomialY[1]*y + polynomialY[2]*y^3`.
+	@discussion
 		The values are in a CFArray of three CFNumbers(float) in the order polynomialY[0], polynomialY[1] & polynomialY[2].
 		The polynomial transform origin is at the center of the frame. The default values of elements of polynomialY[] are [0.0, 1.0, 0.0].
+*/
+CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_LensFrameAdjustmentsPolynomialY API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFArray[CFNumber(float)], polynomialY[0], polynomialY[1] & polynomialY[2] order
 
+/*!
 	@constant kCMFormatDescriptionCameraCalibration_RadialAngleLimit
 	@abstract	Specifies the outer limit of the calibration validity in degrees of angle eccentric from the optical axis.
 	@discussion
 		The value is linked to radial distortion corrections with k1 and k2.
+*/
+CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_RadialAngleLimit API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFNumber(float)
 
+/*!
 	@constant kCMFormatDescriptionCameraCalibration_IntrinsicMatrix
 	@abstract	Specifies the 3x3 camera intrinsic matrix for camera calibration.
 	@discussion
@@ -1093,44 +1143,39 @@ CM_EXPORT const CFStringRef kCMFormatDescriptionExtension_CameraCalibrationDataL
 			fx and fy are the focal length in pixels. For square pixels, they will have the same value.
 			cx and cy are the coordinates of the principal point. The origin is the upper left of the frame.
 			s is an optional skew factor.
+*/
+CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_IntrinsicMatrix API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFData(matrix_float3x3)
 
+/*!
 	@constant kCMFormatDescriptionCameraCalibration_IntrinsicMatrixProjectionOffset
 	@abstract	Specifies the offset of the point of perspective relative to the rectilinear projection.
+*/
+CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_IntrinsicMatrixProjectionOffset API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFNumber(float)
 
+/*!
 	@constant kCMFormatDescriptionCameraCalibration_IntrinsicMatrixReferenceDimensions
 	@abstract	Specifies the image dimensions to which the camera’s intrinsic matrix values are relative.
 	@discussion
 		Values are width and height in a CFDictionary. Dictionary keys are compatible with CGSize dictionary, namely "Width" and "Height".
+*/
+CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_IntrinsicMatrixReferenceDimensions API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CGSize dictionary
 
+/*!
 	@constant kCMFormatDescriptionCameraCalibration_ExtrinsicOriginSource
 	@abstract	Identifies how the origin of the camera system's extrinsics are determined.
 	@discussion
 		The 'blin' value indicates the center of transform is determined by the point mid way along the dimensions indicated by the StereoCameraSystemBaselineBox held in the StereoCameraSystemBox.
 		Each left and right lens within a stereoscopic camera system is equidistant from this point, so the 'blin' value is halved when associated with the respective left and right lenses.
+*/
+CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_ExtrinsicOriginSource API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFString one of
+	CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibrationExtrinsicOriginSource_StereoCameraSystemBaseline API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
 
+/*!
 	@constant kCMFormatDescriptionCameraCalibration_ExtrinsicOrientationQuaternion
-		@abstract	Specifies a camera’s orientation to a world or scene coordinate system. The orientation value is a unit quaternion(ix, iy, and iz) instead of the classical 3x3 matrix.
+	@abstract	Specifies a camera’s orientation to a world or scene coordinate system. The orientation value is a unit quaternion(ix, iy, and iz) instead of the classical 3x3 matrix.
 	@discussion
 		The values are in a CFArray of three CFNumbers in ix, iy, and iz order.
  */
-CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_LensAlgorithmKind API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFString one of
-CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibrationLensAlgorithmKind_ParametricLens API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
-CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_LensDomain API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFString one of
-CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibrationLensDomain_Color API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
-CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_LensIdentifier API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFNumber(int32)
-CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_LensRole API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFString one of
-CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibrationLensRole_Mono API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
-CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibrationLensRole_Left API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
-CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibrationLensRole_Right API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
-CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_LensDistortions API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFArray[CFNumber(float)], k1, k2, p1 & p2 order
-CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_LensFrameAdjustmentsPolynomialX API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFArray[CFNumber(float)], polynomialX[0], polynomialX[1] & polynomialX[2] order
-CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_LensFrameAdjustmentsPolynomialY API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFArray[CFNumber(float)], polynomialY[0], polynomialY[1] & polynomialY[2] order
-CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_RadialAngleLimit API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFNumber(float)
-CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_IntrinsicMatrix API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFData(matrix_float3x3)
-CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_IntrinsicMatrixProjectionOffset API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFNumber(float)
-CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_IntrinsicMatrixReferenceDimensions API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CGSize dictionary
-CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_ExtrinsicOriginSource API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFString one of
-CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibrationExtrinsicOriginSource_StereoCameraSystemBaseline API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
 CM_EXPORT const CFStringRef kCMFormatDescriptionCameraCalibration_ExtrinsicOrientationQuaternion API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));	// CFArray[CFNumber(float)], ix, iy & iz order
 
 /*!
@@ -1336,6 +1381,7 @@ CGRect CMVideoFormatDescriptionGetCleanAperture(
 																	and y coordinates increase as you go up. */
 							API_AVAILABLE(macos(10.7), ios(4.0), tvos(9.0), watchos(6.0), visionos(1.0));
 
+
 /*!
 	@function	CMVideoFormatDescriptionGetExtensionKeysCommonWithImageBuffers
 	@abstract	Returns an array of the keys that are used both as CMVideoFormatDescription extensions
@@ -1385,12 +1431,12 @@ Boolean CMVideoFormatDescriptionMatchesImageBuffer(
 	@function    CMVideoFormatDescriptionCopyTagCollectionArray
 	@abstract    Copies the multi-image encoding properties as an array of CMTagCollections.
 	@param formatDescription    CMVideoFormatDescription being interrogated.
-	@param tagCollectionsOut    Returned TagCollections with CMTags such as kCMTagCategory_VideoLayerID and kCMTagCategory_StereoViewType.
+	@param tagCollectionsOut     A pointer to receive the CMTagCollection array with CMTags such as kCMTagCategory_VideoLayerID and kCMTagCategory_StereoViewType. The value will be NULL if the CMVideoFormatDescription does not contain proper multi-layer encoding parameters.
 	@discussion	On return, the caller owns the returned CFArrayRef and must release it when done with it.
 				This function copies the VideoLayerIDs and LeftAndRightViewIDs from hvcC and 3D Reference Displays Info SEI in the formatDescription.
 				The returned values can be used to enable the multi-image decoding with kVTDecompressionPropertyKey_RequestedMVHEVCVideoLayerIDs.
 				It also gives the eye mapping information for the pixel buffers of the decoded CMTaggedBufferGroups.
-	@result      Array of CMTagCollections. The result will be NULL if the CMVideoFormatDescription does not contain multi-image encoding parameters, or if there is some other error.
+ 	@result	OSStatus with an error or noErr if successful.
 */
 CM_EXPORT OSStatus CMVideoFormatDescriptionCopyTagCollectionArray(
 	CMVideoFormatDescriptionRef CM_NONNULL formatDescription,
@@ -1966,6 +2012,8 @@ CM_EXPORT const CFStringRef kCMFormatDescriptionExtensionKey_MetadataKeyTable
 							API_AVAILABLE(macos(10.11), ios(9.0), tvos(9.0), watchos(6.0), visionos(1.0));
 	CM_EXPORT const CFStringRef kCMMetadataFormatDescriptionKey_SetupData	// CFData
 							API_AVAILABLE(macos(10.11), ios(9.0), tvos(9.0), watchos(6.0), visionos(1.0));
+	CM_EXPORT const CFStringRef kCMMetadataFormatDescriptionKey_HumanReadableString 	// CFString
+							API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), watchos(27.0), visionos(27.0));
 
 CM_EXPORT const CFStringRef kCMMetadataFormatDescription_StructuralDependencyKey_DependencyIsInvalidFlag	// CFBoolean
 							API_AVAILABLE(macos(10.11), ios(9.0), tvos(9.0), watchos(6.0), visionos(1.0));
@@ -1980,6 +2028,8 @@ CM_EXPORT const CFStringRef kCMMetadataFormatDescriptionMetadataSpecificationKey
 							API_AVAILABLE(macos(10.11), ios(9.0), tvos(9.0), watchos(6.0), visionos(1.0));
 CM_EXPORT const CFStringRef kCMMetadataFormatDescriptionMetadataSpecificationKey_SetupData				// CFData
 							API_AVAILABLE(macos(10.11), ios(9.0), tvos(9.0), watchos(6.0), visionos(1.0));
+CM_EXPORT const CFStringRef kCMMetadataFormatDescriptionMetadataSpecificationKey_HumanReadableString		// CFStringRef
+							API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), watchos(27.0), visionos(27.0));
 
 CM_ASSUME_NONNULL_END
 CF_IMPLICIT_BRIDGING_DISABLED

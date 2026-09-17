@@ -534,7 +534,7 @@ HM_EXTERN NSString * const HMCharacteristicTypePowerState API_AVAILABLE(ios(8.0)
 HM_EXTERN NSString * const HMCharacteristicTypeRotationDirection API_AVAILABLE(ios(8.0), watchos(2.0), tvos(10.0), macCatalyst(14.0)) API_UNAVAILABLE(macos);
 
 /*!
- * @brief Characteristic type for rotation speed. The value of the characteristic is a float.
+ * @brief Characteristic type for rotation speed. The value of the characteristic is a float value in percent.
  */
 HM_EXTERN NSString * const HMCharacteristicTypeRotationSpeed API_AVAILABLE(ios(8.0), watchos(2.0), tvos(10.0), macCatalyst(14.0)) API_UNAVAILABLE(macos);
 

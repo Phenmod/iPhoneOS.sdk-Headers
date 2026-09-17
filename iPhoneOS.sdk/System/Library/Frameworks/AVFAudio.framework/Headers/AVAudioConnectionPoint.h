@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 	
 		Instances of this class are immutable.
 */
-API_AVAILABLE(macos(10.11), ios(9.0), watchos(2.0), tvos(9.0))
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.11), ios(9.0), watchos(2.0), tvos(9.0))
 @interface AVAudioConnectionPoint : NSObject {
 @private
 	AVAudioNode *_node;

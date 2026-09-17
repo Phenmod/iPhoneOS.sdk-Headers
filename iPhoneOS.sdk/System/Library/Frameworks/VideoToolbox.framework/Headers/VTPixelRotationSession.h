@@ -23,6 +23,7 @@ extern "C"
     
 #pragma pack(push, 4)
 
+
 /*!
 	@typedef	VTPixelRotationSessionRef
 	@abstract	A reference to a Video Toolbox Pixel Rotation Session.
@@ -99,6 +100,7 @@ VTPixelRotationSessionRotateImage(
 	CM_NONNULL CVPixelBufferRef                destinationBuffer) API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0), visionos(1.0)) API_UNAVAILABLE(watchos);
 
 // See VTSession.h for property access APIs on VTPixelRotationSession.
+
 
 #pragma pack(pop)
 

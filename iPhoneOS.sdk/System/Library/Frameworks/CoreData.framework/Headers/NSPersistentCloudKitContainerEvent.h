@@ -26,6 +26,7 @@ COREDATA_EXTERN NSString * const NSPersistentCloudKitContainerEventUserInfoKey A
 
 API_AVAILABLE(macosx(11.0),ios(14.0),tvos(14.0),watchos(7.0))
 NS_SWIFT_NAME(NSPersistentCloudKitContainer.Event)
+NS_SWIFT_SENDABLE
 @interface NSPersistentCloudKitContainerEvent : NSObject<NSCopying>
 @property(nonatomic, strong, readonly) NSUUID *identifier;
 @property(nonatomic, strong, readonly) NSString *storeIdentifier;

@@ -2,50 +2,53 @@
 //  CSSearchQuery.h
 //  CoreSpotlight
 //
-//  Copyright © 2015–2022 Apple Inc. All rights reserved.
+//  Copyright © 2015–2026 Apple Inc. All rights reserved.
 //
 
-#import <CoreSpotlight/CSBase.h>
+#import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-CORESPOTLIGHT_EXPORT NSErrorDomain const CSSearchQueryErrorDomain API_AVAILABLE(macos(10.13), ios(10.0)) CS_TVOS_UNAVAILABLE;
+extern NSErrorDomain const CSSearchQueryErrorDomain API_AVAILABLE(macos(10.12), ios(10.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
 
 typedef NS_ENUM(NSInteger, CSSearchQueryErrorCode) {
-    CSSearchQueryErrorCodeUnknown = -2000,
-    CSSearchQueryErrorCodeIndexUnreachable = -2001,
-    CSSearchQueryErrorCodeInvalidQuery = -2002,
-    CSSearchQueryErrorCodeCancelled = -2003,
-} API_AVAILABLE(macos(10.13), ios(10.0)) CS_TVOS_UNAVAILABLE;
+    CSSearchQueryErrorCodeUnknown           = -2000,
+    CSSearchQueryErrorCodeIndexUnreachable  = -2001,
+    CSSearchQueryErrorCodeInvalidQuery      = -2002,
+    CSSearchQueryErrorCodeCancelled         = -2003,
+} API_AVAILABLE(macos(10.12), ios(10.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
 
 typedef NS_OPTIONS(NSUInteger, CSSearchQuerySourceOptions) {
-    CSSearchQuerySourceOptionDefault = 0,
-    CSSearchQuerySourceOptionAllowMail = 1 << 0,  // com.apple.corespotlight.search.allow.mail entitlement
-} NS_SWIFT_NAME(CSSearchQueryContext.SourceOptions) API_AVAILABLE(macos(13));
+    CSSearchQuerySourceOptionDefault    = 0,
+    CSSearchQuerySourceOptionAllowMail  = 1 << 0,  // com.apple.corespotlight.search.allow.mail entitlement
+} NS_SWIFT_NAME(CSSearchQueryContext.SourceOptions) API_AVAILABLE(macos(13.0)) API_UNAVAILABLE(ios, tvos, watchos, visionos);
 
 @class CSSearchableItem;
 
-API_AVAILABLE(macos(10.13), ios(10.0)) CS_TVOS_UNAVAILABLE
+API_AVAILABLE(macos(13.0), ios(16.0), visionos(1.0))
+API_UNAVAILABLE(tvos, watchos)
 @interface CSSearchQueryContext : NSObject<NSSecureCoding, NSCopying>
 
 @property (nonatomic, strong) NSArray<NSString *> *fetchAttributes;
 @property (nonatomic, copy) NSArray<NSString *> *filterQueries;
 @property (nullable, nonatomic, strong) NSString *keyboardLanguage;
 
-@property (nonatomic, assign) CSSearchQuerySourceOptions sourceOptions API_AVAILABLE(macos(13));
+@property (nonatomic, assign) CSSearchQuerySourceOptions sourceOptions API_UNAVAILABLE(ios, tvos, watchos, visionos);
+
 @end
 
-API_AVAILABLE(macos(10.13), ios(10.0)) CS_TVOS_UNAVAILABLE
+API_AVAILABLE(macos(10.12), ios(10.0), visionos(1.0))
+API_UNAVAILABLE(tvos, watchos)
 @interface CSSearchQuery : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
 
 // queryString: The query string (e.g., 'contentType == "public.email-message" && subject != "Re:*"')
-- (instancetype)initWithQueryString:(NSString * _Nonnull)queryString queryContext:(CSSearchQueryContext * _Nullable)queryContext NS_DESIGNATED_INITIALIZER API_AVAILABLE(macos(13.0), ios(16.0)) CS_TVOS_UNAVAILABLE;
+- (instancetype)initWithQueryString:(NSString * _Nonnull)queryString queryContext:(CSSearchQueryContext * _Nullable)queryContext NS_DESIGNATED_INITIALIZER API_AVAILABLE(macos(13.0), ios(16.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
 
 // queryString: The query string (e.g., 'contentType == "public.email-message" && subject != "Re:*"')
 // attributes: The attributes to be fetched for the searchable items
-- (instancetype)initWithQueryString:(NSString *)queryString attributes:(NSArray<NSString *> * _Nullable)attributes NS_DEPRECATED(10_13, 13_0, 10_0, 16_0, "Use initWithQueryString:queryContext instead");
+- (instancetype)initWithQueryString:(NSString *)queryString attributes:(NSArray<NSString *> * _Nullable)attributes API_DEPRECATED("Use initWithQueryString:queryContext instead", macos(10.12, 13.0), ios(10.0, 16.0), visionos(1.0, 1.0)) API_UNAVAILABLE(tvos, watchos);
 
 @property (readonly, getter=isCancelled) BOOL cancelled;
 

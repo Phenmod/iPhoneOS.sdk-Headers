@@ -9,7 +9,7 @@
 #import <Photos/PHFetchResult.h>
 #import <Photos/PhotosTypes.h>
 
-@class PHAsset, PHCollectionList, PHFetchResult, PHFetchOptions;
+@class PHCollectionList, PHFetchResult, PHFetchOptions;
 @class CLLocation;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -23,6 +23,9 @@ NS_SWIFT_SENDABLE
 @property (nonatomic, assign, readonly) BOOL canContainCollections;
 @property (nonatomic, strong, readonly, nullable) NSString *localizedTitle API_AVAILABLE(macos(10.13));
 
+/// The last date at which this collection was modified.
+@property (nonatomic, strong, readonly, nullable) NSDate *modificationDate API_AVAILABLE(macos(26), ios(26), tvos(26), visionos(26));
+
 #pragma mark - Capabilities
 
 - (BOOL)canPerformEditOperation:(PHCollectionEditOperation)anOperation;
@@ -30,105 +33,36 @@ NS_SWIFT_SENDABLE
 
 #pragma mark - Fetching collections
 
+/*!
+ Retrieves collections from the specified collection list
+ 
+ By default, the returned `PHFetchResult` object contains all collections in the specified collection list. To retrieve a more specific set of assets, provide a `PHFetchOptions` object that contains a filter predicate.
+
+ - Parameters:
+ - collectionList: The collection list from which to fetch collections
+ - options: Options that specify a filter predicate and sort order for the fetched collections, or nil to use default options
+
+ - Returns: A fetch result that contains the requested `PHCollection` objects, or an empty fetch result if no objects match the request.
+ */
 + (PHFetchResult<PHCollection *> *)fetchCollectionsInCollectionList:(PHCollectionList *)collectionList options:(nullable PHFetchOptions *)options;
+
+/*!
+ Retrieves collections from the root of the photo library’s hierarchy of user-created albums and folders
+ 
+ This is the equivalent to calling `fetchCollectionsInCollectionList:options:` with the collection list matching the type `PHCollectionListTypeFolder` and subtype `PHCollectionListSubtypeRootFolder`
+ 
+ - Parameters:
+ - options: Options that specify a filter predicate and sort order for the fetched collections, or nil to use default options
+ 
+ - Returns: A fetch result containing the matching collection lists, in the library's natural order.
+ */
 + (PHFetchResult<PHCollection *> *)fetchTopLevelUserCollectionsWithOptions:(nullable PHFetchOptions *)options;
-
-@end
-
-
-#pragma mark -
-OS_EXPORT API_AVAILABLE(macos(10.13))
-NS_SWIFT_SENDABLE
-@interface PHAssetCollection : PHCollection
-
-@property (nonatomic, assign, readonly) PHAssetCollectionType assetCollectionType;
-@property (nonatomic, assign, readonly) PHAssetCollectionSubtype assetCollectionSubtype;
-
-// These counts are just estimates; the actual count of objects returned from a fetch should be used if you care about accuracy. Returns NSNotFound if a count cannot be quickly returned.
-@property (nonatomic, assign, readonly) NSUInteger estimatedAssetCount;
-
-@property (nonatomic, strong, readonly, nullable) NSDate *startDate;
-@property (nonatomic, strong, readonly, nullable) NSDate *endDate;
-
-@property (nonatomic, strong, readonly, nullable) CLLocation *approximateLocation;
-@property (nonatomic, strong, readonly) NSArray<NSString *> *localizedLocationNames;
-
-
-#pragma mark - Fetching asset collections
-
-// Fetch asset collections of a single type matching the provided local identifiers (type is inferred from the local identifiers)
-+ (PHFetchResult<PHAssetCollection *> *)fetchAssetCollectionsWithLocalIdentifiers:(NSArray<NSString *> *)identifiers options:(nullable PHFetchOptions *)options;
-
-// Fetch asset collections of a single type and subtype provided (use PHAssetCollectionSubtypeAny to match all subtypes)
-+ (PHFetchResult<PHAssetCollection *> *)fetchAssetCollectionsWithType:(PHAssetCollectionType)type subtype:(PHAssetCollectionSubtype)subtype options:(nullable PHFetchOptions *)options;
-
-// Smart Albums are not supported, only Albums and Moments
-+ (PHFetchResult<PHAssetCollection *> *)fetchAssetCollectionsContainingAsset:(PHAsset *)asset withType:(PHAssetCollectionType)type options:(nullable PHFetchOptions *)options;
-
-// assetGroupURLs are URLs retrieved from ALAssetGroup's ALAssetsGroupPropertyURL
-+ (PHFetchResult<PHAssetCollection *> *)fetchAssetCollectionsWithALAssetGroupURLs:(NSArray<NSURL *> *)assetGroupURLs options:(nullable PHFetchOptions *)options API_DEPRECATED("Will be removed in a future release", ios(8,16), tvos(10,16), macos(10.15,13));
-
-
-#pragma mark - Fetching moment asset collections (Deprecated)
-
-
-+ (PHFetchResult<PHAssetCollection *> *)fetchMomentsInMomentList:(PHCollectionList *)momentList options:(nullable PHFetchOptions *)options API_DEPRECATED("Will be removed in a future release", ios(8, 13), tvos(10, 13)) API_UNAVAILABLE(macos);
-+ (PHFetchResult<PHAssetCollection *> *)fetchMomentsWithOptions:(nullable PHFetchOptions *)options API_DEPRECATED("Will be removed in a future release", ios(8, 13), tvos(10, 13)) API_UNAVAILABLE(macos);
-
-
-
-#pragma mark - Transient asset collections
-// These asset collections are only in-memory and are not persisted to disk
-
-+ (PHAssetCollection *)transientAssetCollectionWithAssets:(NSArray<PHAsset *> *)assets title:(nullable NSString *)title;
-+ (PHAssetCollection *)transientAssetCollectionWithAssetFetchResult:(PHFetchResult<PHAsset *> *)fetchResult title:(nullable NSString *)title;
-
-
-@end
-
-
-#pragma mark -
-OS_EXPORT API_AVAILABLE(macos(10.13))
-NS_SWIFT_SENDABLE
-@interface PHCollectionList : PHCollection
-
-@property (nonatomic, assign, readonly) PHCollectionListType collectionListType;
-@property (nonatomic, assign, readonly) PHCollectionListSubtype collectionListSubtype;
-
-@property (nonatomic, strong, readonly, nullable) NSDate *startDate;
-@property (nonatomic, strong, readonly, nullable) NSDate *endDate;
-
-@property (nonatomic, strong, readonly) NSArray<NSString *> *localizedLocationNames;
-
-
-#pragma mark - Fetching collection lists
-
-// A PHAssetCollectionTypeMoment will be contained by a PHCollectionListSubtypeMomentListCluster and a PHCollectionListSubtypeMomentListYear
-// Non-moment PHAssetCollections will only be contained by a single collection list
-+ (PHFetchResult<PHCollectionList *> *)fetchCollectionListsContainingCollection:(PHCollection *)collection options:(nullable PHFetchOptions *)options;
-
-// Fetch collection lists of a single type matching the provided local identifiers (type is inferred from the local identifiers)
-+ (PHFetchResult<PHCollectionList *> *)fetchCollectionListsWithLocalIdentifiers:(NSArray<NSString *> *)identifiers options:(nullable PHFetchOptions *)options;
-
-// Fetch asset collections of a single type and subtype provided (use PHCollectionListSubtypeAny to match all subtypes)
-+ (PHFetchResult<PHCollectionList *> *)fetchCollectionListsWithType:(PHCollectionListType)collectionListType subtype:(PHCollectionListSubtype)subtype options:(nullable PHFetchOptions *)options;
-
-
-#pragma mark - Fetching moment collection lists (Deprecated)
-
-
-+ (PHFetchResult<PHCollectionList *> *)fetchMomentListsWithSubtype:(PHCollectionListSubtype)momentListSubtype containingMoment:(PHAssetCollection *)moment options:(nullable PHFetchOptions *)options API_DEPRECATED("Will be removed in a future release", ios(8, 13), tvos(10, 13)) API_UNAVAILABLE(macos);
-+ (PHFetchResult<PHCollectionList *> *)fetchMomentListsWithSubtype:(PHCollectionListSubtype)momentListSubtype options:(nullable PHFetchOptions *)options API_DEPRECATED("Will be removed in a future release", ios(8, 13), tvos(10, 13)) API_UNAVAILABLE(macos);
-
-
-
-#pragma mark - Transient collection lists
-
-// These collection lists are only in-memory and are not persisted to disk
-+ (PHCollectionList *)transientCollectionListWithCollections:(NSArray<PHCollection *> *)collections title:(nullable NSString *)title;
-+ (PHCollectionList *)transientCollectionListWithCollectionsFetchResult:(PHFetchResult<PHCollection *> *)fetchResult title:(nullable NSString *)title;
 
 @end
 
 API_AVAILABLE_END
 NS_ASSUME_NONNULL_END
+
+// PHCollection subclasses declarations have been moved to their own header files, imported here for compatibility
+#import <Photos/PHAssetCollection.h>
+#import <Photos/PHCollectionList.h>

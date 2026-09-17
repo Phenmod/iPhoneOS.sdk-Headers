@@ -103,6 +103,8 @@ API_AVAILABLE(macos(10.8), ios(6.0), tvos(9.0), watchos(1.0), visionos(1.0))
 
 @end
 
+@protocol AVPlayerItemOutputPullDelegate;
+
 /*!
 	@class			AVPlayerItemVideoOutput
 	@abstract		A concrete subclass of AVPlayerItemOutput that vends video images as CVPixelBuffers.
@@ -156,8 +158,6 @@ API_AVAILABLE(macos(10.8), ios(6.0), tvos(9.0), watchos(1.0), visionos(1.0))
 
 		Subclasses of this type that are used from Swift must fulfill the requirements of a Sendable type.
  */
- 
-@protocol AVPlayerItemOutputPullDelegate;
 
 @class AVPlayerItemVideoOutputInternal;
 
@@ -179,7 +179,7 @@ API_AVAILABLE(macos(10.8), ios(6.0), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(w
 
 - (instancetype)initWithPixelBufferAttributes:(nullable NSDictionary<NSString *, id> * NS_SWIFT_SENDABLE)pixelBufferAttributes NS_DESIGNATED_INITIALIZER
 #if __swift__
-API_DEPRECATED("Use init(pixelBufferAttributes: CVPixelBuffer.Attributes) instead", macos(10.8, API_TO_BE_DEPRECATED), ios(6.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(watchos)
+API_DEPRECATED("Use init(pixelBufferAttributes: CVPixelBuffer.Attributes) instead", macos(10.8, 27.0), ios(6.0, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0)) API_UNAVAILABLE(watchos)
 #endif
 ;
 
@@ -227,13 +227,13 @@ API_DEPRECATED("Use init(pixelBufferAttributes: CVPixelBuffer.Attributes) instea
 		The buffer reference retrieved from copyPixelBufferForItemTime:itemTimeForDisplay: may itself be NULL. A reference to a NULL pixel buffer communicates that nothing should be displayed for the supplied item time.
 	@param			itemTime
 					A CMTime that expresses a desired item time.
-	@param			itemTimeForDisplay
+	@param			outItemTimeForDisplay
 					A CMTime pointer whose value will contain the true display deadline for the copied pixel buffer. Can be NULL.
  */
 
 - (nullable CVPixelBufferRef)copyPixelBufferForItemTime:(CMTime)itemTime itemTimeForDisplay:(nullable CMTime *)outItemTimeForDisplay CF_RETURNS_RETAINED
 #if __swift__
-API_DEPRECATED("Use pixelBufferAndDisplayTime(forItemTime:) instead", macos(10.8, API_TO_BE_DEPRECATED), ios(6.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(watchos)
+API_DEPRECATED("Use pixelBufferAndDisplayTime(forItemTime:) instead", macos(10.8, 27.0), ios(6.0, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0)) API_UNAVAILABLE(watchos)
 #endif
 ;
 

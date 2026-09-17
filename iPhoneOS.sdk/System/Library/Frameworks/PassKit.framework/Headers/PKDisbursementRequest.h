@@ -62,6 +62,10 @@ API_AVAILABLE(ios(17.0)) API_UNAVAILABLE(watchos, tvos)
 /// delegate and to have the com.apple.developer.in-app-payments-delegate entitlement.
 @property (nonatomic, assign) BOOL isDelegatedRequest API_AVAILABLE(ios(26.4), visionos(26.4)) API_UNAVAILABLE(watchos, tvos);
 
+// An array of primary account identifiers that should be excluded from the disbursement.
+// Used by merchants who are also the card issuer to prevent self-funding scenarios.
+@property (nonatomic, copy) NSArray<NSString *> *unsupportedPrimaryAccountIdentifiers API_AVAILABLE(ios(27.0), watchos(27.0), visionos(27.0));
+
 // Initialise a disbursement request with all required fields.
 - (instancetype)initWithMerchantIdentifier:(NSString *)merchantIdentifier
                               currencyCode:(NSString *)currencyCode

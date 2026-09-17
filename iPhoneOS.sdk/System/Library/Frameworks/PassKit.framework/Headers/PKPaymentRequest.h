@@ -116,6 +116,10 @@ API_AVAILABLE(macos(11.0), ios(8.0), watchos(3.0))
 // PKPaymentNetworkMasterCard ].  This property constrains payment cards that may fund the payment.
 @property (nonatomic, copy) NSArray<PKPaymentNetwork> *supportedNetworks;
 
+// An array of primary account identifiers that should be excluded from payment.
+// Used by merchants who are also the card issuer to prevent self-funding scenarios.
+@property (nonatomic, copy) NSArray<NSString *> *unsupportedPrimaryAccountIdentifiers API_AVAILABLE(macos(27.0), ios(27.0), watchos(27.0), visionos(27.0));
+
 // The payment processing capabilities of the merchant.
 @property (nonatomic, assign) PKMerchantCapability merchantCapabilities;
 

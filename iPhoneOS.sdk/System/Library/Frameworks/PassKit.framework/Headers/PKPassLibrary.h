@@ -88,11 +88,26 @@ API_AVAILABLE(ios(6.0), watchos(3.0))
 // called on an arbitrary queue - dispatch to the main queue if you're presenting UI.
 - (void)addPasses:(NSArray<PKPass *> *)passes withCompletionHandler:(nullable void(^)(PKPassLibraryAddPassesStatus status))completion API_AVAILABLE(ios(7.0), watchos(3.0));
 
+// Asks the user whether they want to add the given passes to their library. If the operation
+// completes with `PKPassLibraryShouldReviewPasses`, then present an appropriately initialized
+// `PKAddPassesViewController` so that the user may review the passes.
+- (void)addPassesWithData:(NSArray<NSData *> *)passesData completionHandler:(void (^ NS_SWIFT_SENDABLE)(PKPassLibraryAddPassesStatus))completionHandler NS_SWIFT_NAME(addPasses(data:completion:)) API_AVAILABLE(ios(27.0), visionos(27.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(watchos);
+
+// Asks the user whether they want to add the passes from the archive at the given URL to their
+// library. If the operation completes with `PKPassLibraryShouldReviewPasses`, then present an
+// appropriately initialized `PKAddPassesViewController` so that the user may review the passes.
+- (void)addPassesFromArchiveAtFileURL:(NSURL *)passesArchiveFileURL completionHandler:(void (^ NS_SWIFT_SENDABLE)(PKPassLibraryAddPassesStatus))completionHandler NS_SWIFT_NAME(addPasses(fromArchiveAt:completion:)) API_AVAILABLE(ios(27.0), visionos(27.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(watchos);
+
+// Asks the user whether they want to add the passes from the given archive to their library. If
+// the operation completes with `PKPassLibraryShouldReviewPasses`, then present an appropriately
+// initialized `PKAddPassesViewController` so that the user may review the passes.
+- (void)addPassesFromArchiveWithData:(NSData *)passesArchiveData completionHandler:(void (^ NS_SWIFT_SENDABLE)(PKPassLibraryAddPassesStatus))completionHandler NS_SWIFT_NAME(addPasses(fromArchiveData:completion:)) API_AVAILABLE(ios(27.0), visionos(27.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(watchos);
+
 // Opens the card setup flow (in Wallet on iPhone, Settings on iPad). Use this to direct a user to card setup directly from your app.
 - (void)openPaymentSetup API_AVAILABLE(ios(8.3)) __WATCHOS_PROHIBITED;
 
 // Opens the card setup flow with attribution tracking. The merchant identifier will be used to track provisioning success back to the calling application and campaign.
-- (void)openPaymentSetupWithMerchantIdentifier:(NSString *)merchantIdentifier NS_SWIFT_NAME(openPaymentSetup(merchantIdentifier:)) API_AVAILABLE(ios(26.4), visionos(26.4)) API_UNAVAILABLE(watchos);
+- (void)openPaymentSetupWithMerchantIdentifier:(NSString *)merchantIdentifier NS_SWIFT_NAME(openPaymentSetup(merchantIdentifier:)) NS_SWIFT_NAME(openPaymentSetup(merchantIdentifier:)) API_AVAILABLE(ios(26.4), visionos(26.4)) API_UNAVAILABLE(watchos);
 
 // Presents the pass for use above the current application. The pass must already be in the pass library for this to have effect.
 - (void)presentPaymentPass:(PKPaymentPass *)pass API_DEPRECATED("Use -[PKPassLibrary presentSecureElementPass:] instead", ios(10.0, API_TO_BE_DEPRECATED)) __WATCHOS_PROHIBITED;
@@ -113,8 +128,7 @@ API_AVAILABLE(ios(6.0), watchos(3.0))
 - (void)activatePaymentPass:(PKPaymentPass *)paymentPass withActivationCode:(NSString *)activationCode completion:(nullable void(^)(BOOL success, NSError *error))completion API_DEPRECATED("Use activatePaymentPass:withActivationData:completion: instead", ios(8.0, 9.0)) __WATCHOS_PROHIBITED NS_SWIFT_DISABLE_ASYNC;
 - (void)activateSecureElementPass:(PKSecureElementPass *)secureElementPass withActivationData:(NSData *)activationData completion:(nullable void(^)(BOOL success, NSError * _Nullable error))completion NS_SWIFT_NAME(activate(_:activationData:completion:)) API_AVAILABLE(ios(13.4)) API_UNAVAILABLE(watchos);
 
-// Sign a payload using the pass
-- (void)signData:(NSData *)signData withSecureElementPass:(PKSecureElementPass *)secureElementPass completion:(void(^)(NSData * _Nullable signedData, NSData * _Nullable signature, NSError * _Nullable error))completion NS_SWIFT_NAME(sign(_:using:completion:)) API_AVAILABLE(ios(13.4), watchos(6.2));
+- (void)signData:(NSData *)signData withSecureElementPass:(PKSecureElementPass *)secureElementPass completion:(void(^)(NSData * _Nullable signedData, NSData * _Nullable signature, NSError * _Nullable error))completion NS_SWIFT_NAME(sign(_:using:completion:)) API_DEPRECATED("No longer supported", ios(13.4, 26.0), watchos(6.2, 26.0));
 
 - (void)encryptedServiceProviderDataForSecureElementPass:(PKSecureElementPass *)secureElementPass completion:(void(^)(NSDictionary * _Nullable encryptedServiceProviderData, NSError* _Nullable error))completion NS_SWIFT_NAME(encryptedServiceProviderData(for:completion:)) API_AVAILABLE(ios(16.0), watchos(9.0));
 // Returns custom data for a given secure element pass, if supported by that pass

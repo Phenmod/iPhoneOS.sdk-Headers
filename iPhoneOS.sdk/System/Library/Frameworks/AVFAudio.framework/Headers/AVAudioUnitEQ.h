@@ -81,7 +81,7 @@ typedef NS_ENUM(NSInteger, AVAudioUnitEQFilterType) {
         A standalone instance of AVAudioUnitEQFilterParameters cannot be created. Only an instance
         vended out by a source object (e.g. AVAudioUnitEQ) can be used.
 */
-API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 @interface AVAudioUnitEQFilterParameters : NSObject {
 @private
 	void *_impl;
@@ -135,7 +135,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
     @abstract An AVAudioUnitEffect that implements a Multi-Band Equalizer.
  
 */
-API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0)) API_UNAVAILABLE(watchos)
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0)) API_UNAVAILABLE(watchos)
 @interface AVAudioUnitEQ : AVAudioUnitEffect
 
 /*! @method initWithNumberOfBands:

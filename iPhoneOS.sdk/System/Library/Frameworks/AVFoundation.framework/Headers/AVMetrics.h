@@ -460,7 +460,7 @@ AV_INIT_UNAVAILABLE
 #pragma mark - Download Summary Event -
 
 /// Represents a summary metric event with aggregated metrics for the entire download task.
-/// 
+///
 /// Subclasses of this type that are used from Swift must fulfill the requirements of a Sendable type.
 NS_SWIFT_SENDABLE
 API_AVAILABLE(macos(26), ios(26), tvos(26), watchos(26), visionos(26))
@@ -471,7 +471,7 @@ AV_INIT_UNAVAILABLE
 @property (readonly, nullable) AVMetricErrorEvent *errorEvent;
 
 /// Returns the total count of recoverable errors encountered during the download. If no errors were encountered, returns 0.
-/// 
+///
 /// Error counts may not be consistent across OS versions. Comparisons should be made within a given OS version, as error reporting is subject to change with OS updates.
 @property (readonly) NSInteger recoverableErrorCount;
 
@@ -486,6 +486,29 @@ AV_INIT_UNAVAILABLE
 
 /// Returns the variants that were downloaded.
 @property (readonly) NSArray<AVAssetVariant *> *variants;
+
+@end
+
+#pragma mark - Playback Mode Switch Event -
+
+/// These constants are the possible playback modes returned by the property "mode" on AVMetricPlaybackModeSwitchEvent
+typedef NS_ENUM(NSInteger, AVMetricPlaybackMode) {
+	/// Indicates that playback is local.
+	AVMetricPlaybackModeLocal = 0,
+	/// Indicates that playback is via AirPlay Video.
+	AVMetricPlaybackModeAirPlayVideo = 1,
+};
+
+/// Represents a change in playback state, entering one of AVMetricPlaybackMode
+///
+/// Subclasses of this type that are used from Swift must fulfill the requirements of a Sendable type.
+NS_SWIFT_SENDABLE
+API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), watchos(27.0), visionos(27.0))
+@interface AVMetricPlaybackModeSwitchEvent : AVMetricEvent
+AV_INIT_UNAVAILABLE
+
+/// Returns the mode into which playback entered.
+@property (readonly) AVMetricPlaybackMode mode;
 
 @end
 

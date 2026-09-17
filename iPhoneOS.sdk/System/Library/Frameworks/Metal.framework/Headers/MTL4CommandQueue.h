@@ -39,7 +39,7 @@ typedef NS_ENUM(NSInteger, MTL4CommandQueueError)
     MTL4CommandQueueErrorOutOfMemory   = 3,
     
     /// Indicates the physical removal of the GPU before the command buffer completed.
-    MTL4CommandQueueErrorDeviceRemoved = 4,
+    MTL4CommandQueueErrorDeviceRemoved API_DEPRECATED("MTL4CommandQueueErrorDeviceRemoved cannot occur on Apple Silicon", macos(26.0, 27.0), ios(26.0, 27.0)) = 4,
     
     /// Indicates that the system revokes GPU access because it’s responsible for too many timeouts or hangs.
     MTL4CommandQueueErrorAccessRevoked = 5,

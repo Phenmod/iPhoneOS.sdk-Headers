@@ -123,7 +123,7 @@ Any negative number will loop indefinitely until stopped.
 @end
 
 /* A protocol for delegates of AVAudioPlayer */
-__WATCHOS_AVAILABLE(3_0)
+NS_SWIFT_UI_ACTOR
 @protocol AVAudioPlayerDelegate <NSObject>
 @optional 
 /* audioPlayerDidFinishPlaying:successfully: is called when a sound has finished playing. This method is NOT called if the player is stopped due to an interruption. */

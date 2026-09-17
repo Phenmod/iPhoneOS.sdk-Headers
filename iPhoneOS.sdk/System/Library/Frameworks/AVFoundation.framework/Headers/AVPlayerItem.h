@@ -87,8 +87,8 @@ AV_INIT_UNAVAILABLE
 /// 
 /// Equivalent to +playerItemWithAsset:, passing [AVAsset assetWithURL:URL] as the value of asset.
 /// 
-/// - Parameter URL:
-/// 
+/// - Parameter URL: A URL identifying the media resource to be played.
+///
 /// - Returns: An instance of AVPlayerItem.
 + (instancetype)playerItemWithURL:(NSURL *)URL NS_SWIFT_NONISOLATED;
 
@@ -98,8 +98,8 @@ AV_INIT_UNAVAILABLE
 /// 
 /// This method, along with the companion `asset` property, is MainActor-isolated for Swift clients because AVAsset is not Sendable. If you are using a Sendable subclass of AVAsset, such as AVURLAsset, an overload of this initializer will be chosen automatically to allow you to initialize an AVPlayerItem while not running on the main actor.
 /// 
-/// - Parameter asset:
-/// 
+/// - Parameter asset: The AVAsset to be played.
+///
 /// - Returns: An instance of AVPlayerItem.
 + (instancetype)playerItemWithAsset:(AVAsset *)asset;
 
@@ -119,8 +119,8 @@ AV_INIT_UNAVAILABLE
 /// 
 /// Equivalent to -initWithAsset:, passing [AVAsset assetWithURL:URL] as the value of asset.
 /// 
-/// - Parameter URL:
-/// 
+/// - Parameter URL: A URL identifying the media resource to be played.
+///
 /// - Returns: An instance of AVPlayerItem
 - (instancetype)initWithURL:(NSURL *)URL NS_SWIFT_NONISOLATED;
 
@@ -130,8 +130,8 @@ AV_INIT_UNAVAILABLE
 /// 
 /// This method, along with the companion `asset` property, is MainActor-isolated for Swift clients because AVAsset is not Sendable. If you are using a Sendable subclass of AVAsset, such as AVURLAsset, an overload of this initializer will be chosen automatically to allow you to initialize an AVPlayerItem while not running on the main actor.
 /// 
-/// - Parameter asset:
-/// 
+/// - Parameter asset: The AVAsset to be played.
+///
 /// - Returns: An instance of AVPlayerItem
 - (instancetype)initWithAsset:(AVAsset *)asset;
 
@@ -629,7 +629,16 @@ NS_SWIFT_NONISOLATED
 API_AVAILABLE(macos(10.9), ios(7.0), tvos(9.0), watchos(1.0), visionos(1.0));
 
 /// Provides an instance of AVMediaSelection carrying current selections for each of the receiver's media selection groups.
-@property (readonly) AVMediaSelection *currentMediaSelection API_AVAILABLE(macos(10.11), ios(9.0), tvos(9.0), watchos(2.0), visionos(1.0));
+@property (readonly) AVMediaSelection *currentMediaSelection NS_SWIFT_NONISOLATED API_AVAILABLE(macos(10.11), ios(9.0), tvos(9.0), watchos(2.0), visionos(1.0));
+
+/// Returns the media selection options in the specified media selection group that can produce content.
+///
+/// Some media selection options depend on other options to produce content. For example, a subtitle option generated via audio transcription may require that the source audio option is currently selected. This method filters the options in the specified group to only those that can produce content given the current state of the player item's media selection.
+///
+/// - Parameter mediaSelectionGroup: A media selection group obtained from the receiver's asset.
+///
+/// - Returns: An array containing the media selection options from the group that can produce content. Options in the group that are not in this array can still be selected, but will produce no content.
+- (NSArray<AVMediaSelectionOption *> *)selectableMediaSelectionOptionsInMediaSelectionGroup:(AVMediaSelectionGroup *)mediaSelectionGroup API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), watchos(27.0), visionos(27.0));
 
 @end
 
@@ -704,7 +713,7 @@ API_AVAILABLE(macos(10.9), ios(7.0), tvos(9.0), watchos(1.0), visionos(1.0));
 /// It is strongly recommended that the caller take appropriate measures to prevent blocking essential services such as the user interface, for example, by avoiding calling this method in the main thread.
 /// 
 /// - Returns: An autoreleased AVPlayerItemAccessLog instance.
-- (nullable AVPlayerItemAccessLog *)accessLog NS_SWIFT_NONISOLATED API_AVAILABLE(macos(10.7), ios(4.3), tvos(9.0), watchos(1.0), visionos(1.0));
+- (nullable AVPlayerItemAccessLog *)accessLog NS_SWIFT_NONISOLATED API_DEPRECATED("Use fetchAccessLogWithCompletionHandler:", macos(10.7, 27.0), ios(4.3, 27.0), tvos(9.0, 27.0), watchos(1.0, 27.0), visionos(1.0, 27.0));
 
 /// Returns an object that represents a snapshot of the error log. Can be nil.
 /// 
@@ -715,7 +724,24 @@ API_AVAILABLE(macos(10.9), ios(7.0), tvos(9.0), watchos(1.0), visionos(1.0));
 /// It is strongly recommended that the caller take appropriate measures to prevent blocking essential services such as the user interface, for example, by avoiding calling this method in the main thread.
 /// 
 /// - Returns: An autoreleased AVPlayerItemErrorLog instance.
-- (nullable AVPlayerItemErrorLog *)errorLog NS_SWIFT_NONISOLATED API_AVAILABLE(macos(10.7), ios(4.3), tvos(9.0), watchos(1.0), visionos(1.0));
+- (nullable AVPlayerItemErrorLog *)errorLog NS_SWIFT_NONISOLATED API_DEPRECATED("Use fetchErrorLogWithCompletionHandler:", macos(10.7, 27.0), ios(4.3, 27.0), tvos(9.0, 27.0), watchos(1.0, 27.0), visionos(1.0, 27.0));
+
+/// Asynchronously retrieves the access log without blocking the calling thread.
+///
+/// An AVPlayerItemAccessLog provides methods to retrieve the network access log in a format suitable for serialization.
+/// If nil is returned then there is no logging information currently available for this AVPlayerItem.
+/// An AVPlayerItemNewAccessLogEntryNotification will be posted when new logging information becomes available. However, accessLog might already return a non-nil value even before the first notification is posted.
+///
+/// - Parameter completionHandler: A block that is called with the access log. May be called with nil if no logging information is available.
+- (void)fetchAccessLogWithCompletionHandler:(void (^)(NS_SWIFT_SENDING AVPlayerItemAccessLog * _Nullable accessLog))completionHandler NS_SWIFT_NONISOLATED NS_SWIFT_ASYNC_NAME(getter:accessLog()) API_AVAILABLE(macos(27), ios(27), tvos(27), watchos(27), visionos(27));
+
+/// Asynchronously retrieves the error log without blocking the calling thread.
+///
+/// An AVPlayerItemErrorLog provides methods to retrieve the error log in a format suitable for serialization.
+/// If nil is returned then there is no logging information currently available for this AVPlayerItem.
+///
+/// - Parameter completionHandler: A block that is called with the error log. May be called with nil if no logging information is available.
+- (void)fetchErrorLogWithCompletionHandler:(void (^)(NS_SWIFT_SENDING AVPlayerItemErrorLog * _Nullable errorLog))completionHandler NS_SWIFT_NONISOLATED NS_SWIFT_ASYNC_NAME(getter:errorLog()) API_AVAILABLE(macos(27), ios(27), tvos(27), watchos(27), visionos(27));
 
 @end
 

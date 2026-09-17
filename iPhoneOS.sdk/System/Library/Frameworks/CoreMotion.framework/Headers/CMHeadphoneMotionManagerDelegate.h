@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Discussion:
  *    Delegate for CMHeadphoneMotionManager.
  */
-COREMOTION_EXPORT API_AVAILABLE(macos(14.0), ios(14.0), watchos(7.0)) API_UNAVAILABLE(visionos)
+COREMOTION_EXPORT API_AVAILABLE(macos(14.0), ios(14.0), watchos(7.0)) API_UNAVAILABLE(visionos, tvos)
 @protocol CMHeadphoneMotionManagerDelegate<NSObject>
 
 @optional
@@ -31,6 +31,7 @@ COREMOTION_EXPORT API_AVAILABLE(macos(14.0), ios(14.0), watchos(7.0)) API_UNAVAI
  *    deliver the device motion updates. The main thread is used if the queue was not specified.
  */
 - (void)headphoneMotionManagerDidConnect:(CMHeadphoneMotionManager *)manager;
+
 
 /*
  *  headphoneMotionManagerDidDisconnect:

@@ -743,7 +743,7 @@ NS_ASSUME_NONNULL_BEGIN
   /// A vector containing the position of the fifth point of the tone curve.
   @property (nonatomic) CGPoint point4;
   /// If true, then the color effect will be extrapolated if the input image contains RGB component values outside the range 0.0 to 1.0.
-  @property (nonatomic) bool extrapolate NS_AVAILABLE(16_0, 19_0);
+  @property (nonatomic) bool extrapolate NS_AVAILABLE(26_0, 26_0);
 @end
 
 /// The protocol for the Tone Map Headroom filter.
@@ -1742,7 +1742,7 @@ NS_ASSUME_NONNULL_BEGIN
   /// The distance from the center of the effect.
   @property (nonatomic) float radius;
   /// A value to control the smoothness of the transition between the curved and linear edges of the shape.
-  @property (nonatomic) float smoothness NS_AVAILABLE(16_0, 19_0);
+  @property (nonatomic) float smoothness NS_AVAILABLE(26_0, 26_0);
   /// A color.
   @property (nonatomic, retain) CIColor *color;
 @end
@@ -1756,7 +1756,7 @@ NS_ASSUME_NONNULL_BEGIN
   /// The distance from the center of the effect.
   @property (nonatomic) float radius;
   /// A value to control the smoothness of the transition between the curved and linear edges of the shape.
-  @property (nonatomic) float smoothness NS_AVAILABLE(16_0, 19_0);
+  @property (nonatomic) float smoothness NS_AVAILABLE(26_0, 26_0);
   /// A color.
   @property (nonatomic, retain) CIColor *color;
   /// The width in pixels of the effect.
@@ -2457,12 +2457,12 @@ NS_CLASS_AVAILABLE(10_15, 13_0)
 @interface CIFilter (Builtins)
 
 // CICategoryGradient
-+ (CIFilter<CIDistanceGradientFromRedMask>*) distanceGradientFromRedMaskFilter NS_AVAILABLE(16_0, 19_0);
++ (CIFilter<CIDistanceGradientFromRedMask>*) distanceGradientFromRedMaskFilter NS_AVAILABLE(26_0, 26_0);
 + (CIFilter<CIGaussianGradient>*) gaussianGradientFilter;
 + (CIFilter<CIHueSaturationValueGradient>*) hueSaturationValueGradientFilter;
 + (CIFilter<CILinearGradient>*) linearGradientFilter;
 + (CIFilter<CIRadialGradient>*) radialGradientFilter;
-+ (CIFilter<CISignedDistanceGradientFromRedMask>*) signedDistanceGradientFromRedMaskFilter NS_AVAILABLE(16_0, 19_0);
++ (CIFilter<CISignedDistanceGradientFromRedMask>*) signedDistanceGradientFromRedMaskFilter NS_AVAILABLE(26_0, 26_0);
 + (CIFilter<CISmoothLinearGradient>*) smoothLinearGradientFilter;
 
 // CICategorySharpen
@@ -2550,7 +2550,7 @@ NS_CLASS_AVAILABLE(10_15, 13_0)
 + (CIFilter<CIHueAdjust>*) hueAdjustFilter;
 + (CIFilter<CILinearToSRGBToneCurve>*) linearToSRGBToneCurveFilter;
 + (CIFilter<CISRGBToneCurveToLinear>*) sRGBToneCurveToLinearFilter;
-+ (CIFilter<CISystemToneMap>*) systemToneMapFilter NS_AVAILABLE(16_0, 19_0);
++ (CIFilter<CISystemToneMap>*) systemToneMapFilter NS_AVAILABLE(26_0, 26_0);
 + (CIFilter<CITemperatureAndTint>*) temperatureAndTintFilter;
 + (CIFilter<CIToneCurve>*) toneCurveFilter;
 + (CIFilter<CIToneMapHeadroom>*) toneMapHeadroomFilter NS_AVAILABLE(15_0, 18_0);
@@ -2634,7 +2634,7 @@ NS_CLASS_AVAILABLE(10_15, 13_0)
 + (CIFilter<CIAztecCodeGenerator>*) aztecCodeGeneratorFilter;
 + (CIFilter<CIBarcodeGenerator>*) barcodeGeneratorFilter;
 + (CIFilter<CIBlurredRectangleGenerator>*) blurredRectangleGeneratorFilter NS_AVAILABLE(14_0, 17_0);
-+ (CIFilter<CIBlurredRoundedRectangleGenerator>*) blurredRoundedRectangleGeneratorFilter NS_AVAILABLE(16_0, 19_0);
++ (CIFilter<CIBlurredRoundedRectangleGenerator>*) blurredRoundedRectangleGeneratorFilter NS_AVAILABLE(26_0, 26_0);
 + (CIFilter<CICheckerboardGenerator>*) checkerboardGeneratorFilter;
 + (CIFilter<CICode128BarcodeGenerator>*) code128BarcodeGeneratorFilter;
 + (CIFilter<CILenticularHaloGenerator>*) lenticularHaloGeneratorFilter;
@@ -2642,7 +2642,7 @@ NS_CLASS_AVAILABLE(10_15, 13_0)
 + (CIFilter<CIPDF417BarcodeGenerator>*) PDF417BarcodeGenerator;
 + (CIFilter<CIQRCodeGenerator>*) QRCodeGenerator;
 + (CIFilter<CIRandomGenerator>*) randomGeneratorFilter;
-+ (CIFilter<CIRoundedQRCodeGenerator>*) roundedQRCodeGeneratorFilter NS_AVAILABLE(16_0, 19_0);
++ (CIFilter<CIRoundedQRCodeGenerator>*) roundedQRCodeGeneratorFilter NS_AVAILABLE(26_0, 26_0);
 + (CIFilter<CIRoundedRectangleGenerator>*) roundedRectangleGeneratorFilter;
 + (CIFilter<CIRoundedRectangleStrokeGenerator>*) roundedRectangleStrokeGeneratorFilter NS_AVAILABLE(14_0, 17_0);
 + (CIFilter<CIStarShineGenerator>*) starShineGeneratorFilter;
@@ -2708,7 +2708,7 @@ NS_CLASS_AVAILABLE(10_15, 13_0)
 // CICategoryReduction
 + (CIFilter<CIAreaHistogram>*) areaAlphaWeightedHistogramFilter NS_AVAILABLE(15_0, 18_0);
 + (CIFilter<CIAreaAverage>*) areaAverageFilter NS_AVAILABLE(11_0, 14_0);
-+ (CIFilter<CIAreaAverageMaximumRed>*) areaAverageMaximumRedFilter NS_AVAILABLE(16_0, 19_0);
++ (CIFilter<CIAreaAverageMaximumRed>*) areaAverageMaximumRedFilter NS_AVAILABLE(26_0, 26_0);
 + (CIFilter<CIAreaBoundsRed>*) areaBoundsRedFilter NS_AVAILABLE(15_0, 18_0);
 + (CIFilter<CIAreaHistogram>*) areaHistogramFilter NS_AVAILABLE(11_0, 14_0);
 + (CIFilter<CIAreaLogarithmicHistogram>*) areaLogarithmicHistogramFilter NS_AVAILABLE(13_0, 16_0);

@@ -12,6 +12,7 @@
 #import <CoreMotion/CMGyro.h>
 #import <CoreMotion/CMDeviceMotion.h>
 #import <CoreMotion/CMMagnetometer.h>
+#import <CoreMotion/CMBody.h>
 
 #import <CoreMotion/CMAvailability.h>
 
@@ -322,6 +323,15 @@ COREMOTION_EXPORT API_AVAILABLE(ios(4.0)) API_UNAVAILABLE(macos)
  *
  */
 @property(readonly, nonatomic) CMAttitudeReferenceFrame attitudeReferenceFrame COREMOTION_EXPORT API_AVAILABLE(ios(5.0)) API_UNAVAILABLE(tvos);
+
+/*
+ *  deviceMotionBody
+ *
+ *  Discussion:
+ *      Specifies a body from which device motion should be referenced.
+ *
+ */
+@property(retain, nonatomic, nullable) id<CMBodyIdentifiable> deviceMotionBody COREMOTION_EXPORT API_AVAILABLE(ios(27.0), watchos(27.0), visionos(27.0)) API_UNAVAILABLE(macos, tvos);
 
 /*
  *  deviceMotionAvailable

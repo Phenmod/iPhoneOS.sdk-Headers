@@ -221,6 +221,8 @@ typedef NS_ENUM(NSUInteger, MTLLanguageVersion) {
     (3 << 16) + 2,
     MTLLanguageVersion4_0 API_AVAILABLE(macos(26.0), ios(26.0)) =
     (4 << 16) + 0,
+    MTLLanguageVersion4_1 API_AVAILABLE(macos(27.0), ios(27.0)) =
+    (4 << 16) + 1,
 } API_AVAILABLE(macos(10.11), ios(9.0));
 
 typedef NS_ENUM(NSInteger, MTLLibraryType) {
@@ -285,6 +287,22 @@ typedef NS_ENUM(NSInteger, MTLMathFloatingPointFunctions)
 {
     MTLMathFloatingPointFunctionsFast = 0,
     MTLMathFloatingPointFunctionsPrecise = 1,
+};
+
+/*!
+ @enum MTLFloatingPointConversionRoundingMode
+ @abstract The rounding mode for narrowing floating-point conversions.
+
+ @constant MTLFloatingPointConversionRoundingModeToNearestEven
+ Round-to-nearest-even (default). Standard IEEE 754 rounding mode.
+
+ @constant MTLFloatingPointConversionRoundingModeTowardZero
+ Round-toward-zero.
+ */
+typedef NS_ENUM(NSInteger, MTLFloatingPointConversionRoundingMode)
+{
+    MTLFloatingPointConversionRoundingModeToNearestEven = 0,
+    MTLFloatingPointConversionRoundingModeTowardZero    = 1,
 };
 
 MTL_EXPORT API_AVAILABLE(macos(10.11), ios(8.0))
@@ -403,6 +421,12 @@ MTL_EXPORT API_AVAILABLE(macos(10.11), ios(8.0))
  @abstract If YES,  set the compiler to enable any logging in the shader. The default is false.
  */
 @property (readwrite, nonatomic) BOOL enableLogging API_AVAILABLE(macos(15.0), ios(18.0));
+
+/*!
+ @property floatingPointConversionRoundingMode
+ @abstract Sets the rounding mode for narrowing floating-point conversions. Default is MTLFloatingPointConversionRoundingModeToNearestEven.
+ */
+@property (readwrite, nonatomic) MTLFloatingPointConversionRoundingMode floatingPointConversionRoundingMode API_AVAILABLE(macos(27.0), ios(27.0));
 @end
 
 /// Represents a reflection object containing information about a function in a Metal library.

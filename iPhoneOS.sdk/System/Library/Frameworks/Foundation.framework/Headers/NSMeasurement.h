@@ -9,6 +9,16 @@
 
 NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
+/// A numeric quantity labeled with a unit of measure, with support for unit conversion and unit-aware calculations.
+///
+/// An ``NSMeasurement`` object represents a quantity and unit of measure. The ``NSMeasurement`` class provides a programmatic interface to converting measurements into different units, as well as calculating the sum or difference between two measurements.
+///
+/// ``NSMeasurement`` objects are initialized with an ``Unit`` object and `double` value. ``NSMeasurement`` objects are immutable, and cannot be changed after being created.
+///
+/// You can use the ``MeasurementFormatter`` class to create localized string representations of ``NSMeasurement`` objects.
+///
+/// > Important:
+/// > The Swift overlay to the Foundation framework provides the ``Measurement`` structure, which bridges to the ``NSMeasurement`` class. For more information about value types, see <doc://com.apple.documentation/documentation/swift/working-with-foundation-types>.
 API_AVAILABLE(macos(10.12), ios(10.0), watchos(3.0), tvos(10.0))
 @interface NSMeasurement<UnitType: NSUnit *> : NSObject<NSCopying, NSSecureCoding> {
 @private
@@ -16,31 +26,33 @@ API_AVAILABLE(macos(10.12), ios(10.0), watchos(3.0), tvos(10.0))
     double _doubleValue;
 }
 
+/// The unit component of the measurement.
 @property (readonly, copy) UnitType unit;
+/// The value component of the measurement.
 @property (readonly) double doubleValue;
 
 - (instancetype)init NS_UNAVAILABLE;
+/// Initializes an `NSMeasurement` with the given `double` value and unit.
 - (instancetype)initWithDoubleValue:(double)doubleValue unit:(UnitType)unit NS_DESIGNATED_INITIALIZER;
 
-/*
- Given an NSUnit object, canBeConvertedToUnit: will check for dimensionality i.e. check the unit type (NSUnitAngle, NSUnitLength, NSUnitCustom, etc.) of the NSUnit object.  It will return YES if the unit type of the given unit is the same as the unit type of the unit within the NSMeasurement object and NO if not.
- Note: This method will return NO if given or called on a dimensionless unit.
- */
+/// Returns a Boolean value that indicates whether this measurement can be converted to the given unit.
 - (BOOL)canBeConvertedToUnit:(NSUnit *)unit;
 
-/*
- Given an NSUnit object, measurementByConvertingUnit: will first check for dimensionality i.e. check the unit type (NSUnitAngle, NSUnitLength, NSUnitCustom, etc.) of the NSUnit object.  If the unit type of the given unit is not the same as the unit type of the unit within the NSMeasurement object (i.e. the units are of differing dimensionalities), measurementByConvertingToUnit: will throw an InvalidArgumentException.
-
- @return A new NSMeasurement object with the given unit and converted value.
- */
+/// Returns a measurement created by converting the receiver to the specified unit.
+///
+/// - Parameter unit: The unit to convert to. Must be of the same dimensionality as the receiver's unit.
+/// - Returns: A new `NSMeasurement` object with the given unit and converted value.
 - (NSMeasurement *)measurementByConvertingToUnit:(NSUnit *)unit;
 
-/*
- Given an NSMeasurement object, these methods will first check for dimensionality i.e. check the unit type (NSUnitAngle, NSUnitLength, NSUnitCustom, etc.) of the unit contained in that object.  If the unit type of the unit in the given NSMeasurement object is not the same as the unit type of the unit within the current NSMeasurement instance (i.e. the units are of differing dimensionalities), these methods will throw an InvalidArgumentException.
- 
- @return A new NSMeasurement object with the adjusted value and a unit that is the same type as the current NSMeasurement instance.
- */
+/// Returns a new measurement by adding the receiver to the given measurement.
+///
+/// - Parameter measurement: The measurement to add. Must be of the same dimensionality as the receiver.
+/// - Returns: A new `NSMeasurement` with the adjusted value and the same unit as the receiver.
 - (NSMeasurement<UnitType> *)measurementByAddingMeasurement:(NSMeasurement<UnitType> *)measurement;
+/// Returns a new measurement by subtracting the given measurement from the receiver.
+///
+/// - Parameter measurement: The measurement to subtract. Must be of the same dimensionality as the receiver.
+/// - Returns: A new `NSMeasurement` with the adjusted value and the same unit as the receiver.
 - (NSMeasurement<UnitType> *)measurementBySubtractingMeasurement:(NSMeasurement<UnitType> *)measurement;
 
 @end

@@ -59,8 +59,10 @@ CG_EXTERN CGColorConversionInfoRef __nullable CGColorConversionInfoCreateFromLis
 /* CGColorConversionInfoCreateForToneMapping allows to request the specifc behavior of a color conversion
  * which is consistent with CGContextDrawImageApplyingToneMapping.
  * See CGContext.h and CGToneMapping.h for more details about CGToneMapping type and options.
- * CGColorConversionInfoCreateWithOptions will return NULL when CGColorConversionInfoRef cannot be created or no cconversion is required.
+ * CGColorConversionInfoCreateWithOptions will return NULL when CGColorConversionInfoRef cannot be created or no conversion is required.
  * Headroom values are ignored when kCGToneMappingITURecommended, kCGToneMappingEXRGamma or kCGToneMappingNone methods are used.
+ * The headroom value of 0.0f means that headroom is unknown and is implied by the respective color spaces (source headroom by source color space
+ * and target headroom by target color space).
  * Otherwise headroom values must be equal or greater 1.0f to be considered valid.
  * CGColorConversionInfoCreateForToneMapping requires that target headroom is smaller or equal source headroom to succeed, except when converting
  * SDR to HDR.
@@ -68,7 +70,7 @@ CG_EXTERN CGColorConversionInfoRef __nullable CGColorConversionInfoCreateFromLis
  * with the description explaining the reason.
  */
 
-CG_EXTERN CGColorConversionInfoRef __nullable CGColorConversionInfoCreateForToneMapping(__nonnull CGColorSpaceRef from, float source_headroom, __nonnull CGColorSpaceRef to, float target_headroom, CGToneMapping method, CFDictionaryRef __nullable options, CFErrorRef* __nullable error) API_AVAILABLE(macos(15.0), ios(18.0), tvos(18.0), watchos(11.0));
+CG_EXTERN CGColorConversionInfoRef __nullable CGColorConversionInfoCreateForToneMapping(__nonnull CGColorSpaceRef source, float source_headroom, __nonnull CGColorSpaceRef target, float target_headroom, CGToneMapping method, CFDictionaryRef __nullable options, CFErrorRef* __nullable error) API_AVAILABLE(macos(15.0), ios(18.0), tvos(18.0), watchos(11.0));
 
 typedef struct {
     uint32_t        version;            // current version = 0

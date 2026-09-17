@@ -20,11 +20,11 @@ typedef NS_ENUM(NSInteger, INSearchForNotebookItemsIntentResponseCode) {
     INSearchForNotebookItemsIntentResponseCodeSuccess,
     INSearchForNotebookItemsIntentResponseCodeFailure,
     INSearchForNotebookItemsIntentResponseCodeFailureRequiringAppLaunch,
-} API_AVAILABLE(ios(11.0), watchos(4.0)) API_UNAVAILABLE(macos, tvos);
+} API_DEPRECATED("INSearchForNotebookItemsIntentResponseCode is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.", ios(11.0, 27.0), watchos(4.0, 27.0)) API_UNAVAILABLE(macos, tvos);
 
 NS_ASSUME_NONNULL_BEGIN
 
-API_AVAILABLE(ios(11.0), watchos(4.0))
+API_DEPRECATED("INSearchForNotebookItemsIntentResponse is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.", ios(11.0, 27.0), watchos(4.0, 27.0))
 API_UNAVAILABLE(macos, tvos)
 @interface INSearchForNotebookItemsIntentResponse : INIntentResponse
 

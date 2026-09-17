@@ -91,6 +91,7 @@
 #import <HealthKit/HKVisionPrism.h>
 #import <HealthKit/HKWorkout.h>
 #import <HealthKit/HKWorkoutActivity.h>
+#import <HealthKit/HKWorkoutActivityType.h>
 #import <HealthKit/HKWorkoutBuilder.h>
 #import <HealthKit/HKWorkoutConfiguration.h>
 #import <HealthKit/HKWorkoutEffortRelationshipQuery.h>

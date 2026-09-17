@@ -1,10 +1,6 @@
 #ifndef ES1_GL_H_GUARD
 #define ES1_GL_H_GUARD
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /*
 ** License Applicability. Except to the extent portions of this file are
 ** made subject to an alternative license as permitted in the SGI Free
@@ -632,6 +628,9 @@ extern "C" {
 #define GL_POINT_SPRITE_OES               0x8861
 #define GL_COORD_REPLACE_OES              0x8862
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*************************************************************/
 

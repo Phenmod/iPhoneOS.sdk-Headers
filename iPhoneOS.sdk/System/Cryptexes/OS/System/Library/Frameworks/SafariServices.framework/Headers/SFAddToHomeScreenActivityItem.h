@@ -1,11 +1,11 @@
 // Copyright © 2023 Apple Inc. All rights reserved.
 
 #import <Foundation/Foundation.h>
-#import <SafariServices/SFAddToHomeScreenInfo.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class BEWebAppManifest;
+@class SFAddToHomeScreenInfo;
 
 /*! 
  @protocol SFAddToHomeScreenActivityItem

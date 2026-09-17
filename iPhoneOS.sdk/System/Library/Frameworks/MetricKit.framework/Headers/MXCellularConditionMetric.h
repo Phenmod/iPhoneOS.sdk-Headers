@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
  @class         MXCellConditionMetric
  @abstract      An MXMetric subclass that encapsulates cellular condition metrics.
  */
-API_AVAILABLE(ios(13.0), macos(10.15)) API_UNAVAILABLE(tvos, watchos)
+API_DEPRECATED("Use MetricResult instead.", ios(13.0, API_TO_BE_DEPRECATED), macos(10.15, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos)
 @interface MXCellularConditionMetric : MXMetric
 
 /*!

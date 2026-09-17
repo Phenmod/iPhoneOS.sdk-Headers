@@ -185,8 +185,8 @@
 			/* 145  old setrlimit */
 			/* 146  old killpg */
 #define	SYS_setsid         147
-			/* 148  old setquota */
-			/* 149  old qquota */
+#define	SYS_pipe2          148
+#define	SYS_dup3           149
 			/* 150  old getsockname */
 #define	SYS_getpgid        151
 #define	SYS_setprivexec    152
@@ -251,8 +251,8 @@
 			/* 211  old ATgetreq */
 			/* 212  old ATgetrsp */
 			/* 213  Reserved for AppleTalk */
-			/* 214  */
-			/* 215  */
+#define	SYS_fchflagsat     214
+#define	SYS_getumask       215
 #define	SYS_open_dprotected_np 216
 #define	SYS_fsgetpath_ext  217
 #define	SYS_openat_dprotected_np 218
@@ -283,10 +283,10 @@
 #define	SYS_initgroups     243
 #define	SYS_posix_spawn    244
 #define	SYS_ffsctl         245
-			/* 246  */
-			/* 247  old nfsclnt */
+#define	SYS_aio_readv      246
+#define	SYS_aio_writev     247
 #define	SYS_fhopen         248
-			/* 249  */
+#define	SYS_fsctlat        249
 #define	SYS_minherit       250
 #define	SYS_semsys         251
 #define	SYS_msgsys         252
@@ -389,7 +389,7 @@
 #define	SYS___pthread_fchdir 349
 #define	SYS_audit          350
 #define	SYS_auditon        351
-			/* 352  */
+#define	SYS_guarded_ftruncate_np 352
 #define	SYS_getauid        353
 #define	SYS_setauid        354
 			/* 355  old getaudit */

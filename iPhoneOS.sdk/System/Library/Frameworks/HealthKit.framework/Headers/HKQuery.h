@@ -14,6 +14,7 @@
 #import <HealthKit/HKMedicationDoseEvent.h>
 #import <HealthKit/HKStateOfMind.h>
 #import <HealthKit/HKWorkout.h>
+#import <HealthKit/HKWorkoutActivityType.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

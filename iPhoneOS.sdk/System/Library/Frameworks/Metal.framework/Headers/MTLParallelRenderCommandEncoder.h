@@ -57,21 +57,21 @@ API_AVAILABLE(macos(10.11), ios(8.0))
  @param storeActionOptions The desired store action options for the given color attachment.
  @param colorAttachmentIndex The index of the color attachment
  */
-- (void)setColorStoreActionOptions:(MTLStoreActionOptions)storeActionOptions atIndex:(NSUInteger)colorAttachmentIndex API_AVAILABLE(macos(10.13), ios(11.0));
+- (void)setColorStoreActionOptions:(MTLStoreActionOptions)storeActionOptions atIndex:(NSUInteger)colorAttachmentIndex API_DEPRECATED("Store action options have no effect on Apple Silicon", macos(10.13, 27.0), ios(11.0, 27.0));
 
 /*!
  @method setDepthStoreActionOptions:
  @brief If the the store action for the depth attachment was set to MTLStoreActionUnknown when the render command encoder was created,
  setDepthStoreActionOptions: may be used to finalize the store action options before endEncoding is called.
  */
-- (void)setDepthStoreActionOptions:(MTLStoreActionOptions)storeActionOptions API_AVAILABLE(macos(10.13), ios(11.0));
+- (void)setDepthStoreActionOptions:(MTLStoreActionOptions)storeActionOptions API_DEPRECATED("Store action options have no effect on Apple Silicon", macos(10.13, 27.0), ios(11.0, 27.0));
 
 /*!
  @method setStencilStoreActionOptions:
  @brief If the the store action for the stencil attachment was set to MTLStoreActionUnknown when the render command encoder was created,
  setStencilStoreActionOptions: may be used to finalize the store action options before endEncoding is called.
  */
-- (void)setStencilStoreActionOptions:(MTLStoreActionOptions)storeActionOptions API_AVAILABLE(macos(10.13), ios(11.0));
+- (void)setStencilStoreActionOptions:(MTLStoreActionOptions)storeActionOptions API_DEPRECATED("Store action options have no effect on Apple Silicon", macos(10.13, 27.0), ios(11.0, 27.0));
 
 @end
 NS_ASSUME_NONNULL_END

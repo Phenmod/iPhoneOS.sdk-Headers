@@ -219,8 +219,7 @@ HM_EXTERN NS_SWIFT_SENDABLE API_AVAILABLE(ios(8.0), watchos(2.0), tvos(10.0), ma
  * @param completion Block that is invoked once the request is processed.
  *                   The HMUser object provides a reference to the user that was added to the home.
  *                   The NSError provides more information on the status of the request, error
- *                   will be nil on success. The userInfo dictionary will contain the HMUserFailedAccessoriesKey which provides
- *                   more details on the accessories that failed to add the user.
+ *                   will be nil on success.
  */
 - (void)addUserWithCompletionHandler:(void (^)(HMUser *__nullable user, NSError *__nullable error))completion API_DEPRECATED_WITH_REPLACEMENT("-manageUsersWithCompletionHandler:", ios(8.0, 9.0)) API_UNAVAILABLE(watchos, tvos, macos, macCatalyst);
 
@@ -231,8 +230,7 @@ HM_EXTERN NS_SWIFT_SENDABLE API_AVAILABLE(ios(8.0), watchos(2.0), tvos(10.0), ma
  *
  * @param completion Block that is invoked once the request is processed.
  *                   The NSError provides more information on the status of the request, error
- *                   will be nil on success. The userInfo dictionary will contain the HMUserFailedAccessoriesKey which provides
- *                   more details on the accessories that failed to remove the user.
+ *                   will be nil on success.
  */
 - (void)removeUser:(HMUser *)user completionHandler:(void (^)(NSError *__nullable error))completion API_DEPRECATED_WITH_REPLACEMENT("-manageUsersWithCompletionHandler:", ios(8.0, 9.0)) API_UNAVAILABLE(macos, watchos, tvos);
 
@@ -796,6 +794,6 @@ API_UNAVAILABLE(macos)
  *             corresponding to the dictionary key is an NSError that provides more details on the
  *             underlying error for that accessory.
  */
-HM_EXTERN NSString *const HMUserFailedAccessoriesKey API_AVAILABLE(ios(8.0), watchos(2.0), tvos(10.0), macCatalyst(14.0)) API_UNAVAILABLE(macos);
+HM_EXTERN NSString *const HMUserFailedAccessoriesKey API_DEPRECATED("No longer supported", ios(8.0, 27.0), watchos(2.0, 27.0), tvos(10.0, 27.0), macCatalyst(14.0, 27.0));
 
 NS_ASSUME_NONNULL_END

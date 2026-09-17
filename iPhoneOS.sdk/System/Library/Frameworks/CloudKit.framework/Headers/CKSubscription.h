@@ -535,7 +535,7 @@ CK_SUBCLASSING_DEPRECATED // should not be subclassed, or Sendable may no longer
 ///
 /// When this property is <doc://com.apple.documentation/documentation/swift/true>, the server includes the `mutable-content` flag with a value of `1` in the push notification's payload. When the value is `1`, the system passes the notification to your app extension for modification before delivery.
 ///
-/// See <doc://com.apple.documentation/documentation/usernotifications/generating-a-remote-notification> for more information about the `mutable-content` flag, and <doc://com.apple.documentation/documentation/usernotifications/modifying-content-in-newly-delivered-notifications> for information about how to modify push notifiction content in your app extension prior to delivery.
+/// See <doc://com.apple.documentation/documentation/usernotifications/generating-a-remote-notification> for more information about the `mutable-content` flag, and <doc://com.apple.documentation/documentation/usernotifications/modifying-content-in-newly-delivered-notifications> for information about how to modify push notification content in your app extension prior to delivery.
 ///
 /// The default value of this property is <doc://com.apple.documentation/documentation/swift/false>.
 @property (assign) BOOL shouldSendMutableContent API_AVAILABLE(macos(10.13), ios(11.0), tvos(11.0));

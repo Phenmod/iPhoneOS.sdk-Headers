@@ -7,16 +7,77 @@
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
+#import <Cinematic/CNRenderingSession.h>
 
 NS_ASSUME_NONNULL_BEGIN
+
+
+NS_REFINED_FOR_SWIFT
+API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(watchos, tvos)
+@interface CNAssetPreprocessConfiguration : NSObject
+
+-(instancetype)initWithDestinationAssetURL:(NSURL *)destinationAssetURL;
+
+/// Controls whether the color track in the output asset reference the source asset
+/// or embed a copy of its sample data.
+///
+/// When YES, the output asset references the color from the
+/// source asset. This keeps the intermediate file small, but the output asset will not be
+/// portable — it depends on the source asset remaining at its original location.
+///
+/// When NO (the default), the color is copied into the output asset, making it
+/// self-contained and portable at the cost of roughly doubling the storage required.
+///
+/// The disparity and metadata tracks are always embedded regardless of this setting.
+@property BOOL referenceSourceAssetTracks;
+
+@property (readonly) NSURL *destinationAssetURL;
+
+@end
+
+typedef NS_ENUM(NSInteger, CNCinematicResourceVersion) {
+    CNCinematicResourceVersion1 =   1,
+} API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0)) API_UNAVAILABLE(watchos);
+
+typedef NS_ENUM(NSInteger, CNCinematicCapability) {
+    /// No cinematic capabilities
+    CNCinematicCapabilityNone = 0,
+    /// The cinematic asset can be used without preprocessing
+    CNCinematicCapabilityRenderable = 1,
+    /// The cinematic asset needs preprocessing before it can be used
+    CNCinematicCapabilityNeedsPreprocessing = 2,
+} API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0)) API_UNAVAILABLE(watchos);
+
+typedef NS_ENUM(NSInteger, CNResourceStatus) {
+    /// Configuration is supported
+    CNResourceStatusReady,
+    /// Configuration is supported but requires download of resources
+    CNResourceStatusNeedsDownloading,
+    /// The device lacks hardware capabilities for the given configuration
+    CNResourceStatusUnsupportedDevice,
+    /// The given asset is unsupported on the current build
+    CNResourceStatusUnsupportedAsset
+} API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0)) API_UNAVAILABLE(watchos);
 
 NS_REFINED_FOR_SWIFT
 API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0)) API_UNAVAILABLE(watchos)
 /// Information associated with an AVAsset for a cinematic video.
 @interface CNAssetInfo : NSObject
 
-/// Check if asset is cinematic asynchronously.
-+ (void)checkIfCinematic:(AVAsset *)asset completionHandler:(void (^)(BOOL result))completionHandler;
+/// Asynchronously checks the cinematic capability of an asset.
+/// The completionHandler returns:
+///     CNCinematicCapabilityNone if a cinematic metadata track is not present.
+///     CNCinematicCapabilityRenderable if the cinematic asset can be used without preprocessing
+///     CNCinematicCapabilityNeedsPreprocessing If cinematic asset needs preprocessing before it can be used
+/// For assets that need preprocessing use [CNAssetInfo preprocessAssetWithConfiguration:completionHandler:] before using the asset
++ (void)checkCinematicCapabilityForAsset:(AVAsset *)asset completionHandler:(void (^)(CNCinematicCapability capability))completionHandler
+API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0)) API_UNAVAILABLE(watchos);
+
+/// Asynchronously check if asset is cinematic.
+/// Only Cinematic assets containing a disparity track and a metadata track will return YES.
++ (void)checkIfCinematic:(AVAsset *)asset completionHandler:(void (^)(BOOL result))completionHandler
+API_DEPRECATED_WITH_REPLACEMENT("checkCinematicCapabilityForAsset:completionHandler:",
+                                macos(14.0, 27.0), ios(17.0, 27.0), tvos(17.0, 27.0));
 
 /// Load cinematic asset information asynchronously.
 + (void)loadFromAsset:(AVAsset *)asset
@@ -28,6 +89,7 @@ API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0)) API_UNAVAILABLE(watchos)
 @property (strong, readonly) NSArray<AVAssetTrack *> *allCinematicTracks;
 
 @property (strong, readonly) AVAssetTrack *cinematicVideoTrack;
+// In case the not renderable this will return an empty AVAssetTrack object where enabled is set to false
 @property (strong, readonly) AVAssetTrack *cinematicDisparityTrack;
 @property (strong, readonly) AVAssetTrack *cinematicMetadataTrack;
 
@@ -65,6 +127,70 @@ API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0)) API_UNAVAILABLE(watchos)
 
 /// Source metadata track IDs required to implement AVVideoCompositionInstruction protocol
 @property (strong, readonly) NSArray<NSNumber *> *sampleDataTrackIDs;
+
+@end
+
+API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0)) API_UNAVAILABLE(watchos)
+@interface CNAssetInfo (CNAssetWithoutDisparity)
+
+/// Check status for a set of resources.
+/// @param resourceVersions Resource version(s) to check. Empty set to check all available resource versions.
+/// @return The first encountered non-ready status, or CNResourceStatusReady if all are ready.
++(CNResourceStatus)resourceStatusForVersions:(NSSet<NSNumber *> *)resourceVersions
+API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0)) API_UNAVAILABLE(watchos);
+
+/// Downloads the resources required to render cinematic effects on assets
+/// Resources are device-wide and are cached once downloaded
+/// @param resourceVersions Resource version(s) to download. Pass an empty set to
+///                        download all available resources
+/// @param downloadTimeout Maximum seconds to wait before timeout. Pass \c defaultResourceDownloadTimeout
+///   for the system default.
+/// @param completionHandler Called on completion; \c error is \c nil on success.
+/// @return A \c NSProgress tracking the download.
++(NSProgress *)downloadResourcesForVersions:(NSSet<NSNumber *> *)resourceVersions
+                                    timeout:(NSTimeInterval)downloadTimeout
+                          completionHandler:(void (^)(NSError * _Nullable error))completionHandler
+API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(watchos, tvos);
+
+/// Downloads the resources required to render cinematic effects for the given asset
+/// Resources are device-wide and are cached once downloaded
+/// @param downloadTimeout Maximum seconds to wait before timeout. Pass \c defaultResourceDownloadTimeout
+///   for the system default.
+/// @param completionHandler Called on completion; On success, \c newAssetInfo is a refreshed instance with the downloaded resources available; \c error is non-nil on failure
+/// @return A \c NSProgress tracking the download.
+-(NSProgress *)downloadResourcesWithTimeout:(NSTimeInterval)downloadTimeout
+                          completionHandler:(void (^)(CNAssetInfo * _Nullable newAssetInfo, NSError * _Nullable error))completionHandler
+API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(watchos, tvos);
+
+/// Preprocesses the asset by generating a disparity track, writing the result to the
+/// URL specified in `configuration`. Required for assets whose `cinematicCapability`
+/// is \c CNCinematicCapabilityNeedsPreprocessing; on success \c assetInfo will be \c CNCinematicCapabilityRenderable.
+///
+/// Ensure \c resourceStatus is ready before calling — download resources first if needed.
+///
+/// @param configuration Destination URL and whether to embed or reference source tracks.
+/// @param completionHandler Called on completion; on success \c assetInfo is the new preprocessed
+///   asset and \c error is \c nil. On failure \c assetInfo is \c nil and \c error is non-nil.
+/// @return A \c NSProgress tracking preprocessing progress.
+-(NSProgress *)preprocessAssetWithConfiguration:(CNAssetPreprocessConfiguration *)configuration
+                              completionHandler:(void (^)(CNAssetInfo * _Nullable assetInfo, NSError * _Nullable error))completionHandler
+API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(watchos, tvos);
+
+/// Default timeout value for resource download for
+///  `+[CNAssetInfo downloadResourcesForVersions:timeout:completionHandler:]`
+///  `-[CNAssetInfo downloadResourcesWithTimeout:completionHandler:]`
+@property (class, readonly) NSTimeInterval defaultResourceDownloadTimeout
+API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(watchos, tvos);
+
+/// True only when an asset has been preprocessed
+@property (readonly, getter=isPreprocessed) BOOL preprocessed
+API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0)) API_UNAVAILABLE(watchos);
+
+@property (readonly) CNCinematicCapability cinematicCapability
+API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0)) API_UNAVAILABLE(watchos);
+
+@property (readonly) CNResourceStatus resourceStatus
+API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0)) API_UNAVAILABLE(watchos);
 
 @end
 

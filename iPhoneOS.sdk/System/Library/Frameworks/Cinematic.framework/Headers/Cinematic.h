@@ -14,6 +14,7 @@
 #import <Cinematic/CNSpatialAudio.h>
 
 #import <Cinematic/CNRenderingSession.h>
+#import <Cinematic/CNImageRenderingSession.h>
 
 #import <Cinematic/CNDecision.h>
 #import <Cinematic/CNDetection.h>

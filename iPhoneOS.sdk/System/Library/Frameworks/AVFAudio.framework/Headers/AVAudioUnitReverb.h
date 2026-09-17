@@ -22,7 +22,8 @@ typedef NS_ENUM(NSInteger, AVAudioUnitReverbPreset) {
     AVAudioUnitReverbPresetLargeRoom2      = 9,
     AVAudioUnitReverbPresetMediumHall2     = 10,
     AVAudioUnitReverbPresetMediumHall3     = 11,
-    AVAudioUnitReverbPresetLargeHall2      = 12
+    AVAudioUnitReverbPresetLargeHall2      = 12,
+    AVAudioUnitReverbPresetOutdoorGeneral API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos) = 24
 } NS_ENUM_AVAILABLE(10_10, 8_0);
 
 /*! @class AVAudioUnitReverb
@@ -33,7 +34,7 @@ typedef NS_ENUM(NSInteger, AVAudioUnitReverbPreset) {
         the original signal using the wetDryMix parameter.
  
 */
-API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0)) API_UNAVAILABLE(watchos) 
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0)) API_UNAVAILABLE(watchos) 
 @interface AVAudioUnitReverb : AVAudioUnitEffect
 
 /*! @method loadFactoryPreset:

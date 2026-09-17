@@ -13,33 +13,40 @@
 
 NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
-/* Options for use with -addObserver:forKeyPath:options:context: and -addObserver:toObjectsAtIndexes:forKeyPath:options:context:.
-*/
+/// The values that can be returned in a change dictionary.
 typedef NS_OPTIONS(NSUInteger, NSKeyValueObservingOptions) {
 
-    /* Whether the change dictionaries sent in notifications should contain NSKeyValueChangeNewKey and NSKeyValueChangeOldKey entries, respectively.
-    */
+    /// Indicates that the change dictionary should contain the new attribute value.
     NSKeyValueObservingOptionNew = 0x01,
+
+    /// Indicates that the change dictionary should contain the old attribute value.
     NSKeyValueObservingOptionOld = 0x02,
 
-    /* Whether a notification should be sent to the observer immediately, before the observer registration method even returns. The change dictionary in the notification will always contain an NSKeyValueChangeNewKey entry if NSKeyValueObservingOptionNew is also specified but will never contain an NSKeyValueChangeOldKey entry. (In an initial notification the current value of the observed property may be old, but it's new to the observer.) You can use this option instead of explicitly invoking, at the same time, code that is also invoked by the observer's -observeValueForKeyPath:ofObject:change:context: method. When this option is used with -addObserver:toObjectsAtIndexes:forKeyPath:options:context: a notification will be sent for each indexed object to which the observer is being added.
-    */
+    /*
+     The change dictionary in the notification will always contain an NSKeyValueChangeNewKey entry if NSKeyValueObservingOptionNew is also specified but will never contain an NSKeyValueChangeOldKey entry. (In an initial notification the current value of the observed property may be old, but it's new to the observer.) You can use this option instead of explicitly invoking, at the same time, code that is also invoked by the observer's -observeValueForKeyPath:ofObject:change:context: method. When this option is used with -addObserver:toObjectsAtIndexes:forKeyPath:options:context: a notification will be sent for each indexed object to which the observer is being added.
+     */
+    /// If specified, a notification should be sent to the observer immediately, before the observer registration method even returns.
     NSKeyValueObservingOptionInitial API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0)) = 0x04,
 
-    /* Whether separate notifications should be sent to the observer before and after each change, instead of a single notification after the change. The change dictionary in a notification sent before a change always contains an NSKeyValueChangeNotificationIsPriorKey entry whose value is [NSNumber numberWithBool:YES], but never contains an NSKeyValueChangeNewKey entry. You can use this option when the observer's own KVO-compliance requires it to invoke one of the -willChange... methods for one of its own properties, and the value of that property depends on the value of the observed object's property. (In that situation it's too late to easily invoke -willChange... properly in response to receiving an -observeValueForKeyPath:ofObject:change:context: message after the change.)
+    /*
+     The change dictionary in a notification sent before a change always contains an NSKeyValueChangeNotificationIsPriorKey entry whose value is [NSNumber numberWithBool:YES], but never contains an NSKeyValueChangeNewKey entry. You can use this option when the observer's own KVO-compliance requires it to invoke one of the -willChange... methods for one of its own properties, and the value of that property depends on the value of the observed object's property. (In that situation it's too late to easily invoke -willChange... properly in response to receiving an -observeValueForKeyPath:ofObject:change:context: message after the change.)
 
-When this option is specified, the change dictionary in a notification sent after a change contains the same entries that it would contain if this option were not specified, except for ordered unique to-many relationships represented by NSOrderedSets.  For those, for NSKeyValueChangeInsertion and NSKeyValueChangeReplacement changes, the change dictionary for a will-change notification contains an NSKeyValueChangeIndexesKey (and NSKeyValueChangeOldKey in the case of Replacement where the NSKeyValueObservingOptionOld option was specified at registration time) which give the indexes (and objects) which *may* be changed by the operation.  The second notification, after the change, contains entries reporting what did actually change.  For NSKeyValueChangeRemoval changes, removals by index are precise.
-    */
+ When this option is specified, the change dictionary in a notification sent after a change contains the same entries that it would contain if this option were not specified, except for ordered unique to-many relationships represented by NSOrderedSets.  For those, for NSKeyValueChangeInsertion and NSKeyValueChangeReplacement changes, the change dictionary for a will-change notification contains an NSKeyValueChangeIndexesKey (and NSKeyValueChangeOldKey in the case of Replacement where the NSKeyValueObservingOptionOld option was specified at registration time) which give the indexes (and objects) which *may* be changed by the operation.  The second notification, after the change, contains entries reporting what did actually change.  For NSKeyValueChangeRemoval changes, removals by index are precise.
+     */
+    /// Whether separate notifications should be sent to the observer before and after each change, instead of a single notification after the change.
     NSKeyValueObservingOptionPrior API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0)) = 0x08
 
 };
 
-/* Possible values in the NSKeyValueChangeKindKey entry in change dictionaries. See the comments for -observeValueForKeyPath:ofObject:change:context: for more information.
-*/
+/// The kinds of changes that can be observed.
 typedef NS_ENUM(NSUInteger, NSKeyValueChange) {
+    /// Indicates that the value of the observed key path was set to a new value.
     NSKeyValueChangeSetting = 1,
+    /// Indicates that an object has been inserted into the to-many relationship that is being observed.
     NSKeyValueChangeInsertion = 2,
+    /// Indicates that an object has been removed from the to-many relationship that is being observed.
     NSKeyValueChangeRemoval = 3,
+    /// Indicates that an object has been replaced in the to-many relationship that is being observed.
     NSKeyValueChangeReplacement = 4,
 };
 
@@ -52,13 +59,22 @@ typedef NS_ENUM(NSUInteger, NSKeyValueSetMutationKind) {
     NSKeyValueSetSetMutation = 4
 };
 
+/// The keys that can appear in the change dictionary.
 typedef NSString * NSKeyValueChangeKey NS_TYPED_ENUM;
-/* Keys for entries in change dictionaries. See the comments for -observeValueForKeyPath:ofObject:change:context: for more information.
-*/
+
+/// A key for the type of change, as an ``NSNumber`` wrapping an ``NSKeyValueChange``.
 FOUNDATION_EXPORT NSKeyValueChangeKey const NSKeyValueChangeKindKey;
+
+/// A key for the new value of the property after the change.
 FOUNDATION_EXPORT NSKeyValueChangeKey const NSKeyValueChangeNewKey;
+
+/// A key for the old value of the property before the change.
 FOUNDATION_EXPORT NSKeyValueChangeKey const NSKeyValueChangeOldKey;
+
+/// A key for an ``NSIndexSet`` specifying the indexes of objects being inserted, removed, or replaced.
 FOUNDATION_EXPORT NSKeyValueChangeKey const NSKeyValueChangeIndexesKey;
+
+/// A key indicating whether this notification is sent prior to the change.
 FOUNDATION_EXPORT NSKeyValueChangeKey const NSKeyValueChangeNotificationIsPriorKey API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0));
 
 @interface NSObject(NSKeyValueObserving)
@@ -94,36 +110,87 @@ context is always the same pointer that was passed in at observer registration t
 
 @interface NSArray<ObjectType>(NSKeyValueObserverRegistration)
 
-/* Register or deregister as an observer of the values at a key path relative to each indexed element of the array. The options determine what is included in observer notifications and when they're sent, as described above, and the context is passed in observer notifications as described above. These are not merely convenience methods; invoking them is potentially much faster than repeatedly invoking NSObject(NSKeyValueObserverRegistration) methods. You should use -removeObserver:fromObjectsAtIndexes:forKeyPath:context: instead of -removeObserver:fromObjectsAtIndexes:forKeyPath: whenever possible for the same reason described in the NSObject(NSKeyValueObserverRegistration) comment.
-*/
+/// Registers an observer to receive key value observer notifications for the specified key-path relative to the objects at the indexes.
+///
+/// The `options` determine what is included in the notifications, and the `context` is passed in the notifications. This is not merely a convenience method; invoking this method is potentially much faster than repeatedly invoking `addObserver(_:forKeyPath:options:context:)` on `NSObject`.
+///
+/// - Parameters:
+///   - observer: The observer.
+///   - indexes: The index set.
+///   - keyPath: The key path, relative to the array, to be observed.
+///   - options: The options to be included in the notification.
+///   - context: The context passed to the notifications.
 - (void)addObserver:(NSObject *)observer toObjectsAtIndexes:(NSIndexSet *)indexes forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(nullable void *)context;
+/// Removes `observer` from all key value observer notifications associated with the specified `keyPath` relative to the array's objects at `indexes`.
+///
+/// - Parameters:
+///   - observer: The object to remove as an observer.
+///   - indexes: The index set.
+///   - keyPath: A key-path, relative to the array, for which `observer` is registered to receive KVO change notifications. This value must not be `nil`.
+///   - context: The context passed to the notifications.
 - (void)removeObserver:(NSObject *)observer fromObjectsAtIndexes:(NSIndexSet *)indexes forKeyPath:(NSString *)keyPath context:(nullable void *)context API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0));
+/// Removes `observer` from all key value observer notifications associated with the specified `keyPath` relative to the array's objects at `indexes`.
+///
+/// This is not merely a convenience method; invoking this method is potentially much faster than repeatedly invoking `removeObserver(_:forKeyPath:)` on `NSObject`.
+///
+/// - Parameters:
+///   - observer: The observer.
+///   - indexes: The index set.
+///   - keyPath: The key path, relative to the array, to be observed.
 - (void)removeObserver:(NSObject *)observer fromObjectsAtIndexes:(NSIndexSet *)indexes forKeyPath:(NSString *)keyPath;
 
-/* NSArrays are not observable, so these methods raise exceptions when invoked on NSArrays. Instead of observing an array, observe the ordered to-many relationship for which the array is the collection of related objects.
-*/
+/// Raises an exception.
+///
+/// `NSArray` objects are not observable, so this method raises an exception when invoked on an `NSArray` object. Instead of observing an array, observe the ordered to-many relationship for which the array is the collection of related objects.
+///
+/// - Parameters:
+///   - observer: The object to register for KVO notifications. The observer must implement the key-value observing method `observeValue(forKeyPath:of:change:context:)`.
+///   - keyPath: The key path, relative to the array, of the property to observe. This value must not be `nil`.
+///   - options: A combination of ``NSKeyValueObservingOptions`` values that specifies what is included in observation notifications.
+///   - context: Arbitrary data that is passed to `observer` in `observeValue(forKeyPath:of:change:context:)`.
 - (void)addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(nullable void *)context;
+/// Raises an exception.
+///
+/// `NSArray` objects are not observable, so this method raises an exception when invoked on an `NSArray` object. Instead of observing an array, observe the ordered to-many relationship for which the array is the collection of related objects.
+///
+/// - Parameters:
+///   - observer: The object to remove as an observer.
+///   - keyPath: A key-path, relative to the set, for which `observer` is registered to receive KVO change notifications. This value must not be `nil`.
+///   - context: The context passed to the notifications.
 - (void)removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath context:(nullable void *)context API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0));
+/// Raises an exception.
+///
+/// `NSArray` objects are not observable, so this method raises an exception when invoked on an `NSArray` object. Instead of observing an array, observe the to-many relationship for which the array is the collection of related objects.
+///
+/// - Parameters:
+///   - observer: The object to remove as an observer.
+///   - keyPath: A key-path, relative to the array, for which `observer` is registered to receive KVO change notifications. This value must not be `nil`.
 - (void)removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath;
 
 @end
 
 @interface NSOrderedSet<ObjectType>(NSKeyValueObserverRegistration)
 
-/* NSOrderedSets are not observable, so these methods raise exceptions when invoked on NSOrderedSets. Instead of observing an ordered set, observe the ordered to-many relationship for which the ordered set is the collection of related objects.
-*/
+/// NSOrderedSets are not observable, so this method raises an exception when invoked on NSOrderedSets.
+///
+/// Instead of observing an ordered set, observe the ordered to-many relationship for which the ordered set is the collection of related objects.
 - (void)addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(nullable void *)context;
+/// NSOrderedSets are not observable, so this method raises an exception when invoked on NSOrderedSets.
 - (void)removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath context:(nullable void *)context API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0));
+/// NSOrderedSets are not observable, so this method raises an exception when invoked on NSOrderedSets.
 - (void)removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath;
 
 @end
 
 @interface NSSet<ObjectType>(NSKeyValueObserverRegistration)
 
-/* NSSets are not observable, so these methods raise exceptions when invoked on NSSets. Instead of observing a set, observe the unordered to-many relationship for which the set is the collection of related objects.
-*/
+/// NSSets are not observable, so this method raises an exception when invoked on NSSets.
+///
+/// Instead of observing a set, observe the unordered to-many relationship for which the set is the collection of related objects.
 - (void)addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(nullable void *)context;
+/// NSSets are not observable, so this method raises an exception when invoked on NSSets.
 - (void)removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath context:(nullable void *)context API_AVAILABLE(macos(10.7), ios(5.0), watchos(2.0), tvos(9.0));
+/// NSSets are not observable, so this method raises an exception when invoked on NSSets.
 - (void)removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath;
 
 @end

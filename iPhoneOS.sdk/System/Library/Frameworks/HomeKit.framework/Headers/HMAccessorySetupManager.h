@@ -20,12 +20,16 @@ NS_HEADER_AUDIT_BEGIN(nullability, sendability)
  */
 HM_EXTERN
 NS_SWIFT_SENDABLE
-API_AVAILABLE(ios(15.0))
+API_AVAILABLE(ios(15.0), macos(27.0), macCatalyst(27.0))
 API_UNAVAILABLE(watchos, tvos, visionos)
-API_UNAVAILABLE(macos, macCatalyst)
 @interface HMAccessorySetupManager : NSObject
 
 - (instancetype)init;
+
+/*!
+ *  @abstract   A flag that indicates whether `HMAccessorySetupManager` usage is supported
+ */
+@property (class, readonly, assign, getter=isSupported) BOOL supported API_AVAILABLE(ios(27.0), macos(27.0));
 
 /*!
  *  @abstract   Launch system UI to perform the process of setting up accessories with the given request.

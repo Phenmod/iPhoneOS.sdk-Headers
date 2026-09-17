@@ -9,8 +9,9 @@
 #import <ARKit/ARSkeleton.h>
 #import <simd/simd.h>
 
-
 NS_ASSUME_NONNULL_BEGIN
+
+API_UNAVAILABLE_BEGIN(visionos)
 
 /**
  Representation of a body in 2D.
@@ -24,11 +25,23 @@ NS_SWIFT_SENDABLE
  */
 @property (nonatomic, readonly) ARSkeleton2D *skeleton;
 
-/** Unavailable */
+/**
+ Unavailable.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)init NS_UNAVAILABLE;
+
+/**
+ Unavailable.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_UNAVAILABLE;
 
 @end
+
+API_UNAVAILABLE_END
 
 NS_ASSUME_NONNULL_END
 #else

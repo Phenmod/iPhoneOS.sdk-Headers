@@ -2,14 +2,14 @@
 //  HKCharacteristicValues.h
 //  HealthKit
 //
-//  Copyright © 2022-2023 Apple, Inc. All rights reserved.
+//  Copyright © 2022-2025 Apple, Inc. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*!
+/**
  @enum          HKActivityMoveMode
  @abstract      This enumerated type is used to represent the activity mode for the user's move ring.
 
@@ -21,7 +21,7 @@ typedef NS_ENUM(NSInteger, HKActivityMoveMode) {
     HKActivityMoveModeAppleMoveTime = 2,
 } API_AVAILABLE(ios(14.0), watchos(7.0), macCatalyst(14.0), macos(13.0));
 
-/*!
+/**
  @enum          HKBiologicalSex
  @abstract      This enumerated type is used to represent the biological sex of an individual.
  */
@@ -32,7 +32,7 @@ typedef NS_ENUM(NSInteger, HKBiologicalSex) {
     HKBiologicalSexOther API_AVAILABLE(ios(8.2), watchos(2.0), macCatalyst(13.0), macos(13.0)) = 3,
 } API_AVAILABLE(ios(8.0), watchos(2.0), macCatalyst(13.0), macos(13.0));
 
-/*!
+/**
  @enum          HKBloodType
  @abstract      This enumerated type is used to represent the blood type of an individual.
  */
@@ -48,7 +48,7 @@ typedef NS_ENUM(NSInteger, HKBloodType) {
     HKBloodTypeONegative = 8,
 } API_AVAILABLE(ios(8.0), watchos(2.0), macCatalyst(13.0), macos(13.0));
 
-/*!
+/**
  @enum          HKFitzpatrickSkinType
  @abstract      This enumerated type is used to represent the skin type of an individual based on the Fitzpatrick scale.
  @discussion    The Fitzpatrick scale is a numerical classification for skin color based on the skin's response to sun
@@ -71,7 +71,7 @@ typedef NS_ENUM(NSInteger, HKFitzpatrickSkinType) {
     HKFitzpatrickSkinTypeVI = 6,
 } API_AVAILABLE(ios(9.0), watchos(2.0), macCatalyst(13.0), macos(13.0));
 
-/*!
+/**
  @enum          HKWheelchairUse
  @abstract      This enumerated type is used to represent whether the user uses a wheelchair.
 

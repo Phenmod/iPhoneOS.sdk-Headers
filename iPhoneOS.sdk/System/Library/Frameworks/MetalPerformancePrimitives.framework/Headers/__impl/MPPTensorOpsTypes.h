@@ -42,18 +42,26 @@ enum __tensor_ops_datatype
   __tensor_ops_datatype_float16 = __tensor_ops_datatype_float_bit | 16,
 
   __tensor_ops_datatype_signed_bit = 0x20000000,
+  __tensor_ops_datatype_int2 = __tensor_ops_datatype_signed_bit | 2,
   __tensor_ops_datatype_int4 = __tensor_ops_datatype_signed_bit | 4,
   __tensor_ops_datatype_int8 = __tensor_ops_datatype_signed_bit | 8,
   __tensor_ops_datatype_int16 = __tensor_ops_datatype_signed_bit | 16,
   __tensor_ops_datatype_int32 = __tensor_ops_datatype_signed_bit | 32,
 
+  __tensor_ops_datatype_uint2 = 2,
   __tensor_ops_datatype_uint4 = 4,
   __tensor_ops_datatype_uint8 = 8,
   __tensor_ops_datatype_uint16 = 16,
   __tensor_ops_datatype_uint32 = 32,
 
   __tensor_ops_datatype_alternate_encoding_bit = 0x80000000,
+  __tensor_ops_datatype_alternate_encoding_bit2 = 0x40000000,
   __tensor_ops_datatype_bfloat16 = __tensor_ops_datatype_alternate_encoding_bit | __tensor_ops_datatype_float16,
+
+  __tensor_ops_datatype_fp4_e2m1 = __tensor_ops_datatype_float_bit | 4,
+  __tensor_ops_datatype_fp8_e4m3 = __tensor_ops_datatype_float_bit | 8,
+  __tensor_ops_datatype_fp8_e5m2 = __tensor_ops_datatype_alternate_encoding_bit | __tensor_ops_datatype_float_bit | 8,
+  __tensor_ops_datatype_fp8_ue8m0 = __tensor_ops_datatype_alternate_encoding_bit2 | __tensor_ops_datatype_float_bit | 8,
 };
 
 enum __tensor_ops_address_space
@@ -109,6 +117,12 @@ constexpr __tensor_ops_datatype __element_type_to_tensor_ops_datatype()
 #endif
   else if constexpr (__is_same_v<ElementType, half>)
     return __tensor_ops_datatype_float16;
+#if __HAVE_INT2B_FORMAT_TYPE__
+  else if constexpr (__is_same_v<ElementType, metal::int2b_format>)
+    return __tensor_ops_datatype_int2;
+  else if constexpr (__is_same_v<ElementType, metal::uint2b_format>)
+    return __tensor_ops_datatype_uint2;
+#endif
 #if __HAVE_INT4B_FORMAT_TYPE__
   else if constexpr (__is_same_v<ElementType, metal::int4b_format>)
     return __tensor_ops_datatype_int4;
@@ -123,6 +137,22 @@ constexpr __tensor_ops_datatype __element_type_to_tensor_ops_datatype()
     return __tensor_ops_datatype_int32;
   else if constexpr (__is_same_v<ElementType, uint32_t>)
     return __tensor_ops_datatype_uint32;
+#if __HAVE_METAL_FP4_E2M1_FORMAT_TYPE__
+  else if constexpr (__is_same_v<ElementType, metal::metal_fp4_e2m1_format>)
+    return __tensor_ops_datatype_fp4_e2m1;
+#endif
+#if __HAVE_METAL_FP8_E4M3_FORMAT_TYPE__
+  else if constexpr (__is_same_v<ElementType, metal::metal_fp8_e4m3_format>)
+    return __tensor_ops_datatype_fp8_e4m3;
+#endif
+#if __HAVE_METAL_FP8_E5M2_FORMAT_TYPE__
+  else if constexpr (__is_same_v<ElementType, metal::metal_fp8_e5m2_format>)
+    return __tensor_ops_datatype_fp8_e5m2;
+#endif
+#if __HAVE_METAL_FP8_UE8M0_FORMAT_TYPE__
+  else if constexpr (__is_same_v<ElementType, metal::metal_fp8_ue8m0_format>)
+    return __tensor_ops_datatype_fp8_ue8m0;
+#endif
   else
     static_assert(__assert_false_v<ElementType>, "unsupported data type");
 }

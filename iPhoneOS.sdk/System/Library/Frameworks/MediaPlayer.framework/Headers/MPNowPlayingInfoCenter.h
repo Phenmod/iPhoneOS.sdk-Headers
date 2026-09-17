@@ -190,4 +190,8 @@ MP_EXTERN NSString * const MPNowPlayingInfoProperty1x1AnimatedArtwork MP_API(ios
 /// 3:4 (tall) animated artwork for the current media item.
 MP_EXTERN NSString * const MPNowPlayingInfoProperty3x4AnimatedArtwork MP_API(ios(19.0), tvos(19.0), macos(16.0), watchos(12.0), visionos(3.0)); // MPMediaItemAnimatedArtwork
 
+// An array of MPAppEntityIdentifier containing the current now playing app entity identifiers for the application.
+MP_EXTERN NSString * const MPNowPlayingInfoPropertyAppEntityIdentifiers MP_API(ios(27.0), macos(27.0), watchos(27.0), tvos(27.0)); // NSArray (MPAppEntityIdentifier)
+
+
 NS_ASSUME_NONNULL_END

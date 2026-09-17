@@ -174,7 +174,7 @@ API_AVAILABLE(macos(10.10), ios(9.0), tvos(9.0)) API_UNAVAILABLE(watchos)
 #pragma mark AVAudioUnitComponentManager
 
 /* The notification object is an AVAudioUnitComponent object */
-extern NSString * const AVAudioUnitComponentTagsDidChangeNotification API_AVAILABLE(macos(10.10), ios(9.0), tvos(9.0)) API_UNAVAILABLE(watchos);
+extern NSString * const AVAudioUnitComponentTagsDidChangeNotification API_AVAILABLE(macos(10.10), ios(9.0), tvos(9.0)) API_DEPRECATED("User tags are only supported on macOS", ios(9.0, 27.0), tvos(9.0, 27.0)) API_UNAVAILABLE(watchos) API_UNAVAILABLE(watchos);
 
 /*!
 	@class	AVAudioUnitComponentManager

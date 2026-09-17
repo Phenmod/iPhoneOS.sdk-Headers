@@ -1523,6 +1523,15 @@ CM_EXPORT const CFStringRef kCMSampleAttachmentKey_DoNotDisplay  // CFBoolean
 // The following keys may be attached to sample buffers using CMSetAttachment():
 CM_EXPORT const CFStringRef kCMSampleBufferAttachmentKey_ResetDecoderBeforeDecoding  // CFBoolean
 							API_AVAILABLE(macos(10.7), ios(4.0), tvos(9.0), watchos(6.0), visionos(1.0));
+
+/*!
+	@constant	kCMSampleBufferAttachmentKey_DrainAfterDecoding
+	@abstract	A value of kCFBooleanTrue requires the media converter to emit all prior enqueued samples without any further enqueue expectation.
+	@discussion
+		kCMSampleBufferAttachmentKey_DrainAfterDecoding, value kCFBooleanTrue, indicates to the buffer consumer that all prior enqueued samples must be
+		processed without waiting on further media dependencies. Clients should attach this marker to an empty CMSampleBuffer.
+		Clients may use this marker as a signal to finish processing any remaining sample buffers in the queue.
+*/
 CM_EXPORT const CFStringRef kCMSampleBufferAttachmentKey_DrainAfterDecoding  // CFBoolean
 							API_AVAILABLE(macos(10.7), ios(4.0), tvos(9.0), watchos(6.0), visionos(1.0));
 CM_EXPORT const CFStringRef kCMSampleBufferAttachmentKey_PostNotificationWhenConsumed  // CFDictionary (client-defined)
@@ -1896,7 +1905,6 @@ CM_EXPORT const CFStringRef kCMSampleAttachmentKey_HDR10PlusPerFrameData // CFDa
  */
 CM_EXPORT const CFStringRef kCMSampleAttachmentKey_PostDecodeProcessingMetadata // CFDictionary
 						API_AVAILABLE(macos(15.0)) API_UNAVAILABLE(ios, watchos, tvos, visionos);
-
 
 CM_ASSUME_NONNULL_END
 

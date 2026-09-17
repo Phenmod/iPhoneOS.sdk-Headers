@@ -12,6 +12,7 @@
 #import <CarPlay/CPAlertTemplate.h>
 #import <CarPlay/CPBarButton.h>
 #import <CarPlay/CPBarButtonProviding.h>
+#import <CarPlay/CPChargingStationConnection.h>
 #import <CarPlay/CPContact.h>
 #import <CarPlay/CPContactTemplate.h>
 #import <CarPlay/CPDashboardButton.h>
@@ -27,6 +28,7 @@
 #import <CarPlay/CPInformationTemplate.h>
 #import <CarPlay/CPInstrumentClusterController.h>
 #import <CarPlay/CPInterfaceController.h>
+#import <CarPlay/CPLaneGuidance.h>
 #import <CarPlay/CPLocation.h>
 #import <CarPlay/CPListImageRowItem.h>
 #import <CarPlay/CPListImageRowItemCardElement.h>
@@ -44,9 +46,13 @@
 #import <CarPlay/CPManeuver.h>
 #import <CarPlay/CPMapButton.h>
 #import <CarPlay/CPMapTemplate.h>
+#import <CarPlay/CPMapPanelItem.h>
+#import <CarPlay/CPMapPanel.h>
+#import <CarPlay/CPMapPanelSection.h>
 #import <CarPlay/CPMapTemplateWaypoint.h>
 #import <CarPlay/CPMessageComposeBarButton.h>
 #import <CarPlay/CPMessageListItem.h>
+#import <CarPlay/CPMultiStopCardConfiguration.h>
 #import <CarPlay/CPNavigationAlert.h>
 #import <CarPlay/CPNavigationEnum.h>
 #import <CarPlay/CPNavigationSession.h>
@@ -54,9 +60,14 @@
 #import <CarPlay/CPNowPlayingButton.h>
 #import <CarPlay/CPNowPlayingMode.h>
 #import <CarPlay/CPNowPlayingTemplate.h>
+#import <CarPlay/CPPanel.h>
+#import <CarPlay/CPMapPanelButtonConfiguration.h>
+#import <CarPlay/CPPanelButtonConfiguration.h>
+#import <CarPlay/CPPanelItem.h>
 #import <CarPlay/CPPlaybackConfiguration.h>
 #import <CarPlay/CPPointOfInterest.h>
 #import <CarPlay/CPPointOfInterestTemplate.h>
+#import <CarPlay/CPRouteDetail.h>
 #import <CarPlay/CPSearchTemplate.h>
 #import <CarPlay/CPListItemTypes.h>
 #import <CarPlay/CPRerouteReason.h>

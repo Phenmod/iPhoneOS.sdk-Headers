@@ -2,7 +2,7 @@
 //  path.h
 //  Network
 //
-//  Copyright (c) 2017-2025 Apple Inc. All rights reserved.
+//  Copyright (c) 2017-2026 Apple Inc. All rights reserved.
 //
 
 #ifndef __NW_PATH_H__
@@ -352,7 +352,7 @@ nw_path_enumerate_gateways(nw_path_t path,
  *		capabilities of the network. Do not use this value to gate connection attempts or to override
  *		adjustments that would be made based on actual network performance.
  */
-typedef enum {
+typedef enum: uint8_t {
 	/*! @const nw_link_quality_unknown No link quality measurement is available */
 	nw_link_quality_unknown = 0,
 	/*! @const nw_link_quality_minimal Link quality is minimal */

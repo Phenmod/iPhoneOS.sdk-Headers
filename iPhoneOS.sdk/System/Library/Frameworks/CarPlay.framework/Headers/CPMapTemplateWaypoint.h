@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
  * CPMapTemplateWaypoint represents a waypoint with associated travel estimates
  */
 API_AVAILABLE(ios(26.4)) API_UNAVAILABLE(tvos) API_UNAVAILABLE(tvos)
-@interface CPMapTemplateWaypoint : NSObject
+@interface CPMapTemplateWaypoint : NSObject <NSSecureCoding>
 
 /**
  * The navigation waypoint containing location-based information and guidance for a point of interest along a route.

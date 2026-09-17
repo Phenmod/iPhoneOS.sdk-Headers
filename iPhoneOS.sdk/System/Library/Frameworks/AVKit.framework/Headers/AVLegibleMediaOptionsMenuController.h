@@ -25,19 +25,6 @@ NS_ASSUME_NONNULL_BEGIN
 // MARK: - Enums (API)
 
 /*!
-	@enum		AVLegibleMediaOptionsMenuType
-				An enum, describing the different types of legible option menus.
-	@constant	AVLegibleMediaOptionsMenuTypeDefault
-				Describes the complete default legible options menu.
-	@constant	AVLegibleMediaOptionsMenuTypeCaptionAppearance
-				Describes a caption appearance menu.
- */
-typedef NS_ENUM(NSInteger, AVLegibleMediaOptionsMenuType) {
-	AVLegibleMediaOptionsMenuTypeDefault,
-	AVLegibleMediaOptionsMenuTypeCaptionAppearance
-} API_UNAVAILABLE(ios, macos, macCatalyst, visionos) API_UNAVAILABLE(tvos, watchos);
-
-/*!
 	@enum		AVLegibleMediaOptionsMenuStateChangeReason
 				An enum set, describing the different reasons for changing the menu state.
 	@constant	AVLegibleMediaOptionsMenuStateChangeReasonNone
@@ -48,14 +35,14 @@ typedef NS_ENUM(NSInteger, AVLegibleMediaOptionsMenuType) {
 typedef NS_ENUM(NSInteger, AVLegibleMediaOptionsMenuStateChangeReason) {
 	 AVLegibleMediaOptionsMenuStateChangeReasonNone,
 	 AVLegibleMediaOptionsMenuStateChangeReasonLanguageMismatch,
-} API_AVAILABLE(ios(26.4), macos(26.4), visionos(26.4)) API_UNAVAILABLE(tvos, watchos) NS_SWIFT_NAME(AVLegibleMediaOptionsMenuController.StateChangeReason);
+} API_AVAILABLE(ios(26.4), macos(26.4), visionos(26.4)) API_UNAVAILABLE(tvos) API_UNAVAILABLE(watchos) NS_SWIFT_NAME(AVLegibleMediaOptionsMenuController.StateChangeReason);
 
 /*!
 	@struct		AVLegibleMediaOptionsMenuState
 	@abstract 	A struct describing the state of the legible options menu.
  */
 NS_SWIFT_NAME(AVLegibleMediaOptionsMenuController.MenuState)
-API_AVAILABLE(ios(26.4), macos(26.4), visionos(26.4)) API_UNAVAILABLE(tvos, watchos)
+API_AVAILABLE(ios(26.4), macos(26.4), visionos(26.4)) API_UNAVAILABLE(tvos) API_UNAVAILABLE(watchos)
 typedef struct AVLegibleMediaOptionsMenuState {
 	
 	/// Whether or not the legible options menu is
@@ -79,7 +66,7 @@ typedef NS_OPTIONS(NSInteger, AVLegibleMediaOptionsMenuContents) {
 	AVLegibleMediaOptionsMenuContentsLegible = 1 << 0,
 	AVLegibleMediaOptionsMenuContentsCaptionAppearance = 1 << 1,
 	AVLegibleMediaOptionsMenuContentsAll = (AVLegibleMediaOptionsMenuContentsLegible | AVLegibleMediaOptionsMenuContentsCaptionAppearance)
-} API_AVAILABLE(ios(26.4), macos(26.4), visionos(26.4)) API_UNAVAILABLE(tvos, watchos) NS_SWIFT_NAME(AVLegibleMediaOptionsMenuController.MenuContents);
+} API_AVAILABLE(ios(26.4), macos(26.4), visionos(26.4)) API_UNAVAILABLE(tvos) API_UNAVAILABLE(watchos) NS_SWIFT_NAME(AVLegibleMediaOptionsMenuController.MenuContents);
 
 
 @protocol AVMediaOptionsControllerDelegate;
@@ -93,7 +80,7 @@ typedef NS_OPTIONS(NSInteger, AVLegibleMediaOptionsMenuContents) {
 	@abstract		A menu controller for legible media options (subtitles/captions)
 	@discussion		Supports both media track selection and caption appearance customization. When initialized without a player, only caption appearance options are available. When initialized with a player, both media tracks and caption appearance are available.
  */
-API_AVAILABLE(ios(26.4), macos(26.4), visionos(26.4)) API_UNAVAILABLE(tvos, watchos)
+API_AVAILABLE(ios(26.4), macos(26.4), visionos(26.4)) API_UNAVAILABLE(tvos) API_UNAVAILABLE(watchos)
 NS_SWIFT_NAME(AVLegibleMediaOptionsMenuController)
 @interface AVLegibleMediaOptionsMenuController : NSObject
 
@@ -165,7 +152,7 @@ NS_SWIFT_NAME(AVLegibleMediaOptionsMenuController)
 	@abstract		Delegate protocol for AVLegibleMediaOptionsMenuController
 	@discussion		Provides callbacks for caption preview display and enablement state changes.
 */
-API_AVAILABLE(ios(26.4), macos(26.4), visionos(26.4)) API_UNAVAILABLE(tvos, watchos)
+API_AVAILABLE(ios(26.4), macos(26.4), visionos(26.4)) API_UNAVAILABLE(tvos) API_UNAVAILABLE(watchos)
 NS_SWIFT_NAME(AVLegibleMediaOptionsMenuController.Delegate)
 @protocol AVLegibleMediaOptionsMenuControllerDelegate <NSObject>
 @optional

@@ -102,16 +102,16 @@ typedef struct CF_BRIDGED_TYPE(id) __CFPlugInInstance *CFPlugInInstanceRef;
 typedef Boolean (*CFPlugInInstanceGetInterfaceFunction)(CFPlugInInstanceRef instance, CFStringRef interfaceName, void **ftbl);
 typedef void (*CFPlugInInstanceDeallocateInstanceDataFunction)(void *instanceData);
 
-CF_EXPORT Boolean CFPlugInInstanceGetInterfaceFunctionTable(CFPlugInInstanceRef instance, CFStringRef interfaceName, void **ftbl);
+CF_EXPORT Boolean CFPlugInInstanceGetInterfaceFunctionTable(CFPlugInInstanceRef instance, CFStringRef interfaceName, void **ftbl) API_DEPRECATED("Use UUID-based plugins instead", macos(10.0, 27.0), ios(2.0, 27.0), watchos(2.0, 27.0), tvos(9.0, 27.0));
 
 /* This function returns a retained object on 10.8 or later. */
-CF_EXPORT CFStringRef CFPlugInInstanceGetFactoryName(CFPlugInInstanceRef instance) CF_RETURNS_RETAINED;
+CF_EXPORT CFStringRef CFPlugInInstanceGetFactoryName(CFPlugInInstanceRef instance) CF_RETURNS_RETAINED API_DEPRECATED("Use UUID-based plugins instead", macos(10.0, 27.0), ios(2.0, 27.0), watchos(2.0, 27.0), tvos(9.0, 27.0));
 
-CF_EXPORT void *CFPlugInInstanceGetInstanceData(CFPlugInInstanceRef instance);
+CF_EXPORT void *CFPlugInInstanceGetInstanceData(CFPlugInInstanceRef instance) API_DEPRECATED("Use UUID-based plugins instead", macos(10.0, 27.0), ios(2.0, 27.0), watchos(2.0, 27.0), tvos(9.0, 27.0));
 
-CF_EXPORT CFTypeID CFPlugInInstanceGetTypeID(void);
+CF_EXPORT CFTypeID CFPlugInInstanceGetTypeID(void) API_DEPRECATED("Use UUID-based plugins instead", macos(10.0, 27.0), ios(2.0, 27.0), watchos(2.0, 27.0), tvos(9.0, 27.0));
 
-CF_EXPORT CFPlugInInstanceRef CFPlugInInstanceCreateWithInstanceDataSize(CFAllocatorRef allocator, CFIndex instanceDataSize, CFPlugInInstanceDeallocateInstanceDataFunction deallocateInstanceFunction, CFStringRef factoryName, CFPlugInInstanceGetInterfaceFunction getInterfaceFunction);
+CF_EXPORT CFPlugInInstanceRef CFPlugInInstanceCreateWithInstanceDataSize(CFAllocatorRef allocator, CFIndex instanceDataSize, CFPlugInInstanceDeallocateInstanceDataFunction deallocateInstanceFunction, CFStringRef factoryName, CFPlugInInstanceGetInterfaceFunction getInterfaceFunction) API_DEPRECATED("Use UUID-based plugins instead", macos(10.0, 27.0), ios(2.0, 27.0), watchos(2.0, 27.0), tvos(9.0, 27.0));
 
 CF_EXTERN_C_END
 CF_IMPLICIT_BRIDGING_DISABLED

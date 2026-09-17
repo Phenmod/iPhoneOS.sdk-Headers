@@ -111,7 +111,7 @@ CORE_IMAGE_EXPORT CIImageOption const kCIImageColorSpace;
 /// * ``CIVector`` : then use it as a `CGRect` to crop and offset.
 /// * Not specified : then it will behave as if False was specified.
 ///
-CORE_IMAGE_EXPORT CIImageOption const kCIImageApplyCleanAperture NS_AVAILABLE(16_0, 19_0); 
+CORE_IMAGE_EXPORT CIImageOption const kCIImageApplyCleanAperture NS_AVAILABLE(26_0, 26_0); 
 
 /* A boolean value specifying whether an image returned by [CIImage with...] should have kernels
  * applied that will tone map to standard dynamic range (SDR).
@@ -144,26 +144,34 @@ CORE_IMAGE_EXPORT CIImageOption const kCIImageContentHeadroom NS_AVAILABLE(15_0,
 /// when creating an image.
 ///
 /// The value for this key should be an `NSNumber` instance.
-CORE_IMAGE_EXPORT CIImageOption const kCIImageContentAverageLightLevel NS_AVAILABLE(16_0, 19_0);
+CORE_IMAGE_EXPORT CIImageOption const kCIImageContentAverageLightLevel NS_AVAILABLE(26_0, 26_0);
 
-/* A boolean value specifying how the image should sampled. 
- * If this option value is @YES, then the image will be sampled using nearest neighbor sampling.
- * If this option value is @NO, then the image will be sampled using bilinear interpolation.
- * If this option is not specified, then it will behave as if @NO was specified.
- */
+
+/// A Boolean value specifying how the image should be sampled.
+///
+/// If the value for this option is:
+/// * True: The image will be sampled using nearest neighbor sampling. 
+/// * False: The image will be sampled using bilinear interpolation. 
+/// * Not specified: The default behavior is False. 
+/// 
 CORE_IMAGE_EXPORT CIImageOption const kCIImageNearestSampling NS_AVAILABLE(10_13, 11_0);
 
 
-/* A boolean value specifying when the the image should be decoded.
- * This option is supported by:
- *     imageWithContentsOfURL:options:, initWithContentsOfURL:options,
- *     imageWithData:options:,          initWithData:options:,
- *     imageWithCGImage:options:,       initWithCGImage:options:,
- *     imageWithCGImageSource:options:, initWithCGImageSource:options:
- *
- * If this option value is @YES, then if possible the image will be decoded into a non-volatile cache at initialization time.
- * If this option value is @NO, then the image will be decoded into a volatile cache at render time.
- * If not specified, CoreImage will decide when the image should be decoded. */
+/// A Boolean value specifying when the image should be decoded.
+///
+/// If the value for this option is:
+/// * True: The image will be decoded into a non-volatile cache at initialization time if possible. 
+/// * False: The image will be decoded into a volatile cache at render time. 
+/// * Not specified: The default behavior is True or False depening on the image size and available memeory.
+/// 
+/// This option is only supported by these APIs:
+///  * ``/CIImage/imageWithContentsOfURL:options:`` 
+///  * ``/CIImage/initWithContentsOfURL:options:``
+///  * ``/CIImage/imageWithData:options:``
+///  * ``/CIImage/initWithData:options:``
+///  * ``/CIImage/imageWithCGImageSource:index:options:``
+///  * ``/CIImage/initWithCGImageSource:index:options:``
+///  
 CORE_IMAGE_EXPORT CIImageOption const kCIImageCacheImmediately;
 
 
@@ -193,6 +201,70 @@ CORE_IMAGE_EXPORT CIImageOption const kCIImageApplyOrientationProperty NS_AVAILA
 CORE_IMAGE_EXPORT CIImageOption const kCIImageTextureTarget CI_GL_DEPRECATED_MAC(10_9,10_14);
 CORE_IMAGE_EXPORT CIImageOption const kCIImageTextureFormat CI_GL_DEPRECATED_MAC(10_9,10_14);
 
+
+/// The factor by which to scale down a returned images.
+///
+/// The value of this key should be an `NSNumber` containing the integer value 2, 4, or 8. 
+/// It can be used to improve performance and reduce memory usage when working with large images.
+/// 
+/// When you specify this key, the retured image will be scaled down the image data by the specified numerical factor. 
+/// If the image format doesn’t support the specified scale factor, a larger or full-size normal image is returned.
+/// 
+/// This option is only supported by JPEG, HEIF, TIFF, PNG and RAW images formats.
+///
+/// This option is only supported by these APIs:
+///  * ``/CIImage/imageWithContentsOfURL:options:`` 
+///  * ``/CIImage/initWithContentsOfURL:options:``
+///  * ``/CIImage/imageWithData:options:``
+///  * ``/CIImage/initWithData:options:``
+///  * ``/CIImage/imageWithCGImageSource:index:options:``
+///  * ``/CIImage/initWithCGImageSource:index:options:``
+///  
+/// > Note: the `kCGImageSourceSubsampleFactor` key can also be used for this purpose.
+/// 
+CORE_IMAGE_EXPORT CIImageOption const kCIImageSubsampleFactor
+API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos);
+
+
+/// The uniform type identifier string to use in cases where a file's format cannot
+/// be conclusively determined based solely on its contents.
+///
+/// The value of this key should be an `NSString` containing a hint. 
+/// It is most commonly needed for some RAW file formats which can also be  
+/// interpreted as TIFF files.
+/// 
+/// This option is only supported by these APIs:
+///  * ``/CIImage/imageWithContentsOfURL:options:`` 
+///  * ``/CIImage/initWithContentsOfURL:options:``
+///  * ``/CIImage/imageWithData:options:``
+///  * ``/CIImage/initWithData:options:``
+///  
+/// > Note: the key `kCGImageSourceTypeIdentifierHint` key can also be used for this purpose.
+///
+CORE_IMAGE_EXPORT CIImageOption const kCIImageTypeIdentifierHint
+API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos);
+
+/// A Boolean value specifying that using hardware is preferred when decoding.
+///
+/// If the value for this option is:
+/// * True: The image will be decoded using dedicated hardware if possible. 
+/// * False: The image will be decoded using the CPU is possible. 
+/// * Not specified: The default behavior is True.
+/// 
+/// This option is only supported by JPEG and HEIF images formats.
+/// 
+/// This option is only supported by these APIs:
+///  * ``/CIImage/imageWithContentsOfURL:options:`` 
+///  * ``/CIImage/initWithContentsOfURL:options:``
+///  * ``/CIImage/imageWithData:options:``
+///  * ``/CIImage/initWithData:options:``
+///  * ``/CIImage/imageWithCGImageSource:index:options:``
+///  * ``/CIImage/initWithCGImageSource:index:options:``
+///  
+/// > Note: the `kCGImageSourceUseHardwareAcceleration` key can also be used for this purpose.
+///  
+CORE_IMAGE_EXPORT CIImageOption const kCIImageUseHardwareAcceleration
+API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(watchos);
 
 /* The kCIImageAuxiliary keys specify that an auxiliary image be returned instead of the primary image.
  * These options are supported by:
@@ -504,7 +576,7 @@ CORE_IMAGE_EXPORT CIImageOption const kCIImageAuxiliaryHDRGainMap NS_AVAILABLE(1
 /// This intermediate will be cacheable even if ``kCIContextCacheIntermediates`` is false.
 /// - Returns: 
 ///    An autoreleased ``CIImage``.
-- (CIImage *)imageByInsertingTiledIntermediate NS_AVAILABLE(16_0, 19_0);
+- (CIImage *)imageByInsertingTiledIntermediate NS_AVAILABLE(26_0, 26_0);
 
 /// Create an image that applies a gain map Core Image image to the received Core Image image.
 /// 
@@ -539,7 +611,7 @@ CORE_IMAGE_EXPORT CIImageOption const kCIImageAuxiliaryHDRGainMap NS_AVAILABLE(1
 ///
 /// - Returns: 
 ///    An autoreleased ``CIImage``.
-- (CIImage*) imageBySettingContentHeadroom:(float)headroom NS_AVAILABLE(16_0, 19_0);
+- (CIImage*) imageBySettingContentHeadroom:(float)headroom NS_AVAILABLE(26_0, 26_0);
 
 /// Create an image by changing the receiver's contentAverageLightLevel property. 
 /// 
@@ -548,7 +620,7 @@ CORE_IMAGE_EXPORT CIImageOption const kCIImageAuxiliaryHDRGainMap NS_AVAILABLE(1
 ///
 /// - Returns: 
 ///    An autoreleased ``CIImage``.
-- (CIImage*) imageBySettingContentAverageLightLevel:(float)average NS_AVAILABLE(16_0, 19_0);
+- (CIImage*) imageBySettingContentAverageLightLevel:(float)average NS_AVAILABLE(26_0, 26_0);
 
 /// Returns a rectangle the defines the bounds of non-(0,0,0,0) pixels in the image.
 /// > Note: the ``extent`` of `CIImage`` may be infinite or have a non-zero origin. 
@@ -630,7 +702,7 @@ CORE_IMAGE_EXPORT CIImageOption const kCIImageAuxiliaryHDRGainMap NS_AVAILABLE(1
 /// (e.g. `CIGaussianBlur`, `CILanczosScaleTransform`, `CIAreaAverage` and some others) 
 /// to an image will result in a ``CIImage`` instance with the same `contentAverageLightLevel` property value.
 ///
-@property (nonatomic, readonly) float contentAverageLightLevel NS_AVAILABLE(16_0, 19_0);
+@property (nonatomic, readonly) float contentAverageLightLevel NS_AVAILABLE(26_0, 26_0);
 
 /* Returns a CVPixelBufferRef if the CIImage was created with [CIImage imageWithCVPixelBuffer] and no options.
  * Otherwise this property will be nil and calling [CIContext render:toCVPixelBuffer:] is recommended.

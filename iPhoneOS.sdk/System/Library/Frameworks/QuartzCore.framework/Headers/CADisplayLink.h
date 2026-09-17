@@ -1,6 +1,6 @@
 /* CoreAnimation - CADisplayLink.h
 
-   Copyright (c) 2009-2025, Apple Inc.
+   Copyright (c) 2009-2026, Apple Inc.
    All rights reserved. */
 
 #ifdef __OBJC__
@@ -27,7 +27,8 @@ API_AVAILABLE(macos(14.0))
 /* Create a new display link object for the main display. It will
  * invoke the method called 'sel' on 'target', the method has the
  * signature '(void)selector:(CADisplayLink *)sender'.
- * For macOS, see NSView/NSWindow/NSScreen.displayLink(withTarget:selector:). */
+ * For macOS, see NSView/NSWindow/NSScreen.displayLink(withTarget:selector:).
+ * For iOS, see UIScene.displayLink(target:selector:) */
 
 + (CADisplayLink *)displayLinkWithTarget:(id)target selector:(SEL)sel
     API_UNAVAILABLE(macos);

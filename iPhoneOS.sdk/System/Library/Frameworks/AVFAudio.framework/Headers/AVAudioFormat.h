@@ -7,7 +7,7 @@
 
 #import <AVFAudio/AVAudioChannelLayout.h>
 
-#if __has_include(<CoreMedia/CMFormatDescription.h>) && !0
+#if __has_include(<CoreMedia/CMFormatDescription.h>) && !0 && !0
 #define AVAUDIOFORMAT_HAVE_CMFORMATDESCRIPTION 1
 #import <CoreMedia/CMFormatDescription.h>
 #endif
@@ -45,7 +45,7 @@ typedef NS_ENUM(NSUInteger, AVAudioCommonFormat) {
 	
 		Instances of this class are immutable.
 */
-NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
+API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 @interface AVAudioFormat : NSObject <NSSecureCoding> {
 @private
 	AudioStreamBasicDescription _asbd;
@@ -148,7 +148,18 @@ NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
  	@discussion
  		If formatDescription is invalid, this method fails (returns nil).
  */
-- (instancetype)initWithCMAudioFormatDescription:(CMAudioFormatDescriptionRef)formatDescription API_AVAILABLE(macos(10.11), ios(9.0), watchos(2.0), tvos(9.0));
+- (instancetype)initWithCMAudioFormatDescription:(CMAudioFormatDescriptionRef)formatDescription API_DEPRECATED_WITH_REPLACEMENT("initWithFormatDescription:", macos(10.11, 27.0), ios(9.0, 27.0), watchos(2.0, 27.0), tvos(9.0, 27.0));
+
+/*!
+	@method initWithFormatDescription:
+	@abstract initialize from a CMAudioFormatDescriptionRef.
+	@param formatDescription
+		the CMAudioFormatDescriptionRef.
+	@discussion
+		If formatDescription is invalid, this method fails (returns nil).
+ */
+- (nullable instancetype)initWithFormatDescription:(CMAudioFormatDescriptionRef)formatDescription API_AVAILABLE(macos(27), ios(27), watchos(27), tvos(27));
+
 #endif
 
 /*!	@method isEqual:

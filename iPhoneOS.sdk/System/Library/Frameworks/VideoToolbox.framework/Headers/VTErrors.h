@@ -70,6 +70,7 @@ enum
 	kVTCouldNotFindExtensionErr				= -19510,
 	kVTExtensionConflictErr					= -19511,
 	kVTVideoEncoderAutoWhiteBalanceNotLockedErr = -19512,
+	kVTLogTransferFunctionMismatchErr		= -19513,
 };
 
 /*!

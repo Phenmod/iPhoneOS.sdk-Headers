@@ -21,17 +21,7 @@
 #include <CoreVideo/CVPixelBuffer.h>
 
 #if COREVIDEO_SUPPORTS_IOSURFACE
-#if COREVIDEO_USE_IOSURFACEREF
-#if __has_include(<IOSurface/IOSurfaceRef.h>)
 #include <IOSurface/IOSurfaceRef.h>
-#define COREVIDEO_INCLUDED_IOSURFACE_HEADER_FILE 1
-#endif
-#else
-#if __has_include(<IOSurface/IOSurface.h>)
-#include <IOSurface/IOSurface.h>
-#define COREVIDEO_INCLUDED_IOSURFACE_HEADER_FILE 1
-#endif
-#endif
 #endif // COREVIDEO_SUPPORTS_IOSURFACE
 
 
@@ -52,7 +42,6 @@ CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferIOSurfaceOpenGLESTextureCom
 CV_EXPORT const CFStringRef CV_NONNULL kCVPixelBufferIOSurfaceOpenGLESFBOCompatibilityKey API_AVAILABLE(ios(5.0), tvos(9.0)) API_UNAVAILABLE(macosx) API_UNAVAILABLE(macCatalyst) API_UNAVAILABLE(visionos) __WATCHOS_PROHIBITED;	// CFBoolean
     
 #if COREVIDEO_SUPPORTS_IOSURFACE
-#if COREVIDEO_INCLUDED_IOSURFACE_HEADER_FILE
 
 /*!
 	@function   CVPixelBufferGetIOSurface
@@ -82,7 +71,6 @@ CV_EXPORT CVReturn CVPixelBufferCreateWithIOSurface(
 		CFDictionaryRef CV_NULLABLE pixelBufferAttributes,
 		CVPixelBufferRef CV_NULLABLE * CV_NONNULL pixelBufferOut) __OSX_AVAILABLE_STARTING(__MAC_10_6,__IPHONE_4_0);
 
-#endif // COREVIDEO_INCLUDED_IOSURFACE_HEADER_FILE
 #endif // COREVIDEO_SUPPORTS_IOSURFACE
 
 

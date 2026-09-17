@@ -24,6 +24,7 @@ GAMECONTROLLER_EXPORT NSString *const GCProductCategoryMFi API_AVAILABLE(macos(1
 GAMECONTROLLER_EXPORT NSString *const GCProductCategoryXboxOne API_AVAILABLE(macos(12.0), ios(15.0), tvos(15.0));
 GAMECONTROLLER_EXPORT NSString *const GCProductCategoryHID API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0));
 
+
 /** The category for game controller products that support 6DoF tracking on visionOS. */
 GAMECONTROLLER_EXPORT NSString *const GCProductCategorySpatialController API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), visionos(26.0));
 

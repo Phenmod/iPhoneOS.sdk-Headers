@@ -67,7 +67,7 @@ tessellationFactorBufferOffset:(NSUInteger)offset tessellationFactorBufferInstan
 - (void)setDepthBias:(float)depthBias slopeScale:(float)slopeScale clamp:(float)clamp API_AVAILABLE(macos(26.0), ios(26.0));
 - (void)setDepthClipMode:(MTLDepthClipMode)depthClipMode API_AVAILABLE(macos(26.0), ios(26.0));
 - (void)setCullMode:(MTLCullMode)cullMode API_AVAILABLE(macos(26.0), ios(26.0));
-- (void)setFrontFacingWinding:(MTLWinding)frontFacingWindning API_AVAILABLE(macos(26.0), ios(26.0));
+- (void)setFrontFacingWinding:(MTLWinding)frontFacingWinding API_AVAILABLE(macos(26.0), ios(26.0));
 - (void)setTriangleFillMode:(MTLTriangleFillMode)fillMode API_AVAILABLE(macos(26.0), ios(26.0));
 
 - (void)reset;

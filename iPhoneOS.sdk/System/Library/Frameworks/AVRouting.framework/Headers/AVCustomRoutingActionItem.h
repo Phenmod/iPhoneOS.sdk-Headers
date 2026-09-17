@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// the
 /// ``AVCustomRoutingControllerDelegate/customRoutingController:didSelectItem:``
 /// method of ``AVCustomRoutingControllerDelegate``.
-API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos)
+API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos) API_DEPRECATED("Use AVSystemRouting instead", ios(16.0, 27.0))
 NS_SWIFT_NONSENDABLE @interface AVCustomRoutingActionItem : NSObject
 
 /*!
@@ -41,7 +41,7 @@ NS_SWIFT_NONSENDABLE @interface AVCustomRoutingActionItem : NSObject
 ///
 /// Provide a `UTType` symbol name and description in your app’s `Info.plist`
 /// file.
-@property (nonatomic, copy) UTType *type API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos);
+@property (nonatomic, copy) UTType *type API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos) API_DEPRECATED("Use AVSystemRouting instead", ios(16.0, 27.0));
 
 /*!
     @property   overrideTitle
@@ -52,7 +52,7 @@ NS_SWIFT_NONSENDABLE @interface AVCustomRoutingActionItem : NSObject
 /// A string to use to override the title of the item’s type.
 ///
 /// Use this value to dynamically override the title of the custom item.
-@property (nonatomic, copy, nullable) NSString *overrideTitle API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos);
+@property (nonatomic, copy, nullable) NSString *overrideTitle API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos) API_DEPRECATED("Use AVSystemRouting instead", ios(16.0, 27.0));
 
 @end
 

@@ -3,7 +3,7 @@
 
 	Framework:  AVFoundation
  
-	Copyright 2019-2024 Apple Inc. All rights reserved.
+	Copyright 2019-2026 Apple Inc. All rights reserved.
 
  */
 
@@ -17,6 +17,7 @@
 #import <AVFoundation/AVAssetCache.h>
 #import <AVFoundation/AVAssetExportSession.h>
 #import <AVFoundation/AVAssetImageGenerator.h>
+#import <AVFoundation/AVAssetWritingPlanner.h>
 #import <AVFoundation/AVAssetReader.h>
 #import <AVFoundation/AVAssetReaderOutput.h>
 #import <AVFoundation/AVAssetResourceLoader.h>
@@ -61,6 +62,7 @@
 #import <AVFoundation/AVPlayerItem.h>
 #import <AVFoundation/AVPlayerItemMediaDataCollector.h>
 #import <AVFoundation/AVPlayerItemOutput.h>
+#import <AVFoundation/AVPlayerItemSampleBufferOutput.h>
 #if ((TARGET_OS_MAC && !(TARGET_OS_EMBEDDED || TARGET_OS_IPHONE)) || TARGET_OS_MACCATALYST)
 #import <AVFoundation/AVPlayerItemProtectedContentAdditions.h>
 #endif

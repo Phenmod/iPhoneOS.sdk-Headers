@@ -75,7 +75,7 @@ typedef NS_ENUM(NSInteger, AVAudioPlayerNodeCompletionCallbackType) {
 		some synchronisation between the calling threads internally. If you want to call player node API within this
 		completion handler block, calls should be synchronised to the same thread/queue.
 */
-typedef void (^AVAudioPlayerNodeCompletionHandler)(AVAudioPlayerNodeCompletionCallbackType callbackType) API_AVAILABLE(macos(10.13), ios(11.0), watchos(4.0), tvos(11.0));
+typedef void (^ NS_SWIFT_SENDING AVAudioPlayerNodeCompletionHandler)(AVAudioPlayerNodeCompletionCallbackType callbackType) API_AVAILABLE(macos(10.13), ios(11.0), watchos(4.0), tvos(11.0));
 
 /*!
 	@class AVAudioPlayerNode
@@ -152,7 +152,7 @@ typedef void (^AVAudioPlayerNodeCompletionHandler)(AVAudioPlayerNodeCompletionCa
 		`outputPresentationLatency`) can be used to track how much data the player has rendered and
 		how much more data is left to render.
 */
-API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 @interface AVAudioPlayerNode : AVAudioNode <AVAudioMixing>
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
@@ -309,7 +309,18 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 	@discussion
 		equivalent to playAtTime:nil
 */
-- (void)play;
+- (void)play API_DEPRECATED_WITH_REPLACEMENT("playAndReturnError:", ios(8.0, 27.0), watchos(2.0, 27.0), macos(10.10, 27.0), tvos(9.0, 27.0));
+
+/*!	@method playAndReturnError:
+	@abstract Start or resume playback immediately.
+	@param outError
+		on exit, if an error occurs, a description of the error.
+	@return
+		YES for success
+	@discussion
+		equivalent to playAtTime:nil error:&error
+*/
+- (BOOL)playAndReturnError:(NSError **)outError NS_SWIFT_NAME(playAudio()) API_AVAILABLE(macos(27.0), ios(27.0), watchos(27.0), tvos(27.0));
 
 /*!	@method playAtTime:
 	@abstract Start or resume playback at a specific time.
@@ -337,7 +348,39 @@ if (!nsErr) {
 }
 </pre>
 */
-- (void)playAtTime:(AVAudioTime * __nullable)when;
+- (void)playAtTime:(AVAudioTime * __nullable)when API_DEPRECATED_WITH_REPLACEMENT("playAtTime:error:", ios(8.0, 27.0), watchos(2.0, 27.0), macos(10.10, 27.0), tvos(9.0, 27.0));
+
+/*!	@method playAtTime:error:
+	@abstract Start or resume playback at a specific time.
+	@param when
+		the node time at which to start or resume playback. nil signifies "now".
+	@param outError
+		on exit, if an error occurs, a description of the error.
+	@return
+		YES for success
+	@discussion
+		This node is initially paused. Requests to play buffers or file segments are enqueued, and
+		any necessary decoding begins immediately. Playback does not begin, however, until the player
+		has started playing, via this method.
+
+		Note that providing an AVAudioTime which is past (before lastRenderTime) will cause the
+		player to begin playback immediately.
+
+		E.g. To start a player X seconds in future:
+<pre>
+// start engine and player
+NSError *nsErr = nil;
+[_engine startAndReturnError:&nsErr];
+if (!nsErr) {
+	const float kStartDelayTime = 0.5; // sec
+	AVAudioFormat *outputFormat = [_player outputFormatForBus:0];
+	AVAudioFramePosition startSampleTime = _player.lastRenderTime.sampleTime + kStartDelayTime * outputFormat.sampleRate;
+	AVAudioTime *startTime = [AVAudioTime timeWithSampleTime:startSampleTime atRate:outputFormat.sampleRate];
+	[_player playAtTime:startTime];
+}
+</pre>
+*/
+- (BOOL)playAtTime:(AVAudioTime * __nullable)when error:(NSError **)outError NS_SWIFT_NAME(playAudio(at:)) API_AVAILABLE(macos(27.0), ios(27.0), watchos(27.0), tvos(27.0));
 
 /*! @method pause
 	@abstract Pause playback.

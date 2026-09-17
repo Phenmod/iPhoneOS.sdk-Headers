@@ -17,6 +17,7 @@
 @class NSURL;
 @class NSDictionary;
 @class NSData;
+@class NSProgress;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -36,6 +37,21 @@ CORE_IMAGE_EXPORT CIRAWDecoderVersion const CIRAWDecoderVersion6DNG;
 
 /* Returns a NSArray containing the names of all supported camera models. */
 @property(class, readonly) NSArray<NSString*>* supportedCameraModels;
+
+/* Returns a NSArray containing the names of all supported camera models that support the specified decoder version. */
++ (NSArray<NSString*>*) supportedCameraModelsWithVersion:(CIRAWDecoderVersion)version
+    NS_SWIFT_NAME(supportedCameraModels(version:))
+    API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0));
+
+/* Downloads any on-demand resources required to decode this filter's image using its current decoderVersion, if they aren't already present.
+   Returns an NSProgress that can be used to track or cancel the download.
+   If 'timeout' elapses before the download finishes, completionHandler is called with a timeout error.
+   completionHandler is called with a nil error on success (whether or not a download was actually needed), or a non-nil error if the download failed or timed out.
+   The completion handler is called on a queue of CoreImage's choosing; dispatch to your own queue if you need one (e.g. the main queue for UI work). */
+- (NSProgress *) downloadResourcesWithTimeout:(NSTimeInterval)timeout
+                             completionHandler:(void (^)(NSError * _Nullable error))completionHandler
+    NS_SWIFT_NAME(downloadResources(timeout:completionHandler:))
+    API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), visionos(27.0));
 
 /* Array of all supported decoder versions for the given image type, sorted in increasingly newer order. All entries would represent a valid version identifier set to 'decoderVersion'.*/
 @property(readonly) NSArray<CIRAWDecoderVersion>* supportedDecoderVersions;
@@ -84,8 +100,8 @@ CORE_IMAGE_EXPORT CIRAWDecoderVersion const CIRAWDecoderVersion6DNG;
 
 /* A boolean value to control if highlight recovery is enabled or not.
    The default value is true. */
-@property(readonly, getter= isHighlightRecoverySupported) BOOL highlightRecoverySupported NS_AVAILABLE(16_0,19_0);
-@property(readwrite, getter= isHighlightRecoveryEnabled) BOOL highlightRecoveryEnabled NS_AVAILABLE(16_0,19_0);
+@property(readonly, getter= isHighlightRecoverySupported) BOOL highlightRecoverySupported NS_AVAILABLE(26_0, 26_0);
+@property(readwrite, getter= isHighlightRecoveryEnabled) BOOL highlightRecoveryEnabled NS_AVAILABLE(26_0, 26_0);
 
 /* A boolean value to control if gamut mapping is enabled or not.
    The default value is true. */
@@ -144,6 +160,14 @@ CORE_IMAGE_EXPORT CIRAWDecoderVersion const CIRAWDecoderVersion6DNG;
    The 'isMoireReductionSupported' property is false if the current image doesn't support this adjustment. */
 @property(readonly, getter= isMoireReductionSupported) BOOL moireReductionSupported;
 @property(readwrite) float moireReductionAmount;
+
+/* A value to control the amount of despeckle correction to apply to the raw image.
+   A value of 0 indicates no despeckle correction.
+   A value of 1 indicates maximum despeckle correction.
+   The value should be in the range of 0...1.  The default value will vary per image.
+   The 'isDespeckleSupported' property is false if the current image doesn't support this adjustment. */
+@property(readonly, getter= isDespeckleSupported) BOOL despeckleSupported;
+@property(readwrite) float despeckleAmount;
 
 /* A value to control the amount of local tone curve to apply to the image.
    A value of 0 indicates no local tone curve, i.e. linear response.

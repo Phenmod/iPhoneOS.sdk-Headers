@@ -92,8 +92,13 @@ API_AVAILABLE(macos(13.0), ios(16.1), visionos(2.4), tvos(18.4)) API_UNAVAILABLE
 /// do not perform operations at the same time. Both the extension and app must use this API to ensure exclusive access.
 /// @param performHandler A block that will be executed once exclusive control is acquired.
 /// If an error is non-nil then a problem occurred acquiring exclusive access.
-- (void)performWithExclusiveControl:(void (^ NS_SWIFT_SENDABLE)(BOOL acquiredLock, NSError *_Nullable error))performHandler
-API_AVAILABLE(macos(13.0), ios(16.1), visionos(2.4), tvos(18.4)) API_UNAVAILABLE(watchos)
+- (void)performWithExclusiveControl:(void (^ NS_SWIFT_SENDING)(BOOL acquiredLock, NSError *_Nullable error))performHandler
+#if __swift__
+API_DEPRECATED("Use the asynchronous overload of withExclusiveControl(_:) instead.", ios(16.1, 27), macos(13, 27), tvos(18.4, 27), visionos(2.4, 27))
+#else
+API_AVAILABLE(macos(13.0), ios(16.1), visionos(2.4), tvos(18.4))
+#endif
+API_UNAVAILABLE(watchos)
 NS_SWIFT_NAME(withExclusiveControl(_:))
 NS_SWIFT_DISABLE_ASYNC;
 
@@ -104,8 +109,13 @@ NS_SWIFT_DISABLE_ASYNC;
 /// @param performHandler A block that will be executed once exclusive control is acquired.
 /// If an error is non-nil then a problem occurred acquiring exclusive access.
 - (void)performWithExclusiveControlBeforeDate:(NSDate *)date
-                               performHandler:(void (^ NS_SWIFT_SENDABLE)(BOOL acquiredLock, NSError *_Nullable error))performHandler
-API_AVAILABLE(macos(13.0), ios(16.1), visionos(2.4), tvos(18.4)) API_UNAVAILABLE(watchos)
+                               performHandler:(void (^ NS_SWIFT_SENDING)(BOOL acquiredLock, NSError *_Nullable error))performHandler
+#if __swift__
+API_DEPRECATED("Use withExclusiveControl(before:_:) instead.", ios(16.1, 27), macos(13, 27), tvos(18.4, 27), visionos(2.4, 27))
+#else
+API_AVAILABLE(macos(13.0), ios(16.1), visionos(2.4), tvos(18.4))
+#endif
+API_UNAVAILABLE(watchos)
 NS_SWIFT_NAME(withExclusiveControl(beforeDate:perform:))
 NS_SWIFT_DISABLE_ASYNC;
 

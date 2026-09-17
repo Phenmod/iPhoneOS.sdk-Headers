@@ -430,7 +430,7 @@ typedef unsigned long long CFAllocatorTypeID;
 
 CF_EXTERN_C_BEGIN
 
-CF_EXPORT double kCFCoreFoundationVersionNumber;
+CF_EXPORT const double kCFCoreFoundationVersionNumber;
 
 #if TARGET_OS_MAC
 #define kCFCoreFoundationVersionNumber10_0	196.40

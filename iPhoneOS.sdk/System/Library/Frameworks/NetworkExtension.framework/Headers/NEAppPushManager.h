@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021, 2025 Apple Inc.
+ * Copyright (c) 2020-2021, 2025-2026 Apple Inc.
  * All rights reserved.
  */
 
@@ -103,6 +103,19 @@ API_AVAILABLE(ios(14.0)) API_UNAVAILABLE(macos, watchos, tvos)
  *  [NEAppPushProvider unmatchEthernet:] method to stop itself.
  */
 @property BOOL matchEthernet API_AVAILABLE(ios(26.0)) API_UNAVAILABLE(macos, watchos, tvos, visionos);
+
+/// A property that indicates support for Mission Critical Services.
+///
+/// Set this property to `true` (Swift) or `YES` (Obj-C) in your container app to use 3GPP Mission Critical Services (MCX).
+/// On supported cellular networks, this allows Push to Talk apps to meet the 3GPP MCX's performance and latency standards by using the Mission Critical Service slice.
+///
+/// When you use this property in your containing app, the system runs the `NEAppPushProvider` if both of the following criteria are met:
+/// * The container app has both the Local Push Connectivity entitlement and the Mission Critical Service application category entitlements. For the former, use <doc://com.apple.documentation/documentation/BundleResources/Entitlements/com.apple.developer.networking.networkextension> with a value of `app-push-provider`. For the latter, use <doc://com.apple.documentation/documentation/bundleresources/entitlements/com.apple.developer.networking.slicing.appcategory> with a value of `mc-9500`.
+/// * The device has a cellular plan that supports Mission Critical Services.
+///
+/// After the app push extension launches, the extension establishes a network connection to its backend server using the MCX network slice.
+/// The framework delivers incoming Push to Talk messages with the ``NEAppPushProvider/reportPushToTalkMessage(userInfo:)`` method.
+@property BOOL matchMissionCriticalService API_AVAILABLE(ios(27.0)) API_UNAVAILABLE(macos, watchos, tvos, visionos);
 
 /*!
  * @property providerConfiguration

@@ -89,7 +89,7 @@ typedef NS_ENUM(NSInteger, CKShareParticipantType) {
 ///
 /// Participants are a key element of sharing in CloudKit. A participant provides information about an iCloud user and their participation in a share, including their identity, acceptance status, permissions, and role.
 ///
-/// The acceptance status determines the participant's visibilty of the shared records. Statuses are: `pending`, `accepted`, `removed`, and `unknown`. If the status is `pending`, use ``CKAcceptSharesOperation`` to accept the share. Upon acceptance, CloudKit makes the shared records available in the participant's shared database. The records remain accessible for as long as the participant's status is `accepted`.
+/// The acceptance status determines the participant's visibility of the shared records. Statuses are: `pending`, `accepted`, `removed`, and `unknown`. If the status is `pending`, use ``CKAcceptSharesOperation`` to accept the share. Upon acceptance, CloudKit makes the shared records available in the participant's shared database. The records remain accessible for as long as the participant's status is `accepted`.
 ///
 /// You don't create participants. Use the share's ``CKShare/participants`` property to access its existing participants. Use <doc://com.apple.documentation/documentation/uikit/uicloudsharingcontroller> to manage the share's participants and their permissions. Alternatively, you can generate participants using ``CKFetchShareParticipantsOperation``. Participants must have an active iCloud account.
 ///
@@ -148,6 +148,62 @@ API_AVAILABLE(macos(10.12), ios(10.0), tvos(10.0), watchos(3.0))
 /// Note that a one-time URL participant in the ``ParticipantAcceptanceStatus/pending`` state has empty ``CKUserIdentity/nameComponents``
 /// and a nil ``CKUserIdentity/lookupInfo``.
 + (instancetype)oneTimeURLParticipant NS_SWIFT_NAME(oneTimeURLParticipant()) API_AVAILABLE(macos(15.0), ios(18.0), tvos(18.0), watchos(11.0), visionos(2.0));
+
+/// Compares two `CKShareParticipant` objects for person identity equality.
+///
+/// This implementation differs from typical `NSObject` `isEqual:` behavior.
+/// Standard `isEqual:` implementations compare all meaningful properties for structural
+/// equality. This method specifically compares identity to answer "Are these the same person?"
+/// rather than "Are these participant objects identical?"
+///
+/// This method returns `YES` if both participants represent the same person, regardless
+/// of differences in `role`, `acceptanceStatus`, `permission`, or other properties,
+/// or if CloudKit determines these represent the same identity via other heuristics.
+///
+/// The method returns `YES` if any of these identity conditions are met:
+/// - `participantID` matches (direct participant identification)
+/// - `userIdentity.userRecordID` matches (same CloudKit user)
+/// - `userIdentity.lookupInfo` matches (same email, phone, or user record)
+///
+/// Properties NOT compared (may differ between "equal" participants):
+/// - `role` (owner, privateUser, publicUser)
+/// - `acceptanceStatus` (invited, accepted, removed, etc.)
+/// - `permission` (readOnly, readWrite, none)
+/// - `dateAddedToShare`
+/// - `isApprovedRequester`
+///
+/// - Parameter object: The object to compare against
+/// - Returns: `YES` if both participants represent the same person, `NO` otherwise
+///
+/// - Warning: Do not assume that participants returning `YES` from `isEqual:` have
+/// identical properties. Use explicit property comparisons when needed.
+///
+/// **Common use cases:**
+///
+/// Correct: Checking if person is already in share
+/// ```objc
+/// if ([existingParticipants containsObject:newParticipant]) {
+///     // Person already exists in share (regardless of role/status)
+/// }
+/// ```
+///
+/// Incorrect: Assuming structural equality
+/// ```objc
+/// if ([participant1 isEqual:participant2]) {
+///     // DON'T assume participant1.role == participant2.role
+///     // DON'T assume same acceptanceStatus or permissions
+/// }
+/// ```
+///
+/// Correct: Explicit structural comparison when needed
+/// ```objc
+/// if ([participant1 isEqual:participant2] &&
+///     participant1.role == participant2.role &&
+///     participant1.acceptanceStatus == participant2.acceptanceStatus) {
+///     // Now you have both identity AND structural equality
+/// }
+/// ```
+- (BOOL)isEqual:(id)object;
 
 @end
 

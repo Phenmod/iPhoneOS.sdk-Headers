@@ -90,6 +90,28 @@ API_UNAVAILABLE(visionos)
 /// The largest scale factor the temporal scaler you create with this descriptor can use to generate output textures.
 @property (readwrite, nonatomic) float inputContentMaxScale;
 
+/// A Boolean value that indicates whether the scaler expects motion vectors at output resolution.
+///
+/// Set this property to <doc://com.apple.documentation/documentation/swift/true> when your app provides
+/// motion vectors at the output resolution rather than the input resolution.
+///
+/// When you enable this property, the scaler interprets the ``MTLFXTemporalScalerBase/motionTexture``
+/// dimensions to match ``outputWidth`` and ``outputHeight`` instead of ``inputWidth`` and ``inputHeight``.
+///
+/// This property's default value is <doc://com.apple.documentation/documentation/swift/false>.
+@property (readwrite, nonatomic, getter=isOutputResolutionMotionVectorsEnabled) BOOL outputResolutionMotionVectorsEnabled API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+
+
+/// A Boolean value that indicates whether the motion vectors include the jittering pattern.
+///
+/// When you set this property to <doc://com.apple.documentation/documentation/swift/true>, the scaler internally
+/// subtracts the jitter from the motion vectors using the jitter offset values provided each frame via
+/// ``MTLFXTemporalScalerBase/jitterOffsetX`` and ``MTLFXTemporalScalerBase/jitterOffsetY``.
+///
+/// When <doc://com.apple.documentation/documentation/swift/false> (the default), the scaler uses the motion vectors
+/// directly without any adjustment.
+@property (readwrite, nonatomic, getter=isJitteredMotionVectorsEnabled) BOOL jitteredMotionVectorsEnabled API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+
 
 /// A Boolean value that indicates whether a temporal scaler you create with the descriptor applies a reactive mask.
 @property (readwrite, nonatomic, getter=isReactiveMaskTextureEnabled) BOOL reactiveMaskTextureEnabled API_AVAILABLE(macos(14.4), ios(17.4));
@@ -199,8 +221,11 @@ API_UNAVAILABLE(visionos)
 @property (nonatomic, readonly) MTLTextureUsage depthTextureUsage;
 /// The minimal texture usage options that your app’s motion texture needs in order to support this scaler.
 @property (nonatomic, readonly) MTLTextureUsage motionTextureUsage;
-/// The minimal texture usage options that your app’s reactive texture needs in order to support this scaler.
-@property (nonatomic, readonly) MTLTextureUsage reactiveTextureUsage;
+/// The minimal texture usage options that your app's reactive mask texture needs in order to support this scaler.
+@property (nonatomic, readonly) MTLTextureUsage reactiveMaskTextureUsage API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+/// The minimal texture usage options that your app's reactive texture needs in order to support this scaler.
+@property (nonatomic, readonly) MTLTextureUsage reactiveTextureUsage
+    API_DEPRECATED_WITH_REPLACEMENT("reactiveMaskTextureUsage", macos(14.4, 27.0), ios(17.4, 27.0));
 
 /// The minimal texture usage options that your output texture needs in order to support this scaler.
 @property (nonatomic, readonly) MTLTextureUsage outputTextureUsage;
@@ -209,6 +234,33 @@ API_UNAVAILABLE(visionos)
 @property (nonatomic) NSUInteger inputContentWidth;
 /// The height, in pixels, of the region within the color texture the scaler uses as its input.
 @property (nonatomic) NSUInteger inputContentHeight;
+
+
+/// The horizontal offset, in pixels, of the region within the color texture to use as input.
+@property (nonatomic) NSUInteger colorContentOffsetX API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+/// The vertical offset, in pixels, of the region within the color texture to use as input.
+@property (nonatomic) NSUInteger colorContentOffsetY API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+
+/// The horizontal offset, in pixels, of the region within the depth texture to use as input.
+@property (nonatomic) NSUInteger depthContentOffsetX API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+/// The vertical offset, in pixels, of the region within the depth texture to use as input.
+@property (nonatomic) NSUInteger depthContentOffsetY API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+
+/// The horizontal offset, in pixels, of the region within the motion texture to use as input.
+@property (nonatomic) NSUInteger motionContentOffsetX API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+/// The vertical offset, in pixels, of the region within the motion texture to use as input.
+@property (nonatomic) NSUInteger motionContentOffsetY API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+
+/// The horizontal offset, in pixels, of the region within the reactive mask texture to use as input.
+@property (nonatomic) NSUInteger reactiveMaskContentOffsetX API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+/// The vertical offset, in pixels, of the region within the reactive mask texture to use as input.
+@property (nonatomic) NSUInteger reactiveMaskContentOffsetY API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+
+/// The horizontal offset, in pixels, of the region within the output texture to write results.
+@property (nonatomic) NSUInteger outputOffsetX API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+/// The vertical offset, in pixels, of the region within the output texture to write results.
+@property (nonatomic) NSUInteger outputOffsetY API_AVAILABLE(macos(27.0), ios(27.0)) API_UNAVAILABLE(visionos);
+
 
 /// An input color texture you set for the scaler that supports the correct color texture usage options.
 @property (nonatomic, retain, nullable) id<MTLTexture> colorTexture;
@@ -328,7 +380,7 @@ API_UNAVAILABLE(visionos)
 /// inherits from protocol ``MTLFXTemporalScalerBase`` and then call ``encodeToCommandBuffer:`` to
 /// encode its work into a Metal command buffer.
 ///
-/// See ``MTLFXTemporalScalerBase`` for more details on configuring and using spatial scalers.
+/// See ``MTLFXTemporalScalerBase`` for more details on configuring and using temporal scalers.
 ///
 API_AVAILABLE(macos(13.0), ios(16.0))
 #if defined(TARGET_OS_VISION) && TARGET_OS_VISION
@@ -336,10 +388,10 @@ API_UNAVAILABLE(visionos)
 #endif
 @protocol MTLFXTemporalScaler <MTLFXTemporalScalerBase>
 
-/// Encode this spatial scaler work into a command buffer.
+/// Adds a scaling pass to a command buffer.
 ///
 /// - Parameters:
-///    - commandBuffer: A command buffer into which this spatial scaler encodes work.
+///    - commandBuffer: A command buffer into which this scaler encodes work.
 ///
 - (void)encodeToCommandBuffer:(nonnull id<MTLCommandBuffer>)commandBuffer;
 

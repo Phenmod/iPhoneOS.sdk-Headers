@@ -10,6 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+NS_SWIFT_SENDABLE
 SR_EXTERN API_AVAILABLE(ios(14.0)) API_UNAVAILABLE(watchos, visionos) API_UNAVAILABLE(tvos, macos)
 @interface SRKeyboardMetrics : NSObject
 
@@ -98,6 +99,7 @@ SR_EXTERN API_AVAILABLE(ios(14.0)) API_UNAVAILABLE(watchos, visionos) API_UNAVAI
 
 @end
 
+NS_SWIFT_SENDABLE
 SR_EXTERN API_AVAILABLE(ios(14.0)) API_UNAVAILABLE(watchos, visionos) API_UNAVAILABLE(tvos, macos)
 @interface SRKeyboardProbabilityMetric <UnitType : __kindof NSUnit *> : NSObject
 

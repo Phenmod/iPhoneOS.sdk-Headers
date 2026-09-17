@@ -4,6 +4,11 @@ module Darwin.C {
     export *
   }
 
+  module removefile {
+    header "removefile.h"
+    export *
+  }
+
   module err {
     header "err.h"
     export *

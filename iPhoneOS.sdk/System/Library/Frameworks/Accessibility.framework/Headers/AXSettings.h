@@ -2,7 +2,7 @@
 //  AXSettings.h
 //  Accessibility
 //
-//  Copyright © 2022-2023 Apple. All rights reserved.
+//  Copyright © 2022-2026 Apple Inc. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -44,6 +44,32 @@ AX_EXTERN NSNotificationName const AXShowBordersEnabledStatusDidChangeNotificati
 // Returns whether the system preference for reduce bright effects is enabled
 AX_EXTERN BOOL AXReduceHighlightingEffectsEnabled(void) API_AVAILABLE(ios(26.4), macos(26.4), tvos(26.4), watchos(26.4), visionos(26.4)) NS_SWIFT_NAME(getter:AccessibilitySettings.isReduceHighlightingEffectsEnabled());
 AX_EXTERN NSNotificationName const AXReduceHighlightingEffectsEnabledDidChangeNotification API_AVAILABLE(ios(26.4), macos(26.4), tvos(26.4), watchos(26.4), visionos(26.4)) NS_SWIFT_NAME(AccessibilitySettings.reduceHighlightingEffectsEnabledDidChangeNotification);
+
+/// Returns whether application accessibility is currently enabled for
+/// this process.
+///
+/// Returns `YES` when at least one assistive technology — such as
+/// VoiceOver, Switch Control, Voice Control, or Full Keyboard Access —
+/// has requested access to this app's accessibility information.
+/// Apps can use this signal to avoid building expensive accessibility
+/// data when no assistive technology is consuming it.
+///
+/// The value can change during a process's lifetime; observe
+/// `AXApplicationAccessibilityEnabledDidChangeNotification` to react
+/// to changes.
+AX_EXTERN BOOL AXApplicationAccessibilityEnabled(void)
+    API_AVAILABLE(anyappleos(27.0))
+    NS_SWIFT_NAME(getter:AccessibilitySettings.isApplicationAccessibilityEnabled());
+
+/// Posted when the value returned by `AXApplicationAccessibilityEnabled()`
+/// changes.
+///
+/// Posted on the main thread. The notification's `object` is `nil` and
+/// its `userInfo` dictionary is empty — clients should re-read
+/// `AXApplicationAccessibilityEnabled()` when handling the notification.
+AX_EXTERN NSNotificationName const AXApplicationAccessibilityEnabledDidChangeNotification
+    API_AVAILABLE(anyappleos(27.0))
+    NS_SWIFT_NAME(AccessibilitySettings.applicationAccessibilityEnabledDidChangeNotification);
 
 typedef NS_ENUM(NSInteger, AXSettingsFeature) {
     // Jump to the setting for "Allow Apps to Request to Use" in Personal Voice. This is relevant for the AVSpeechSynthesis.personalVoiceAuthorizationStatus API.

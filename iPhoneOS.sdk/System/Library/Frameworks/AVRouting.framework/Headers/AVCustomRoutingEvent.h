@@ -37,7 +37,7 @@ typedef NS_ENUM(NSInteger, AVCustomRoutingEventReason) {
 ///
 /// Depending on the route’s reason, apps establish or tear down a connection to
 /// a specified route.
-API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos)
+API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos) API_DEPRECATED_WITH_REPLACEMENT("AVSystemRouteEvent", ios(16.0, 27.0))
 NS_SWIFT_SENDABLE @interface AVCustomRoutingEvent : NSObject
 
 /*!
@@ -47,7 +47,7 @@ NS_SWIFT_SENDABLE @interface AVCustomRoutingEvent : NSObject
 
 /// A reason for an event, such as a user request to activate or deactivate a
 /// route.
-@property (nonatomic, readonly) AVCustomRoutingEventReason reason API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos);
+@property (nonatomic, readonly) AVCustomRoutingEventReason reason API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos) API_DEPRECATED_WITH_REPLACEMENT("AVSystemRouteEventReason", ios(16.0, 27.0));
 
 /*!
 	@property 	route
@@ -55,7 +55,7 @@ NS_SWIFT_SENDABLE @interface AVCustomRoutingEvent : NSObject
  */
 
 /// A route for the event.
-@property (nonatomic, readonly) AVCustomDeviceRoute *route API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos);
+@property (nonatomic, readonly) AVCustomDeviceRoute *route API_AVAILABLE(ios(16.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos) API_DEPRECATED_WITH_REPLACEMENT("AVSystemRoute", ios(16.0, 27.0));
 
 @end
 

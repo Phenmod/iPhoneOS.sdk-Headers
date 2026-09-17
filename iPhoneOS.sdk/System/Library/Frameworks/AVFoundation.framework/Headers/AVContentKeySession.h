@@ -96,7 +96,7 @@ AV_INIT_UNAVAILABLE
 
 /// Boolean indicating whether advisory keys are enabled on the client.
 ///
-/// Set to true to enable advisory key loading, false to disable. false by default.
+/// Set to true to enable advisory key loading. False by default. Note that this is a one-way operation—once set to true, this property cannot be set back to false.
 ///
 /// Advisory key loading allows applications to make use of content keys provided speculatively
 /// by the key server. When enabled, FairPlay may cache these keys and return them immediately
@@ -106,9 +106,9 @@ AV_INIT_UNAVAILABLE
 /// `AVContentKeyRequest` objects.
 ///
 /// When an advisory key is already cached by FairPlay, `makeStreamingContentKeyRequestData`
-/// will return nil for the SPC data, and `canBeFulfilledWithAdvisoryKey` will return true. In this case,
+/// will return nil for the key request data, and `canBeFulfilledWithAdvisoryKey` will return true. In this case,
 /// no request to the key server is necessary.
-@property (readwrite) BOOL supportsAdvisoryKeys API_UNAVAILABLE(ios, tvos) API_UNAVAILABLE(macos, watchos, visionos, macCatalyst);
+@property (readwrite) BOOL supportsAdvisoryKeys API_AVAILABLE(ios(27.0), tvos(27.0)) API_UNAVAILABLE(macos, watchos, visionos, macCatalyst);
 
 /// Tells the receiver to treat the session as having been intentionally and normally expired.
 /// 
@@ -424,14 +424,14 @@ API_AVAILABLE(macos(10.12.4), ios(10.3), tvos(10.2), watchos(7.0), visionos(1.0)
 /// 	3. A subsequent request for the same key is made
 ///
 /// When `canBeFulfilledWithAdvisoryKey` is true and `makeStreamingContentKeyRequestData` returns nil
-/// for the SPC data, this indicates FairPlay has already cached the key. No request to the
+/// for the key request data, this indicates FairPlay has already cached the key. No request to the
 /// key server for a key response is necessary, and the application should simply return from the completion handler.
 ///
 /// This property should be checked in the completion handler of
 /// `makeStreamingContentKeyRequestData(forApp:contentIdentifier:options:completionHandler:)`
-/// whenever the SPC data is nil to distinguish advisory keys from actual errors.
+/// whenever the key request data is nil to distinguish advisory keys from actual errors.
 
-@property (readonly) BOOL canBeFulfilledWithAdvisoryKey API_UNAVAILABLE(ios, tvos) API_UNAVAILABLE(macos, watchos, visionos, macCatalyst);
+@property (readonly) BOOL canBeFulfilledWithAdvisoryKey API_AVAILABLE(ios(27.0), tvos(27.0)) API_UNAVAILABLE(macos, watchos, visionos, macCatalyst);
 
 /// Request secure token to have extended validation data. The value for the key should be previously created offline key using -[AVContentKeyRequest persistableContentKeyFromKeyVendorResponse:options:error:].
 AVF_EXPORT NSString *const AVContentKeyRequestRequiresValidationDataInSecureTokenKey API_AVAILABLE(macos(10.15), ios(13.0), tvos(13.0), watchos(6.0), visionos(1.0));
@@ -449,6 +449,28 @@ AVF_EXPORT NSString *const AVContentKeyRequestRequiresValidationDataInSecureToke
                                          options:(nullable NSDictionary<NSString *, id> *)options
                                completionHandler:(void (^ NS_SWIFT_SENDABLE)(NSData * _Nullable contentKeyRequestData, NSError * _Nullable error))handler;
 
+///   Obtains an optional content key request data for a specific combination of application and content.
+///
+///   This method generates key request data to be sent to a key server, with support for advisory key handling.
+///   When advisory keys are enabled (supportsAdvisoryKeys = YES), this method may return nil data without
+///   error if the requested key is already cached by the system, avoiding redundant server requests.
+///
+///   IMPORTANT: When supportsAdvisoryKeys is set to YES, this method MUST be used for all content key requests.
+///   The non-advisory variant is not compatible with advisory key handling and an exception will be thrown otherwise.
+///
+///	  When the completion handler is called with nil data and nil error, check the canBeFulfilledWithAdvisoryKey
+///	  property. A return value of YES indicates the key is already cached and no server communication is required.
+///
+/// - Parameter appIdentifier: An opaque identifier for the application. The contents and format are determined by the content protection system in use. An exception will be thrown if appIdentifier is nil.
+/// - Parameter contentIdentifier: An optional opaque identifier for the content. The contents and format are determined by the content protection system in use.
+/// - Parameter options: A dictionary of additional parameters required to obtain the key, or nil if none are needed. See AVContentKeyRequest Key constants.
+/// - Parameter completionHandler: A block invoked when the request completes. Called with key request data for server communication or nil data if already fulfilled by an
+/// 							   advisory key response; error, if creating the key request data failed. An exception will be thrown if completionHandler is nil.
+- (void)makeOptionalStreamingContentKeyRequestDataForApp:(NSData *)appIdentifier
+									  contentIdentifier:(nullable NSData *)contentIdentifier
+												options:(nullable NSDictionary<NSString *, id> *)options
+									  completionHandler:(void (^)(NSData * _Nullable data, NSError * _Nullable error))completionHandler
+	API_AVAILABLE(ios(27.0), tvos(27.0)) API_UNAVAILABLE(macos, watchos, visionos, macCatalyst);
 /// Informs the receiver to process the specified content key response.
 /// 
 /// After you receive an AVContentKeyRequest via -contentKeySession:didProvideContentKeyRequest: and after you invoke -[AVContentKeyRequest makeStreamingContentKeyRequestDataForApp:contentIdentifier:options:completionHandler:] on that request, you must obtain a response to the request in accordance with the protocol in use by the entity that controls the use of the media data. This is the method you use to provide the content key response to make protected content available for processing. If obtaining the content key response fails, use -processContentKeyResponseError:.
@@ -678,7 +700,7 @@ API_AVAILABLE(macos(11.3), ios(14.5), tvos(14.5), watchos(7.4), visionos(1.0))
 /// - Parameter outError: If the result is NO and errorOut is non-NULL, the location referenced by errorOut receives an instance of NSError that describes the reason for failure to attach the content key.
 AVF_EXPORT BOOL AVSampleBufferAttachContentKey(CMSampleBufferRef sbuf, AVContentKey *contentKey, NSError * _Nullable * _Nullable outError)
 #if defined(__swift__)
-API_DEPRECATED("Use CMReadySampleBuffer.attach(contentKey:) instead", macos(10.10, API_TO_BE_DEPRECATED), ios(8.0, API_TO_BE_DEPRECATED), watchos(1.0, API_TO_BE_DEPRECATED), tvos(14.5, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED))
+API_DEPRECATED("Use CMReadySampleBuffer.attach(contentKey:) instead", macos(10.10, 27.0), ios(8.0, 27.0), watchos(1.0, 27.0), tvos(14.5, 27.0), visionos(1.0, 27.0))
 #else
 API_AVAILABLE(macos(11.3), ios(14.5), tvos(14.5), watchos(7.4), visionos(1.0))
 #endif

@@ -44,7 +44,7 @@ CK_EXTERN const NSUInteger CKQueryOperationMaximumResults API_AVAILABLE(macos(10
 /// 1. Initialize a `CKQueryOperation` object with a ``CKQuery`` object that contains the search criteria and sorting information for the records you want.
 /// 2. Assign a handler to the ``queryCompletionBlock`` property so that you can process the results and execute the operation.
 ///
-/// If the search yields many records, the operation object may deliver a portion of the total results to your blocks immediately, along with a cursor for obtaining the remaining records. Use the cursor to initialize and execute a separate `CKQueryOperation` instance when you're ready to process the next batch of results.
+///    If the search yields many records, the operation object may deliver a portion of the total results to your blocks immediately, along with a cursor for obtaining the remaining records. Use the cursor to initialize and execute a separate `CKQueryOperation` instance when you're ready to process the next batch of results.
 /// 3. Optionally, configure the results by specifying values for the ``resultsLimit`` and ``desiredKeys-4a6vy`` properties.
 /// 4. Pass the query operation object to the ``CKDatabase/add(_:)`` method of the target database to execute the operation.
 ///

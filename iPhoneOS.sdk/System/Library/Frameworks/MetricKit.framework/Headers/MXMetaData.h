@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
  @class         MXMetaData
  @abstract      A class that contains miscellaneous metadata about an associated payload.
  */
-API_AVAILABLE(ios(13.0), macos(12.0)) API_UNAVAILABLE(tvos, watchos)
+API_DEPRECATED("Use MetricReport.Environment or DiagnosticReport.Environment instead.", ios(13.0, API_TO_BE_DEPRECATED), macos(12.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos)
 @interface MXMetaData : NSObject <NSSecureCoding>
 
 /*!
@@ -82,7 +82,7 @@ API_AVAILABLE(ios(13.0), macos(12.0)) API_UNAVAILABLE(tvos, watchos)
  @abstract      Convenience method to return a JSON representation of this metadata.
  @result        An NSData object containing the JSON representation
  */
-- (NSData *)JSONRepresentation;
+- (NSData *)JSONRepresentation API_DEPRECATED("Use MetricReport.Environment or DiagnosticReport.Environment instead.", ios(13.0, API_TO_BE_DEPRECATED), macos(12.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos);
 
 /*!
  @method        DictionaryRepresentation
@@ -96,7 +96,7 @@ API_AVAILABLE(ios(13.0), macos(12.0)) API_UNAVAILABLE(tvos, watchos)
 @abstract      Convenience method to return a NSDictionary representation of this metadata.
 @result        An NSDictionary object containing the dictionary representation
 */
-- (NSDictionary *)dictionaryRepresentation API_AVAILABLE(ios(13.0), macos(12.0)) API_UNAVAILABLE(tvos, watchos);
+- (NSDictionary *)dictionaryRepresentation API_DEPRECATED("Use MetricReport.Environment or DiagnosticReport.Environment instead.", ios(13.0, API_TO_BE_DEPRECATED), macos(12.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos);
 
 @end
 

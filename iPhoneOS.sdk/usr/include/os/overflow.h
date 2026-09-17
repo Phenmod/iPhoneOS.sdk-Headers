@@ -59,6 +59,7 @@ __os_warn_unused(__const bool x)
 #define os_sub_overflow(a, b, res) __os_warn_unused(__builtin_sub_overflow((a), (b), (res)))
 #define os_mul_overflow(a, b, res) __os_warn_unused(__builtin_mul_overflow((a), (b), (res)))
 
+
 #else
 # error os_overflow expects type-generic builtins
 #endif /* __has_builtin(...) */

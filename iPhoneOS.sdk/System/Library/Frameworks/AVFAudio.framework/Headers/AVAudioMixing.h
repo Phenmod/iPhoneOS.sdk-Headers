@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 	For example, an AVAudioPlayerNode that is being used in a gaming scenario can set up its
 	3D mixing settings and then move from one environment to another.
 */
-API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 @protocol AVAudioMixing <AVAudioStereoMixing, AVAudio3DMixing>
 
 /*! @abstract Returns the AVAudioMixingDestination object corresponding to specified mixer node and
@@ -85,7 +85,7 @@ API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 /*! @protocol   AVAudioStereoMixing
     @abstract   Protocol that defines stereo mixing properties
 */
-API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0))
 @protocol AVAudioStereoMixing <NSObject>
 
 /*! @property pan
@@ -223,6 +223,7 @@ typedef NS_ENUM(NSInteger, AVAudio3DMixingPointSourceInHeadMode) {
 /*! @protocol   AVAudio3DMixing
     @abstract   Protocol that defines 3D mixing properties
 */
+NS_SWIFT_SENDABLE
 @protocol AVAudio3DMixing <NSObject>
 
 /*! @property renderingAlgorithm
@@ -319,7 +320,7 @@ typedef NS_ENUM(NSInteger, AVAudio3DMixingPointSourceInHeadMode) {
 		Only an instance vended by a source node (e.g. AVAudioPlayerNode) can be used
 		(see `AVAudioMixing`).
 */
-API_AVAILABLE(macos(10.11), ios(9.0), watchos(2.0), tvos(9.0))
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.11), ios(9.0), watchos(2.0), tvos(9.0))
 @interface AVAudioMixingDestination : NSObject <AVAudioMixing> {
 @private
 	void *_impl;

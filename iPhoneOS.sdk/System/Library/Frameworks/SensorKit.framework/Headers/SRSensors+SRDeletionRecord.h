@@ -9,7 +9,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#ifdef __swift__
+API_DEPRECATED("Use deletionRecords(matching request: SRFetchRequest) of SRReader<Sensor> class", ios(14.0, 27.0)) API_UNAVAILABLE(watchos, visionos) API_UNAVAILABLE(tvos, macos)
+#else
 SR_EXTERN API_AVAILABLE(ios(14.0)) API_UNAVAILABLE(watchos, visionos) API_UNAVAILABLE(tvos, macos)
+#endif
 @interface NSString (SRDeletionRecord)
 /**
  * @brief Returns a sensor stream that contains deletion records of the sensor

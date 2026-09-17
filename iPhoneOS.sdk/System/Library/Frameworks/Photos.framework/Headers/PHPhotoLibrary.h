@@ -15,6 +15,8 @@ API_AVAILABLE_BEGIN(macos(10.13), ios(8), tvos(10))
 @class PHPhotoLibrary;
 @class PHPersistentChangeToken;
 @class PHPersistentChangeFetchResult;
+@class PHAssetResourceUploadJobOptions;
+
 
 typedef NS_ENUM(NSInteger, PHAuthorizationStatus) {
     PHAuthorizationStatusNotDetermined = 0, // User has not yet made a choice with regards to this application
@@ -46,6 +48,13 @@ API_AVAILABLE(macos(10.15), ios(13), tvos(13))
 - (void)photoLibraryDidBecomeUnavailable:(PHPhotoLibrary *)photoLibrary API_AVAILABLE(macos(10.15), ios(13), tvos(13));
 @end
 
+
+API_AVAILABLE(macos(27), ios(27), tvos(27), visionos(27))
+@protocol PHPhotoLibraryPersistentChangesObserver <NSObject>
+// This callback is invoked on an arbitrary serial queue. If you need this to be handled on a specific queue, you should redispatch appropriately
+- (void)photoLibraryPersistentChangesDidUpdate:(PHPhotoLibrary *)photoLibrary;
+@end
+
 /*!
  @class        PHPhotoLibrary
  @abstract     A PHPhotoLibrary provides access to the metadata and image data for the photos, videos and related content in the user's photo library, including content from the Camera Roll, iCloud Shared, Photo Stream, imported, and synced from iTunes.
@@ -68,7 +77,6 @@ NS_SWIFT_SENDABLE
 + (PHAuthorizationStatus)authorizationStatus API_DEPRECATED_WITH_REPLACEMENT("+authorizationStatusForAccessLevel:", ios(8, API_TO_BE_DEPRECATED), macos(10.13, API_TO_BE_DEPRECATED), tvos(10, API_TO_BE_DEPRECATED));
 + (void)requestAuthorization:(void(^)(PHAuthorizationStatus status))handler API_DEPRECATED_WITH_REPLACEMENT("+requestAuthorizationForAccessLevel:handler:", ios(8, API_TO_BE_DEPRECATED), macos(10.13, API_TO_BE_DEPRECATED), tvos(10, API_TO_BE_DEPRECATED));
 
-#if TARGET_OS_IOS && !TARGET_OS_VISION
 #pragma mark - Background Upload of Asset Resources: Feature and Extension Enablement
  
 /// A Boolean value that indicates whether background asset resource uploading is enabled.
@@ -76,7 +84,7 @@ NS_SWIFT_SENDABLE
 /// The value is `true` if the extension is enabled and active, and is `false` otherwise.
 ///
 /// The extension's host app uses this property to determine the background processing status. See ``PHAssetResourceUploadJob`` and ````PHAssetResourceUploadJobChangeRequest`` for more information.
-@property (readonly, getter=isUploadJobExtensionEnabled) BOOL uploadJobExtensionEnabled API_AVAILABLE(ios(26.1)) API_UNAVAILABLE(macos, macCatalyst, tvos, visionos) NS_SWIFT_NAME(uploadJobExtensionEnabled);
+@property (readonly, getter=isUploadJobExtensionEnabled) BOOL uploadJobExtensionEnabled API_AVAILABLE(ios(26.1), macCatalyst(27.0), macos(27.0)) API_UNAVAILABLE(tvos, visionos, watchos) NS_SWIFT_NAME(uploadJobExtensionEnabled);
 
 /// Enables or disables the background asset resource upload job feature.
 ///
@@ -87,8 +95,38 @@ NS_SWIFT_SENDABLE
 /// - Parameters:
 ///     - enable: `true` allows calls to the extension's host application; you can fulfill that protocol to create ``PHAssetResourceUploadJob`` objects. `false` stops calls to the extension's host application.
 ///     - error: if either enabling or disabling was unsuccessful, `false` is returned and an error is set on the `error` parameter.
-- (BOOL)setUploadJobExtensionEnabled:(BOOL)enable error:(NSError * __autoreleasing *)error API_AVAILABLE(ios(26.1)) API_UNAVAILABLE(macos, macCatalyst, tvos, visionos);
-#endif
+- (BOOL)setUploadJobExtensionEnabled:(BOOL)enable error:(NSError **)error API_DEPRECATED("Use -enableUploadJobExtensionWithOptions:error: and -disableUploadJobExtensionWithError: instead", ios(26.1, 27.0)) API_UNAVAILABLE(macCatalyst, macos, tvos, visionos, watchos);
+
+/// Enables the background asset resource upload job feature with the given options, atomically.
+///
+/// The configuration is created with `options` already set, as a single change — unlike calling
+/// ``setUploadJobExtensionOptions:error:`` afterward, as a separate change.
+///
+/// - Parameters:
+///     - options: the options to set for the newly enabled configuration, or `nil` to use default values.
+///     - error: if enabling was unsuccessful, `false` is returned and an error is set on the `error` parameter.
+- (BOOL)enableUploadJobExtensionWithOptions:(nullable PHAssetResourceUploadJobOptions *)options error:(NSError **)error API_AVAILABLE(ios(27.0), macCatalyst(27.0), macos(27.0)) API_UNAVAILABLE(tvos, visionos, watchos);
+
+/// Disables the background asset resource upload job feature.
+///
+/// - Parameters:
+///     - error: if disabling was unsuccessful, `false` is returned and an error is set on the `error` parameter.
+- (BOOL)disableUploadJobExtensionWithError:(NSError **)error API_AVAILABLE(ios(27.0), macCatalyst(27.0), macos(27.0)) API_UNAVAILABLE(tvos, visionos, watchos);
+
+/// The options for the calling app's background asset resource upload job configuration.
+///
+/// The value is `nil` if the extension isn't enabled or the caller isn't authorized. Otherwise, the value is an
+/// options object with default values if the configuration exists but no options have been set.
+@property (readonly, nullable) PHAssetResourceUploadJobOptions *uploadJobExtensionOptions API_AVAILABLE(ios(27.0), macCatalyst(27.0), macos(27.0)) API_UNAVAILABLE(tvos, visionos, watchos);
+
+/// Sets the options for the calling app's background asset resource upload job configuration.
+///
+/// To reset the configuration's options to their default values, pass a newly-initialized `PHAssetResourceUploadJobOptions` instance.
+///
+/// - Parameters:
+///     - options: the options to set.
+///     - error: if the configuration could not be found, the caller isn't authorized, or the update failed, `false` is returned and an error is set on the `error` parameter.
+- (BOOL)setUploadJobExtensionOptions:(PHAssetResourceUploadJobOptions *)options error:(NSError **)error API_AVAILABLE(ios(27.0), macCatalyst(27.0), macos(27.0)) API_UNAVAILABLE(tvos, visionos, watchos);
 
 #pragma mark - Library availability
 
@@ -111,9 +149,24 @@ NS_SWIFT_SENDABLE
 
 #pragma mark - Change History
 
+/// Registers an observer to be notified when persistent changes occur in the photo library.
+///
+/// The observer is held weakly by the photo library. The observer's ``PHPhotoLibraryPersistentChangesObserver/photoLibraryPersistentChangesDidUpdate:`` method
+/// is called on an arbitrary serial queue when changes are committed to the photo library. Use
+/// ``fetchPersistentChangesSinceToken:error:`` to retrieve the specific changes.
+///
+/// Requires read-write photo library authorization (``PHAccessLevel/PHAccessLevelReadWrite``).
+- (void)registerPersistentChangesObserver:(id<PHPhotoLibraryPersistentChangesObserver>)observer API_AVAILABLE(macos(27), ios(27), tvos(27), visionos(27));
+
+/// Unregisters a previously registered persistent changes observer.
+///
+/// After calling this method, the observer will no longer receive persistent changes callbacks.
+- (void)unregisterPersistentChangesObserver:(id<PHPhotoLibraryPersistentChangesObserver>)observer API_AVAILABLE(macos(27), ios(27), tvos(27), visionos(27));
+
 - (nullable PHPersistentChangeFetchResult *)fetchPersistentChangesSinceToken:(PHPersistentChangeToken *)token error:(NSError **)error API_AVAILABLE(macos(13), ios(16), tvos(16));
 
 @property (nonatomic, readonly) PHPersistentChangeToken *currentChangeToken API_AVAILABLE(macos(13), ios(16), tvos(16));
+
 
 @end
 

@@ -18,6 +18,7 @@
 #import <CoreMotion/CMAuthorization.h>
 #import <CoreMotion/CMAvailability.h>
 #import <CoreMotion/CMDeviceMotion.h>
+#import <CoreMotion/CMRecordedDeviceMotion.h>
 #import <CoreMotion/CMError.h>
 #import <CoreMotion/CMErrorDomain.h>
 #import <CoreMotion/CMFallDetectionManager.h>
@@ -40,5 +41,6 @@
 #import <CoreMotion/CMWaterSubmersionManager.h>
 #import <CoreMotion/CMBatchedSensorManager.h>
 #import <CoreMotion/CMHeadphoneActivityManager.h>
+#import <CoreMotion/CMBody.h>
 
 #endif /* __COREMOTION__ */

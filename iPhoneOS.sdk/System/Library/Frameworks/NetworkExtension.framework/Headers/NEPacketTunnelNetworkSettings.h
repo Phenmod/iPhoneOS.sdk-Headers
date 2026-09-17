@@ -14,6 +14,18 @@ NS_ASSUME_NONNULL_BEGIN
 @class NEIPv4Settings;
 @class NEIPv6Settings;
 
+/// NEPacketTunnelNetworkSettings IP Family types
+typedef NS_ENUM(NSInteger, NEPacketTunnelNetworkSettingsIPFamily) {
+	/*! @const NEPacketTunnelNetworkSettingsIPFamilyNone None */
+	NEPacketTunnelNetworkSettingsIPFamilyNone = 0,
+	/*! @const NEPacketTunnelNetworkSettingsIPFamilyAny Any IP family, i.e. IPv4, IPv6 */
+	NEPacketTunnelNetworkSettingsIPFamilyAny = 1,
+	/*! @const NEPacketTunnelNetworkSettingsIPFamilyIPv4 IPv4 only */
+	NEPacketTunnelNetworkSettingsIPFamilyIPv4 = 2,
+	/*! @const NEPacketTunnelNetworkSettingsIPFamilyIPv6 IPv6 only. */
+	NEPacketTunnelNetworkSettingsIPFamilyIPv6 = 3,
+} NS_SWIFT_NAME(NEPacketTunnelNetworkSettings.IPFamily) API_UNAVAILABLE(macos, ios, tvos, watchos);
+
 /*!
  * @file NEPacketTunnelNetworkSettings
  * @discussion This file declares the NEPacketTunnelNetworkSettings API. The NEPacketTunnelNetworkSettings API is used to specify IP network settings for VPN tunnels.
@@ -55,6 +67,67 @@ API_AVAILABLE(macos(10.11), ios(9.0), tvos(17.0)) API_UNAVAILABLE(watchos)
  * @discussion An NSNumber object containing the Maximum Transmission Unit (MTU) size in bytes to assign to the TUN interface. If this property is set, the tunnelOverheadBytes property is ignored.
  */
 @property (copy, nullable) NSNumber *MTU API_AVAILABLE(macos(10.11), ios(9.0), tvos(17.0)) API_UNAVAILABLE(watchos);
+
+/*!
+ * @property includeAllNetworks
+ * @discussion If this property is set then all network traffic is routed through the tunnel, with some exclusions. Several of the exclusions
+ * can be controlled with the excludeLocalNetworks, excludeCellularServices, excludeAPNs and excludeDeviceCommunication properties. See the documentation
+ * for those properties. The set value of NEPacketTunnelNetworkSettingsIPFamily type indicates if includeAllNetworks should be applied to all traffic, IPv4 only
+ * or IPv6 only.
+ * The following traffic is always excluded from the tunnel:
+ * - Traffic necessary for connecting and maintaining the device's network connection, such as DHCP.
+ * - Traffic necessary for connecting to captive networks.
+ * - Certain cellular services traffic that is not routable over the internet and is instead directly routed to the cellular network. See the
+ *   excludeCellularServices property for more details.
+ * - Network communication with a companion device such as a watchOS device.
+ * The default value of this property is NEPacketTunnelNetworkSettingsIPFamilyNone, disabling includeAllNetworks.
+ * The includeAllNetworks property in NEVPNProtocol class takes precedence if set.
+ */
+@property NEPacketTunnelNetworkSettingsIPFamily includeAllNetworks API_UNAVAILABLE(macos, ios, tvos, watchos);
+
+/*!
+ * @property excludeLocalNetworks
+ * @discussion If this property is set, traffic destined for local networks will be excluded from the tunnel. The set value of
+ * NEPacketTunnelNetworkSettingsIPFamily type indicates if excludeLocalNetworks should be applied to all traffic, IPv4 only
+ * or IPv6 only. The default is NEPacketTunnelNetworkSettingsIPFamilyNone on macOS and NEPacketTunnelNetworkSettingsIPFamilyAny on iOS.
+ * If either the includeAllNetworks or the enforceRoutes property in NEVPNProtocol class is set, then the excludeLocalNetworks property in NEVPNProtocol class takes precedence.
+ */
+@property NEPacketTunnelNetworkSettingsIPFamily excludeLocalNetworks API_UNAVAILABLE(macos, ios, tvos, watchos);
+
+/*!
+ * @property excludeCellularServices
+ * @discussion If includeAllNetworks is set to YES and this property is set to YES, then internet-routable network traffic for cellular services
+ * (VoLTE, Wi-Fi Calling, IMS, MMS, Visual Voicemail, etc.) is excluded from the tunnel. Note that some cellular carriers route cellular services traffic
+ * directly to the carrier network, bypassing the internet. Such cellular services traffic is always excluded from the tunnel. The default value of this
+ * property is YES.
+ * If either the includeAllNetworks property in NEVPNProtocol class is set, then the excludeCellularServices property in NEVPNProtocol class takes precedence.
+
+ */
+@property BOOL excludeCellularServices API_UNAVAILABLE(macos, ios, tvos, watchos) __WATCHOS_PROHIBITED;
+
+/*!
+ * @property excludeAPNs
+ * @discussion If includeAllNetworks is set to YES and this property is set to YES, then network traffic for the Apple Push Notification service (APNs)
+ * is excluded from the tunnel. The default value of this property is YES.
+ * If either the includeAllNetworks property in NEVPNProtocol class is set, then the excludeAPNs property in NEVPNProtocol class takes precedence.
+ */
+@property BOOL excludeAPNs API_UNAVAILABLE(macos, ios, tvos, watchos) __WATCHOS_PROHIBITED;
+
+/*!
+ * @property excludeDeviceCommunication
+ * @discussion If includeAllNetworks is set to YES and this property is set to YES, then network traffic used for communicating with devices connected via USB or Wi-Fi is excluded
+ * from the tunnel. For example, Xcode uses a network tunnel to communicate with connected development devices like iPhone, iPad and TV. The default value of this
+ * property is YES.
+ * If either the includeAllNetworks property in NEVPNProtocol class is set, then the excludeDeviceCommunication property in NEVPNProtocol class takes precedence.
+ */
+@property BOOL excludeDeviceCommunication API_UNAVAILABLE(macos, ios, tvos, watchos) __WATCHOS_PROHIBITED;
+
+/*!
+ * @property enforceRoutes
+ * @discussion If YES, route rules for this tunnel will take precendence over any locally-defined routes. The default is NO.
+ * The enforceRoutes property in NEVPNProtocol class takes precedence if set.
+ */
+@property BOOL enforceRoutes API_UNAVAILABLE(macos, ios, tvos, watchos);
 
 @end
 

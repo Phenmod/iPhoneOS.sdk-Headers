@@ -179,7 +179,7 @@ HM_EXTERN NS_SWIFT_SENDABLE API_AVAILABLE(ios(9.0), watchos(2.0), tvos(10.0), ma
 - (void)updatePredicate:(nullable NSPredicate *)predicate completionHandler:(void (^)(NSError *__nullable error))completion API_UNAVAILABLE(watchos, tvos);
 
 /*!
- * @brief This method replaces the recurrences which secifies the days of the week when the trigger is to be evaluated.
+ * @brief This method replaces the recurrences which specifies the days of the week when the trigger is to be evaluated.
  *
  * @param recurrences The new recurrences for the event trigger.
  *
@@ -210,7 +210,7 @@ HM_EXTERN NS_SWIFT_SENDABLE API_AVAILABLE(ios(9.0), watchos(2.0), tvos(10.0), ma
  * @param significantEvent The significant event to compare against.
  *                         The valid values are: HMSignificantEventSunrise and HMSignificantEventSunset.
  *
- * @param offset An offset from the time of the signficant event. To specify an offset before the significant event, the
+ * @param offset An offset from the time of the significant event. To specify an offset before the significant event, the
  *               properties of the NSDateComponents must be negative value. e.g. To specify 30 mins before sunset, the
  *               'minute' property must be set to -30.
  *
@@ -234,7 +234,7 @@ HM_EXTERN NS_SWIFT_SENDABLE API_AVAILABLE(ios(9.0), watchos(2.0), tvos(10.0), ma
  * @param significantEvent The significant event to compare against.
  *                         The valid values are: HMSignificantEventSunrise and HMSignificantEventSunset.
  *
- * @param offset An offset from the time of the signficant event. To specify an offset after the significant event, the
+ * @param offset An offset from the time of the significant event. To specify an offset after the significant event, the
  *               properties of the NSDateComponents must be positive value. e.g. To specify 30 mins after sunset, the
  *               'minute' property must be set to 30.
  *

@@ -4,10 +4,6 @@
 #include <Availability.h>
 #include <OpenGLES/OpenGLESAvailability.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /*
 ** License Applicability. Except to the extent portions of this file are
 ** made subject to an alternative license as permitted in the SGI Free
@@ -474,6 +470,10 @@ extern "C" {
 #define GL_MAX_RENDERBUFFER_SIZE                         0x84E8
 
 #define GL_INVALID_FRAMEBUFFER_OPERATION                 0x0506
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*-------------------------------------------------------------------------
  * Entrypoint definitions

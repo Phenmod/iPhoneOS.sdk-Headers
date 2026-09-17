@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Discussion:
  *    Typedef of block to be invoked when device motion data is available.
  */
+API_UNAVAILABLE(tvos)
 typedef void (^CMHeadphoneDeviceMotionHandler)(CMDeviceMotion * __nullable motion, NSError * __nullable error) NS_SWIFT_NAME(CMHeadphoneMotionManager.DeviceMotionHandler);
 
 @protocol CMHeadphoneMotionManagerDelegate;
@@ -29,7 +30,7 @@ typedef void (^CMHeadphoneDeviceMotionHandler)(CMDeviceMotion * __nullable motio
  *  Discussion:
  *    The CMHeadphoneMotionManager object is your entry point to the headphone motion service.
  */
-COREMOTION_EXPORT API_AVAILABLE(macos(14.0), ios(14.0), watchos(7.0)) API_UNAVAILABLE(visionos)
+COREMOTION_EXPORT API_AVAILABLE(macos(14.0), ios(14.0), watchos(7.0)) API_UNAVAILABLE(visionos, tvos)
 @interface CMHeadphoneMotionManager : NSObject
 
 /*
@@ -98,6 +99,7 @@ COREMOTION_EXPORT API_AVAILABLE(macos(14.0), ios(14.0), watchos(7.0)) API_UNAVAI
  *
  */
 - (void)startDeviceMotionUpdatesToQueue:(NSOperationQueue *)queue withHandler:(CMHeadphoneDeviceMotionHandler)handler;
+
 
 /*
  *  stopDeviceMotionUpdates

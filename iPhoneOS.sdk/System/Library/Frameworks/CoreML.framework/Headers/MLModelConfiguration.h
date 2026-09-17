@@ -75,6 +75,8 @@ ML_EXPORT
 
 API_AVAILABLE(macos(15.0), ios(18.0), watchos(11.0), tvos(18.0))
 ML_EXPORT
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-duplicate-category-definition"
 @interface MLModelConfiguration (MultiFunctions)
 
 /// Function name that `MLModel` will use.
@@ -90,5 +92,6 @@ ML_EXPORT
 @property (readwrite, nullable, copy, nonatomic) NSString *functionName API_AVAILABLE(macos(15.0), ios(18.0), watchos(11.0), tvos(18.0));
 
 @end
+#pragma clang diagnostic pop
 
 NS_ASSUME_NONNULL_END

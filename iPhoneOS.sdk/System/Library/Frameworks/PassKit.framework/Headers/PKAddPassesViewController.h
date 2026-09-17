@@ -33,6 +33,9 @@ API_AVAILABLE(ios(6.0))
  */
 - (nullable instancetype)initWithPass:(PKPass *)pass;
 - (nullable instancetype)initWithPasses:(NSArray<PKPass *> *)passes API_AVAILABLE(ios(7.0));
+- (nullable instancetype)initWithPassesData:(NSArray<NSData *> *)passesData API_AVAILABLE(ios(27.0), visionos(27.0)) API_UNAVAILABLE(watchos);
+- (nullable instancetype)initWithPassesArchiveAtFileURL:(NSURL *)passesArchiveFileURL NS_SWIFT_NAME(init(passesArchiveAt:)) API_AVAILABLE(ios(27.0), visionos(27.0)) API_UNAVAILABLE(watchos);
+- (nullable instancetype)initWithPassesArchiveData:(NSData *)passesArchiveData API_AVAILABLE(ios(27.0), visionos(27.0)) API_UNAVAILABLE(watchos);
 - (nullable instancetype)initWithIssuerData:(NSData *)issuerData signature:(NSData *)signature error:(NSError **)error API_AVAILABLE(ios(16.4));
 + (BOOL)canAddPasses API_AVAILABLE(ios(8.0));
 

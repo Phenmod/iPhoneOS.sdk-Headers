@@ -11,9 +11,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+API_UNAVAILABLE_BEGIN(visionos)
+
 @class ARBody2D;
 @class ARSkeleton3D;
-
 
 /**
  An anchor representing a body in the world.
@@ -24,25 +25,43 @@ NS_SWIFT_SENDABLE
 
 /**
  The tracked skeleton in 3D.
- @note The default height of this skeleton, measured from lowest to highest joint in standing position, is defined to be 1.71 meters.
- */
+ - Note: The default height of this skeleton, measured from lowest to highest joint in standing position, is defined to be 1.71 meters.
+*/
 @property (nonatomic, strong, readonly) ARSkeleton3D *skeleton;
 
 /**
  The factor between estimated physical size and default size of the skeleton.
- @see -[ARSkeletonDefinition neutralBodySkeleton3D]
 
- @discussion This value will be estimated if automaticSkeletonScaleEstimationEnabled is set to true on the ARBodyTrackingConfiguration.
- It is used to correct the transform's translation. Default value is 1.0.
- */
+ This value will be estimated if `automaticSkeletonScaleEstimationEnabled` is set to `true` on the `ARBodyTrackingConfiguration`.
+ It is used to correct the transform's translation. Default value is `1.0`.
+
+ - SeeAlso: ``ARSkeletonDefinition/neutralBodySkeleton3D``
+*/
 @property (nonatomic, readonly) CGFloat estimatedScaleFactor;
 
+/**
+ Unavailable.
 
-/** Unavailable */
+ - Parameter transform: The transformation matrix.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)initWithTransform:(simd_float4x4)transform NS_UNAVAILABLE;
+
+/**
+ Unavailable.
+
+ - Parameters:
+   - name: The anchor name.
+   - transform: The transformation matrix.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)initWithName:(NSString *)name transform:(simd_float4x4)transform NS_UNAVAILABLE;
 
 @end
+
+API_UNAVAILABLE_END
 
 NS_ASSUME_NONNULL_END
 #else

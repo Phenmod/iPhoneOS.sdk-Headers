@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <HealthKit/HKDefines.h>
 #import <HealthKit/HKLiveWorkoutDataSource.h>
+#import <HealthKit/HKLiveWorkoutZoneUpdate.h>
 #import <HealthKit/HKObjectType.h>
 #import <HealthKit/HKWorkoutBuilder.h>
 
@@ -57,6 +58,18 @@ API_AVAILABLE(ios(26.0), watchos(5.0)) API_UNAVAILABLE(visionos)
  @param         workoutActivity     The activity that was ended.
  */
 - (void)workoutBuilder:(HKLiveWorkoutBuilder *)workoutBuilder didEndActivity:(HKWorkoutActivity *)workoutActivity API_AVAILABLE(ios(26.0), watchos(9.0)) API_UNAVAILABLE(visionos);
+
+
+/*!
+@method        workoutBuilder:didUpdateWorkoutZone:
+@abstract      Called whenever a workout zone changes in the workout builder.
+
+@param         workoutBuilder      The workout builder to which the activity belongs to
+@param         zoneUpdate               The zone update.
+*/
+#ifdef __swift__
+- (void)workoutBuilder:(HKLiveWorkoutBuilder *)workoutBuilder didUpdateWorkoutZone:(HKLiveWorkoutZoneUpdate *)zoneUpdate API_AVAILABLE(ios(27.0), watchos(27.0)) API_UNAVAILABLE(visionos);
+#endif
 
 @end
 

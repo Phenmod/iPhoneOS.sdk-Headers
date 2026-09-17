@@ -20,7 +20,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Base class for MIDI instruments.
-API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0)) API_UNAVAILABLE(watchos)
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0)) API_UNAVAILABLE(watchos)
 @interface AVAudioUnitMIDIInstrument : AVAudioUnit AVAudioUnitMIDIInstrument_MixingConformance
 
 #if AVAUDIOUNIT_HAVE_AUDIOUNIT

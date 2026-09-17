@@ -110,7 +110,7 @@ NS_ASSUME_NONNULL_BEGIN
 				userInfo:(nullable id)info;
 
 
-/// An optional method that an image provider object way implement.  
+/// An optional method that an image provider object may implement.  
 /// With this method, the provider object can use the Metal API to provide pixel  
 /// data into a MTLTexture when the image object is rendered.
 /// 
@@ -148,7 +148,7 @@ NS_ASSUME_NONNULL_BEGIN
                          originy:(size_t)originy
                            width:(size_t)width
                           height:(size_t)height
-                        userInfo:(nullable id)info NS_AVAILABLE(16_0,19_0);
+                        userInfo:(nullable id)info NS_AVAILABLE(26_0, 26_0);
 
 @end
 

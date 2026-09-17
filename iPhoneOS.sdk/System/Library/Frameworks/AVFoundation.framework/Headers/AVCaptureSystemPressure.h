@@ -51,28 +51,21 @@ AVF_EXPORT AVCaptureSystemPressureLevel const AVCaptureSystemPressureLevelCritic
 AVF_EXPORT AVCaptureSystemPressureLevel const AVCaptureSystemPressureLevelShutdown API_AVAILABLE(ios(11.1), macCatalyst(14.0), tvos(17.0), visionos(1.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(watchos);
 
 
-/*!
- @enum AVCaptureSystemPressureFactors
- @abstract
-    Constants indicating factors contributing to the current system pressured state.
- 
- @constant AVCaptureSystemPressureFactorNone
-    Indicates that the system is not currently pressured.
- @constant AVCaptureSystemPressureFactorSystemTemperature
-    Indicates that the entire system is currently experiencing an elevated thermal level.
- @constant AVCaptureSystemPressureFactorPeakPower
-    Indicates that the system's peak power requirements exceed the battery's current capacity and may result in a system power off.
- @constant AVCaptureSystemPressureFactorDepthModuleTemperature
-    Indicates that the module capturing depth information is operating at an elevated temperature. As system pressure increases, depth quality may become degraded.
- @constant AVCaptureSystemPressureFactorCameraTemperature
-    Indicates that the camera module is operating at an elevated temperature.
- */
+/// Constants indicating factors contributing to the current system pressured state.
 typedef NS_OPTIONS(NSUInteger, AVCaptureSystemPressureFactors) {
+    /// Indicates that the system is not currently pressured.
     AVCaptureSystemPressureFactorNone                   = 0UL,
+    /// Indicates that the entire system is currently experiencing an elevated thermal level.
     AVCaptureSystemPressureFactorSystemTemperature      = (1UL << 0),
+    /// Indicates that the system's peak power requirements exceed the battery's current capacity and may result in a system power off.
     AVCaptureSystemPressureFactorPeakPower              = (1UL << 1),
+    /// Indicates that the module capturing depth information is operating at an elevated temperature. As system pressure increases, depth quality may become degraded.
     AVCaptureSystemPressureFactorDepthModuleTemperature = (1UL << 2),
+    /// Indicates that the camera module is operating at an elevated temperature.
     AVCaptureSystemPressureFactorCameraTemperature API_AVAILABLE(ios(17.0), macCatalyst(17.0), tvos(17.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(watchos) = (1UL << 3),
+    /// Indicates that under the current battery conditions, the device will shut down within 30 seconds if system load is not reduced.
+    AVCaptureSystemPressureFactorBatteryStress API_AVAILABLE(ios(27.0), macCatalyst(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(watchos) = (1UL << 4),
+
 } API_AVAILABLE(ios(11.1), macCatalyst(14.0), tvos(17.0), visionos(1.0)) API_UNAVAILABLE(macos) API_UNAVAILABLE(watchos);
 
 

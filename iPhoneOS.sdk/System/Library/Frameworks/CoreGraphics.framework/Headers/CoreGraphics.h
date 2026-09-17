@@ -28,6 +28,8 @@
 #include <CoreGraphics/CGLayer.h>
 #include <CoreGraphics/CGPDFArray.h>
 #include <CoreGraphics/CGPDFContentStream.h>
+#include <CoreGraphics/CGPDFMarkedContentItem.h>
+#include <CoreGraphics/CGPDFStructureElement.h>
 #include <CoreGraphics/CGPDFContext.h>
 #include <CoreGraphics/CGPDFDictionary.h>
 #include <CoreGraphics/CGPDFDocument.h>

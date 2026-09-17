@@ -40,6 +40,7 @@ typedef CF_ENUM(CFIndex, MACaptionAppearanceDomain)
 {
     kMACaptionAppearanceDomainDefault = 0,
     kMACaptionAppearanceDomainUser = 1,
+    kMACaptionAppearanceDomainVideoConferencing API_AVAILABLE(macos(27.0), ios(27.0)) = 2
 } CF_ENUM_AVAILABLE(10_9, 7_0);
 
 /*!

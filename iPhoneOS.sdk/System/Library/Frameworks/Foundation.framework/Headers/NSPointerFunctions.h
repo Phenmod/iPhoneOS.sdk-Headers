@@ -28,51 +28,113 @@ NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 */
 
 
+/// Defines the memory and personality options for an `NSPointerFunctions` object.
+///
+/// When specifying a value, you can use only one of the options listed in Memory Options, only one of the options listed in Personality Options, and any number of other options.
 typedef NS_OPTIONS(NSUInteger, NSPointerFunctionsOptions) {
     // Memory options are mutually exclusive
-    
-    // default is strong
-    NSPointerFunctionsStrongMemory API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (0UL << 0),       // use strong write-barrier to backing store; use GC memory on copyIn
-    NSPointerFunctionsZeroingWeakMemory API_DEPRECATED("GC no longer supported", macos(10.5, 10.8)) API_UNAVAILABLE(ios, watchos, tvos) = (1UL << 0),  // deprecated; uses GC weak read and write barriers, and dangling pointer behavior otherwise
+
+    /// Use strong write-barriers to backing store; use garbage-collected memory on copy-in.
+    ///
+    /// This is the default memory value. As a special case, if you do not use garbage collection and specify this value in conjunction with `NSPointerFunctionsObjectPersonality` or `NSPointerFunctionsObjectPointerPersonality` then the `NSPointerFunctions` object uses `retain` and `release`. If you do not use garbage collection, and specify this value in conjunction with a valid non-object personality, it is the same as specifying `NSPointerFunctionsMallocMemory`.
+    NSPointerFunctionsStrongMemory API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (0UL << 0),
+    /// Use weak read and write barriers; use garbage-collected memory on copyIn.
+    ///
+    /// If you do not use garbage collection, for object personalities, it will hold a non-retained object pointer.
+    NSPointerFunctionsZeroingWeakMemory API_DEPRECATED("GC no longer supported", macos(10.5, 10.8)) API_UNAVAILABLE(ios, watchos, tvos) = (1UL << 0),
+    /// Take no action when pointers are deleted.
+    ///
+    /// This is usually the preferred memory option for holding arbitrary pointers. The acquire function is only used for copy-in operations. This option is unlikely to be a good choice for objects.
     NSPointerFunctionsOpaqueMemory API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (2UL << 0),
-    NSPointerFunctionsMallocMemory API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (3UL << 0),       // free() will be called on removal, calloc on copyIn
+    /// Use `free()` on removal, `calloc()` on copy in.
+    NSPointerFunctionsMallocMemory API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (3UL << 0),
 #if !0
+    /// Use Mach memory.
     NSPointerFunctionsMachVirtualMemory API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (4UL << 0),
 #endif
-    NSPointerFunctionsWeakMemory API_AVAILABLE(macos(10.8), ios(6.0), watchos(2.0), tvos(9.0)) = (5UL << 0),         // uses weak read and write barriers appropriate for ARC
-        
-    // Personalities are mutually exclusive
-    // default is object.  As a special case, 'strong' memory used for Objects will do retain/release under non-GC
-    NSPointerFunctionsObjectPersonality API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (0UL << 8),         // use -hash and -isEqual, object description
-    NSPointerFunctionsOpaquePersonality API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (1UL << 8),         // use shifted pointer hash and direct equality
-    NSPointerFunctionsObjectPointerPersonality API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (2UL << 8),  // use shifted pointer hash and direct equality, object description
-    NSPointerFunctionsCStringPersonality API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (3UL << 8),        // use a string hash and strcmp, description assumes UTF-8 contents; recommended for UTF-8 (or ASCII, which is a subset) only cstrings
-    NSPointerFunctionsStructPersonality API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (4UL << 8),         // use a memory hash and memcmp (using size function you must set)
-    NSPointerFunctionsIntegerPersonality API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (5UL << 8),        // use unshifted value as hash & equality
+    /// Uses weak read and write barriers appropriate for ARC or GC.
+    ///
+    /// Using `NSPointerFunctionsWeakMemory` object references will turn to `NULL` on last release.
+    NSPointerFunctionsWeakMemory API_AVAILABLE(macos(10.8), ios(6.0), watchos(2.0), tvos(9.0)) = (5UL << 0),
 
-    NSPointerFunctionsCopyIn API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (1UL << 16),      // the memory acquire function will be asked to allocate and copy items on input
+    // Personalities are mutually exclusive
+    /// Use `hash` and `isEqual` methods for hashing and equality comparisons, use the `description` method for a description.
+    ///
+    /// This is the default personality value. As a special case, if you do not use garbage collection and specify this value in conjunction with `NSPointerFunctionsStrongMemory` then the `NSPointerFunctions` object uses `retain` and `release`.
+    NSPointerFunctionsObjectPersonality API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (0UL << 8),
+    /// Use shifted pointer for the hash value and direct comparison to determine equality.
+    NSPointerFunctionsOpaquePersonality API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (1UL << 8),
+    /// Use shifted pointer for the hash value and direct comparison to determine equality; use the `description` method for a description.
+    ///
+    /// As a special case, if you do not use garbage collection and specify this value in conjunction with `NSPointerFunctionsStrongMemory` then the `NSPointerFunctions` object uses `retain` and `release`.
+    NSPointerFunctionsObjectPointerPersonality API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (2UL << 8),
+    /// Use a string hash and `strcmp`; C-string '`%s`' style description.
+    NSPointerFunctionsCStringPersonality API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (3UL << 8),
+    /// Use a memory hash and `memcmp` (using a size function that you must set---see `sizeFunction`).
+    NSPointerFunctionsStructPersonality API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (4UL << 8),
+    /// Use unshifted value as hash and equality.
+    NSPointerFunctionsIntegerPersonality API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (5UL << 8),
+
+    /// Use the memory acquire function to allocate and copy items on input (see `acquireFunction`).
+    NSPointerFunctionsCopyIn API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0)) = (1UL << 16),
 };
 
+/// An instance of `NSPointerFunctions` defines callout functions appropriate for managing a pointer reference held somewhere else.
+///
+/// The functions specified by an instance of `NSPointerFunctions` are separated into two clusters—those that define "personality" such as "object" or "C-string", and those that describe memory management issues such as a memory deallocation function. There are constants for common personalities and memory manager selections (see `Memory and Personality Options`).
+///
+/// ``NSHashTable``, ``NSMapTable``, and ``NSPointerArray`` use an `NSPointerFunctions` object to define the acquisition and retention behavior for the pointers they manage. Note, however, that not all combinations of personality and memory management behavior are valid for these collections. The pointer collection objects copy the `NSPointerFunctions` object on input and output, so you cannot usefully subclass `NSPointerFunctions`.
+///
+/// ### Subclassing Notes
+///
+/// `NSPointerFunctions` is not suitable for subclassing.
 API_AVAILABLE(macos(10.5), ios(6.0), watchos(2.0), tvos(9.0))
 @interface NSPointerFunctions : NSObject <NSCopying>
 // construction
+/// Returns an `NSPointerFunctions` object initialized with the given options.
+///
+/// - Parameter options: The options for the new `NSPointerFunctions` object.
 - (instancetype)initWithOptions:(NSPointerFunctionsOptions)options NS_DESIGNATED_INITIALIZER;
+/// Returns a new `NSPointerFunctions` object initialized with the given options.
+///
+/// - Parameter options: The options for the new `NSPointerFunctions` object.
+/// - Returns: A new `NSPointerFunctions` object initialized with the given options.
 + (NSPointerFunctions *)pointerFunctionsWithOptions:(NSPointerFunctionsOptions)options;
 
 // pointer personality functions
+/// The hash function.
 @property (nullable) NSUInteger (*hashFunction)(const void *item, NSUInteger (* _Nullable size)(const void *item));
+/// The function used to compare pointers.
 @property (nullable) BOOL (*isEqualFunction)(const void *item1, const void*item2, NSUInteger (* _Nullable size)(const void *item));
+/// The function used to determine the size of pointers.
+///
+/// This function is used for copy-in operations (unless the collection has an object personality).
 @property (nullable) NSUInteger (*sizeFunction)(const void *item);
+/// The function used to describe elements.
+///
+/// This function is used by description methods for hash and map tables.
 @property (nullable) NSString * _Nullable (*descriptionFunction)(const void *item);
 
 // custom memory configuration
+/// The function used to relinquish memory.
+///
+/// This specifies the function to use when an item is removed from a table or pointer array.
 @property (nullable) void (*relinquishFunction)(const void *item, NSUInteger (* _Nullable size)(const void *item));
+/// The function used to acquire memory.
+///
+/// This specifies the function to use for copy-in operations.
 @property (nullable) void * _Nonnull (*acquireFunction)(const void *src, NSUInteger (* _Nullable size)(const void *item), BOOL shouldCopy);
 
 // GC used to require that read and write barrier functions be used when pointers are from GC memory
+/// Specifies whether, in a garbage collected environment, pointers should be assigned using a strong write barrier.
+///
+/// If you use garbage collection, read and write barrier functions must be used when pointers are from memory scanned by the collector.
 @property BOOL usesStrongWriteBarrier // pointers should (not) be assigned using the GC strong write barrier
     API_DEPRECATED("Garbage collection no longer supported", macosx(10.5, 10.12), ios(2.0,10.0), watchos(2.0,3.0), tvos(9.0,10.0));
 
+/// Specifies whether, in a garbage collected environment, pointers should use weak read and write barriers.
+///
+/// If you use garbage collection, read and write barrier functions must be used when pointers are from memory scanned by the collector.
 @property BOOL usesWeakReadAndWriteBarriers       // pointers should (not) use GC weak read and write barriers
     API_DEPRECATED("Garbage collection no longer supported", macosx(10.5, 10.12), ios(2.0,10.0), watchos(2.0,3.0), tvos(9.0,10.0));
 @end

@@ -12,8 +12,8 @@ NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 /// An object that handles status updates when downloading an asset pack.
 API_AVAILABLE(ios(26), macos(26), tvos(26), visionos(26))
 API_UNAVAILABLE(watchos)
-NS_SWIFT_SENDABLE
 NS_REFINED_FOR_SWIFT
+NS_SWIFT_SENDABLE
 @protocol BAManagedAssetPackDownloadDelegate <NSObject>
 
 @optional

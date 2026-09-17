@@ -7,10 +7,29 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#if __has_include(<mach-o/loader.h>)
 #include <mach-o/loader.h>
+#endif
+/*
+ * Each of these header files has a standalone implementation for SDKs
+ * (e.g. RTKit) where the headers aren't available.  Switch to using
+ * those, if made available.
+ */
+#if __has_include(<os/availability.h>)
 #include <os/availability.h>
+#else
+#include <os/log_availability.h>
+#endif
+#if __has_include(<os/base.h>)
 #include <os/base.h>
+#else
+#include <os/log_base.h>
+#endif
+#if __has_include(<os/object.h>)
 #include <os/object.h>
+#else
+#include <os/log_object.h>
+#endif
 #include <os/trace.h>
 
 #if !__has_builtin(__builtin_os_log_format)
@@ -24,7 +43,8 @@ OS_OBJECT_DECL_SWIFT(os_log);
 #elif OS_OBJECT_USE_OBJC
 OS_OBJECT_DECL(os_log);
 #elif defined(__has_ptrcheck)
-typedef struct os_log_s *__single os_log_t;
+typedef struct os_log_s *__single os_log_t
+LOG_SWIFT_NAME(OSLog) LOG_SWIFT_NEWTYPE(struct);
 #else
 typedef struct os_log_s *os_log_t;
 #endif /* OS_OBJECT_USE_OBJC */
@@ -87,7 +107,7 @@ OS_ENUM(os_log_type, uint8_t,
     OS_LOG_TYPE_DEBUG   = 0x02,
     OS_LOG_TYPE_ERROR   = 0x10,
     OS_LOG_TYPE_FAULT   = 0x11,
-);
+) LOG_SWIFT_NAME(OSLogType);
 
 /*!
  * @function os_log_create
@@ -122,7 +142,8 @@ OS_ENUM(os_log_type, uint8_t,
 API_AVAILABLE(macos(10.12), ios(10.0), watchos(3.0), tvos(10.0))
 OS_EXPORT OS_NOTHROW OS_WARN_RESULT OS_OBJECT_RETURNS_RETAINED OS_NONNULL_ALL
 os_log_t
-os_log_create(const char *subsystem, const char *category);
+os_log_create(const char *subsystem, const char *category)
+LOG_SWIFT_NAME(OSLog.init(__subsystem:category:));
 
 /*!
  * @function os_log_info_enabled
@@ -422,7 +443,8 @@ os_log_create(const char *subsystem, const char *category);
 API_AVAILABLE(macos(10.12), ios(10.0), watchos(3.0), tvos(10.0))
 OS_EXPORT OS_NOTHROW OS_WARN_RESULT OS_PURE
 bool
-os_log_type_enabled(os_log_t oslog, os_log_type_t type);
+os_log_type_enabled(os_log_t oslog, os_log_type_t type)
+LOG_SWIFT_NAME(OSLog.isEnabled(self:type:));
 
 /*!
  * @function _os_log_impl

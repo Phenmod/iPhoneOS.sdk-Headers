@@ -43,6 +43,7 @@
 #endif // TARGET_OS_IOS
 
 #if TARGET_OS_IOS && !TARGET_OS_VISION
+#import <AVKit/AVCaptureDeviceDirectionCoordinator.h>
 #import <AVKit/AVCaptureEvent.h>
 #import <AVKit/AVCaptureEventInteraction.h>
 #import <AVKit/AVCaptureEventSound.h>
@@ -51,6 +52,7 @@
 #import <AVKit/AVPictureInPictureController_AVSampleBufferDisplayLayerSupport.h>
 #import <AVKit/AVPictureInPictureController_VideoCallSupport.h>
 #import <AVKit/AVPlaybackRouteSelecting.h>
+#import <AVKit/AVPlaybackUserInterfaceControllable.h>
 #import <AVKit/AVPlayerItem+AVKitAdditions.h>
 #import <AVKit/AVPlayerViewController.h>
 #import <AVKit/AVRoutePickerView.h>
@@ -71,11 +73,13 @@
 #import <AVKit/AVContinuityDevicePickerViewController.h>
 #import <AVKit/AVDisplayManager.h>
 #import <AVKit/AVError.h>
+#import <AVKit/AVInterfaceControllable.h>
 #import <AVKit/AVInterstitialTimeRange.h>
 #import <AVKit/AVNavigationMarkersGroup.h>
 #import <AVKit/AVPictureInPictureController.h>
 #import <AVKit/AVPictureInPictureController_AVSampleBufferDisplayLayerSupport.h>
 #import <AVKit/AVPlaybackSpeed.h>
+#import <AVKit/AVPlaybackUserInterfaceControllable.h>
 #import <AVKit/AVPlayerItem.h>
 #import <AVKit/AVPlayerViewController.h>
 #import <AVKit/AVRoutePickerView.h>
@@ -89,15 +93,18 @@
 #import <AVKit/AVCaptureEventInteraction.h>
 #import <AVKit/AVCaptureEvent.h>
 #import <AVKit/AVError.h>
+#import <AVKit/AVInterfaceControllable.h>
 #import <AVKit/AVInterstitialTimeRange.h>
 #import <AVKit/AVPictureInPictureController.h>
 #import <AVKit/AVPictureInPictureController_AVSampleBufferDisplayLayerSupport.h>
 #import <AVKit/AVPictureInPictureController_VideoCallSupport.h>
 #import <AVKit/AVPlaybackRouteSelecting.h>
 #import <AVKit/AVPlaybackSpeed.h>
+#import <AVKit/AVPlaybackUserInterfaceControllable.h>
 #import <AVKit/AVPlayerItem+AVKitAdditions.h>
 #import <AVKit/AVPlayerViewController.h>
 #import <AVKit/AVRoutePickerView.h>
+#import <AVKit/AVViewport.h>
 #import <AVKit/UIWindow_AVAdditions.h>
 
 #endif // TARGET_OS_VISION

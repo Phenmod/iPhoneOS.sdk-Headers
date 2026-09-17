@@ -2,7 +2,7 @@
 //  CoreSpotlight.h
 //  CoreSpotlight
 //
-//  Copyright © 2014–2023 Apple Inc. All rights reserved.
+//  Copyright © 2014–2026 Apple Inc. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -21,6 +21,7 @@ FOUNDATION_EXPORT const unsigned char CoreSpotlightVersionString[];
 #import <CoreSpotlight/CSPerson.h>
 #import <CoreSpotlight/CSSearchQuery.h>
 #import <CoreSpotlight/CSSearchableIndex.h>
+#import <CoreSpotlight/CSSearchableIndexDescription.h>
 #import <CoreSpotlight/CSSearchableItem.h>
 #import <CoreSpotlight/CSSearchableItemAttributeSet.h>
 #import <CoreSpotlight/CSSearchableItemAttributeSet_Categories.h>

@@ -119,6 +119,15 @@ API_AVAILABLE(macos(26.0), ios(26.0))
 
 /// Encodes a command to execute a series of commands from an indirect command buffer.
 ///
+/// Use this method to encode the execution of a range of Metal compute commands in the GPU timeline.
+///
+/// - Note: if the `indirectCommandBuffer` parameter references any pipeline state objects, you are responsible
+///     for adding them to a ``MTLResidencySet`` instance in use when you commit the command buffer.
+///
+///     An indirect compute command references a pipeline state when you pass it as an argument to the
+///     command's ``MTLIndirectComputeCommand/setComputePipelineState:`` method during CPU encoding, or
+///     `set_compute_pipeline_state()` during GPU encoding.
+///
 /// - Parameters:
 ///   - indirectCommandBuffer: ``MTLIndirectCommandBuffer`` instance containing the commands to execute.
 ///   - executionRange:        The range of commands to execute.
@@ -128,8 +137,23 @@ API_AVAILABLE(macos(26.0), ios(26.0))
 /// Encodes an instruction to execute commands from an indirect command buffer, using an indirect buffer for
 /// arguments.
 ///
+/// Use this method to indicate to Metal the span of indices in the command buffer to execute indirectly via an
+/// ``MTLBuffer`` instance you provide in the `indirectRangeBuffer` parameter. This allows you to calculate the
+/// span of commands Metal executes in the GPU timeline, enabling GPU-driven workflows.
+///
+/// Metal requires that the contents of this buffer match the layout of struct ``MTLIndirectCommandBufferExecutionRange``,
+/// which specifies a location and a length within the indirect command buffer. You are responsible for ensuring the
+/// address of this buffer has 4-byte alignment.
+///
 /// Use an instance of ``MTLResidencySet`` to mark residency of the indirect buffer that the `indirectRangeBuffer`
 /// parameter references.
+///
+/// - Note: if the `indirectCommandBuffer` parameter references any pipeline state objects, you are responsible
+///     for adding them to a ``MTLResidencySet`` instance in use when you commit the command buffer.
+///
+///     An indirect compute command references a pipeline state when you pass it as an argument to the
+///     command's ``MTLIndirectComputeCommand/setComputePipelineState:`` method during CPU encoding, or
+///     `set_compute_pipeline_state()` during GPU encoding.
 ///
 /// - Parameters:
 ///   - indirectCommandbuffer: ``MTLIndirectCommandBuffer`` instance containing the commands to execute.
@@ -426,22 +450,87 @@ destinationBytesPerImage:(NSUInteger)destinationBytesPerImage
      destinationOrigin:(MTLOrigin)destinationOrigin
                options:(MTLBlitOption)options;
 
-/// Encodes a command to copy data from a tensor instance into another.
+
+
+/// Encodes a command to copy data from a slice of the data plane of a tensor into a slice of the data plane of
+/// another tensor.
 ///
-/// If the `sourceTensor` and `destinationTensor` instances are not aliasable, this command applies the correct reshapes
-/// to enable this operation.
+/// If `sourceTensor` and `destinationTensor` are not aliasable, this command applies a reshape operation.
+///
+/// Ensure the first dimension of `sourceOrigin`, `sourceDimensions`, `destinationOrigin`,
+/// and `destinationDimensions` is byte aligned.
 ///
 /// - Parameters:
-///    - sourceTensor:      An ``MTLTensor`` instance the command copies data from.
-///    - sourceSlice:       The slice of `sourceTensor` from which Metal copies data.
-///    - destinationTensor: An ``MTLTensor`` instance the command copies data to.
-///    - destinationSlice:  The slice of `destinationTensor` to which Metal copies data.
+///   - sourceTensor: A tensor instance the method copies data from.
+///   - sourceOrigin: An array of per-dimension offsets that together locate the first element
+///     to copy in `sourceTensor`. Each element in this array corresponds to the dimension at the
+///     same index in `sourceDimensions`. Each offset value represents the number of elements from
+///     the start of that dimension.
+///   - sourceDimensions: An array of per-dimension sizes that together define the extent of the
+///     slice to copy from `sourceTensor`. Each element in this array corresponds to the dimension
+///     at the same index in `sourceOrigin`. Each size value represents the number of elements to
+///     include along that dimension, starting from the corresponding offset in `sourceOrigin`.
+///   - destinationTensor: A tensor instance the method copies data to.
+///   - destinationOrigin: An array of per-dimension offsets that together locate the first element
+///     to write in `destinationTensor`. Each element in this array corresponds to the dimension at
+///     the same index in `destinationDimensions`. Each offset value represents the number of elements
+///     from the start of that dimension.
+///   - destinationDimensions: An array of per-dimension sizes that together define the extent of
+///     the slice to write in `destinationTensor`. Each element in this array corresponds to the
+///     dimension at the same index in `destinationOrigin`. Each size value represents the number of
+///     elements to include along that dimension, starting from the corresponding offset in
+///     `destinationOrigin`.
 - (void)copyFromTensor:(id<MTLTensor>)sourceTensor
           sourceOrigin:(MTLTensorExtents *)sourceOrigin
       sourceDimensions:(MTLTensorExtents *)sourceDimensions
               toTensor:(id<MTLTensor>)destinationTensor
      destinationOrigin:(MTLTensorExtents *)destinationOrigin
  destinationDimensions:(MTLTensorExtents *)destinationDimensions;
+
+
+
+
+/// Encodes a command to copy data from a slice of a plane of a tensor into a slice of a plane of
+/// another tensor.
+///
+/// If `sourceTensor` and `destinationTensor` are not aliasable, this command applies a reshape operation.
+/// For auxiliary planes, specify origin and dimensions in plane coordinates by applying the corresponding auxiliary plane's block
+/// factors.
+///
+/// Ensure the first dimension of `sourceOrigin`, `sourceDimensions`, `destinationOrigin`,
+/// and `destinationDimensions` is byte aligned.
+///
+/// - Parameters:
+///   - sourceTensor: A tensor instance the method copies data from.
+///   - sourceOrigin: An array of per-dimension offsets that together locate the first element
+///     to copy in `sourceTensor`. Each element in this array corresponds to the dimension at the
+///     same index in `sourceDimensions`. Each offset value represents the number of elements from
+///     the start of that dimension.
+///   - sourceDimensions: An array of per-dimension sizes that together define the extent of the
+///     slice to copy from `sourceTensor`. Each element in this array corresponds to the dimension
+///     at the same index in `sourceOrigin`. Each size value represents the number of elements to
+///     include along that dimension, starting from the corresponding offset in `sourceOrigin`.
+///   - sourcePlane: The plane the method copies data from.
+///   - destinationTensor: A tensor instance the method copies data to.
+///   - destinationOrigin: An array of per-dimension offsets that together locate the first element
+///     to write in `destinationTensor`. Each element in this array corresponds to the dimension at
+///     the same index in `destinationDimensions`. Each offset value represents the number of elements
+///     from the start of that dimension.
+///   - destinationDimensions: An array of per-dimension sizes that together define the extent of
+///     the slice to write in `destinationTensor`. Each element in this array corresponds to the
+///     dimension at the same index in `destinationOrigin`. Each size value represents the number of
+///     elements to include along that dimension, starting from the corresponding offset in
+///     `destinationOrigin`.
+///   - destinationPlane: The plane the method copies data to.
+- (void)copyFromTensor:(id<MTLTensor>)sourceTensor
+          sourceOrigin:(MTLTensorExtents *)sourceOrigin
+      sourceDimensions:(MTLTensorExtents *)sourceDimensions
+           sourcePlane:(MTLTensorPlaneType)sourcePlane
+              toTensor:(id<MTLTensor>)destinationTensor
+     destinationOrigin:(MTLTensorExtents *)destinationOrigin
+ destinationDimensions:(MTLTensorExtents *)destinationDimensions
+      destinationPlane:(MTLTensorPlaneType)destinationPlane API_AVAILABLE(macos(27.0), ios(27.0));
+
 
 /// Encodes a command that generates mipmaps for a texture instance from the base mipmap level up to the highest
 /// mipmap level.

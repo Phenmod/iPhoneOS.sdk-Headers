@@ -14,12 +14,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+API_UNAVAILABLE_BEGIN(visionos)
+
 /**
  Object representing the mapping of a physical 3D space.
- @discussion ARWorldMap supports archiving and unarchiving across devices
+
+ `ARWorldMap` supports archiving and unarchiving across devices
  and versions with NSDecodingFailurePolicySetErrorAndReturn, providing an error
  if the map format is not supported.
- */
+*/
 API_AVAILABLE(ios(12.0))
 @interface ARWorldMap : NSObject <NSCopying, NSSecureCoding>
 
@@ -43,11 +46,23 @@ API_AVAILABLE(ios(12.0))
  */
 @property (nonatomic, strong, readonly) ARPointCloud *rawFeaturePoints;
 
-/** Unavailable */
+/**
+ Unavailable.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)init NS_UNAVAILABLE;
+
+/**
+ Unavailable.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_UNAVAILABLE;
 
 @end
+
+API_UNAVAILABLE_END
 
 NS_ASSUME_NONNULL_END
 #else

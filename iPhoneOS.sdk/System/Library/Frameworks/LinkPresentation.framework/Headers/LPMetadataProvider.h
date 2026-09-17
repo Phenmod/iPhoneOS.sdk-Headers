@@ -61,16 +61,6 @@ LP_EXTERN API_AVAILABLE(macos(10.15), ios(13.0), visionos(1.0), watchos(9.0), tv
 /// necessary UI updates back to the main queue. When the completion handler
 /// returns, it deletes any file URLs returned in the resulting
 /// ``LPLinkMetadata``.
-///
-/// > Concurrency Note: You can call this method from synchronous code using a completion handler,
-/// > as shown on this page, or you can call it as an asynchronous method that has the
-/// > following declaration:
-/// >
-/// > ```swift
-/// >  func startFetchingMetadata(for url: URL) async throws -> LPLinkMetadata
-/// > ```
-/// >
-/// > For information about concurrency and asynchronous code in Swift, see <doc://com.apple.documentation/documentation/swift/calling-objective-c-apis-asynchronously>.
 - (void)startFetchingMetadataForURL:(NSURL *)URL completionHandler:(void(^)(LPLinkMetadata *_Nullable metadata, NSError *_Nullable error))completionHandler;
 
 /// Fetches metadata for the given ``NSURLRequest``.
@@ -83,16 +73,6 @@ LP_EXTERN API_AVAILABLE(macos(10.15), ios(13.0), visionos(1.0), watchos(9.0), tv
 /// necessary UI updates back to the main queue. When the completion handler
 /// returns, it deletes any file URLs returned in the resulting
 /// ``LPLinkMetadata``.
-///
-/// > Concurrency Note: You can call this method from synchronous code using a completion handler,
-/// > as shown on this page, or you can call it as an asynchronous method that has the
-/// > following declaration:
-/// >
-/// > ```swift
-/// >  func startFetchingMetadata(for request: URLRequest) async throws -> LPLinkMetadata
-/// > ```
-/// >
-/// > For information about concurrency and asynchronous code in Swift, see <doc://com.apple.documentation/documentation/swift/calling-objective-c-apis-asynchronously>.
 - (void)startFetchingMetadataForRequest:(NSURLRequest *)request completionHandler:(void(^)(LPLinkMetadata *_Nullable metadata, NSError *_Nullable error))completionHandler API_AVAILABLE(macos(12.0), ios(15.0), visionos(1.0), tvos(18.0), watchos(9.0));
 
 /// Cancels a metadata request.

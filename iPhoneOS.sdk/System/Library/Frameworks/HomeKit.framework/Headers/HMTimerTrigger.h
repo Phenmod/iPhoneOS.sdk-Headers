@@ -31,7 +31,7 @@ HM_EXTERN NS_SWIFT_SENDABLE API_AVAILABLE(ios(8.0), watchos(2.0), tvos(10.0), ma
  *                 to a home if the fireDate includes a seconds value other than 0.
  *
  * @param recurrence The recurrence interval to fire the trigger. A value of nil indicates that the
- *                   trigger is non-repeating. The minimum reccurence interval is 5 minutes, maximum
+ *                   trigger is non-repeating. The minimum recurrence interval is 5 minutes, maximum
  *                   recurrence interval is 5 weeks and the recurrence interval must be specified in
  *                   multiples of whole minutes.
  *

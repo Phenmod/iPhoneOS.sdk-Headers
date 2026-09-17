@@ -20,10 +20,10 @@
 
 #if TARGET_OS_IOS || TARGET_OS_OSX || TARGET_OS_VISION
 #import <PhotosUI/PHContentEditingController.h>
-#endif
-
-#if TARGET_OS_IOS || TARGET_OS_VISION
 #import <PhotosUI/PHPhotoLibrary+PhotosUISupport.h>
+#import <PhotosUI/PHSharedAlbumCreationViewController.h>
+#import <PhotosUI/PHSharedAlbumCustomizationViewController.h>
+#import <PhotosUI/PHSharedAlbumPostingViewController.h>
 #endif
 
 #if TARGET_OS_OSX

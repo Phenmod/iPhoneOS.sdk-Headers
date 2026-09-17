@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
  @constant ASCredentialRequestTypePassword Password credential type.
  @constant ASCredentialRequestTypePasskeyAssertion Passkey assertion credential type.
  @constant ASCredentialRequestTypePasskeyRegistration Passkey registration credential type.
- @constant ASCredentialRequestTypeOneTimeCode One Time Code credential type.
+ @constant ASCredentialRequestTypeOneTimeCode One-Time Code credential type.
  */
 typedef NS_ENUM(NSInteger, ASCredentialRequestType) {
     ASCredentialRequestTypePassword = 0,

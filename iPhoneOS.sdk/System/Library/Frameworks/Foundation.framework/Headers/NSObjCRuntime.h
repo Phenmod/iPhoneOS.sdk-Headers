@@ -178,7 +178,7 @@
 #define NS_RELEASES_ARGUMENT
 #endif
 
-// Mark local variables of type 'id' or pointer-to-ObjC-object-type so that values stored into that local variable are not aggressively released by the compiler during optimization, but are held until either the variable is assigned to again, or the end of the scope (such as a compound statement, or method definition) of the local variable.
+/// Marks local variables of type `id` or pointer-to-ObjC-object-type so that values stored into that local variable are not aggressively released by the compiler during optimization, but are held until either the variable is assigned to again, or the end of the scope (such as a compound statement, or method definition) of the local variable.
 #ifndef NS_VALID_UNTIL_END_OF_SCOPE
 #if __has_attribute(objc_precise_lifetime)
 #define NS_VALID_UNTIL_END_OF_SCOPE __attribute__((objc_precise_lifetime))
@@ -284,13 +284,16 @@
    // * Other object-type parameters are imported into Swift with an '& Sendable' requirement.
 #  define NS_SWIFT_SENDABLE __attribute__((swift_attr("@Sendable")))
 
+   // Indicates that the thing it is applied to should be imported neither as explicitly Sendable nor explicitly non-*Sendable*. When applied to type declarations, the type will be imported without any Sendable conformances.
+#  define NS_SWIFT_SUPPRESS_SENDABLE __attribute__((swift_attr("~Sendable")))
+
    // Indicates that the thing it is applied to should *not* be imported as 'Sendable' in Swift even if it normally would be.
 #  define NS_SWIFT_NONSENDABLE __attribute__((swift_attr("@_nonSendable")))
 
-   // Indicates that a specific member of an 'NS_SWIFT_UI_ACTOR'-isolated type is "threadsafe" and should be callable from outside the main actor.
+   // Indicates that a specific member of an 'NS_SWIFT_MAIN_ACTOR'-isolated type is "threadsafe" and should be callable from outside the main actor.
 #  define NS_SWIFT_NONISOLATED __attribute__((swift_attr("nonisolated")))
 
-// Indicates that a specific member of an 'NS_SWIFT_UI_ACTOR'-isolated type does its own data isolation management and does not participate in Swift concurrency checking.
+// Indicates that a specific member of an 'NS_SWIFT_MAIN_ACTOR'-isolated type does its own data isolation management and does not participate in Swift concurrency checking.
 #  define NS_SWIFT_NONISOLATED_UNSAFE __attribute__((swift_attr("nonisolated(unsafe)")))
 
 #  define __NS_HEADER_AUDIT_BEGIN_sendability \
@@ -302,6 +305,7 @@
 #  define __NS_HEADER_AUDIT_END_sendability   _Pragma("clang attribute NS_HEADER_AUDIT_sendability.pop")
 #else
 #  define NS_SWIFT_SENDABLE
+#  define NS_SWIFT_SUPPRESS_SENDABLE
 #  define NS_SWIFT_NONSENDABLE
 #  define NS_SWIFT_NONISOLATED
 #  define NS_SWIFT_NONISOLATED_UNSAFE
@@ -496,7 +500,8 @@ Usually, this is because the enum represents a mathematically complete set. For 
 
 NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
-FOUNDATION_EXPORT double NSFoundationVersionNumber;
+/// The version of the Foundation framework in the current environment.
+FOUNDATION_EXPORT const double NSFoundationVersionNumber;
 
 #if TARGET_OS_MAC
 #define NSFoundationVersionNumber10_0	397.40
@@ -584,92 +589,204 @@ FOUNDATION_EXPORT double NSFoundationVersionNumber;
 #endif
 
 #if TARGET_OS_IPHONE
+/// Foundation version released in iOS 2.0.
 #define NSFoundationVersionNumber_iPhoneOS_2_0	678.24
+/// Foundation version released in iOS 2.1.
 #define NSFoundationVersionNumber_iPhoneOS_2_1  678.26
+/// Foundation version released in iOS 2.2.
 #define NSFoundationVersionNumber_iPhoneOS_2_2  678.29
+/// Foundation version released in iOS 3.0.
 #define NSFoundationVersionNumber_iPhoneOS_3_0  678.47
+/// Foundation version released in iOS 3.1.
 #define NSFoundationVersionNumber_iPhoneOS_3_1  678.51
+/// Foundation version released in iOS 3.2.
 #define NSFoundationVersionNumber_iPhoneOS_3_2  678.60
+/// Foundation version released in iOS version 4.0.
 #define NSFoundationVersionNumber_iOS_4_0  751.32
+/// Foundation version released in iOS version 4.1.
 #define NSFoundationVersionNumber_iOS_4_1  751.37
+/// Foundation version released in iOS version 4.2.
 #define NSFoundationVersionNumber_iOS_4_2  751.49
+/// Foundation version released in iOS version 4.3.
 #define NSFoundationVersionNumber_iOS_4_3  751.49
+/// Foundation version released in iOS version 5.0.
 #define NSFoundationVersionNumber_iOS_5_0  881.00
+/// Foundation version released in iOS version 5.1.
 #define NSFoundationVersionNumber_iOS_5_1  890.10
+/// Foundation version released in iOS version 6.0.
 #define NSFoundationVersionNumber_iOS_6_0  992.00
+/// Foundation version released in iOS version 6.1.
 #define NSFoundationVersionNumber_iOS_6_1  993.00
+/// Foundation version released in iOS version 7.0.
 #define NSFoundationVersionNumber_iOS_7_0 1047.20
+/// Foundation version released in iOS version 7.1.
 #define NSFoundationVersionNumber_iOS_7_1 1047.25
+/// Foundation version released in iOS version 8.0.
 #define NSFoundationVersionNumber_iOS_8_0 1140.11
+/// Foundation version released in iOS version 8.1.
 #define NSFoundationVersionNumber_iOS_8_1 1141.1
+/// Foundation version released in iOS version 8.2.
 #define NSFoundationVersionNumber_iOS_8_2 1142.14
+/// Foundation version released in iOS version 8.3.
 #define NSFoundationVersionNumber_iOS_8_3 1144.17
+/// Foundation version released in iOS version 8.4.
 #define NSFoundationVersionNumber_iOS_8_4 1144.17
+/// Foundation version ceiling for any update of iOS version 8.x.
 #define NSFoundationVersionNumber_iOS_8_x_Max 1199
+/// Foundation version released in iOS version 9.0.
 #define NSFoundationVersionNumber_iOS_9_0 1240.1
+/// Foundation version released in iOS version 9.1.
 #define NSFoundationVersionNumber_iOS_9_1 1241.14
+/// Foundation version released in iOS version 9.2.
 #define NSFoundationVersionNumber_iOS_9_2 1242.12
+/// Foundation version released in iOS version 9.3.
 #define NSFoundationVersionNumber_iOS_9_3 1242.12
+/// Foundation version released in iOS version 9.4.
 #define NSFoundationVersionNumber_iOS_9_4 1280.25
+/// Foundation version ceiling for any update of iOS version 9.x.
 #define NSFoundationVersionNumber_iOS_9_x_Max 1299
 #endif
 
 @class NSString, Protocol;
 
 typedef NSString * NSExceptionName NS_TYPED_EXTENSIBLE_ENUM;
+/// Modes that a run loop operates in.
 typedef NSString * NSRunLoopMode NS_TYPED_EXTENSIBLE_ENUM;
 
+/// Returns a string representation of a given selector.
+///
+/// - Parameter aSelector: A selector.
+/// - Returns: A string representation of `aSelector`.
 FOUNDATION_EXPORT NSString *NSStringFromSelector(SEL aSelector);
+/// Returns the selector with a given name.
+///
+/// - Parameter aSelectorName: A string of any length, with any characters, that represents the name of a selector.
+/// - Returns: The selector named by `aSelectorName`. If `aSelectorName` is not a valid selector name, returns `0`.
 FOUNDATION_EXPORT SEL NSSelectorFromString(NSString *aSelectorName);
 
+/// Returns a string containing the name of a class.
+///
+/// - Parameter aClass: A class.
+/// - Returns: A string containing the name of `aClass`.
 FOUNDATION_EXPORT NSString *NSStringFromClass(Class aClass);
+/// Obtains a class by name.
+///
+/// - Parameter aClassName: The name of a class.
+/// - Returns: The class object named by `aClassName`, or `nil` if no class by that name is currently loaded. If `aClassName` is `nil`, returns `nil`.
 FOUNDATION_EXPORT Class _Nullable NSClassFromString(NSString *aClassName);
 
+/// Returns a string containing the name of a protocol.
+///
+/// - Parameter proto: A protocol.
+/// - Returns: A string containing the name of `proto`.
 FOUNDATION_EXPORT NSString *NSStringFromProtocol(Protocol *proto) API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0));
+/// Returns a protocol with a given name.
+///
+/// - Parameter namestr: The name of a protocol.
+/// - Returns: The protocol named by `namestr`, or `nil` if no protocol by that name is currently loaded.
 FOUNDATION_EXPORT Protocol * _Nullable NSProtocolFromString(NSString *namestr) API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0));
 
+/// Obtains the actual size and the aligned size of an encoded type.
+///
+/// - Parameters:
+///   - typePtr: A pointer to an Objective-C type encoding.
+///   - sizep: Upon return, contains the actual size of the type. Pass `NULL` if you don't want this information.
+///   - alignp: Upon return, contains the aligned size of the type. Pass `NULL` if you don't want this information.
+/// - Returns: A pointer to the first character of the type code that's next in the type encoding string, or the empty string if there is no next type code.
 FOUNDATION_EXPORT const char *NSGetSizeAndAlignment(const char *typePtr, NSUInteger * _Nullable sizep, NSUInteger * _Nullable alignp);
 
+/// Logs an error message to the Apple System Log facility.
+///
+/// - Parameter format: A format string. See "Formatting String Objects" for examples of how to use this method, and "String Format Specifiers" for a list of format specifiers.
 FOUNDATION_EXPORT void NSLog(NSString *format, ...) NS_FORMAT_FUNCTION(1,2) NS_NO_TAIL_CALL;
+/// Logs an error message to the Apple System Log facility.
+///
+/// - Parameters:
+///   - format: A format string. See "Formatting String Objects" for examples of how to use this method, and "String Format Specifiers" for a list of format specifiers.
+///   - args: A list of arguments to substitute into `format`.
 FOUNDATION_EXPORT void NSLogv(NSString *format, va_list args) NS_FORMAT_FUNCTION(1,0) NS_NO_TAIL_CALL;
 
-/*
- These constants are used to indicate how items in a request are ordered, from the first one given in a method invocation or function call to the last (that is, left to right in code).
- 
- Given the function:
-   NSComparisonResult f(int a, int b)
- 
- If:
-    a < b   then return NSOrderedAscending. The left operand is smaller than the right operand.
-    a > b   then return NSOrderedDescending. The left operand is greater than the right operand.
-    a == b  then return NSOrderedSame. The operands are equal.
-*/
+/// Constants that indicate sort order.
+///
+/// These constants are used to indicate how items in a request are ordered, from the first one given in a method invocation or function call to the last (that is, left to right in code).
+///
+/// Given the function:
+/// ```
+///   NSComparisonResult f(int a, int b)
+///```
+/// If:
+/// ```
+///    a < b   then return NSOrderedAscending. The left operand is smaller than the right operand.
+///    a > b   then return NSOrderedDescending. The left operand is greater than the right operand.
+///    a == b  then return NSOrderedSame. The operands are equal.
+/// ```
 typedef NS_CLOSED_ENUM(NSInteger, NSComparisonResult) {
+    /// The left operand is smaller than the right operand.
     NSOrderedAscending = -1L,
+    /// The two operands are equal.
     NSOrderedSame,
+    /// The left operand is greater than the right operand.
     NSOrderedDescending
 };
 
+/// Defines the signature for a block object used for comparison operations.
+///
+/// The arguments to the block are two objects to compare. The block returns an `NSComparisonResult` value to denote the ordering of the two objects.
+///
+/// You use `NSComparator` blocks in comparison operations such as `NSArray`'s `sortedArrayUsingComparator:`, for example:
+///
+/// ```objc
+/// NSArray *sortedArray = [array sortedArrayUsingComparator: ^(id obj1, id obj2) {
+///
+///     if ([obj1 integerValue] > [obj2 integerValue]) {
+///         return (NSComparisonResult)NSOrderedDescending;
+///     }
+///
+///     if ([obj1 integerValue] < [obj2 integerValue]) {
+///         return (NSComparisonResult)NSOrderedAscending;
+///     }
+///     return (NSComparisonResult)NSOrderedSame;
+/// }];
+/// ```
 typedef NSComparisonResult (^NSComparator)(id obj1, id obj2);
 
+/// Options for block enumeration operations.
 typedef NS_OPTIONS(NSUInteger, NSEnumerationOptions) {
+    /// Specifies that the block enumeration should be concurrent.
     NSEnumerationConcurrent = (1UL << 0),
+    /// Specifies that the enumeration should be performed in reverse.
     NSEnumerationReverse = (1UL << 1),
 };
 
+/// Options for block sorting operations.
 typedef NS_OPTIONS(NSUInteger, NSSortOptions) {
+    /// Specifies that the sorting should be concurrent.
     NSSortConcurrent = (1UL << 0),
+    /// Specifies that the sorting is stable, maintaining the relative order of equal elements.
     NSSortStable = (1UL << 4),
 };
 
+/// Constants that indicate the nature and importance of work to the system.
+///
+/// Work with higher quality of service classes receive more resources than work with lower quality of service classes whenever there's resource contention.
 typedef NS_ENUM(NSInteger, NSQualityOfService) {
+    /// The quality-of-service class for user-interactive tasks, such as animations, event handling, or updating your app's user interface.
     NSQualityOfServiceUserInteractive = 0x21,
+    /// The quality-of-service class for tasks that prevent the user from actively using your app.
     NSQualityOfServiceUserInitiated = 0x19,
+    /// The quality-of-service class for tasks that the user does not track actively.
     NSQualityOfServiceUtility = 0x11,
+    /// The quality-of-service class for maintenance or cleanup tasks that you create.
     NSQualityOfServiceBackground = 0x09,
+    /// The default quality-of-service class.
     NSQualityOfServiceDefault = -1
 } API_AVAILABLE(macos(10.10), ios(8.0), watchos(2.0), tvos(9.0));
 
+/// A value indicating that a requested item couldn't be found or doesn't exist.
+///
+/// `NSNotFound` is typically used by various methods and functions that search for items in serial data and return indices, such as characters in a string object or `id` objects in an `NSArray` object.
+///
+/// > Important: Prior to OS X v10.5, `NSNotFound` was defined as `0x7fffffff`. For 32-bit systems, this was effectively the same as `NSIntegerMax`. To support 64-bit environments, `NSNotFound` is now formally defined as `NSIntegerMax`. This means, however, that the value is different in 32-bit and 64-bit environments. You should therefore not save the value directly in files or archives. Moreover, sending the value between 32-bit and 64-bit processes via Distributed Objects will not get you `NSNotFound` on the other side. This applies to any Cocoa methods invoked over Distributed Objects and which might return `NSNotFound`, such as the `indexOfObject:` method of `NSArray` (if sent to a proxy for an array).
 static const NSInteger NSNotFound = NSIntegerMax;
 
 NS_HEADER_AUDIT_END(nullability, sendability)

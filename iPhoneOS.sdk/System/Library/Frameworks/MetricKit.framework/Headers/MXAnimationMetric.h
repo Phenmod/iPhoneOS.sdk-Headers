@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
  @class         MXAnimationMetric
  @abstract      An MXMetric subclass that encapsulates app animation metrics.
  */
-API_AVAILABLE(ios(14.0), macos(11.0)) API_UNAVAILABLE(tvos, watchos)
+API_DEPRECATED("Use MetricResult instead.", ios(14.0, API_TO_BE_DEPRECATED), macos(11.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos)
 @interface MXAnimationMetric : MXMetric
 
 /*!

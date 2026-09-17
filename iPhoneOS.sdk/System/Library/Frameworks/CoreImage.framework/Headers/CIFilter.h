@@ -192,12 +192,12 @@ CORE_IMAGE_EXPORT NSString * const kCIInputAmountKey NS_AVAILABLE(10_14, 12_0);
 /// A key to get or set the scalar count value of a Core Image filter. 
 /// 
 /// The value for this key needs to be an integer  `NSNumber` instance.
-CORE_IMAGE_EXPORT NSString * const kCIInputCountKey NS_AVAILABLE(16_0, 19_0);
+CORE_IMAGE_EXPORT NSString * const kCIInputCountKey NS_AVAILABLE(26_0, 26_0);
 
 /// A key to get or set the scalar threshold value of a Core Image filter. 
 /// 
 /// The value for this key needs to be an `NSNumber` instance.
-CORE_IMAGE_EXPORT NSString * const kCIInputThresholdKey NS_AVAILABLE(16_0, 19_0);
+CORE_IMAGE_EXPORT NSString * const kCIInputThresholdKey NS_AVAILABLE(26_0, 26_0);
 
 /// A key to get or set the scalar time value of a Core Image filter. 
 /// 
@@ -229,12 +229,12 @@ CORE_IMAGE_EXPORT NSString * const kCIInputRadiusKey NS_AVAILABLE(10_5, 7_0);
 /// A key to get or set the geometric radius value of a Core Image filter. 
 /// 
 /// The value for this key needs to be an `NSNumber` instance.
-CORE_IMAGE_EXPORT NSString * const kCIInputRadius0Key NS_AVAILABLE(16_0, 19_0);
+CORE_IMAGE_EXPORT NSString * const kCIInputRadius0Key NS_AVAILABLE(26_0, 26_0);
 
 /// A key to get or set the geometric radius value of a Core Image filter. 
 /// 
 /// The value for this key needs to be an `NSNumber` instance.
-CORE_IMAGE_EXPORT NSString * const kCIInputRadius1Key NS_AVAILABLE(16_0, 19_0);
+CORE_IMAGE_EXPORT NSString * const kCIInputRadius1Key NS_AVAILABLE(26_0, 26_0);
 
 /// A key to get or set the geometric angle value of a Core Image filter.  Typically the angle is in radians.
 /// 
@@ -279,17 +279,17 @@ CORE_IMAGE_EXPORT NSString * const kCIInputColorKey NS_AVAILABLE(10_5, 7_0);
 /// A key to get or set a color value of a Core Image filter. 
 /// 
 /// The value for this key needs to be a ``CIColor`` instance.
-CORE_IMAGE_EXPORT NSString * const kCIInputColor0Key NS_AVAILABLE(16_0, 19_0);
+CORE_IMAGE_EXPORT NSString * const kCIInputColor0Key NS_AVAILABLE(26_0, 26_0);
 
 /// A key to get or set a color value of a Core Image filter. 
 /// 
 /// The value for this key needs to be a ``CIColor`` instance.
-CORE_IMAGE_EXPORT NSString * const kCIInputColor1Key NS_AVAILABLE(16_0, 19_0);
+CORE_IMAGE_EXPORT NSString * const kCIInputColor1Key NS_AVAILABLE(26_0, 26_0);
 
 /// A key to get or set a color space value of a Core Image filter. 
 /// 
 /// The value for this key needs to be a `CGColorSpace` instance.
-CORE_IMAGE_EXPORT NSString * const kCIInputColorSpaceKey NS_AVAILABLE(16_0, 19_0);
+CORE_IMAGE_EXPORT NSString * const kCIInputColorSpaceKey NS_AVAILABLE(26_0, 26_0);
 
 /// A key to get or set the scalar brightness value of a Core Image filter. 
 /// 
@@ -304,12 +304,12 @@ CORE_IMAGE_EXPORT NSString * const kCIInputContrastKey NS_AVAILABLE(10_5, 7_0);
 /// A key to get or set the boolean behavior of a Core Image filter that specifies if the filter should extrapolate a table beyond the defined range. 
 /// 
 /// The value for this key needs to be an `NSNumber` instance.
-CORE_IMAGE_EXPORT NSString * const kCIInputExtrapolateKey NS_AVAILABLE(16_0, 19_0);
+CORE_IMAGE_EXPORT NSString * const kCIInputExtrapolateKey NS_AVAILABLE(26_0, 26_0);
 
 /// A key to get or set the boolean behavior of a Core Image filter that specifies if the filter should operate in linear or perceptual colors. 
 /// 
 /// The value for this key needs to be an `NSNumber` instance.
-CORE_IMAGE_EXPORT NSString * const kCIInputPerceptualKey NS_AVAILABLE(16_0, 19_0);
+CORE_IMAGE_EXPORT NSString * const kCIInputPerceptualKey NS_AVAILABLE(26_0, 26_0);
 
 /// A key to get or set the scalar bias value of a Core Image filter. 
 /// 
@@ -319,7 +319,7 @@ CORE_IMAGE_EXPORT NSString * const kCIInputBiasKey NS_AVAILABLE(10_5, 9_0);
 /// A key to get or set the vector bias value of a Core Image filter. 
 /// 
 /// The value for this key needs to be a ``CIVector`` instance.
-CORE_IMAGE_EXPORT NSString * const kCIInputBiasVectorKey NS_AVAILABLE(16_0, 19_0);
+CORE_IMAGE_EXPORT NSString * const kCIInputBiasVectorKey NS_AVAILABLE(26_0, 26_0);
 
 /// A key to get or set the vector weights value of a convolution Core Image filter. 
 /// 
@@ -354,12 +354,12 @@ CORE_IMAGE_EXPORT NSString * const kCIInputTargetImageKey NS_AVAILABLE(10_5, 7_0
 /// A key to get or set the backside image for a transition Core Image filter. 
 /// 
 /// The value for this key needs to be a ``CIImage`` instance.
-CORE_IMAGE_EXPORT NSString * const kCIInputBacksideImageKey NS_AVAILABLE(16_0, 19_0);
+CORE_IMAGE_EXPORT NSString * const kCIInputBacksideImageKey NS_AVAILABLE(26_0, 26_0);
 
 /// A key to get or set the palette image for a  Core Image filter. 
 /// 
 /// The value for this key needs to be a  1 pixel tall ``CIImage`` instance.
-CORE_IMAGE_EXPORT NSString * const kCIInputPaletteImageKey NS_AVAILABLE(16_0, 19_0);
+CORE_IMAGE_EXPORT NSString * const kCIInputPaletteImageKey NS_AVAILABLE(26_0, 26_0);
 
 /// A key to get or set the vector extent value of a Core Image filterthat defines the extent of the effect. 
 /// The value for this key needs to be a ``CIVector`` instance.
@@ -367,11 +367,11 @@ CORE_IMAGE_EXPORT NSString * const kCIInputExtentKey NS_AVAILABLE(10_5, 7_0);
 
 /// A key to get or set the coordinate value of a Core Image filter.  
 /// The value for this key needs to be a ``CIVector`` instance containing the `x,y` coordinate.
-CORE_IMAGE_EXPORT NSString * const kCIInputPoint0Key NS_AVAILABLE(16_0, 19_0);
+CORE_IMAGE_EXPORT NSString * const kCIInputPoint0Key NS_AVAILABLE(26_0, 26_0);
 
 /// A key to get or set a coordinate value of a Core Image filter.  
 /// The value for this key needs to be a ``CIVector`` instance containing the `x,y` coordinate.
-CORE_IMAGE_EXPORT NSString * const kCIInputPoint1Key NS_AVAILABLE(16_0, 19_0);
+CORE_IMAGE_EXPORT NSString * const kCIInputPoint1Key NS_AVAILABLE(26_0, 26_0);
 
 /// A key to get or set a coordinate value of a Core Image filter.  
 /// The value for this key needs to be a ``CIVector`` instance containing the `x,y` coordinate.
@@ -387,20 +387,20 @@ typedef NSString * CIDynamicRangeOption NS_TYPED_ENUM;
 /// Use Standard dynamic range. 
 /// 
 /// Images with `contentHeadroom` metadata will be tone mapped to a maximum pixel value of 1.0.
-CORE_IMAGE_EXPORT CIDynamicRangeOption const kCIDynamicRangeStandard NS_AVAILABLE(16_0, 19_0);
+CORE_IMAGE_EXPORT CIDynamicRangeOption const kCIDynamicRangeStandard NS_AVAILABLE(26_0, 26_0);
 
 /// Use extended dynamic range, but brightness is modulated to optimize for
 /// co-existence with other composited content. 
 /// 
 /// For best results, images should contain `contentAverageLightLevel` metadata.
-CORE_IMAGE_EXPORT CIDynamicRangeOption const kCIDynamicRangeConstrainedHigh NS_AVAILABLE(16_0, 19_0);
+CORE_IMAGE_EXPORT CIDynamicRangeOption const kCIDynamicRangeConstrainedHigh NS_AVAILABLE(26_0, 26_0);
 
 /// Use High dynamic range. 
 /// 
 /// The provides the best HDR quality and needs to be reserved
 /// for situations where the user is focused on the media, such as larger views in
 /// an image editing/viewing app, or annotating/drawing with HDR colors
-CORE_IMAGE_EXPORT CIDynamicRangeOption const kCIDynamicRangeHigh NS_AVAILABLE(16_0, 19_0);
+CORE_IMAGE_EXPORT CIDynamicRangeOption const kCIDynamicRangeHigh NS_AVAILABLE(26_0, 26_0);
 
 
 @class CIKernel, CIImage;

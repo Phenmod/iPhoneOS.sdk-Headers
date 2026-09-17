@@ -338,7 +338,7 @@ CF_ENUM(OSStatus)
     errSecInternalComponent                  = -2070,
     errSecCoreFoundationUnknown              = -4960,
 
-    errSecMissingEntitlement                 = -34018,    /* A required entitlement isn't present. */
+    errSecMissingEntitlement                 = -34018,    /* A required entitlement is not present. */
     errSecRestrictedAPI                      = -34020,    /* Client is restricted and is not permitted to perform this operation. */
 
     errSecNotAvailable                       = -25291,    /* No keychain is available. You may need to restart your computer. */

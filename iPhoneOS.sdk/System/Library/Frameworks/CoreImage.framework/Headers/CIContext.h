@@ -111,9 +111,9 @@ CORE_IMAGE_EXPORT CIContextOption const kCIContextWorkingColorSpace;
 /// The supported values for the working pixel format are:
 /// ``CIFormat``        | Notes
 /// ------------------- | --------------
-/// ``kCIFormatRGBA8``  | Uses less memory but has less precision an range
-/// ``kCIFormatRGBAh``  | Uses 8 bytes per pixel, supports HDR
-/// ``kCIFormatRGBAf``  | Only on macOS
+/// ``kCIFormatRGBA8``  | Uses 4 bytes per pixel. Only supporrts SDR and has less precision.
+/// ``kCIFormatRGBAh``  | Uses 8 bytes per pixel. Supports HDR.
+/// ``kCIFormatRGBAf``  | Uses 16 bytes per pixel. Only available on macOS
 /// 
 /// If this option is not specified, then the default is ``kCIFormatRGBAh``.
 /// 
@@ -208,6 +208,12 @@ CORE_IMAGE_EXPORT CIContextOption const kCIContextAllowLowPower NS_AVAILABLE(10_
 /// 
 CORE_IMAGE_EXPORT CIContextOption const kCIContextName NS_AVAILABLE(10_14,12_0);
 
+/// A number value to control the maximum memory in megabytes that the context allocates for render tasks.  
+/// 
+/// Larger values could increase memory  footprint while smaller values could reduce performance.
+/// 
+CORE_IMAGE_EXPORT CIContextOption const kCIContextMemoryLimit NS_AVAILABLE(14_0, 17_0);
+
 /// A Core Video Metal texture cache object to improve the performance of Core Image context
 /// renders that use Core Video pixel buffers.
 /// 
@@ -218,7 +224,7 @@ CORE_IMAGE_EXPORT CIContextOption const kCIContextName NS_AVAILABLE(10_14,12_0);
 /// 
 /// It is the client's responsibility to flush the cache when appropriate.
 /// 
-CORE_IMAGE_EXPORT CIContextOption const kCIContextCVMetalTextureCache NS_AVAILABLE(16_0,19_0);
+CORE_IMAGE_EXPORT CIContextOption const kCIContextCVMetalTextureCache NS_AVAILABLE(26_0,26_0);
 
 #pragma mark - contextWithCGLContext
 
@@ -342,12 +348,6 @@ NS_AVAILABLE(10_15,13_0);
 /// You specify a working pixel format using the ``kCIContextWorkingFormat`` option when creating a ``CIContext``.
 ///
 @property (nonatomic, readonly) CIFormat workingFormat NS_AVAILABLE(10_11,9_0);
-
-/// A number value to control the maximum memory in megabytes that the context allocates for render tasks.  
-/// 
-/// Larger values could increase memory  footprint while smaller values could reduce performance.
-/// 
-CORE_IMAGE_EXPORT CIContextOption const kCIContextMemoryLimit NS_AVAILABLE(14_0, 17_0);
 
 #pragma mark - render methods
 
@@ -569,7 +569,7 @@ CF_RETURNS_RETAINED NS_AVAILABLE(10_12,10_0);
                           colorSpace:(nullable CGColorSpaceRef)colorSpace
                             deferred:(BOOL)deferred
                    calculateHDRStats:(BOOL)calculateHDRStats
-CF_RETURNS_RETAINED NS_AVAILABLE(16_0,19_0);
+CF_RETURNS_RETAINED NS_AVAILABLE(26_0,26_0);
 
 @end
 
@@ -587,11 +587,11 @@ CF_RETURNS_RETAINED NS_AVAILABLE(16_0,19_0);
 ///    - surface: A mutable `IOSurfaceRef` for which to calculate and attach statistics.
 ///    
 - (void) calculateHDRStatsForIOSurface:(IOSurfaceRef)surface
-NS_AVAILABLE(16_0,19_0);
+NS_AVAILABLE(26_0,26_0);
 
 /// Given a CVPixelBuffer, use the receiving Core Image context to calculate its 
 /// HDR statistics (content headroom and content average light level)
-/// and then update the buffers's attachments to store the values.
+/// and then update the buffer's attachments to store the values.
 /// 
 /// If the `CVPixelBuffer` has a Clean Aperture rectangle then only pixels within
 /// that rectangle are considered.
@@ -600,7 +600,7 @@ NS_AVAILABLE(16_0,19_0);
 ///    - buffer: A mutable `CVPixelBuffer` for which to calculate and attach statistics.
 ///    
 - (void) calculateHDRStatsForCVPixelBuffer:(CVPixelBufferRef)buffer
-NS_AVAILABLE(16_0,19_0);
+NS_AVAILABLE(26_0,26_0);
 
 /// Given a Core Graphics image, use the receiving Core Image context to calculate its 
 /// HDR statistics (content headroom and content average light level)
@@ -612,7 +612,7 @@ NS_AVAILABLE(16_0,19_0);
 ///    Returns a new `CGImage` instance that has the calculated statistics attached.
 ///
 - (CGImageRef) calculateHDRStatsForCGImage:(CGImageRef)cgimage
-CF_RETURNS_RETAINED NS_AVAILABLE(16_0,19_0);
+CF_RETURNS_RETAINED NS_AVAILABLE(26_0,26_0);
 
 /// Given a Core Image image, use the receiving Core Image context to calculate its 
 /// HDR statistics (content headroom and content average light level)
@@ -626,7 +626,7 @@ CF_RETURNS_RETAINED NS_AVAILABLE(16_0,19_0);
 ///    Returns a new ``CIImage`` instance that has the calculated statistics attached.
 ///    
 - (nullable CIImage*) calculateHDRStatsForImage:(CIImage*)image
-NS_AVAILABLE(16_0,19_0);
+NS_AVAILABLE(26_0,26_0);
 
 @end
 

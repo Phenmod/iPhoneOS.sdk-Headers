@@ -70,6 +70,7 @@ API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0))
  handler should repeatedly call \c -nextInputState until it returns \c nil to
  drain the pending input states from the queue.
  
+ ```
     physicalInput.inputStateQueueDepth = 20;
     physicalInput.inputStateAvailableHandler = ^(__kindof id<GCDevicePhysicalInput> physicalInput) {
         id<GCDevicePhysicalInputState, GCDevicePhysicalInputStateDiff> nextInputState;
@@ -97,12 +98,15 @@ API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0))
             }
         }
     };
+ ```
  */
 @property (atomic, copy, nullable) void (^inputStateAvailableHandler)(__kindof id<GCDevicePhysicalInput> physicalInput);
 
 /**
- The maximum number of input states to buffer.  If your application does not
- drain the pending input states in the queue before this limit is reached, older
+ The maximum number of input states to buffer.
+ 
+ If your application does not call `-nextInputState` to drain the pending
+ input states in the queue before this limit is reached, older
  input states will be discarded - resulting in your application "missing" input
  state changes.
  
@@ -117,6 +121,20 @@ API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0))
  when there are no more input states pending.
  */
 - (nullable __kindof id<GCDevicePhysicalInputState, GCDevicePhysicalInputStateDiff>)nextInputState;
+
+/**
+ Returns the buffered input state that best aligns with the provided spatial
+ accessory anchor timestamp.
+ 
+ @param timestamp
+ The timestamp obtained from `ar_accessory_anchor_get_timestamp` for a spatial
+ accessory anchor.
+ 
+ @return
+ The buffered accessory input state that most closely aligns with the provided
+ spatial accessory anchor timestamp.
+ */
+- (nullable __kindof id<GCDevicePhysicalInputState>)inputStateForSpatialAccessoryAnchorTimestamp:(NSTimeInterval)timestamp API_AVAILABLE(visionos(27.0)) API_UNAVAILABLE(macos, ios, tvos);
 
 
 

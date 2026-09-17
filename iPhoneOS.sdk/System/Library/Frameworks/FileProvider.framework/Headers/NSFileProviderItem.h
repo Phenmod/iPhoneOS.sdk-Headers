@@ -288,6 +288,34 @@ typedef NS_ENUM(NSInteger, NSFileProviderContentPolicy) {
     NSFileProviderContentPolicyDownloadEagerlyAndKeepDownloaded FILEPROVIDER_API_AVAILABILITY_V5_0
 };
 
+FILE_PROVIDER_AVAILABILITY_NAMESPACE_POLICY
+typedef NS_ENUM(NSInteger, NSFileProviderNamespacePolicy) {
+    /**
+     Inherit the namespace policy of the parent folder.
+
+     This is the default namespace policy on every item other than the root.
+     */
+    NSFileProviderNamespacePolicyInherited FILE_PROVIDER_AVAILABILITY_NAMESPACE_POLICY,
+
+    /**
+     Enumerate this folder lazily (i.e upon access) if it is dataless.
+     Keep populate new items below this folder eagerly if it's already on disk.
+
+     This is the default policy on the root.
+     */
+    NSFileProviderNamespacePolicyMaterializeLazily FILE_PROVIDER_AVAILABILITY_NAMESPACE_POLICY,
+
+    /**
+     Download this folder eagerly, make sure it's always fully enumerated
+     Keep downloading remote updates eagerly.
+     Prevent eviction on low disk pressure and other triggers.
+
+     When a folder with the inherited policy is moved into a folder with
+     this policy, the system will automatically schedule a download.
+     */
+    NSFileProviderNamespacePolicyMaterializeEagerly FILE_PROVIDER_AVAILABILITY_NAMESPACE_POLICY,
+};
+
 FILEPROVIDER_API_AVAILABILITY_V2_V3
 @protocol NSFileProviderItem <NSObject>
 
@@ -806,6 +834,11 @@ FILEPROVIDER_API_AVAILABILITY_V3_IOS;
  Declarative API to define the item content policy according to the available NSFileProviderContentPolicy
  */
 @property (nonatomic, readonly) NSFileProviderContentPolicy contentPolicy FILEPROVIDER_API_AVAILABILITY_V5_0_IOS;
+
+/**
+ Declarative API to define the item namespace policy according to the available NSFileProviderNamespacePolicy
+ */
+@property (nonatomic, readonly) NSFileProviderNamespacePolicy namespacePolicy FILE_PROVIDER_AVAILABILITY_NAMESPACE_POLICY;
 
 @end
 

@@ -8,36 +8,64 @@
 
 NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
+/// Named value transformers defined by `NSValueTransformer`.
 typedef NSString *NSValueTransformerName NS_TYPED_EXTENSIBLE_ENUM;
 
+/// The name of the transformer that negates a Boolean value.
 FOUNDATION_EXPORT NSValueTransformerName const NSNegateBooleanTransformerName	API_AVAILABLE(macos(10.3), ios(3.0), watchos(2.0), tvos(9.0));
+
+/// The name of the transformer that returns `true` if the value is `nil`.
 FOUNDATION_EXPORT NSValueTransformerName const NSIsNilTransformerName		API_AVAILABLE(macos(10.3), ios(3.0), watchos(2.0), tvos(9.0));
+
+/// The name of the transformer that returns `true` if the value is non-`nil`.
 FOUNDATION_EXPORT NSValueTransformerName const NSIsNotNilTransformerName	API_AVAILABLE(macos(10.3), ios(3.0), watchos(2.0), tvos(9.0));
 
+/// The name of the transformer that uses ``NSUnarchiver`` to unarchive data.
 FOUNDATION_EXPORT NSValueTransformerName const NSUnarchiveFromDataTransformerName       API_DEPRECATED_WITH_REPLACEMENT("NSSecureUnarchiveFromDataTransformerName", macos(10.3, 10.14), ios(3.0, 12.0), watchos(2.0, 5.0), tvos(9.0, 12.0));
+
+/// The name of the transformer that uses ``NSKeyedUnarchiver`` to unarchive data.
 FOUNDATION_EXPORT NSValueTransformerName const NSKeyedUnarchiveFromDataTransformerName  API_DEPRECATED_WITH_REPLACEMENT("NSSecureUnarchiveFromDataTransformerName", macos(10.3, 10.14), ios(3.0, 12.0), watchos(2.0, 5.0), tvos(9.0, 12.0));
+
+/// The name of the transformer that uses ``NSKeyedUnarchiver`` with secure coding to unarchive data.
 FOUNDATION_EXPORT NSValueTransformerName const NSSecureUnarchiveFromDataTransformerName API_AVAILABLE(macos(10.14), ios(12.0), watchos(5.0), tvos(12.0));
 
+/// An abstract class used to transform values from one representation to another.
 API_AVAILABLE(macos(10.3), ios(3.0), watchos(2.0), tvos(9.0))
 @interface NSValueTransformer : NSObject {
 }
 
-// name-based registry for shared objects (especially used when loading nib files with transformers specified by name in Interface Builder) - also useful for localization (developers can register different kind of transformers or differently configured transformers at application startup and refer to them by name from within nib files or other code)
-// if valueTransformerForName: does not find a registered transformer instance, it will fall back to looking up a class with the specified name - if one is found, it will instantiate a transformer with the default -init method and automatically register it
+/// Registers the provided value transformer with a given identifier.
 + (void)setValueTransformer:(nullable NSValueTransformer *)transformer forName:(NSValueTransformerName)name;
+
+/// Returns the value transformer identified by a given identifier.
 + (nullable NSValueTransformer *)valueTransformerForName:(NSValueTransformerName)name;
+
+/// Returns an array of all the registered value transformer names.
 + (NSArray<NSValueTransformerName> *)valueTransformerNames;
 
-// information that can be used to analyze available transformer instances (especially used inside Interface Builder)
-+ (Class)transformedValueClass;    // class of the "output" objects, as returned by transformedValue:
-+ (BOOL)allowsReverseTransformation;    // flag indicating whether transformation is read-only or not
+/// Returns the class of objects returned when applying the value transformer.
++ (Class)transformedValueClass;
 
-- (nullable id)transformedValue:(nullable id)value;           // by default returns value
-- (nullable id)reverseTransformedValue:(nullable id)value;    // by default raises an exception if +allowsReverseTransformation returns NO and otherwise invokes transformedValue:
+/// Returns a Boolean value that indicates whether the receiver can reverse a transformation.
++ (BOOL)allowsReverseTransformation;
+
+/// Returns the result of transforming a given value.
+- (nullable id)transformedValue:(nullable id)value;
+
+/// Returns the result of the reverse transformation of a given value.
+- (nullable id)reverseTransformedValue:(nullable id)value;
 
 @end
 
-/// A value transformer which transforms values to and from \c NSData by archiving and unarchiving using secure coding.
+/// A value transformer that converts data to and from classes that support secure coding.
+///
+/// This class provides a default ``ValueTransformer`` implementation for secure decoding. This class attempts to decode data into the classes listed within ``allowedTopLevelClasses``, which includes ``NSArray``, ``NSDictionary``, ``NSSet``, ``NSString``, ``NSNumber``, ``NSDate``, ``NSData``, ``NSURL``, ``NSUUID``, and ``NSNull``.
+///
+/// To archive or unarchive other classes that support ``NSSecureCoding``, create a subclass and override ``allowedTopLevelClasses`` to list the classes to transform.
+///
+/// To use ``NSSecureUnarchiveFromDataTransformer`` with <doc://com.apple.documentation/documentation/coredata>, use the name of this class, or the name of a subclass you implement, as the name of the transformer for an entity's attribute within a Core Data Model. If you use your own transformer subclass, register it with your app before intializing your persistent container with Core Data.
+///
+/// For an example of subclassing ``NSSecureUnarchiveFromDataTransformer``, see <doc://com.apple.documentation/documentation/coredata/handling-different-data-types-in-core-data>, which has a `ColorToDataTransformer` class that transforms <doc://com.apple.documentation/documentation/uikit/uicolor> to ``NSData`` and the reverse, to support archiving instances of <doc://com.apple.documentation/documentation/uikit/uicolor>.
 API_AVAILABLE(macos(10.14), ios(12.0), watchos(5.0), tvos(12.0))
 @interface NSSecureUnarchiveFromDataTransformer : NSValueTransformer
 

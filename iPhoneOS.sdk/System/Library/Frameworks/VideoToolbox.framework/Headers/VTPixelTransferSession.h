@@ -43,6 +43,7 @@ extern "C"
 
 typedef struct CM_BRIDGED_TYPE(id) OpaqueVTPixelTransferSession*  VTPixelTransferSessionRef CM_SWIFT_NONSENDABLE API_AVAILABLE(macos(10.8), ios(16.0), tvos(16.0), visionos(1.0)) API_UNAVAILABLE(watchos);
 
+
 /*!
 	@function	VTPixelTransferSessionCreate
 	@abstract	Creates a session for transferring images between CVPixelBuffers.
@@ -111,7 +112,8 @@ CF_IMPLICIT_BRIDGING_DISABLED
 
 // See VTSession.h for property access APIs on VTPixelTransferSessions.
 // See VTPixelTransferProperties.h for standard property keys and values for pixel transfer sessions.
-    
+
+
 #pragma pack(pop)
 
 #if defined(__cplusplus)

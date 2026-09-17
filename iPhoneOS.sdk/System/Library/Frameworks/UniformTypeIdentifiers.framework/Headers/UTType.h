@@ -44,6 +44,39 @@ UT_EXPORT_CLASS UT_SUBCLASSING_RESTRICTED NS_SWIFT_SENDABLE @interface UTType : 
 + (nullable instancetype)typeWithIdentifier:(NSString *)identifier;
 
 /**
+	\brief Create a type given a type identifier, optionally allowing identifiers that do not have an
+		active declaration on the current system.
+
+	When `allowUndeclared` is `YES`, this initializer can be used to obtain a type
+	object that keeps the "identity" of the input identifier even if no type with that
+	identifier is (currently) known to the system. In that case, the type is neither dynamic
+	nor declared, and has no conformances or tags (or any other properties).
+
+	If a type with the input identifier is known to the system, or if the input identifier is in
+	the dynamic namespace, it returns the same type object that \c typeWithIdentifier: would
+	return.
+	
+	If `allowUndeclared` is `NO`, this initializer behaves identically to \c typeWithIdentifier:
+	given the same identifier.
+
+	One may use this, for instance, to create a concrete type object using an identifier that may
+	have been obtained from another system, and round-trip it through a subsystem without losing
+	the identity of the type.
+ 
+	If the input \c identifier is not a valid Uniform Type Identifier, the method returns \c nil .
+	See https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/understanding_utis/understand_utis_conc/understand_utis_conc.html#//apple_ref/doc/uid/TP40001319-CH202-SW2
+
+	\param identifier The type identifier.
+		
+	\param allowUndeclared Whether to return an object if no type with the provided identifier
+		is known to the system.
+
+	\result A type object, or \c nil if the input \c identifier was not a Uniform Type Identifier.
+ */
++ (nullable instancetype)typeWithIdentifier:(NSString *)identifier allowUndeclared:(BOOL)allowUndeclared
+API_AVAILABLE(macos(27.0), ios(27.0), watchos(27.0), tvos(27.0), visionos(27.0));
+
+/**
 	\brief Create a type given a filename extension that conforms to
 		\c UTTypeData.
 

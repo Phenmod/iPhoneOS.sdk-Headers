@@ -230,7 +230,6 @@ typedef NS_ENUM(NSUInteger, MTLDataType) {
     
     /// Represents a data type corresponding to a machine learning tensor.
     MTLDataTypeTensor API_AVAILABLE(macos(26.0), ios(26.0)) = 140,
-    
 } API_AVAILABLE(macos(10.11), ios(8.0));
 
 

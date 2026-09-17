@@ -42,7 +42,7 @@ typedef uint32_t	AVAudioChannelCount;
 		the callback arrives on a non-main thread and it is the client's responsibility to handle it
 		in a thread-safe manner.
 */
-typedef void (^AVAudioNodeCompletionHandler)(void);
+typedef void (^ NS_SWIFT_SENDING AVAudioNodeCompletionHandler)(void);
 
 /*!	@typedef AVAudioNodeBus
 	@abstract The index of a bus on an AVAudioNode.

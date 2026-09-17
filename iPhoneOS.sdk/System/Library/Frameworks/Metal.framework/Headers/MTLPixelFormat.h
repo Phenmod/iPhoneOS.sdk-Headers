@@ -44,6 +44,44 @@ typedef NS_ENUM(NSUInteger, MTLPixelFormat)
     MTLPixelFormatABGR4Unorm  API_AVAILABLE(macos(11.0), macCatalyst(14.0), ios(8.0)) = 42,
     MTLPixelFormatBGR5A1Unorm API_AVAILABLE(macos(11.0), macCatalyst(14.0), ios(8.0)) = 43,
 
+    /* Normal 24 bit formats */
+
+    /// An ordinary format with three components of 8-bit normalized, unsigned integer values in RGB order.
+    ///
+    /// The order of the color components in this format are red, green and blue.
+    ///
+    /// You can apply this format to a texture you create only with an ``MTLTextureDescriptor`` instance with all of the following property configurations:
+    /// * The ``MTLTextureDescriptor/usage`` property can't include the ``MTLTextureUsage/MTLTextureUsageShaderWrite`` option.
+    /// * The ``MTLTextureDescriptor/textureType`` property needs to be equal to ``MTLTextureType/MTLTextureTypeTextureBuffer``.
+    MTLPixelFormatRGB8Unorm  API_AVAILABLE(macos(27.0), ios(27.0)) = 45,
+
+    /// An ordinary format with three components of 8-bit normalized, signed integer values in RGB order.
+    ///
+    /// The order of the color components in this format are red, green and blue.
+    ///
+    /// You can apply this format to a texture you create only with an ``MTLTextureDescriptor`` instance with all of the following property configurations:
+    /// * The ``MTLTextureDescriptor/usage`` property can't include the ``MTLTextureUsage/MTLTextureUsageShaderWrite`` option.
+    /// * The ``MTLTextureDescriptor/textureType`` property needs to be equal to ``MTLTextureType/MTLTextureTypeTextureBuffer``.
+    MTLPixelFormatRGB8Snorm  API_AVAILABLE(macos(27.0), ios(27.0)) = 46,
+
+    /// An ordinary format with three components of 8-bit unsigned integer values in RGB order.
+    ///
+    /// The order of the color components in this format are red, green and blue.
+    ///
+    /// You can apply this format to a texture you create only with an ``MTLTextureDescriptor`` instance with all of the following property configurations:
+    /// * The ``MTLTextureDescriptor/usage`` property can't include the ``MTLTextureUsage/MTLTextureUsageShaderWrite`` option.
+    /// * The ``MTLTextureDescriptor/textureType`` property needs to be equal to ``MTLTextureType/MTLTextureTypeTextureBuffer``.
+    MTLPixelFormatRGB8Uint   API_AVAILABLE(macos(27.0), ios(27.0)) = 47,
+
+    /// An ordinary format with three components of 8-bit signed integer values in RGB order.
+    ///
+    /// The order of the color components in this format are red, green and blue.
+    ///
+    /// You can apply this format to a texture you create only with an ``MTLTextureDescriptor`` instance with all of the following property configurations:
+    /// * The ``MTLTextureDescriptor/usage`` property can't include the ``MTLTextureUsage/MTLTextureUsageShaderWrite`` option.
+    /// * The ``MTLTextureDescriptor/textureType`` property needs to be equal to ``MTLTextureType/MTLTextureTypeTextureBuffer``.
+    MTLPixelFormatRGB8Sint   API_AVAILABLE(macos(27.0), ios(27.0)) = 48,
+
     /* Normal 32 bit formats */
 
     MTLPixelFormatR32Uint  = 53,
@@ -77,6 +115,53 @@ typedef NS_ENUM(NSUInteger, MTLPixelFormat)
 
     MTLPixelFormatBGR10_XR      API_AVAILABLE(macos(11.0), macCatalyst(14.0), ios(10.0)) = 554,
     MTLPixelFormatBGR10_XR_sRGB API_AVAILABLE(macos(11.0), macCatalyst(14.0), ios(10.0)) = 555,
+    
+    /* Normal 48 bit formats */
+    
+    /// An ordinary format with three components of 16-bit normalized, unsigned integer values in RGB order.
+    ///
+    /// The order of the color components in this format are red, green and blue.
+    ///
+    /// You can apply this format to a texture you create only with an ``MTLTextureDescriptor`` instance with all of the following property configurations:
+    /// * The ``MTLTextureDescriptor/usage`` property can't include the ``MTLTextureUsage/MTLTextureUsageShaderWrite`` option.
+    /// * The ``MTLTextureDescriptor/textureType`` property needs to be equal to ``MTLTextureType/MTLTextureTypeTextureBuffer``.
+    MTLPixelFormatRGB16Unorm  API_AVAILABLE(macos(27.0), ios(27.0)) = 95,
+
+    /// An ordinary format with three components of 16-bit normalized, signed integer values in RGB order.
+    ///
+    /// The order of the color components in this format are red, green and blue.
+    ///
+    /// You can apply this format to a texture you create only with an ``MTLTextureDescriptor`` instance with all of the following property configurations:
+    /// * The ``MTLTextureDescriptor/usage`` property can't include the ``MTLTextureUsage/MTLTextureUsageShaderWrite`` option.
+    /// * The ``MTLTextureDescriptor/textureType`` property needs to be equal to ``MTLTextureType/MTLTextureTypeTextureBuffer``.
+    MTLPixelFormatRGB16Snorm  API_AVAILABLE(macos(27.0), ios(27.0)) = 96,
+
+    /// An ordinary format with three components of 16-bit unsigned integer values in RGB order.
+    ///
+    /// The order of the color components in this format are red, green and blue.
+    ///
+    /// You can apply this format to a texture you create only with an ``MTLTextureDescriptor`` instance with all of the following property configurations:
+    /// * The ``MTLTextureDescriptor/usage`` property can't include the ``MTLTextureUsage/MTLTextureUsageShaderWrite`` option.
+    /// * The ``MTLTextureDescriptor/textureType`` property needs to be equal to ``MTLTextureType/MTLTextureTypeTextureBuffer``.
+    MTLPixelFormatRGB16Uint   API_AVAILABLE(macos(27.0), ios(27.0)) = 97,
+
+    /// An ordinary format with three components of 16-bit signed integer values in RGB order.
+    ///
+    /// The order of the color components in this format are red, green and blue.
+    ///
+    /// You can apply this format to a texture you create only with an ``MTLTextureDescriptor`` instance with all of the following property configurations:
+    /// * The ``MTLTextureDescriptor/usage`` property can't include the ``MTLTextureUsage/MTLTextureUsageShaderWrite`` option.
+    /// * The ``MTLTextureDescriptor/textureType`` property needs to be equal to ``MTLTextureType/MTLTextureTypeTextureBuffer``.
+    MTLPixelFormatRGB16Sint   API_AVAILABLE(macos(27.0), ios(27.0)) = 98,
+
+    /// An ordinary format with three components of 16-bit floating-point values in RGB order.
+    ///
+    /// The order of the color components in this format are red, green and blue.
+    ///
+    /// You can apply this format to a texture you create only with an ``MTLTextureDescriptor`` instance with all of the following property configurations:
+    /// * The ``MTLTextureDescriptor/usage`` property can't include the ``MTLTextureUsage/MTLTextureUsageShaderWrite`` option.
+    /// * The ``MTLTextureDescriptor/textureType`` property needs to be equal to ``MTLTextureType/MTLTextureTypeTextureBuffer``.
+    MTLPixelFormatRGB16Float  API_AVAILABLE(macos(27.0), ios(27.0)) = 99,
 
     /* Normal 64 bit formats */
 
@@ -92,6 +177,35 @@ typedef NS_ENUM(NSUInteger, MTLPixelFormat)
 
     MTLPixelFormatBGRA10_XR      API_AVAILABLE(macos(11.0), macCatalyst(14.0), ios(10.0)) = 552,
     MTLPixelFormatBGRA10_XR_sRGB API_AVAILABLE(macos(11.0), macCatalyst(14.0), ios(10.0)) = 553,
+
+    /* Normal 96 bit formats */
+    
+    /// An ordinary format with three components of 32-bit unsigned integer values in RGB order.
+    ///
+    /// The order of the color components in this format are red, green and blue.
+    ///
+    /// You can apply this format to a texture you create only with an ``MTLTextureDescriptor`` instance with all of the following property configurations:
+    /// * The ``MTLTextureDescriptor/usage`` property can't include the ``MTLTextureUsage/MTLTextureUsageShaderWrite`` option.
+    /// * The ``MTLTextureDescriptor/textureType`` property needs to be equal to ``MTLTextureType/MTLTextureTypeTextureBuffer``.
+    MTLPixelFormatRGB32Uint  API_AVAILABLE(macos(27.0), ios(27.0)) = 120,
+
+    /// An ordinary format with three components of 32-bit signed integer values in RGB order.
+    ///
+    /// The order of the color components in this format are red, green and blue.
+    ///
+    /// You can apply this format to a texture you create only with an ``MTLTextureDescriptor`` instance with all of the following property configurations:
+    /// * The ``MTLTextureDescriptor/usage`` property can't include the ``MTLTextureUsage/MTLTextureUsageShaderWrite`` option.
+    /// * The ``MTLTextureDescriptor/textureType`` property needs to be equal to ``MTLTextureType/MTLTextureTypeTextureBuffer``.
+    MTLPixelFormatRGB32Sint  API_AVAILABLE(macos(27.0), ios(27.0)) = 121,
+
+    /// An ordinary format with three components of 32-bit floating-point values in RGB order.
+    ///
+    /// The order of the color components in this format are red, green and blue.
+    ///
+    /// You can apply this format to a texture you create only with an ``MTLTextureDescriptor`` instance with all of the following property configurations:
+    /// * The ``MTLTextureDescriptor/usage`` property can't include the ``MTLTextureUsage/MTLTextureUsageShaderWrite`` option.
+    /// * The ``MTLTextureDescriptor/textureType`` property needs to be equal to ``MTLTextureType/MTLTextureTypeTextureBuffer``.
+    MTLPixelFormatRGB32Float API_AVAILABLE(macos(27.0), ios(27.0)) = 122,
 
     /* Normal 128 bit formats */
 
@@ -175,7 +289,6 @@ typedef NS_ENUM(NSUInteger, MTLPixelFormat)
     MTLPixelFormatASTC_12x10_LDR        API_AVAILABLE(macos(11.0), macCatalyst(14.0), ios(8.0)) = 217,
     MTLPixelFormatASTC_12x12_LDR        API_AVAILABLE(macos(11.0), macCatalyst(14.0), ios(8.0)) = 218,
     
-    
     // ASTC HDR (High Dynamic Range) Formats
     MTLPixelFormatASTC_4x4_HDR          API_AVAILABLE(macos(11.0), macCatalyst(14.0), ios(13.0), tvos(16.0)) = 222,
     MTLPixelFormatASTC_5x4_HDR          API_AVAILABLE(macos(11.0), macCatalyst(14.0), ios(13.0), tvos(16.0)) = 223,
@@ -191,6 +304,7 @@ typedef NS_ENUM(NSUInteger, MTLPixelFormat)
     MTLPixelFormatASTC_10x10_HDR        API_AVAILABLE(macos(11.0), macCatalyst(14.0), ios(13.0), tvos(16.0)) = 234,
     MTLPixelFormatASTC_12x10_HDR        API_AVAILABLE(macos(11.0), macCatalyst(14.0), ios(13.0), tvos(16.0)) = 235,
     MTLPixelFormatASTC_12x12_HDR        API_AVAILABLE(macos(11.0), macCatalyst(14.0), ios(13.0), tvos(16.0)) = 236,
+
     /*!
      @constant MTLPixelFormatGBGR422
      @abstract A pixel format where the red and green channels are subsampled horizontally.  Two pixels are stored in 32 bits, with shared red and blue values, and unique green values.
@@ -216,11 +330,11 @@ typedef NS_ENUM(NSUInteger, MTLPixelFormat)
 
     /* Depth Stencil */
     
-    MTLPixelFormatDepth24Unorm_Stencil8  API_AVAILABLE(macos(10.11), macCatalyst(13.0)) API_UNAVAILABLE(ios) = 255,
+    MTLPixelFormatDepth24Unorm_Stencil8  API_DEPRECATED("Use MTLPixelFormatDepth32Float_Stencil8 instead", macos(10.11, 27.0), macCatalyst(13.0, 27.0)) API_UNAVAILABLE(ios) = 255,
     MTLPixelFormatDepth32Float_Stencil8  API_AVAILABLE(macos(10.11), ios(9.0)) = 260,
 
     MTLPixelFormatX32_Stencil8  API_AVAILABLE(macos(10.12), ios(10.0)) = 261,
-    MTLPixelFormatX24_Stencil8  API_AVAILABLE(macos(10.12), macCatalyst(13.0)) API_UNAVAILABLE(ios) = 262,
+    MTLPixelFormatX24_Stencil8  API_DEPRECATED("Use MTLPixelFormatX32_Stencil8 instead", macos(10.12, 27.0), macCatalyst(13.0, 27.0)) API_UNAVAILABLE(ios) = 262,
 
     MTLPixelFormatUnspecialized API_AVAILABLE(macos(26.0), ios(26.0)) = 263,
     

@@ -13,27 +13,27 @@
 typedef NS_ENUM (NSInteger, MCSessionSendDataMode) {
     MCSessionSendDataReliable,      // Guaranteed reliable and in-order delivery.
     MCSessionSendDataUnreliable     // Sent immediately without queuing, no guaranteed delivery.
-} NS_ENUM_AVAILABLE (10_10, 7_0);
+} API_DEPRECATED("Use Network Framework instead", macos(10.10, 27.0), ios(7.0, 27.0), tvos(10.0, 27.0));
 
 // Peer states
 typedef NS_ENUM (NSInteger, MCSessionState) {
     MCSessionStateNotConnected,     // Not connected to the session.
     MCSessionStateConnecting,       // Peer is connecting to the session.
     MCSessionStateConnected         // Peer is connected to the session.
-} NS_ENUM_AVAILABLE (10_10, 7_0);
+} API_DEPRECATED("Use Network Framework instead", macos(10.10, 27.0), ios(7.0, 27.0), tvos(10.0, 27.0));
 
 // Encryption preferences
 typedef NS_ENUM (NSInteger, MCEncryptionPreference) {
     MCEncryptionOptional = 0,                   // Session prefers encryption but will accept unencrypted connections.
     MCEncryptionRequired = 1,                   // Session requires encryption.
     MCEncryptionNone = 2,                       // Session should not be encrypted.
-} NS_ENUM_AVAILABLE (10_10, 7_0);
+} API_DEPRECATED("Use Network Framework instead", macos(10.10, 27.0), ios(7.0, 27.0), tvos(10.0, 27.0));
 
 // Minimum number of peers in a session.
-MC_EXTERN NSUInteger const kMCSessionMinimumNumberOfPeers NS_AVAILABLE(10_10, 7_0);
+MC_EXTERN NSUInteger const kMCSessionMinimumNumberOfPeers API_DEPRECATED("Use Network Framework instead", macos(10.10, 27.0), ios(7.0, 27.0), tvos(10.0, 27.0));
 
 // Maximum number of peers in a session.
-MC_EXTERN NSUInteger const kMCSessionMaximumNumberOfPeers NS_AVAILABLE(10_10, 7_0);
+MC_EXTERN NSUInteger const kMCSessionMaximumNumberOfPeers API_DEPRECATED("Use Network Framework instead", macos(10.10, 27.0), ios(7.0, 27.0), tvos(10.0, 27.0));
 
 @class NSProgress;
 @protocol MCSessionDelegate;
@@ -80,7 +80,7 @@ MC_EXTERN NSUInteger const kMCSessionMaximumNumberOfPeers NS_AVAILABLE(10_10, 7_
 //      delegate method should explicitly dispatch or schedule that work.
 //
 NS_ASSUME_NONNULL_BEGIN
-NS_CLASS_AVAILABLE(10_10, 7_0)
+API_DEPRECATED("Use Network Framework instead", macos(10.10, 27.0), ios(7.0, 27.0), tvos(10.0, 27.0))
 @interface MCSession : NSObject
 
 // Create a session with an MCPeerID for the local peer.
@@ -141,6 +141,7 @@ NS_CLASS_AVAILABLE(10_10, 7_0)
 @end
 
 // Delegate methods for MCSession.
+API_DEPRECATED("Use Network Framework instead", macos(10.10, 27.0), ios(7.0, 27.0), tvos(10.0, 27.0))
 @protocol MCSessionDelegate <NSObject>
 
 // Remote peer changed state.

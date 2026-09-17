@@ -180,7 +180,7 @@ AV_INIT_UNAVAILABLE
  */
 - (void)addOutput:(AVAssetReaderOutput *)output
 #if __swift__
-API_DEPRECATED("Use the appropriate AVAssetReader.outputProvider(for:...) overload for your output and optional adaptor instead", macos(10.7, API_TO_BE_DEPRECATED), ios(4.1, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED))
+API_DEPRECATED("Use the appropriate AVAssetReader.outputProvider(for:...) overload for your output and optional adaptor instead", macos(10.7, 27.0), ios(4.1, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0))
 API_UNAVAILABLE(watchos)
 #else
 API_AVAILABLE(macos(10.7), ios(4.1), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(watchos)
@@ -204,7 +204,7 @@ API_AVAILABLE(macos(10.7), ios(4.1), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(w
  */
 - (BOOL)startReading
 #if __swift__
-API_DEPRECATED("Use start() instead", macos(10.7, API_TO_BE_DEPRECATED), ios(4.1, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), visionos(1.0, API_TO_BE_DEPRECATED))
+API_DEPRECATED("Use start() instead", macos(10.7, 27.0), ios(4.1, 27.0), tvos(9.0, 27.0), visionos(1.0, 27.0))
 API_UNAVAILABLE(watchos)
 #else
 API_AVAILABLE(macos(10.7), ios(4.1), tvos(9.0), visionos(1.0)) API_UNAVAILABLE(watchos)

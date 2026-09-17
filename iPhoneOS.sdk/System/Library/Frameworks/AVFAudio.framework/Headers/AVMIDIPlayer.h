@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @typedef AVMIDIPlayerCompletionHandler
 	@abstract Generic callback block.
  */
-typedef void (^AVMIDIPlayerCompletionHandler)(void);
+typedef void (^ NS_SWIFT_SENDING AVMIDIPlayerCompletionHandler)(void);
 
 /*! @class AVMIDIPlayer
 	@abstract A player for music file formats (MIDI, iMelody).

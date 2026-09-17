@@ -139,6 +139,14 @@ COREMOTION_EXPORT API_AVAILABLE(ios(4.0)) API_UNAVAILABLE(tvos)
 @property(readonly, nonatomic) double heading COREMOTION_EXPORT API_AVAILABLE(ios(11.0)) API_UNAVAILABLE(visionos);
 
 /*
+ *  headingAccuracy
+ *
+ *  Discussion:
+ *    Represents the maximum deviation of where the estimated heading may differ from the actual heading in degrees. A negative value indicates an invalid heading.
+ */
+@property(readonly, nonatomic) double headingAccuracy COREMOTION_EXPORT API_AVAILABLE(ios(27.0));
+
+/*
  *  sensorLocation
  *
  *  Discussion:

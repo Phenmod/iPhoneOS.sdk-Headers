@@ -15,6 +15,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+API_UNAVAILABLE_BEGIN(visionos)
+
 /**
  A model representing the camera and its parameters.
  */
@@ -53,14 +55,15 @@ NS_SWIFT_SENDABLE
 
 /**
  The camera intrinsics.
- @discussion The matrix has the following contents:
+
+ The matrix has the following contents:
  fx 0   px
  0  fy  py
  0  0   1
  fx and fy are the focal length in pixels.
  px and py are the coordinates of the principal point in pixels.
  The origin is at the center of the upper-left pixel.
- */
+*/
 @property (nonatomic, readonly) simd_float3x3 intrinsics;
 
 /**
@@ -80,67 +83,178 @@ NS_SWIFT_SENDABLE
 
 /**
  The projection matrix of the camera.
- @discussion The projection matrix assumes no far clipping plane limit.
+
+ The projection matrix assumes no far clipping plane limit.
 */
 @property (nonatomic, readonly) simd_float4x4 projectionMatrix;
 
 
+/**
+ Interface orientation enumeration type (from UIKit).
+ */
 typedef NS_ENUM(NSInteger, UIInterfaceOrientation);
 
 /**
  Creates a projection matrix for the camera given rendering parameters.
 
- @discussion The projection matrix returned provides an aspect fill for the provided viewport size and orientation.
+ The projection matrix returned provides an aspect fill for the provided viewport size and orientation.
  If zFar is set to 0, an infinite projection matrix will be returned.
- @param orientation Viewport orientation.
- @param viewportSize Viewport size.
- @param zNear Near depth limit.
- @param zFar Far depth limit.
- */
+
+ - Parameters:
+   - orientation: Viewport orientation.
+   - viewportSize: Viewport size.
+   - zNear: Near depth limit.
+   - zFar: Far depth limit.
+
+ - Returns: The projection matrix for the given parameters.
+*/
 - (simd_float4x4)projectionMatrixForOrientation:(UIInterfaceOrientation)orientation
                                    viewportSize:(CGSize)viewportSize
                                           zNear:(CGFloat)zNear
-                                           zFar:(CGFloat)zFar;
+                                           zFar:(CGFloat)zFar
+    API_DEPRECATED("Use projectionMatrixForViewRotationAngle:viewportSize:zNear:zFar:", ios(11.0, 27.0));
+
+/**
+ Creates a projection matrix for the camera given rendering parameters.
+
+ The projection matrix returned provides an aspect fill for the provided viewport size and view angle.
+ If zFar is set to 0, an infinite projection matrix will be returned.
+
+ The view angle, in degrees, is the clockwise rotation needed to keep the camera image level with the horizon
+ (`0` LandscapeRight, `90` Portrait, `180` LandscapeLeft, `270` PortraitUpsideDown). Obtain it from
+ `ARSession.viewRotationAngle`.
+
+ - Parameters:
+   - viewRotationAngle: View rotation angle in degrees.
+   - viewportSize: Viewport size.
+   - zNear: Near depth limit.
+   - zFar: Far depth limit.
+
+ - Returns: The projection matrix for the given parameters.
+*/
+- (simd_float4x4)projectionMatrixForViewRotationAngle:(CGFloat)viewRotationAngle
+                                         viewportSize:(CGSize)viewportSize
+                                                zNear:(CGFloat)zNear
+                                                 zFar:(CGFloat)zFar NS_SWIFT_NAME(projectionMatrix(viewRotationAngle:viewportSize:zNear:zFar:))
+                                                          API_AVAILABLE(ios(27.0));
 
 /**
  Project a 3D point in world coordinate system into 2D viewport space.
 
- @param point 3D point in world coordinate system.
- @param orientation Viewport orientation.
- @param viewportSize Viewport (or image) size.
- @return 2D point in viewport coordinate system with origin at top-left.
- */
-- (CGPoint)projectPoint:(simd_float3)point orientation:(UIInterfaceOrientation)orientation viewportSize:(CGSize)viewportSize;
+ - Parameters:
+   - point: 3D point in world coordinate system.
+   - orientation: Viewport orientation.
+   - viewportSize: Viewport (or image) size.
+
+ - Returns: 2D point in viewport coordinate system with origin at top-left.
+*/
+- (CGPoint)projectPoint:(simd_float3)point
+            orientation:(UIInterfaceOrientation)orientation
+           viewportSize:(CGSize)viewportSize API_DEPRECATED("Use projectPoint:viewRotationAngle:viewportSize:", ios(11.0, 27.0));
+
+/**
+ Project a 3D point in world coordinate system into 2D viewport space.
+
+ The view angle, in degrees, is the clockwise rotation needed to keep the camera image level with the horizon
+ (`0` LandscapeRight, `90` Portrait, `180` LandscapeLeft, `270` PortraitUpsideDown). Obtain it from
+ `ARSession.viewRotationAngle`.
+
+ - Parameters:
+   - point: 3D point in world coordinate system.
+   - viewRotationAngle: View rotation angle in degrees.
+   - viewportSize: Viewport (or image) size.
+
+ - Returns: 2D point in viewport coordinate system with origin at top-left.
+*/
+- (CGPoint)projectPoint:(simd_float3)point viewRotationAngle:(CGFloat)viewRotationAngle viewportSize:(CGSize)viewportSize API_AVAILABLE(ios(27.0));
 
 /**
  Unproject a 2D point from the viewport onto a plane in 3D world coordinates.
 
- @discussion A 2D point in the viewport coordinate space can refer to any point along a line segment
+ A 2D point in the viewport coordinate space can refer to any point along a line segment
  in the 3D coordinate space. Unprojecting calculates the 3D position of the point along this line segment that intersects the provided plane.
- @param point A point in the viewport coordinate system with origin at top-left.
- @param planeTransform The transform used to define the coordinate system of the plane.
- The coordinate system’s positive Y axis is assumed to be the normal of the plane.
- @return 3D position in world coordinates or a NAN values if unprojection is not possible.
- */
+
+ - Parameters:
+   - point: A point in the viewport coordinate system with origin at top-left.
+   - planeTransform: The transform used to define the coordinate system of the plane.
+     The coordinate system's positive Y axis is assumed to be the normal of the plane.
+
+ - Returns: 3D position in world coordinates or `NAN` values if unprojection is not possible.
+*/
 - (simd_float3)unprojectPoint:(CGPoint)point
        ontoPlaneWithTransform:(simd_float4x4)planeTransform
                   orientation:(UIInterfaceOrientation)orientation
-                 viewportSize:(CGSize)viewportSize API_AVAILABLE(ios(12.0))NS_REFINED_FOR_SWIFT;
+                 viewportSize:(CGSize)viewportSize
+    API_DEPRECATED("Use unprojectPoint:ontoPlaneWithTransform:viewRotationAngle:viewportSize:", ios(12.0, 27.0))NS_REFINED_FOR_SWIFT;
+
+/**
+ Unproject a 2D point from the viewport onto a plane in 3D world coordinates.
+
+ A 2D point in the viewport coordinate space can refer to any point along a line segment in the 3D coordinate space.
+ Unprojecting calculates the 3D position of the point along this line segment that intersects the provided plane.
+
+ The view angle, in degrees, is the clockwise rotation needed to keep the camera image level with the horizon
+ (`0` LandscapeRight, `90` Portrait, `180` LandscapeLeft, `270` PortraitUpsideDown). Obtain it from
+ `ARSession.viewRotationAngle`.
+
+ - Parameters:
+   - point: A point in the viewport coordinate system with origin at top-left.
+   - planeTransform: The transform used to define the coordinate system of the plane.
+     The coordinate system's positive Y axis is assumed to be the normal of the plane.
+   - viewRotationAngle: View rotation angle in degrees.
+   - viewportSize: The size of the viewport.
+
+ - Returns: 3D position in world coordinates or `NAN` values if unprojection is not possible.
+*/
+- (simd_float3)unprojectPoint:(CGPoint)point
+       ontoPlaneWithTransform:(simd_float4x4)planeTransform
+            viewRotationAngle:(CGFloat)viewRotationAngle
+                 viewportSize:(CGSize)viewportSize API_AVAILABLE(ios(27.0))NS_REFINED_FOR_SWIFT;
 
 /**
  Returns the view matrix for the camera with a given interface orientation.
 
- @discussion The view matrix can be used to transform geometry from world space into camera space for a given orientation.
- @param orientation The interface orientation that will be used to render the camera’s view.
- */
-- (simd_float4x4)viewMatrixForOrientation:(UIInterfaceOrientation)orientation;
+ The view matrix can be used to transform geometry from world space into camera space for a given orientation.
+
+ - Parameter orientation: The interface orientation that will be used to render the camera's view.
+
+ - Returns: The view matrix for the given orientation.
+*/
+- (simd_float4x4)viewMatrixForOrientation:(UIInterfaceOrientation)orientation API_DEPRECATED("Use viewMatrixForViewRotationAngle:", ios(11.0, 27.0));
+
+/**
+ Returns the view matrix for the camera with a given view angle.
+
+ The view matrix can be used to transform geometry from world space into camera space for a given view angle.
+
+ The view angle, in degrees, is the clockwise rotation needed to keep the camera image level with the horizon
+ (`0` LandscapeRight, `90` Portrait, `180` LandscapeLeft, `270` PortraitUpsideDown). Obtain it from
+ `ARSession.viewRotationAngle`.
+
+ - Parameter viewRotationAngle: The view rotation angle, in degrees, that will be used to render the camera's view.
+
+ - Returns: The view matrix for the given view angle.
+*/
+- (simd_float4x4)viewMatrixForViewRotationAngle:(CGFloat)viewRotationAngle NS_SWIFT_NAME(viewMatrix(viewRotationAngle:)) API_AVAILABLE(ios(27.0));
 
 
-/** Unavailable */
+/**
+ Unavailable.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)init NS_UNAVAILABLE;
+
+/**
+ Unavailable.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_UNAVAILABLE;
 
 @end
+
+API_UNAVAILABLE_END
 
 NS_ASSUME_NONNULL_END
 #else

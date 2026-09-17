@@ -7,17 +7,21 @@
 //
 
 #import <ARKit/ARSkeletonDefinition.h>
-#import <simd/simd.h>
 #import <Foundation/Foundation.h>
 #import <Vision/Vision.h>
+#import <simd/simd.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
+API_UNAVAILABLE_BEGIN(visionos)
+
 /**
  An object representing a skeleton.
- @discussion A skeleton's structure is defined by a skeleton definition.
- @see ARSkeletonDefinition
- */
+
+ A skeleton's structure is defined by a skeleton definition.
+
+ - SeeAlso: ``ARSkeletonDefinition``
+*/
 API_AVAILABLE(ios(13.0))
 NS_SWIFT_SENDABLE
 @interface ARSkeleton : NSObject
@@ -34,14 +38,25 @@ NS_SWIFT_SENDABLE
 
 /**
  Tracking state for a given joint.
- 
- @param jointIndex The index of the joint.
- @return YES if the joint is tracked. NO otherwise.
- */
+
+ - Parameter jointIndex: The index of the joint.
+
+ - Returns: `YES` if the joint is tracked. `NO` otherwise.
+*/
 - (BOOL)isJointTracked:(NSInteger)jointIndex;
 
-/** Unavailable */
+/**
+ Unavailable.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)init NS_UNAVAILABLE;
+
+/**
+ Unavailable.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_UNAVAILABLE;
 
 @end
@@ -65,24 +80,38 @@ NS_SWIFT_SENDABLE
 
 /**
  Returns the model transform for a joint with a given name.
- 
- @discussion If an invalid joint name is passed the returned matrix will be filled with NaN values.
- @param jointName The name of the joint.
- @return Model transform
- */
+
+ If an invalid joint name is passed the returned matrix will be filled with `NaN` values.
+
+ - Parameter jointName: The name of the joint.
+
+ - Returns: The model transform.
+*/
 - (simd_float4x4)modelTransformForJointName:(ARSkeletonJointName)jointName NS_REFINED_FOR_SWIFT;
 
 /**
  Returns the local transform for a joint with a given name.
- 
- @discussion If an invalid joint name is passed the returned matrix will be filled with NaN values.
- @param jointName The name of the joint.
- @return Local transform
- */
+
+ If an invalid joint name is passed the returned matrix will be filled with `NaN` values.
+
+ - Parameter jointName: The name of the joint.
+
+ - Returns: The local transform.
+*/
 - (simd_float4x4)localTransformForJointName:(ARSkeletonJointName)jointName NS_REFINED_FOR_SWIFT;
 
-/** Unavailable */
+/**
+ Unavailable.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)init NS_UNAVAILABLE;
+
+/**
+ Unavailable.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_UNAVAILABLE;
 
 @end
@@ -96,35 +125,56 @@ NS_SWIFT_SENDABLE
 
 /**
  The joint landmarks in normalized coordinates.
- @discussion The joint landmarks are detected in the captured image on the ARFrame.
- @see -[ARFrame capturedImage]
- */
+
+ The joint landmarks are detected in the captured image on the `ARFrame`.
+
+ - SeeAlso: ``ARFrame/capturedImage``
+*/
 @property (nonatomic, readonly) const simd_float2 *jointLandmarks NS_REFINED_FOR_SWIFT;
 
 /**
  Returns the landmark point for a joint with a given name.
- @discussion If an invalid joint name is passed the returned point will be filled with NaN values.
- 
- @param jointName The name of the joint.
- @return Landmark in normalized image coordinates.
- */
+
+ If an invalid joint name is passed the returned point will be filled with `NaN` values.
+
+ - Parameter jointName: The name of the joint.
+
+ - Returns: Landmark in normalized image coordinates.
+*/
 - (simd_float2)landmarkForJointNamed:(ARSkeletonJointName)jointName NS_REFINED_FOR_SWIFT;
 
-/** Unavailable */
+/**
+ Unavailable.
+
+ - Returns: This method is unavailable.
+*/
 - (instancetype)init NS_UNAVAILABLE;
+
+/**
+ Unavailable.
+
+ - Returns: This method is unavailable.
+*/
 + (instancetype)new NS_UNAVAILABLE;
 
 @end
 
 /**
  Returns the landmark joint name that corresponds to a key point defined in Vision framework.
- @see VNRecognizedPointKey, VNDetectHumanBodyPoseRequest
- @discussion If an invalid key point is passed the returned point will be nil.
- 
- @param recognizedPointKey Recognized key point.
- @return Joint name that could be mapped to a ARSkeleton2D. Nil if no mapping exists.
- */
-FOUNDATION_EXTERN __nullable ARSkeletonJointName ARSkeletonJointNameForRecognizedPointKey(VNRecognizedPointKey recognizedPointKey) NS_SWIFT_NAME(ARSkeletonJointName.init(_:)) API_AVAILABLE(ios(14.0));
+
+ If an invalid key point is passed the returned point will be `nil`.
+
+ - Parameter recognizedPointKey: Recognized key point.
+
+ - Returns: Joint name that could be mapped to a `ARSkeleton2D`. `nil` if no mapping exists.
+
+ - SeeAlso: `VNRecognizedPointKey`
+ - SeeAlso: `VNDetectHumanBodyPoseRequest`
+*/
+FOUNDATION_EXTERN __nullable ARSkeletonJointName ARSkeletonJointNameForRecognizedPointKey(VNRecognizedPointKey recognizedPointKey)
+    NS_SWIFT_NAME(ARSkeletonJointName.init(_:)) API_AVAILABLE(ios(14.0));
+
+API_UNAVAILABLE_END
 
 NS_ASSUME_NONNULL_END
 #else

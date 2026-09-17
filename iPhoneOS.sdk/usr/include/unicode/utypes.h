@@ -82,14 +82,21 @@
 // rdar://60884991 #58 Replace installsrc patching with changes directly in header files
 // Apple modifies the default to be 0, not 1
 // rdar://166411027 (CharismaE: UserNotifications-640.4.12#8-install has failed to build; expected unqualified-id)
-// Apple also modifies the default for U_SHOW_CPLUSPLUS_HEADER_API to be 0, not 1, but only if U_SHOW_CPLUSPLUS_API
-// hasn't been redefined to 1 by the makefile
+// rdar://171840870 (Enable U_SHOW_CPLUSPLUS_HEADER_API for C++17)
+// If the C++ language level is earlier than C++17 (which it is for some Apple projects), Apple also modifies
+// the default for U_SHOW_CPLUSPLUS_HEADER_API to be 0, not 1 (unless the makefile explicitly redefines it to be 1).
+// This is because the header-only APIs use features added in C++17 and some public headers were including
+// those headers (i.e., you could get build errors even if you weren't trying to use the header-only APIs).
 #ifdef __cplusplus
 #   ifndef U_SHOW_CPLUSPLUS_API
 #       define U_SHOW_CPLUSPLUS_API 0
 #   endif
 #   ifndef U_SHOW_CPLUSPLUS_HEADER_API
-#       define U_SHOW_CPLUSPLUS_HEADER_API U_SHOW_CPLUSPLUS_API
+#       if __cplusplus >= 201703L
+#           define U_SHOW_CPLUSPLUS_HEADER_API 1
+#       else
+#           define U_SHOW_CPLUSPLUS_HEADER_API U_SHOW_CPLUSPLUS_API
+#       endif
 #   endif
 #else
 #   undef U_SHOW_CPLUSPLUS_API

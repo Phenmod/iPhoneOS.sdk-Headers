@@ -20,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 // Forward declarations
 @class NSError, NSString, NSNumber;
 @class AVAudioChannelLayout;
+@class AVAudioSessionInterruptionContext;
+@class AVAudioSessionDeactivationContext;
+@class AVAudioSessionResumptionContext;
 
 // =================================================================================================
 #pragma mark-- iOS/tvOS/watchOS AVAudioSession interface --
@@ -197,19 +200,19 @@ Other recording sessions might be interrupted if this option is not compatible w
 After an audio session goes active, `isEchoCancelledInputEnabled` property can be queried to check if the option was honored.
 Note that the enabled state may change after route changes, e.g. if user plugs in a headset, that route might not support echo cancellation.
 */
-- (BOOL)setPrefersEchoCancelledInput:(BOOL)value error:(NSError **)error API_AVAILABLE(ios(18.2)) API_UNAVAILABLE(tvos, watchos, macos, visionos);
-@property (readonly, nonatomic) BOOL prefersEchoCancelledInput API_AVAILABLE(ios(18.2)) API_UNAVAILABLE(tvos, watchos, macos, visionos);
+- (BOOL)setPrefersEchoCancelledInput:(BOOL)value error:(NSError **)error API_AVAILABLE(ios(18.2)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos, visionos);
+@property (readonly, nonatomic) BOOL prefersEchoCancelledInput API_AVAILABLE(ios(18.2)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos, visionos);
 
 /// Returns YES if echo cancelled input is successfully enabled on an active session.
 /// Please see `prefersEchoCancelledInput` above for more details.
-@property (readonly, nonatomic) BOOL isEchoCancelledInputEnabled API_AVAILABLE(ios(18.2)) API_UNAVAILABLE(tvos, watchos, macos, visionos);
+@property (readonly, nonatomic) BOOL isEchoCancelledInputEnabled API_AVAILABLE(ios(18.2)) API_UNAVAILABLE(macos) API_UNAVAILABLE(tvos, watchos, visionos);
 
 /// This property will return YES if the device supports echo cancellation with the following category and mode combinations:
 ///	- ``AVAudioSessionCategoryPlayAndRecord`` with ``AVAudioSessionModeDefault``
 ///	- ``AVAudioSessionCategoryMultiRoute`` with ``AVAudioSessionModeDualRoute``
 ///
 /// Query whether built-in mic / built-in speaker route supports echo cancellation for the session's given category and mode.
-@property(readonly, nonatomic) BOOL isEchoCancelledInputAvailable API_AVAILABLE(ios(18.2)) API_UNAVAILABLE(watchos, tvos) API_UNAVAILABLE(macos);
+@property(readonly, nonatomic) BOOL isEchoCancelledInputAvailable API_AVAILABLE(ios(18.2)) API_UNAVAILABLE(watchos, tvos, macos) ;
 
 /// Sets a Boolean value to inform the system to mute the session's output audio. The default value is false (unmuted).
 ///
@@ -272,7 +275,18 @@ Note that the enabled state may change after route changes, e.g. if user plugs i
 	AVAudioSessionRouteSharingPolicyLongFormAudio should be prepared for this method to fail if no
 	eligible audio route can be activated or if the user cancels the route picker view.
 */
-- (void)activateWithOptions:(AVAudioSessionActivationOptions)options completionHandler:(void (^)(BOOL activated, NSError * _Nullable error))handler API_AVAILABLE(watchos(5.0)) API_UNAVAILABLE(ios, tvos) API_UNAVAILABLE(macos, macCatalyst);
+- (void)activateWithOptions:(AVAudioSessionActivationOptions)options completionHandler:(void (^)(BOOL activated, NSError * _Nullable error))handler API_AVAILABLE(ios(27.0), watchos(5.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(macos);
+
+/// Deactivates the audio session asynchronously.
+///
+/// This method returns immediately without blocking the calling thread. The system calls the completion handler with the result.
+///
+/// - Parameters:
+///   - options: Deactivation options.
+///   - handler: A completion handler called with a success flag and an error if deactivation failed.
+- (void)deactivateWithOptions:(AVAudioSessionDeactivationOptions)options
+		 completionHandler:(void (^)(BOOL deactivated, NSError *_Nullable error))handler
+	API_AVAILABLE(ios(27.0), watchos(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(macos);
 
 @end // AVAudioSession(Activation)
 
@@ -359,7 +373,7 @@ Note that the enabled state may change after route changes, e.g. if user plugs i
 */
 @property (readonly, nullable) NSArray<AVAudioSessionDataSourceDescription *> *inputDataSources API_AVAILABLE(ios(6.0), watchos(2.0), tvos(9.0)) API_UNAVAILABLE(macos);
 
-/// Obtain the currently selected input data source.  Will be nil if no data sources are available.
+/// Obtain the currently selected input data source.  Will be nil if no data sources are available. Key-value observable.
 @property (readonly, nullable) AVAudioSessionDataSourceDescription *inputDataSource API_AVAILABLE(ios(6.0), watchos(2.0), tvos(9.0)) API_UNAVAILABLE(macos);
 
 /// Select a new input data source. Setting a nil value will clear the data source preference.
@@ -549,6 +563,59 @@ Note that the enabled state may change after route changes, e.g. if user plugs i
 @end // AVAudioSession (NowPlayingCandidacy)
 
 #endif // TARGET_OS_VISION
+
+// =================================================================================================
+#pragma mark-- Async Activation Types --
+
+/// An object that provides context about an audio session interruption.
+API_AVAILABLE(ios(27.0), watchos(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(macos)
+NS_SWIFT_NAME(AVAudioSession.InterruptionContext)
+NS_SWIFT_SENDABLE
+@interface AVAudioSessionInterruptionContext : NSObject
+
+/// The reason for the interruption.
+@property (readonly, nonatomic) AVAudioSessionInterruptionReason reason;
+
+/// Unavailable - contexts are created by the system.
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
+
+@end
+
+/// An object that describes why and how the audio session deactivated.
+API_AVAILABLE(ios(27.0), watchos(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(macos)
+NS_SWIFT_NAME(AVAudioSession.DeactivationContext)
+NS_SWIFT_SENDABLE
+@interface AVAudioSessionDeactivationContext : NSObject
+
+/// The source of the audio session deactivation.
+@property (readonly, nonatomic) AVAudioSessionDeactivationSource source;
+
+/// Context about the interruption that caused deactivation.
+///
+/// This property is only present when the session was interrupted by another application.
+@property (readonly, nonatomic, nullable) AVAudioSessionInterruptionContext *interruptionContext;
+
+/// Unavailable - contexts are created by the system.
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
+
+@end
+
+/// An object that provides context when resumption becomes available.
+API_AVAILABLE(ios(27.0), watchos(27.0), tvos(27.0), visionos(27.0)) API_UNAVAILABLE(macos)
+NS_SWIFT_NAME(AVAudioSession.ResumptionContext)
+NS_SWIFT_SENDABLE
+@interface AVAudioSessionResumptionContext : NSObject
+
+/// The system's recommendation on whether to resume playback.
+@property (readonly, nonatomic) AVAudioSessionResumptionRecommendation recommendation;
+
+/// Unavailable - contexts are created by the system.
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
+
+@end
 
 NS_ASSUME_NONNULL_END
 

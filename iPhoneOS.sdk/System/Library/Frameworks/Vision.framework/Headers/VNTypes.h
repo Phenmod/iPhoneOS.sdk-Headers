@@ -86,7 +86,7 @@ typedef NS_ENUM(NSUInteger, VNElementType)
 
 
 
-
+#if !TARGET_OS_WATCH
 typedef NSString* VNVideoProcessingOption NS_STRING_ENUM API_DEPRECATED_WITH_REPLACEMENT("VNVideoProcessorRequestProcessingOptions", macos(11.0, 11.0), ios(14.0, 14.0), tvos(14.0, 14.0));
 VN_EXPORT VNVideoProcessingOption const VNVideoProcessingOptionFrameCadence API_DEPRECATED_WITH_REPLACEMENT("VNVideoProcessorRequestProcessingOptions", macos(11.0, 11.0), ios(14.0, 14.0), tvos(14.0, 14.0));
 VN_EXPORT VNVideoProcessingOption const VNVideoProcessingOptionTimeInterval API_DEPRECATED_WITH_REPLACEMENT("VNVideoProcessorRequestProcessingOptions", macos(11.0, 11.0), ios(14.0, 14.0), tvos(14.0, 14.0));
@@ -99,7 +99,7 @@ typedef NS_CLOSED_ENUM(NSInteger, VNChirality)
     VNChiralityLeft = -1,
     VNChiralityRight = 1
 };
-
+#endif // !TARGET_OS_WATCH
 
 
 API_AVAILABLE(macos(13.0), ios(16.0), tvos(16.0))
@@ -127,7 +127,7 @@ typedef NSString * VNRecognizedPointKey NS_STRING_ENUM;
 
 typedef NSString * VNRecognizedPointGroupKey NS_STRING_ENUM;
 
-
+#if !TARGET_OS_WATCH
 typedef VNRecognizedPointKey VNAnimalBodyPoseObservationJointName NS_TYPED_ENUM NS_SWIFT_NAME(VNAnimalBodyPoseObservation.JointName) API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0));
 
 VN_EXPORT VNAnimalBodyPoseObservationJointName const VNAnimalBodyPoseObservationJointNameLeftEarTop API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0));              // Head
@@ -198,3 +198,4 @@ VN_EXPORT VNHumanBodyPose3DObservationJointsGroupName const VNHumanBodyPose3DObs
 VN_EXPORT VNHumanBodyPose3DObservationJointsGroupName const VNHumanBodyPose3DObservationJointsGroupNameRightLeg API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0)); //  right ankle, right knee, and right hip
 VN_EXPORT VNHumanBodyPose3DObservationJointsGroupName const VNHumanBodyPose3DObservationJointsGroupNameAll API_AVAILABLE(macos(14.0), ios(17.0), tvos(17.0));
 
+#endif // !TARGET_OS_WATCH

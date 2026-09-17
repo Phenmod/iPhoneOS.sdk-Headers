@@ -13,7 +13,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#define CM_VISION_OS_AVAILABLE API_UNAVAILABLE(visionos)
+#define CM_VISION_OS_AVAILABLE API_UNAVAILABLE(visionos, tvos)
 
 typedef NS_ENUM(NSInteger, CMHeadphoneActivityStatus) {
 	CMHeadphoneActivityStatusDisconnected = 0,

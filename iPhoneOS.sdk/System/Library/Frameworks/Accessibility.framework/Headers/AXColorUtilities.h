@@ -2,7 +2,7 @@
 //  AXColorUtilities.h
 //  Accessibility
 //
-//  Copyright © 2020 Apple Inc. All rights reserved.
+//  Copyright © 2020-2026 Apple Inc. All rights reserved.
 //
 
 #import <Accessibility/AXFoundation.h>

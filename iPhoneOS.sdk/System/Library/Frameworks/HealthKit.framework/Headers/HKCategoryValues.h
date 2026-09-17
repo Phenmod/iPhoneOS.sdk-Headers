@@ -2,7 +2,7 @@
 //  HKCategoryValues.h
 //  HealthKit
 //
-//  Copyright © 2022-2025 Apple, Inc. All rights reserved.
+//  Copyright © 2022-2026 Apple, Inc. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -13,7 +13,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*!
+/**
  @enum          HKCategoryValue
  @abstract      This category value is to be used for types which don't have a specific value defined.
  */
@@ -21,7 +21,7 @@ typedef NS_ENUM(NSInteger, HKCategoryValue) {
     HKCategoryValueNotApplicable = 0,
 } API_AVAILABLE(ios(9.0), watchos(2.0), macCatalyst(13.0), macos(13.0));
 
-/*!
+/**
  @enum          HKCategoryValueAppetiteChanges
  @abstract      Set of values to indicate the direction of appetite changes.
  */
@@ -32,7 +32,7 @@ typedef NS_ENUM(NSInteger, HKCategoryValueAppetiteChanges) {
     HKCategoryValueAppetiteChangesIncreased = 3,
 } API_AVAILABLE(ios(13.6), watchos(7.0), macCatalyst(13.6), macos(13.0));
 
-/*!
+/**
  @enum          HKCategoryValueAppleStandHour
  @abstract      Set of values that may be used for HKCategorySamples with the HKCategoryTypeIdentifierAppleStandHour
                 type.
@@ -47,7 +47,7 @@ typedef NS_ENUM(NSInteger, HKCategoryValueAppleStandHour) {
     HKCategoryValueAppleStandHourIdle = 1,
 } API_AVAILABLE(ios(9.0), watchos(2.0), macCatalyst(13.0), macos(13.0));
 
-/*!
+/**
  @enum          HKCategoryValueAppleWalkingSteadinessEvent
  @abstract      Set of values that may be used for HKCategorySamples with the
                 HKCategoryTypeIdentifierAppleWalkingSteadinessEvent type.
@@ -74,7 +74,7 @@ typedef NS_ENUM(NSInteger, HKCategoryValueAppleWalkingSteadinessEvent) {
     HKCategoryValueAppleWalkingSteadinessEventRepeatVeryLow = 4,
 } API_AVAILABLE(ios(15.0), watchos(8.0), macCatalyst(15.0), macos(13.0));
 
-/*!
+/**
  @enum          HKCategoryValueCervicalMucusQuality
  @abstract      Set of values that may be used for HKCategorySamples with the
                 HKCategoryTypeIdentifierCervicalMucusQuality type.
@@ -88,7 +88,7 @@ typedef NS_ENUM(NSInteger, HKCategoryValueCervicalMucusQuality) {
     HKCategoryValueCervicalMucusQualityEggWhite = 5,
 } API_AVAILABLE(ios(9.0), watchos(2.0), macCatalyst(13.0), macos(13.0));
 
-/*!
+/**
  @enum          HKCategoryValueContraceptive
  @abstract      Set of values to indicate the type of contraceptive.
  */
@@ -102,7 +102,7 @@ typedef NS_ENUM(NSInteger, HKCategoryValueContraceptive) {
     HKCategoryValueContraceptivePatch = 7,
 } API_AVAILABLE(ios(14.3), watchos(7.2), macCatalyst(14.3), macos(13.0));
 
-/*!
+/**
  @enum          HKCategoryValueEnvironmentalAudioExposureEvent
  @abstract      Specifies the kind of environmental audio exposure event associated with the sample.
 
@@ -115,7 +115,7 @@ typedef NS_ENUM(NSInteger, HKCategoryValueEnvironmentalAudioExposureEvent) {
     HKCategoryValueEnvironmentalAudioExposureEventMomentaryLimit = 1,
 } API_AVAILABLE(ios(14.0), watchos(7.0), macCatalyst(14.0), macos(13.0));
 
-/*!
+/**
  @enum          HKCategoryValueHeadphoneAudioExposureEvent
  @abstract      Specifies the kind of headphone audio exposure event associated with the sample.
 
@@ -128,7 +128,7 @@ typedef NS_ENUM(NSInteger, HKCategoryValueHeadphoneAudioExposureEvent) {
     HKCategoryValueHeadphoneAudioExposureEventSevenDayLimit = 1,
 } API_AVAILABLE(ios(14.2), watchos(7.1), macCatalyst(14.2), macos(13.0));
 
-/*!
+/**
  @enum          HKCategoryValueLowCardioFitnessEvent
  @abstract      Specifies the type of cardio fitness event.
 
@@ -140,7 +140,18 @@ typedef NS_ENUM(NSInteger, HKCategoryValueLowCardioFitnessEvent) {
     HKCategoryValueLowCardioFitnessEventLowFitness = 1,
 } API_AVAILABLE(ios(14.3), watchos(7.2), macCatalyst(14.3), macos(13.0));
 
-/*!
+/**
+ @enum          HKCategoryValueMenopausalState
+ @abstract      Set of values that may be used for HKCategorySamples with the HKCategoryTypeIdentifierMenopausalState
+                type.
+ */
+typedef NS_ENUM(NSInteger, HKCategoryValueMenopausalState) {
+    HKCategoryValueMenopausalStateMenopause = 1,
+    HKCategoryValueMenopausalStatePerimenopause = 2,
+    HKCategoryValueMenopausalStateNone = 3,
+} API_AVAILABLE(ios(27.0), watchos(27.0), macCatalyst(27.0), macos(27.0), visionos(27.0));
+
+/**
  @enum          HKCategoryValueMenstrualFlow
  @abstract      Set of values to indicate the type of menstrual flow.
  */
@@ -152,7 +163,7 @@ typedef NS_ENUM(NSInteger, HKCategoryValueMenstrualFlow) {
     HKCategoryValueMenstrualFlowNone API_DEPRECATED_WITH_REPLACEMENT("HKCategoryValueVaginalBleeding", ios(12.0, 18.0), watchos(5.0, 11.0), macCatalyst(13.0, 18.0), macos(13.0, 15.0), visionos(1.0, 2.0)) = 5,
 } API_DEPRECATED_WITH_REPLACEMENT("HKCategoryValueVaginalBleeding", ios(9.0, 18.0), watchos(2.0, 11.0), macCatalyst(13.0, 18.0), macos(13.0, 15.0), visionos(1.0, 2.0));
 
-/*!
+/**
  @enum          HKCategoryValueOvulationTestResult
  @abstract      Set of values that may be used for HKCategorySamples with the
                 HKCategoryTypeIdentifierOvulationTestResult type.
@@ -167,7 +178,7 @@ typedef NS_ENUM(NSInteger, HKCategoryValueOvulationTestResult) {
     HKCategoryValueOvulationTestResultEstrogenSurge API_AVAILABLE(ios(13.0), watchos(6.0)) = 4,
 } API_AVAILABLE(ios(9.0), watchos(2.0), macCatalyst(13.0), macos(13.0));
 
-/*!
+/**
  @enum          HKCategoryValuePregnancyTestResult
  @abstract      Set of values that may be used for HKCategorySamples with the
                 HKCategoryTypeIdentifierPregnancyTestResult type.
@@ -180,7 +191,7 @@ typedef NS_ENUM(NSInteger, HKCategoryValuePregnancyTestResult) {
     HKCategoryValuePregnancyTestResultIndeterminate = 3,
 } API_AVAILABLE(ios(15.0), watchos(8.0), macCatalyst(15.0), macos(13.0));
 
-/*!
+/**
  @enum          HKCategoryValuePresence
  @abstract      Set of values to indicate whether a data type is present or not.
  */
@@ -189,7 +200,7 @@ typedef NS_ENUM(NSInteger, HKCategoryValuePresence) {
     HKCategoryValuePresenceNotPresent = 1,
 } API_AVAILABLE(ios(13.6), watchos(7.0), macCatalyst(13.6), macos(13.0));
 
-/*!
+/**
  @enum          HKCategoryValueProgesteroneTestResult
  @abstract      Set of values that may be used for HKCategorySamples with the
                 HKCategoryTypeIdentifierProgesteroneTestResult type.
@@ -202,7 +213,7 @@ typedef NS_ENUM(NSInteger, HKCategoryValueProgesteroneTestResult) {
     HKCategoryValueProgesteroneTestResultIndeterminate = 3,
 } API_AVAILABLE(ios(15.0), watchos(8.0), macCatalyst(15.0), macos(13.0));
 
-/*!
+/**
  @enum          HKCategoryValueSeverity
  @abstract      Set of values to indicate the severity of a symptom.
  */
@@ -214,7 +225,7 @@ typedef NS_ENUM(NSInteger, HKCategoryValueSeverity) {
     HKCategoryValueSeveritySevere = 4,
 } API_AVAILABLE(ios(13.6), watchos(7.0), macCatalyst(13.6), macos(13.0));
 
-/*!
+/**
  @enum          HKCategoryValueSleepAnalysis
  @abstract      Set of values that may be used for HKCategorySamples with the HKCategoryTypeIdentifierSleepAnalysis
                 type.
@@ -243,7 +254,7 @@ typedef NS_ENUM(NSInteger, HKCategoryValueSleepAnalysis) {
     HKCategoryValueSleepAnalysisAsleepREM API_AVAILABLE(ios(16.0), watchos(9.0), macCatalyst(16.0), macos(13.0)) = 5,
 } API_AVAILABLE(ios(8.0), watchos(2.0), macCatalyst(13.0), macos(13.0));
 
-/*!
+/**
  @enum          HKCategoryValueVaginalBleeding
  @abstract      Set of values to indicate the type of bleeding.
  */

@@ -2,12 +2,15 @@
 //  CSSearchableItemAttributeSet_Places.h
 //  CoreSpotlight
 //
-//  Copyright © 2016 Apple. All rights reserved.
+//  Copyright © 2015–2026 Apple. All rights reserved.
 //
 
 #import <CoreSpotlight/CSSearchableItemAttributeSet.h>
 
-CS_AVAILABLE(10_13, 9_0) CS_TVOS_UNAVAILABLE
+#import <Foundation/Foundation.h>
+
+API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0))
+API_UNAVAILABLE(tvos, watchos)
 @interface CSSearchableItemAttributeSet (CSPlaces)
 
 //A publishable entry providing a synopsis of the contents of the item.
@@ -17,13 +20,13 @@ CS_AVAILABLE(10_13, 9_0) CS_TVOS_UNAVAILABLE
 @property(nullable, copy) NSString *instructions;
 
 //The location (e.g., street name) for the item according to guidelines established by the provider.
-@property(nullable, copy) NSString *thoroughfare;
+@property(nullable, copy) NSString *thoroughfare API_AVAILABLE(macos(10.12), ios(10.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
 
 //The sub-location (e.g., street number) for the item according to guidelines established by the provider.
-@property(nullable, copy) NSString *subThoroughfare;
+@property(nullable, copy) NSString *subThoroughfare API_AVAILABLE(macos(10.12), ios(10.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
 
 //The postal code for the item according to guidelines established by the provider.
-@property(nullable, copy) NSString *postalCode;
+@property(nullable, copy) NSString *postalCode API_AVAILABLE(macos(10.12), ios(10.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
 
 //Identifies city of item origin according to guidelines established by the provider.
 @property(nullable, copy) NSString *city;
@@ -36,7 +39,7 @@ CS_AVAILABLE(10_13, 9_0) CS_TVOS_UNAVAILABLE
 @property(nullable, copy) NSString *country;
 
 // The fully formatted address of the item (obtained from MapKit)
-@property(nullable, copy) NSString *fullyFormattedAddress;
+@property(nullable, copy) NSString *fullyFormattedAddress API_AVAILABLE(macos(10.12), ios(10.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
 
 //The altitude of the item in meters above sea level, expressed
 //using the WGS84 datum.  Negative values lie below sea level.

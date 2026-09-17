@@ -8,8 +8,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
 #import <CoreML/CoreML.h>
-#import <Metal/Metal.h>
-
 #import <Vision/VNObservation.h>
 
 

@@ -31,13 +31,14 @@ NS_ASSUME_NONNULL_BEGIN
 @class RPBroadcastController;
 
 #if TARGET_OS_OSX
-API_AVAILABLE(macos(11.0))
+API_DEPRECATED("No longer supported", macos(11.0, 27.0))
 
 /*!
  @abstract RPBroadcastActivityControllerDelegate is used to notify the caller when the user has finshed with the RPBroadcastActivityController's picker.
 */
 @protocol RPBroadcastActivityControllerDelegate;
 
+API_DEPRECATED("No longer supported", macos(11.0, 27.0))
 /*!
  @class RPBroadcastActivityController
  @abstract Controller object that allows clients to present the macOS broadcast picker and returns the RPBroadcastController object that controls broadcast functionality.
@@ -50,7 +51,7 @@ API_AVAILABLE(macos(11.0))
  @param preferredExtension The extension bundle identifier for the preferred broadcast extension service. nil specifies all extensions will be shown.
  @discussion The handler will be called after the user us finished with the picker and has finish setting up the broadcast extension, which will provide an instance of RPBroadcastAcvityController and an error if one occured.
 */
-+ (void)showBroadcastPickerAtPoint:(CGPoint)point fromWindow:(NSWindow *_Nullable)window preferredExtensionIdentifier:(NSString *_Nullable)preferredExtension completionHandler:(void (^)(RPBroadcastActivityController *_Nullable broadcastActivityController, NSError *_Nullable error))handler API_AVAILABLE(macos(11.0));
++ (void)showBroadcastPickerAtPoint:(CGPoint)point fromWindow:(NSWindow *_Nullable)window preferredExtensionIdentifier:(NSString *_Nullable)preferredExtension completionHandler:(void (^)(RPBroadcastActivityController *_Nullable broadcastActivityController, NSError *_Nullable error))handler API_DEPRECATED("No longer supported", macos(11.0, 27.0));
 
 /*!
  @abstract Delegate that is notified when the activity view controller is complete.
@@ -59,6 +60,7 @@ API_AVAILABLE(macos(11.0))
 
 @end
 
+API_DEPRECATED("No longer supported", macos(11.0, 27.0))
 @protocol RPBroadcastActivityControllerDelegate <NSObject>
 
 /*  @abstract Called when the controller is finished.
@@ -66,7 +68,7 @@ API_AVAILABLE(macos(11.0))
  @param broadcastController An RPBroadcastController instance that can be used to start and stop broadcasts to a user selected service.
  @param error Optional error in the RPRecordingErrorCode domain. A nil error signifies that the user has successfully set up the broadcast with a broadcast service and is ready to start broadcasting.
  */
-- (void)broadcastActivityController:(RPBroadcastActivityController *)broadcastActivityController didFinishWithBroadcastController:(nullable RPBroadcastController *)broadcastController error:(nullable NSError *)error API_AVAILABLE(macos(11.0));
+- (void)broadcastActivityController:(RPBroadcastActivityController *)broadcastActivityController didFinishWithBroadcastController:(nullable RPBroadcastController *)broadcastController error:(nullable NSError *)error API_DEPRECATED("No longer supported", macos(11.0, 27.0));
 @end
 #endif
 
@@ -74,7 +76,7 @@ API_AVAILABLE(macos(11.0))
 /*! @class RPBroadcastActivityViewController
  @abstract View controller that presents the user with a list of broadcast services installed on the device.
  */
-API_AVAILABLE(ios(10.0), tvos(10.0))
+API_DEPRECATED("No longer supported", ios(10.0, 27.0), tvos(10.0, 27.0))
 @interface RPBroadcastActivityViewController : UIViewController
 
 /*  @abstract Loads a RPBroadcastActivityViewController instance and returns it in the handler block.
@@ -98,13 +100,13 @@ API_AVAILABLE(ios(10.0), tvos(10.0))
  @param broadcastActivityViewController The RPBroadcastActivityViewController which can be presented, returns nil if ther eis no matching extension.
  @param error Optional error in the RPRecordingErrorCode domain which is supplied in the event the view controller could not be loaded.
  */
-+ (void)loadBroadcastActivityViewControllerWithPreferredExtension:(NSString *_Nullable)preferredExtension handler:(nonnull void (^)(RPBroadcastActivityViewController *_Nullable broadcastActivityViewController, NSError *_Nullable error))handler API_AVAILABLE(ios(11.0)) API_UNAVAILABLE(tvos);
++ (void)loadBroadcastActivityViewControllerWithPreferredExtension:(NSString *_Nullable)preferredExtension handler:(nonnull void (^)(RPBroadcastActivityViewController *_Nullable broadcastActivityViewController, NSError *_Nullable error))handler API_DEPRECATED("No longer supported", ios(11.0, 27.0)) API_UNAVAILABLE(tvos);
 
 /*  @abstract Delegate that is notified when the activity view controller is complete. */
 @property (nonatomic, weak, nullable) id<RPBroadcastActivityViewControllerDelegate> delegate;
 @end
 
-API_AVAILABLE(ios(10.0), tvos(10.0))
+API_DEPRECATED("No longer supported", ios(10.0, 27.0), tvos(10.0, 27.0))
 @protocol RPBroadcastActivityViewControllerDelegate <NSObject>
 
 /*  @abstract Called when the view controller is finished.
@@ -112,14 +114,14 @@ API_AVAILABLE(ios(10.0), tvos(10.0))
  @param broadcastController An RPBroadcastController instance that can be used to start and stop broadcasts to a user selected service.
  @param error Optional error in the RPRecordingErrorCode domain. A nil error signifies that the user has successfully set up the broadcast with a broadcast service and is ready to start broadcasting.
  */
-- (void)broadcastActivityViewController:(RPBroadcastActivityViewController *)broadcastActivityViewController didFinishWithBroadcastController:(nullable RPBroadcastController *)broadcastController error:(nullable NSError *)error API_AVAILABLE(ios(10.0), tvos(10.0));
+- (void)broadcastActivityViewController:(RPBroadcastActivityViewController *)broadcastActivityViewController didFinishWithBroadcastController:(nullable RPBroadcastController *)broadcastController error:(nullable NSError *)error API_DEPRECATED("No longer supported", ios(10.0, 27.0), tvos(10.0, 27.0));
 @end
 #endif
 
 /*! @class RPBroadcastController
  @abstract Available once a user has successfully initiated a broadcast using an RPBroadcastActivityViewController. Can be used to start, pause and stop a broadcast.
  */
-API_AVAILABLE(ios(10.0), tvos(10.0), macos(11.0))
+API_DEPRECATED("No longer supported", ios(10.0, 27.0), tvos(10.0, 27.0), macos(11.0, 27.0))
 @interface RPBroadcastController : NSObject
 /*  @abstract Indicates whether the controller is currently broadcasting. */
 @property (nonatomic, readonly, getter = isBroadcasting) BOOL broadcasting;
@@ -150,7 +152,7 @@ API_AVAILABLE(ios(10.0), tvos(10.0), macos(11.0))
 - (void)finishBroadcastWithHandler:(void (^)(NSError *_Nullable error))handler;
 @end
 
-API_AVAILABLE(ios(10.0), tvos(10.0), macos(11.0))
+API_DEPRECATED("No longer supported", ios(10.0, 27.0), tvos(10.0, 27.0), macos(11.0, 27.0))
 @protocol RPBroadcastControllerDelegate <NSObject>
 @optional
 
@@ -170,14 +172,15 @@ API_AVAILABLE(ios(10.0), tvos(10.0), macos(11.0))
  @param broadcastController The controller instance.
  @param broadcastURL NSURL instance with URL of the resource where broacast can be viewed. Defined by broadcast service.
  */
-- (void)broadcastController:(RPBroadcastController *)broadcastController didUpdateBroadcastURL:(NSURL *)broadcastURL API_AVAILABLE(ios(11.0), tvos(11.0));
+- (void)broadcastController:(RPBroadcastController *)broadcastController didUpdateBroadcastURL:(NSURL *)broadcastURL API_DEPRECATED("No longer supported", ios(11.0, 27.0), tvos(11.0, 27.0));
 @end
 
 #if !TARGET_OS_OSX
 /*! @class RPSystemBroadcastPickerView
  @abstract View that presents the user with a button for starting iOS system broadcast using preferred broadcast service.
  */
-API_AVAILABLE(ios(12.0)) API_UNAVAILABLE(tvos, macos)
+API_DEPRECATED("Use ScreenCaptureKit SCContentSharingPicker instead", ios(12.0, 27.0))
+API_UNAVAILABLE(tvos, macos)
 @interface RPSystemBroadcastPickerView : UIView <NSCoding>
 /*  @abstract Bundle identifier of extension that should be used for broadcast. Default is nil which means that all extensions will be presented */
 @property (nonatomic, strong, nullable) NSString *preferredExtension;

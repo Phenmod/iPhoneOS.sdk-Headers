@@ -11,11 +11,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#if !defined(HK_EXTERN)
 #if !defined(__cplusplus)
 #define HK_EXTERN extern __attribute__((visibility("default")))
 #else
 #define HK_EXTERN extern "C" __attribute__((visibility("default")))
 #endif
+#endif // !defined(HK_EXTERN)
 
 HK_EXTERN NSString * const HKErrorDomain API_AVAILABLE(ios(8.0), watchos(2.0), macCatalyst(13.0), macos(13.0));
 

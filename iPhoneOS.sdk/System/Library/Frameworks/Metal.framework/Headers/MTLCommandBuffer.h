@@ -116,7 +116,7 @@ typedef NS_ENUM(NSUInteger, MTLCommandBufferError)
     MTLCommandBufferErrorOutOfMemory = 8,
     MTLCommandBufferErrorInvalidResource = 9,
     MTLCommandBufferErrorMemoryless API_AVAILABLE(macos(11.0), macCatalyst(14.0), ios(10.0)) = 10,
-    MTLCommandBufferErrorDeviceRemoved API_AVAILABLE(macos(10.13)) API_UNAVAILABLE(ios) = 11,
+    MTLCommandBufferErrorDeviceRemoved API_DEPRECATED("MTLCommandBufferErrorDeviceRemoved cannot occur on Apple Silicon", macos(10.13, 27.0)) API_UNAVAILABLE(ios) = 11,
     MTLCommandBufferErrorStackOverflow API_AVAILABLE(macos(12.0), ios(15.0)) = 12,
 } API_AVAILABLE(macos(10.11), ios(8.0));
 

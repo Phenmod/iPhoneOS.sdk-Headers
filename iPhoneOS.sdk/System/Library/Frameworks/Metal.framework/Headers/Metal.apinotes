@@ -419,6 +419,16 @@ Enumerators:
   SwiftName: uint32
 - Name: MTLTensorDataTypeUInt4
   SwiftName: uint4
+- Name: MTLTensorDataTypeUInt2
+  SwiftName: uint2
+- Name: MTLTensorDataTypeMetalFloat8UE8M0
+  SwiftName: metalFloat8ue8m0
+- Name: MTLTensorDataTypeMetalFloat8E5M2
+  SwiftName: metalFloat8e5m2
+- Name: MTLTensorDataTypeMetalFloat8E4M3
+  SwiftName: metalFloat8e4m3
+- Name: MTLTensorDataTypeMetalFloat4E2M1
+  SwiftName: metalFloat4e2m1
 
 Classes:
 - Name: MTLCaptureManager
@@ -1124,6 +1134,9 @@ Protocols:
     MethodKind: Instance
   - Selector: 'tensorSizeAndAlignWithDescriptor:'
     SwiftName: tensorSizeAndAlign(descriptor:)
+    MethodKind: Instance
+  - Selector: 'newTensorWithDescriptor:attachments:error:'
+    SwiftName: makeTensor(descriptor:attachments:)
     MethodKind: Instance
   - Selector: 'functionHandleWithFunction:'
     SwiftName: functionHandle(function:)
@@ -1875,6 +1888,12 @@ Protocols:
   - Selector: 'getBytes:strides:fromSliceOrigin:sliceDimensions:'
     SwiftName: getBytes(_:strides:sliceOrigin:sliceDimensions:)
     MethodKind: Instance
+  - Selector: 'replaceSliceOrigin:sliceDimensions:plane:withBytes:strides:'
+    SwiftName: replace(sliceOrigin:sliceDimensions:plane:withBytes:strides:)
+    MethodKind: Instance
+  - Selector: 'getBytes:strides:fromSliceOrigin:sliceDimensions:plane:'
+    SwiftName: getBytes(_:strides:sliceOrigin:sliceDimensions:plane:)
+    MethodKind: Instance
 
 - Name: MTLTextureViewPool
   Methods:
@@ -1966,6 +1985,9 @@ Protocols:
     MethodKind: Instance
   - Selector: 'copyFromTensor:sourceOrigin:sourceDimensions:toTensor:destinationOrigin:destinationDimensions:'
     SwiftName: copy(sourceTensor:sourceOrigin:sourceDimensions:destinationTensor:destinationOrigin:destinationDimensions:)
+    MethodKind: Instance
+  - Selector: 'copyFromTensor:sourceOrigin:sourceDimensions:sourcePlane:toTensor:destinationOrigin:destinationDimensions:destinationPlane:'
+    SwiftName: copy(sourceTensor:sourceOrigin:sourceDimensions:sourcePlane:destinationTensor:destinationOrigin:destinationDimensions:destinationPlane:)
     MethodKind: Instance
   - Selector: 'copyAccelerationStructure:toAccelerationStructure:'
     SwiftName: copy(sourceAccelerationStructure:destinationAccelerationStructure:)

@@ -2,11 +2,12 @@
 //  CSSearchableItem.h
 //  CoreSpotlight
 //
-//  Copyright © 2015–2022 Apple Inc. All rights reserved.
+//  Copyright © 2015–2026 Apple Inc. All rights reserved.
 //
 
-#import <CoreSpotlight/CSBase.h>
 #import <CoreSpotlight/CSSearchableItemAttributeSet.h>
+
+#import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,12 +15,12 @@ NS_ASSUME_NONNULL_BEGIN
 // method will get called with CSSearchableItemActionType, followed by  application:continueUserActivity:restorationHandler:
 // with an NSUserActivity where the userInfo dictionary has a key value pair where CSSearchableItemActivityIdentifier is the key
 // and the value is the uniqueIdentifier used when creating the item.
-CORESPOTLIGHT_EXPORT NSString * const CSSearchableItemActionType CS_AVAILABLE(10_13, 9_0) CS_TVOS_UNAVAILABLE;
-CORESPOTLIGHT_EXPORT NSString * const CSSearchableItemActivityIdentifier CS_AVAILABLE(10_13, 9_0) CS_TVOS_UNAVAILABLE;
+extern NSString * const CSSearchableItemActionType API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
+extern NSString * const CSSearchableItemActivityIdentifier API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
 
 // For custom actions on iOS, the userInfo dictionary also has another key value pair where CSActionIdentifier is the key
 // and the value is the action tapped in the UI based on what was indexed by the app.
-CORESPOTLIGHT_EXPORT NSString * const CSActionIdentifier API_AVAILABLE(ios(15.0)) API_UNAVAILABLE(macos, tvos);
+extern NSString * const CSActionIdentifier API_AVAILABLE(ios(15.0), visionos(1.0)) API_UNAVAILABLE(macos, tvos, watchos);
 
 // When continuing a query from Spotlight, the application's -application:willContinueUserActivityWithType:
 // method will get called with CSQueryContinuationActionType, followed by -application:continueUserActivity:restorationHandler:
@@ -30,17 +31,17 @@ CORESPOTLIGHT_EXPORT NSString * const CSActionIdentifier API_AVAILABLE(ios(15.0)
 //    <key>CoreSpotlightContinuation</key>
 //    <true/>
 //
-CORESPOTLIGHT_EXPORT NSString * const CSQueryContinuationActionType CS_AVAILABLE(10_13, 10_0) CS_TVOS_UNAVAILABLE;
-CORESPOTLIGHT_EXPORT NSString * const CSSearchQueryString CS_AVAILABLE(10_13, 10_0) CS_TVOS_UNAVAILABLE;
+extern NSString * const CSQueryContinuationActionType API_AVAILABLE(macos(10.12), ios(10.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
+extern NSString * const CSSearchQueryString API_AVAILABLE(macos(10.12), ios(10.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
 
 typedef NS_OPTIONS(NSUInteger, CSSearchableItemUpdateListenerOptions) {
-    CSSearchableItemUpdateListenerOptionDefault = 0,
-    CSSearchableItemUpdateListenerOptionSummarization = 1 << 1,     // textContentSummary
-    CSSearchableItemUpdateListenerOptionPriority = 1 << 2,          // isPriority
-} NS_SWIFT_NAME(CSSearchableItem.UpdateListenerOptions) API_AVAILABLE(macos(15_4), ios(18_4));
+    CSSearchableItemUpdateListenerOptionDefault        = 0,
+    CSSearchableItemUpdateListenerOptionSummarization  = 1 << 1, // textContentSummary
+    CSSearchableItemUpdateListenerOptionPriority       = 1 << 2, // isPriority
+} NS_SWIFT_NAME(CSSearchableItem.UpdateListenerOptions) API_AVAILABLE(macos(15.4), ios(18.4), visionos(2.4)) API_UNAVAILABLE(tvos, watchos);
 
-CS_CLASS_AVAILABLE(10_13, 9_0)
-CS_TVOS_UNAVAILABLE
+API_AVAILABLE(macos(10.11), ios(9.0), visionos(1.0))
+API_UNAVAILABLE(tvos, watchos)
 @interface CSSearchableItem : NSObject <NSSecureCoding, NSCopying>
 
 // uniqueIdentifier can be null, in which case one will be generated.
@@ -50,7 +51,7 @@ CS_TVOS_UNAVAILABLE
                             attributeSet:(CSSearchableItemAttributeSet *)attributeSet;
 
 // For comparison of items ranked by the query
-- (NSComparisonResult)compareByRank:(CSSearchableItem *)other API_AVAILABLE(macos(13.0), ios(16.0)) CS_TVOS_UNAVAILABLE;
+- (NSComparisonResult)compareByRank:(CSSearchableItem *)other API_AVAILABLE(macos(13.0), ios(16.0), visionos(1.0)) API_UNAVAILABLE(tvos, watchos);
 
 // Should be unique to your application group.
 // REQUIRED since this is the way you will refer to the item to update the index / delete it from the index
@@ -74,11 +75,11 @@ CS_TVOS_UNAVAILABLE
 // By default index insertions are treated as a full delete of any existing item, followed by an insert, and the client needs to specify whether or not this should be treated as an update.
 // If an item is marked as an update, but does not already exist in the index, it will be dropped during the attempted indexing.
 // In update mode, attributes can be marked as deleted by setting their value to nil.
-@property (assign) BOOL isUpdate API_AVAILABLE(macos(10.11), ios(9.0)) CS_TVOS_UNAVAILABLE;
+@property (assign) BOOL isUpdate;
 
 // An option flag to specify whether to listen for specific attribute updates that Spotlight can provide.
 // A developer may be notified by a call of searchableItemsDidUpdate to its delegate, where specific properties will be available on the item.
-@property (assign) CSSearchableItemUpdateListenerOptions updateListenerOptions NS_AVAILABLE(15_4, 18_4);
+@property (assign) CSSearchableItemUpdateListenerOptions updateListenerOptions API_AVAILABLE(macos(15.4), ios(18.4), visionos(2.4)) API_UNAVAILABLE(tvos, watchos);
 
 @end
 

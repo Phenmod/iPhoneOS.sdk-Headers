@@ -3,7 +3,7 @@
 	
 	Framework:  CoreMedia
  
-    Copyright © 2013-2025 Apple Inc. All rights reserved.
+    Copyright © 2013-2026 Apple Inc. All rights reserved.
  
 */
 
@@ -239,6 +239,15 @@ CM_EXPORT const CFStringRef kCMMetadataIdentifier_QuickTimeMetadataDisplayMaskRe
 */
 CM_EXPORT const CFStringRef kCMMetadataIdentifier_QuickTimeMetadataPresentationImmersiveMedia API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), watchos(26.0), visionos(26.0));
 
+/*!
+	@const kCMMetadataIdentifier_ITUT_T35MetadataSMPTE2094_50
+		SMPTE ST2094-50 HDR metadata. (it35 keyspace)
+		Expected data type is kCMMetadataDataType_QuickTimeMetadataSMPTE2094_50.
+*/
+CM_EXPORT const CFStringRef kCMMetadataIdentifier_ITUT_T35MetadataSMPTE2094_50
+								API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), watchos(27.0), visionos(27.0));
+
+
 CM_ASSUME_NONNULL_END
 
 CF_IMPLICIT_BRIDGING_DISABLED
@@ -374,6 +383,10 @@ CF_IMPLICIT_BRIDGING_ENABLED
 		UTF-8 string.
 	@const kCMMetadataBaseDataType_UTF16
 		UTF-16 string.
+	@const kCMMetadataBaseDataType_MacRoman
+		A string with MacRoman encoding (kCFStringEncodingMacRoman).
+	@const kCMMetadataBaseDataType_ISOLatin1
+		A string with ISO 8859-1 encoding (kCFStringEncodingISOLatin1).
 	@const kCMMetadataBaseDataType_GIF
 		GIF image.
 	@const kCMMetadataBaseDataType_JPEG
@@ -434,6 +447,10 @@ CM_EXPORT const CFStringRef kCMMetadataBaseDataType_UTF8
 								API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0), watchos(6.0), visionos(1.0));
 CM_EXPORT const CFStringRef kCMMetadataBaseDataType_UTF16
 								API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0), watchos(6.0), visionos(1.0));
+CM_EXPORT const CFStringRef kCMMetadataBaseDataType_MacRoman
+								API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), watchos(27.0), visionos(27.0));
+CM_EXPORT const CFStringRef kCMMetadataBaseDataType_ISOLatin1
+								API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), watchos(27.0), visionos(27.0));
 CM_EXPORT const CFStringRef kCMMetadataBaseDataType_GIF
 								API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0), watchos(6.0), visionos(1.0));
 CM_EXPORT const CFStringRef kCMMetadataBaseDataType_JPEG
@@ -511,6 +528,15 @@ CM_EXPORT const CFStringRef kCMMetadataDataType_QuickTimeMetadataUUID
 */
 CM_EXPORT const CFStringRef kCMMetadataDataType_QuickTimeMetadataMilliLux
 								API_AVAILABLE(macos(15.0), ios(18.0), tvos(18.0), watchos(11.0), visionos(2.0));
+
+/*!
+	@const kCMMetadataDataType_QuickTimeMetadataSMPTE2094_50
+		SMPTE ST2094-50 HDR metadata.  Conforms to
+		kCMMetadataBaseDataType_RawData.
+*/
+CM_EXPORT const CFStringRef kCMMetadataDataType_QuickTimeMetadataSMPTE2094_50
+								API_AVAILABLE(macos(27.0), ios(27.0), tvos(27.0), watchos(27.0), visionos(27.0));
+
 
 CM_ASSUME_NONNULL_END
 

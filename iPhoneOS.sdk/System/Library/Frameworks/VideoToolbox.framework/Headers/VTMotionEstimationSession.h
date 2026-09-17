@@ -52,7 +52,7 @@ typedef CF_OPTIONS(uint32_t, VTMotionEstimationInfoFlags) {
 /// session, you should call ``VTMotionEstimationSessionInvalidate`` to tear it down and ``CFRelease`` to release the
 /// session object reference.
 typedef struct CM_BRIDGED_TYPE(id) OpaqueVTMotionEstimationSession*  VTMotionEstimationSessionRef CF_REFINED_FOR_SWIFT
-	API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), visionos(26.0)) API_UNAVAILABLE(watchos);
+	API_AVAILABLE(macos(26.0), ios(26.0), tvos(26.0), visionos(26.0)) API_UNAVAILABLE(watchos) CM_SWIFT_SENDABLE;
 
 /// Get the CoreFoundation type identifier for motion-estimation session type.
 VT_EXPORT CFTypeID VTMotionEstimationSessionGetTypeID( void ) CF_REFINED_FOR_SWIFT

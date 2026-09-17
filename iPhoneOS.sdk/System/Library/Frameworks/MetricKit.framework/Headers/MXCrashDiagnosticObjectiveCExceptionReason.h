@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
                 This information is captured in a structured way in a MXCrashDiagnosticObjectiveCExceptionReason object and may have some pieces redacted to avoid exposing sensitive user data.
  */
 
-API_AVAILABLE(macos(14.0), ios(17.0)) API_UNAVAILABLE(tvos, watchos)
+API_DEPRECATED("Use CrashDiagnostic.ObjectiveCExceptionReason instead.", macos(14.0, API_TO_BE_DEPRECATED), ios(17.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(tvos, watchos)
 @interface MXCrashDiagnosticObjectiveCExceptionReason: NSObject <NSSecureCoding>
 /*!
  @property      composedMessage

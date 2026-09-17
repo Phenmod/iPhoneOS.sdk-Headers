@@ -26,12 +26,12 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @abstract Load information about the broadcasting app.
     @param handler block which will be supplied a bundleID, displayName and an optional appIcon.
  */
-- (void)loadBroadcastingApplicationInfoWithCompletion:(void (^)(NSString *bundleID, NSString *displayName, NSImage *__nullable appIcon))handler API_AVAILABLE(macos(11.0)) API_UNAVAILABLE(ios, tvos, macCatalyst);
+- (void)loadBroadcastingApplicationInfoWithCompletion:(void (^)(NSString *bundleID, NSString *displayName, NSImage *__nullable appIcon))handler API_DEPRECATED("No longer supported", macos(11.0, 27.0)) API_UNAVAILABLE(ios, tvos, macCatalyst);
 #else
 /*! @abstract Load information about the broadcasting app.
     @param handler block which will be supplied a bundleID, displayName and an optional appIcon.
  */
-- (void)loadBroadcastingApplicationInfoWithCompletion:(void (^)(NSString *bundleID, NSString *displayName, UIImage *__nullable appIcon))handler;
+- (void)loadBroadcastingApplicationInfoWithCompletion:(void (^)(NSString *bundleID, NSString *displayName, UIImage *__nullable appIcon))handler API_DEPRECATED("No longer supported", ios(10.0, 27.0), tvos(10.0, 27.0));
 #endif
 
 /*! @abstract Method to be called when the extension should finish. Deprecated.
@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 #endif
 
-- (void)completeRequestWithBroadcastURL:(NSURL *)broadcastURL setupInfo:(nullable NSDictionary <NSString *, NSObject <NSCoding> *> *)setupInfo API_AVAILABLE(ios(11.0), tvos(11.0), macos(11.0));
+- (void)completeRequestWithBroadcastURL:(NSURL *)broadcastURL setupInfo:(nullable NSDictionary <NSString *, NSObject <NSCoding> *> *)setupInfo API_DEPRECATED("No longer supported", ios(11.0, 27.0), tvos(11.0, 27.0), macos(11.0, 27.0));
 
 @end
 
@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
  @class RPBroadcastProcessExtension
  @abstract Base class for extensions that are responsible for handling video and audio data.
  */
-API_AVAILABLE(ios(10.0), tvos(10.0), macos(11.0))
+API_DEPRECATED("No longer supported", ios(10.0, 27.0), tvos(10.0, 27.0), macos(11.0, 27.0))
 @interface RPBroadcastHandler : NSObject <NSExtensionRequestHandling>
 /*! @abstract Call this method, supplying it with a dictionary defined by the service, to populate the serviceInfo property on RPBroadcastController. This can be used to communicate viewing stats or messages back to the broadcasting app.
  @param serviceInfo Dictionary that can be passed back to the broadcasting app that may contain information about the ongoing broadcast.
@@ -74,7 +74,7 @@ API_AVAILABLE(ios(10.0), tvos(10.0), macos(11.0))
     @class RPBroadcastMP4ClipHandler
     @abstract Subclass this class to handle movie clips as they are recorded by ReplayKit during the broadcast flow. ReplayKit will call processMP4ClipWithURL when a movie clip is available for processing.
  */
-API_DEPRECATED("No longer supported, use RPBroadcastSampleHandler instead.", ios(10.0, 11.0), tvos(10.0, 11.0)) API_UNAVAILABLE(macos)
+API_DEPRECATED("No longer supported", ios(10.0, 11.0), tvos(10.0, 11.0)) API_UNAVAILABLE(macos)
 @interface RPBroadcastMP4ClipHandler : RPBroadcastHandler
 /*! @abstract Method which ReplayKit will call when an MP4 movie clip is ready for processing.
  @param mp4ClipURL URL that points to the location of the movie clip recorded by ReplayKit. Note that the URL may be nil in certain cases such as an error.
@@ -91,7 +91,7 @@ API_DEPRECATED("No longer supported, use RPBroadcastSampleHandler instead.", ios
 @end
 #endif // !TARGET_OS_OSX
 
-API_AVAILABLE(ios(10.0), tvos(10.0), macos(11.0))
+API_DEPRECATED("Use SCStreamOutputType instead", ios(10.0, 27.0), tvos(10.0, 27.0), macos(11.0, 27.0))
 typedef NS_ENUM (NSInteger, RPSampleBufferType) {
     RPSampleBufferTypeVideo = 1,
     RPSampleBufferTypeAudioApp,
@@ -102,21 +102,22 @@ typedef NS_ENUM (NSInteger, RPSampleBufferType) {
  @key RPVideoSampleOrientationKey
  @abstract Use this key in conjunction with CMGetAttachment on CMSampleBufferRef to get the orientation for the sample. The orientation will follow the enum CGImagePropertyOrientation
  */
-API_AVAILABLE(ios(11.0), tvos(11.0), macos(11.0))
+API_DEPRECATED("No longer supported", ios(11.0, 27.0), tvos(11.0, 27.0), macos(11.0, 27.0))
 extern NSString * const RPVideoSampleOrientationKey;
 
 /*!
  @key RPApplicationInfoBundleIdentifierKey
  @abstract Use this key to retrieve bundle identifier from dictionary provided by broadcastAnnotatedWithApplicationInfo
  */
-API_AVAILABLE(ios(11.2), macos(11.0)) API_UNAVAILABLE(tvos)
+API_DEPRECATED("No longer supported", ios(11.2, 27.0), macos(11.0, 27.0))
+API_UNAVAILABLE(tvos)
 extern NSString * const RPApplicationInfoBundleIdentifierKey;
 
 /*!
  @class RPBroadcastSampleHandler
  @abstract Subclass this class to handle CMSampleBuffer objects as they are captured by ReplayKit. To enable this mode of handling, set the RPBroadcastProcessMode in the extension's info.plist to RPBroadcastProcessModeSampleBuffer.
  */
-API_AVAILABLE(ios(10.0), tvos(10.0), macos(11.0))
+API_DEPRECATED("No longer supported", ios(10.0, 27.0), tvos(10.0, 27.0), macos(11.0, 27.0))
 @interface RPBroadcastSampleHandler : RPBroadcastHandler
 
 /*! @abstract Method is called when the RPBroadcastController startBroadcast method is called from the broadcasting application.

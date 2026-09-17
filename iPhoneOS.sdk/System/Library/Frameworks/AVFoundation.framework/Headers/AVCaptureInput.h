@@ -185,38 +185,30 @@ API_AVAILABLE(macos(10.7), ios(4.0), macCatalyst(14.0), tvos(17.0), visionos(1.0
     AVCaptureDeviceInputInternal *_internal;
 }
 
-/*!
- @method deviceInputWithDevice:error:
- @abstract
-    Returns an AVCaptureDeviceInput instance that provides media data from the given device.
- 
- @param device
-    An AVCaptureDevice instance to be used for capture.
- @param outError
-    On return, if the given device cannot be used for capture, points to an NSError describing the problem.
- @result
-    An AVCaptureDeviceInput instance that provides data from the given device, or nil, if the device could not be used for capture.
- 
- @discussion
-    This method returns an instance of AVCaptureDeviceInput that can be used to capture data from an AVCaptureDevice in an AVCaptureSession. This method attempts to open the device for capture, taking exclusive control of it if necessary. If the device cannot be opened because it is no longer available or because it is in use, for example, this method returns nil, and the optional outError parameter points to an NSError describing the problem.
- */
+/// Returns a capture device input that provides media data from the given device.
+///
+/// This method returns an instance of `AVCaptureDeviceInput` that can be used to capture data from an `AVCaptureDevice` in an `AVCaptureSession`. This method attempts to open the device for capture, taking exclusive control of it if necessary. If the device cannot be opened because it is no longer available or because it is in use, for example, this method returns `nil`, and the optional outError parameter points to an `NSError` describing the problem.
+///
+/// When initializing an `AVCaptureDeviceInput` while the `AVAuthorizationStatus` for the device's media type is `AVAuthorizationStatusNotDetermined`, the system will prompt for access effectively calling `+[AVCaptureDevice requestAccessForMediaType:completionHandler:]` on your behalf.
+///
+/// - Parameter device: An `AVCaptureDevice` instance to be used for capture.
+///
+/// - Parameter outError: On return, if the given device cannot be used for capture, points to an `NSError` describing the problem.
+///
+/// - Returns: An `AVCaptureDeviceInput` instance that provides data from the given device, or `nil`, if the device could not be used for capture.
 + (nullable instancetype)deviceInputWithDevice:(AVCaptureDevice *)device error:(NSError * _Nullable * _Nullable)outError API_UNAVAILABLE(visionos);
 
-/*!
- @method initWithDevice:error:
- @abstract
-    Creates an AVCaptureDeviceInput instance that provides media data from the given device.
- 
- @param device
-    An AVCaptureDevice instance to be used for capture.
- @param outError
-    On return, if the given device cannot be used for capture, points to an NSError describing the problem.
- @result
-    An AVCaptureDeviceInput instance that provides data from the given device, or nil, if the device could not be used for capture.
- 
- @discussion
-    This method creates an instance of AVCaptureDeviceInput that can be used to capture data from an AVCaptureDevice in an AVCaptureSession. This method attempts to open the device for capture, taking exclusive control of it if necessary. If the device cannot be opened because it is no longer available or because it is in use, for example, this method returns nil, and the optional outError parameter points to an NSError describing the problem.
- */
+/// Creates a capture device input that provides media data from the given device.
+///
+/// This method creates an instance of `AVCaptureDeviceInput` that can be used to capture data from an `AVCaptureDevice` in an `AVCaptureSession`. This method attempts to open the device for capture, taking exclusive control of it if necessary. If the device cannot be opened because it is no longer available or because it is in use, for example, this method returns `nil`, and the optional outError parameter points to an `NSError` describing the problem.
+///
+/// When initializing an `AVCaptureDeviceInput` while the `AVAuthorizationStatus` for the device's media type is `AVAuthorizationStatusNotDetermined`, the system will prompt for access effectively calling `+[AVCaptureDevice requestAccessForMediaType:completionHandler:]` on your behalf.
+///
+/// - Parameter device: An `AVCaptureDevice` instance to be used for capture.
+///
+/// - Parameter outError: On return, if the given device cannot be used for capture, points to an `NSError` describing the problem.
+///
+/// - Returns: An `AVCaptureDeviceInput` instance that provides data from the given device, or `nil`, if the device could not be used for capture.
 - (nullable instancetype)initWithDevice:(AVCaptureDevice *)device error:(NSError * _Nullable * _Nullable)outError;
 
 /*!
@@ -303,7 +295,6 @@ API_AVAILABLE(macos(10.7), ios(4.0), macCatalyst(14.0), tvos(17.0), visionos(1.0
 ///
 /// - Important: If you set this property while the receiver's  ``lockedVideoFrameDurationSupported`` property returns `false`, it throws an `NSInvalidArgumentException`.
 @property(nonatomic) CMTime activeLockedVideoFrameDuration API_AVAILABLE(macos(26.0), ios(26.0), macCatalyst(26.0), tvos(26.0)) API_UNAVAILABLE(visionos) API_UNAVAILABLE(watchos);
-
 
 /// Indicates whether the device input supports being configured to follow an external sync device.
 ///

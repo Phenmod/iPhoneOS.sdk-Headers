@@ -23,12 +23,15 @@ API_AVAILABLE(macos(26.0), ios(26.0))
 @interface MTL4MachineLearningPipelineDescriptor : MTL4PipelineDescriptor
 
 /// Assigns an optional string that helps identify pipeline states you create from this descriptor.
-@property (nullable, copy, nonatomic) NSString *label;
+@property (nullable, copy, nonatomic) NSString* label;
 
 /// Assigns the function that the machine learning pipeline you create from this descriptor executes.
 @property (nullable, readwrite, nonatomic, copy) MTL4FunctionDescriptor* machineLearningFunctionDescriptor;
 
 /// Sets the dimension of an input tensor at a buffer index.
+///
+/// When the compiled model declares the input as unranked (unknown rank), any concrete `dimensions` are accepted.
+/// Otherwise `dimensions.rank` must equal the model's input rank, and each static (non `-1`) dimension must match.
 ///
 /// - Parameters:
 ///   - dimensions: the dimensions of the tensor.

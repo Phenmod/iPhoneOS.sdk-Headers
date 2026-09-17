@@ -16,7 +16,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-API_AVAILABLE(ios(13.0), watchos(6.0))
+API_DEPRECATED("INSnoozeTasksIntent is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.", ios(13.0, 27.0), watchos(6.0, 27.0))
 API_UNAVAILABLE(macos, tvos)
 @interface INSnoozeTasksIntent : INIntent
 
@@ -39,7 +39,7 @@ API_UNAVAILABLE(macos, tvos)
  @discussion The minimum requirement for an implementing class is that it should be able to handle the intent. The resolution and confirmation methods are optional. The handling method is always called last, after resolving and confirming the intent.
  */
 
-API_AVAILABLE(ios(13.0), watchos(6.0))
+API_DEPRECATED("INSnoozeTasksIntentHandling is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.", ios(13.0, 27.0), watchos(6.0, 27.0))
 API_UNAVAILABLE(macos, tvos)
 @protocol INSnoozeTasksIntentHandling <NSObject>
 

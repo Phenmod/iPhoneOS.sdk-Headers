@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
     A generator will have no audio input, but will just produce audio output.
     A tone generator is an example of this. 
 */
-API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0)) API_UNAVAILABLE(watchos)
+NS_SWIFT_SENDABLE API_AVAILABLE(macos(10.10), ios(8.0), tvos(9.0)) API_UNAVAILABLE(watchos)
 @interface AVAudioUnitGenerator : AVAudioUnit <AVAudioMixing>
 
 #if AVAUDIOUNIT_HAVE_AUDIOUNIT

@@ -133,6 +133,7 @@ struct ipsecstat {
 	u_quad_t out_esphist[256] __attribute__ ((aligned(8)));
 	u_quad_t out_ahhist[256] __attribute__ ((aligned(8)));
 	u_quad_t out_comphist[256] __attribute__ ((aligned(8)));
+	u_quad_t out_notmature __attribute__ ((aligned(8)));  /* outbound SA present but not mature/dying */
 };
 
 #define IPSEC_MAX_WAKE_PKT_LEN  100

@@ -14,69 +14,51 @@ NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 #pragma mark Error constants
 
+/// This key identifies the error that occurred during the most recent operation.
 FOUNDATION_EXPORT NSString * const NSNetServicesErrorCode API_AVAILABLE(macos(10.2), ios(2.0), tvos(9.0)) API_UNAVAILABLE(watchos);
+/// This key identifies the originator of the error, which is either the `NSNetService` object or the mach network layer. For most errors, you should not need the value provided by this key.
 FOUNDATION_EXPORT NSErrorDomain const NSNetServicesErrorDomain API_AVAILABLE(macos(10.2), ios(2.0), tvos(9.0)) API_UNAVAILABLE(watchos);
 
+/// These constants identify errors that can occur when accessing net services.
 typedef NS_ENUM(NSInteger, NSNetServicesError) {
-    
-/* An unknown error occurred during resolution or publication.
-*/
+    /// An unknown error occurred.
     NSNetServicesUnknownError = -72000L,
-    
-/* An NSNetService with the same domain, type and name was already present when the publication request was made.
-*/
+    /// The service could not be published because the name is already in use. The name could be in use locally or on another system.
     NSNetServicesCollisionError = -72001L,
-    
-/* The NSNetService was not found when a resolution request was made.
-*/
+    /// The service could not be found on the network.
     NSNetServicesNotFoundError	= -72002L,
-    
-/* A publication or resolution request was sent to an NSNetService instance which was already published or a search request was made of an NSNetServiceBrowser instance which was already searching.
-*/
+    /// The net service cannot process the request at this time. No additional information about the network state is known.
     NSNetServicesActivityInProgress = -72003L,
-    
-/* An required argument was not provided when initializing the NSNetService instance.
-*/
+    /// An invalid argument was used when creating the `NSNetService` object.
     NSNetServicesBadArgumentError = -72004L,
-    
-/* The operation being performed by the NSNetService or NSNetServiceBrowser instance was cancelled.
-*/
+    /// The client canceled the action.
     NSNetServicesCancelledError = -72005L,
-    
-/* An invalid argument was provided when initializing the NSNetService instance or starting a search with an NSNetServiceBrowser instance.
-*/
+    /// The net service was improperly configured.
     NSNetServicesInvalidError = -72006L,
-        
-/* Resolution of an NSNetService instance failed because the timeout was reached.
-*/
+    /// The net service has timed out.
     NSNetServicesTimeoutError = -72007L,
-    
-/* Missing required configuration for local network access.
- *
- * NSBonjourServices and NSLocalNetworkUsageDescription are required in Info.plist
- */
+    /// Missing required configuration for local network access.
+    ///
+    /// `NSBonjourServices` and `NSLocalNetworkUsageDescription` are required in Info.plist.
     NSNetServicesMissingRequiredConfigurationError API_AVAILABLE(macos(11.0), ios(14.0), tvos(14.0)) API_UNAVAILABLE(watchos) = -72008L,
 } API_AVAILABLE(macos(10.2), ios(2.0), tvos(9.0)) API_UNAVAILABLE(watchos);
 
 
+/// These constants specify options for a network service.
 typedef NS_OPTIONS(NSUInteger, NSNetServiceOptions) {
-    /* When passed to -publishWithOptions:, this suppresses the auto-renaming of an
-     * NSNetService in the event of a name collision. The collision is reported to the
-     * instance's delegate on the -netService:didNotPublish: method.
-     */
+    /// Specifies that the network service should not rename itself in the event of a name collision.
     NSNetServiceNoAutoRename = 1UL << 0,
 
-
-    /* When passed to -publishWithOptions:, in addition to publishing the service, a
-     * TCP listener is started for both IPv4 and IPv6 on the port specified by the
-     * NSNetService. If the listening port can't be opened, an error is reported using
-     * -netService:didNotPublish:. Specify a port number of zero to use a random port.
-     * When -netServiceDidPublish: is called, -port will return the actual listening
-     * port number. Since the listener only supports TCP, the publish will fail with
-     * NSNetServicesBadArgumentError if the NSNetService type does not end with "_tcp".
-     * New incoming connections will be delivered in the form of NSStreams via the
-     * -netService:didAcceptConnectionWithInputStream:outputStream: delegate method.
-     */
+    /// Specifies that a TCP listener should be started for both IPv4 and IPv6 on the port specified by this service.
+    ///
+    /// If the listening port can't be opened, the service calls its delegate's
+    /// `-netService:didNotPublish:` method to report the error.
+    ///
+    /// The listener supports only TCP connections. If the service's type does not end with `_tcp`,
+    /// publication fails with `NSNetServicesBadArgumentError`.
+    ///
+    /// Whenever a client connects to the listening socket, the service calls its delegate's
+    /// `-netService:didAcceptConnectionWithInputStream:outputStream:` method with a pair of `NSStream` objects.
     NSNetServiceListenForConnections API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0)) = 1UL << 1
 } API_AVAILABLE(macos(10.2), ios(2.0), tvos(9.0)) API_UNAVAILABLE(watchos);
 
@@ -84,6 +66,19 @@ typedef NS_OPTIONS(NSUInteger, NSNetServiceOptions) {
 
 #pragma mark -
 
+/// A network service that broadcasts its availability using multicast DNS.
+///
+/// The ``NetService`` class represents a network service, either one your application publishes or is a client of. This class and the ``NetServiceBrowser`` class use multicast DNS to convey information about network services to and from your application. The API of ``NetService`` provides a convenient way to publish the services offered by your application and to resolve the socket address for a service.
+///
+/// The types of services you access using ``NetService`` are the same types that you access directly using BSD sockets. HTTP and FTP are two services commonly provided by systems. (For a list of common services and the ports used by those services, see the file `/etc/services`.) Applications can also define their own custom services to provide specific data to clients.
+///
+/// You can use the ``NetService`` class as either a publisher of a service or a client of a service. If your application publishes a service, your code must acquire a port and prepare a socket to communicate with clients. Once your socket is ready, you use the ``NetService`` class to notify clients that your service is ready. If your application is the client of a network service, you can either create an ``NetService`` object directly (if you know the exact host and port information) or use an ``NetServiceBrowser`` object to browse for services.
+///
+/// To publish a service, initialize your ``NetService`` object with the service name, domain, type, and port information. All of this information must be valid for the socket created by your application. Once initialized, call the ``publish()`` method to broadcast your service information to the network.
+///
+/// When connecting to a service, use the ``NetServiceBrowser`` class to locate the service on the network and obtain the corresponding ``NetService`` object. Once you have the object, call the ``resolve(withTimeout:)`` method to verify that the service is available and ready for your application. If it is, the ``addresses`` property provides the socket information you can use to connect to the service.
+///
+/// The methods of ``NetService`` operate asynchronously so your application is not impacted by the speed of the network. All information about a service is returned to your application through the ``NetService`` object's delegate. You must provide a delegate object to respond to messages and to handle errors appropriately.
 API_DEPRECATED("Use nw_connection_t or nw_listener_t in Network framework instead", macos(10.2, API_TO_BE_DEPRECATED), ios(2.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(watchos)
 @interface NSNetService : NSObject {
 @private
@@ -92,104 +87,166 @@ API_DEPRECATED("Use nw_connection_t or nw_listener_t in Network framework instea
     id _reserved;
 }
 
-/* This is the initializer for publishing. You should use this initializer if you are going to announce the availability of a service on the network. To publish a service in all available domains, pass the empty string as the domain.
-*/
+/// Initializes the receiver for publishing a network service of type `type` at the socket location specified by `domain`, `name`, and `port`.
+///
+/// - Parameters:
+///   - domain: The domain for the service. To use the default registration domains, pass in an empty string (`@""`). To limit registration to the local domain, use `@"local."`.
+///   - type: The network service type. Must contain both the service type and transport layer information (e.g. `_http._tcp.`).
+///   - name: The name by which the service is identified to the network. If you pass the empty string (`@""`), the system automatically advertises your service using the computer name as the service name.
+///   - port: The port on which the service is published.
+///
+/// You use this method to create a service that you wish to publish on the network. This method is the designated initializer.
 - (instancetype)initWithDomain:(NSString *)domain type:(NSString *)type name:(NSString *)name port:(int)port NS_DESIGNATED_INITIALIZER;
 
-/* This is the initializer for resolution. If you know the domain, type and name of the service for which you wish to discover addresses, you should initialize an NSNetService instance using this method and call resolve: on the result. If you wish to connect to this service immediately, you should call getInputStream:getOutputStream: on the result and forego the resolution step entirely.
-
-If publish: is called on an NSNetService instance initialized with this method, an NSNetServicesBadArgumentError will be sent in the error dictionary to the delegate's netService:didNotPublish: method.
-*/
+/// Returns the receiver, initialized as a network service of a given type and sets the initial host information.
+///
+/// - Parameters:
+///   - domain: The domain for the service. To resolve in the default domains, pass in an empty string (`@""`). To limit resolution to the local domain, use `@"local."`.
+///   - type: The network service type. Must contain both the service type and transport layer information (e.g. `_http._tcp.`).
+///   - name: The name of the service to resolve.
+///
+/// This method is the appropriate initializer to use to resolve a service. To publish a service, use `-initWithDomain:type:name:port:` instead.
+/// You cannot use this initializer to publish a service. Calling `-publish` on an `NSNetService` object initialized with this method generates a call to your delegate's `-netService:didNotPublish:` method with an `NSNetServicesBadArgumentError` error.
 - (instancetype)initWithDomain:(NSString *)domain type:(NSString *)type name:(NSString *)name;
 
-/* NSNetService instances may be scheduled on NSRunLoops to operate in different modes, or in other threads. It is generally not necessary to schedule NSNetServices in other threads. NSNetServices are scheduled in the current thread's NSRunLoop in the NSDefaultRunLoopMode when they are created.
-*/
+/// Adds the service to the specified run loop.
+///
+/// - Parameters:
+///   - aRunLoop: The run loop to which to add the receiver.
+///   - mode: The run loop mode to which to add the receiver.
+///
+/// You can use this method in conjunction with `-removeFromRunLoop:forMode:` to transfer a service to a different run loop. You should not attempt to run a service on multiple run loops.
 - (void)scheduleInRunLoop:(NSRunLoop *)aRunLoop forMode:(NSRunLoopMode)mode;
+
+/// Removes the service from the given run loop for a given mode.
+///
+/// - Parameters:
+///   - aRunLoop: The run loop from which to remove the receiver.
+///   - mode: The run loop mode from which to remove the receiver.
+///
+/// You can use this method in conjunction with `-scheduleInRunLoop:forMode:` to transfer the service to a different run loop. Although it is possible to remove an `NSNetService` object completely from any run loop and then attempt actions on it, it is an error to do so.
 - (void)removeFromRunLoop:(NSRunLoop *)aRunLoop forMode:(NSRunLoopMode)mode;
 
-/* Set a delegate to receive publish, resolve, or monitor events.
- */
+/// The delegate for the receiver.
+///
+/// The delegate must conform to the `NSNetServiceDelegate` protocol, and is not retained.
 @property (nullable, assign) id <NSNetServiceDelegate> delegate;
 
-/* Initially set to NO. Set to YES to also publish, resolve, or monitor this service over peer to peer Wi-Fi (if available). Must be set before operation starts.
-*/
+/// Specifies whether to also publish, resolve, or monitor this service over peer-to-peer Bluetooth and Wi-Fi, if available.
+///
+/// This property must be set before calling `-publish`, `-publishWithOptions:`, `-resolveWithTimeout:`, or `-startMonitoring` in order to take effect. Initially set to `NO`.
 @property BOOL includesPeerToPeer API_AVAILABLE(macos(10.10), ios(7.0), watchos(2.0), tvos(9.0));
 
-/* Returns the name of the discovered or published service.
-*/
+/// A string containing the name of this service.
+///
+/// This value is set when the object is first initialized, whether by your code or by a browser object.
 @property (readonly, copy) NSString *name;
 
-/* Returns the type of the discovered or published service.
-*/
+/// The type of the published service.
+///
+/// This value is set when the object is first initialized, whether by your code or by a browser object.
 @property (readonly, copy) NSString *type;
 
-/* Returns the domain of the discovered or published service.
-*/
+/// A string containing the domain for this service.
+///
+/// This can be an explicit domain name or it can contain the generic local domain name, `@"local."` (note the trailing period, which indicates an absolute name).
 @property (readonly, copy) NSString *domain;
 
-/* Returns the DNS host name of the computer hosting the discovered or published service. If a successful resolve has not yet occurred, this method will return nil.
-*/
+/// A string containing the DNS hostname for this service.
+///
+/// This value is `nil` until the service has been resolved (when `addresses` is non-`nil`).
 @property (nullable, readonly, copy) NSString *hostName;
 
-/* The addresses of the service. This is an NSArray of NSData instances, each of which contains a single struct sockaddr suitable for use with connect(2). In the event that no addresses are resolved for the service or the service has not yet been resolved, an empty NSArray is returned.
-*/
+/// A read-only array containing `NSData` objects, each of which contains a socket address for the service.
+///
+/// Each `NSData` object in the returned array contains an appropriate `sockaddr` structure that you can use to connect to the socket. The exact type of this structure depends on the service to which you are connecting. If no addresses were resolved for the service, the returned array contains zero elements.
+///
+/// It is possible for a single service to resolve to more than one address or not resolve to any addresses. A service might resolve to multiple addresses if the computer publishing the service is currently multihoming.
 @property (nullable, readonly, copy) NSArray<NSData *> *addresses;
 
-/* The port of a resolved service. This returns -1 if the service has not been resolved.
-*/
+/// The port on which the service is listening for connections.
+///
+/// If the object was initialized by calling `-initWithDomain:type:name:port:`, then the value was set when the object was first initialized.
+/// If the object was initialized by calling `-initWithDomain:type:name:`, the value of this property is not valid (`-1`) until after the service has successfully been resolved (when `addresses` is non-`nil`).
 @property (readonly) NSInteger port API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0));
- 
-/* Advertises a given service on the network. This method returns immediately. Success or failure is indicated by callbacks to the NSNetService instance's delegate.
- 
-    If the name of the service is the default name (@""), then the service will be renamed automatically. If the name of the service has been specified, then the service will not be renamed automatically. If more control over renaming is required, then -[NSNetService publishWithOptions:] is available.
-*/
+
+/// Attempts to advertise the receiver's on the network.
+///
+/// This method returns immediately, with success or failure indicated by the callbacks to the delegate. This is equivalent to calling `-publishWithOptions:` with the default options (`0`).
 - (void)publish;
 
-/* Advertises a given service on the network. This method returns immediately. Success or failure is indicated by callbacks to the NSNetService instance's delegate.
- 
-    See the notes above for NSNetServiceNoAutoRename for information about controlling the auto-renaming behavior using this method.
-*/
+/// Attempts to advertise the receiver on the network, with the given options.
+///
+/// - Parameters:
+///   - options: Options for the receiver. The supported options are described in `NSNetServiceOptions`.
+///
+/// This method returns immediately, with success or failure indicated by the callbacks to the delegate.
 - (void)publishWithOptions:(NSNetServiceOptions)options API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0));
 
 
-/* Attempts to determine at least one address for the NSNetService instance. For applications linked on or after Mac OS X 10.4 "Tiger", this method calls -resolveWithTimeout: with a value of 5.0. Applications linked prior to Mac OS X 10.4 "Tiger" must call -stop on the instance after an appropriate (short) amount of time to avoid causing unnecessary network traffic.
-*/
+/// Starts a resolve process for the service.
+///
+/// Attempts to determine at least one address for the service. This method returns immediately, with success or failure indicated by the callbacks to the delegate.
+///
+/// In OS X v10.4, this method calls `-resolveWithTimeout:` with a timeout value of `5`.
 - (void)resolve API_DEPRECATED("Not supported", macos(10.2,10.4), ios(2.0,2.0), watchos(2.0,2.0), tvos(9.0,9.0));
 
-/* Halts a service which is either publishing or resolving.
-*/
+/// Halts a currently running attempt to publish or resolve a service.
+///
+/// The delegate will receive `-netServiceDidStop:` after the service stops.
+/// It is safe to remove all strong references to the service immediately after calling this method.
 - (void)stop;
 
-/* Returns an NSDictionary created from the provided NSData. The keys will be UTF8-encoded NSStrings. The values are NSDatas. The caller is responsible for interpreting these as types appropriate to the keys. If the NSData cannot be converted into an appropriate NSDictionary, this method will return nil. For applications linked on or after Mac OS X 10.5, this method will throw an NSInvalidException if it is passed nil as the argument.
-*/
+/// Returns a dictionary representing a TXT record given as an `NSData` object.
+///
+/// - Parameters:
+///   - txtData: A data object encoding a TXT record.
+/// - Returns: A dictionary representing `txtData`. The dictionary's keys are UTF8-encoded `NSString` objects. The values associated with all the dictionary's keys are `NSData` objects that encapsulate strings or data. Fails an assertion if `txtData` cannot be represented as an `NSDictionary` object.
 + (NSDictionary<NSString *, NSData *> *)dictionaryFromTXTRecordData:(NSData *)txtData;
 
-/* Returns an NSData created from the provided dictionary. The keys in the provided dictionary must be NSStrings, and the values must be NSDatas. If the dictionary cannot be converted into an NSData suitable for a TXT record, this method will return nil. For applications linked on or after Mac OS X 10.5, this method will throw an NSInvalidArgumentException if it is passed nil as the argument.
-*/
+/// Returns an `NSData` object representing a TXT record formed from a given dictionary.
+///
+/// - Parameters:
+///   - txtDictionary: A dictionary containing a TXT record.
+/// - Returns: An `NSData` object representing TXT data formed from `txtDictionary`. Fails an assertion if `txtDictionary` cannot be represented as an `NSData` object.
 + (NSData *)dataFromTXTRecordDictionary:(NSDictionary<NSString *, NSData *> *)txtDictionary;
 
-/* Starts a resolve for the NSNetService instance of the specified duration. If the delegate's -netServiceDidResolveAddress: method is called before the timeout expires, the resolve is successful. If the timeout is reached, the delegate's -netService:didNotResolve: method will be called. The value of the NSNetServicesErrorCode key in the error dictionary will be NSNetServicesTimeoutError.
-*/
+/// Starts a resolve process of a finite duration for the service.
+///
+/// - Parameters:
+///   - timeout: The maximum number of seconds to attempt a resolve. A value of `0.0` indicates no timeout and a resolve process of indefinite duration.
+///
+/// During the resolve period, the service sends `-netServiceDidResolveAddress:` to the delegate for each address it discovers that matches the service parameters. Once the timeout is hit, the service sends `-netServiceDidStop:` to the delegate. If no addresses resolve during the timeout period, the service sends `-netService:didNotResolve:` to the delegate.
 - (void)resolveWithTimeout:(NSTimeInterval)timeout;
 
-/* Retrieves streams from the NSNetService instance. The instance's delegate methods are not called. Returns YES if the streams requested are created successfully. Returns NO if or any reason the stream could not be created. If only one stream is desired, pass NULL for the address of the other stream. The streams that are created are not open, and are not scheduled in any run loop for any mode.
-*/
+/// Creates a pair of input and output streams for the receiver and returns a Boolean value that indicates whether they were retrieved successfully.
+///
+/// - Parameters:
+///   - inputStream: Upon return, the input stream for the receiver. Pass `NULL` if you do not need this stream.
+///   - outputStream: Upon return, the output stream for the receiver. Pass `NULL` if you do not need this stream.
+/// - Returns: `YES` if the streams are created successfully, otherwise `NO`.
+///
+/// After this method is called, no delegate callbacks are called by the receiver. The streams that are created are not open, and are not scheduled in any run loop for any mode.
 - (BOOL)getInputStream:(out __strong NSInputStream * _Nullable * _Nullable)inputStream outputStream:(out __strong NSOutputStream * _Nullable * _Nullable)outputStream;
 
-/* Sets the TXT record of the NSNetService instance that has been or will be published. Pass nil to remove the TXT record from the instance.
-*/
+/// Sets the TXT record for the receiver, and returns a Boolean value that indicates whether the operation was successful.
+///
+/// - Parameters:
+///   - recordData: The TXT record for the receiver. Pass `nil` to remove the TXT record from the instance.
+/// - Returns: `YES` if `recordData` is successfully set as the TXT record, otherwise `NO`.
 - (BOOL)setTXTRecordData:(nullable NSData *)recordData;
 
-/* Returns the raw TXT record of the NSNetService instance. If the instance has not been resolved, or the delegate's -netService:didUpdateTXTRecordData: has not been called, this will return nil. It is permitted to have a zero-length TXT record.
-*/
+/// Returns the TXT record for the receiver.
+///
+/// If the instance has not been resolved, or the delegate's `-netService:didUpdateTXTRecordData:` has not been called, this will return `nil`. It is permitted to have a zero-length TXT record.
 - (nullable NSData *)TXTRecordData;
 
-/* Starts monitoring the NSNetService instance for events. In Mac OS X 10.4 Tiger, monitored NSNetService instances inform their delegates of changes to the instance's TXT record by calling the delegate's -netService:didUpdateTXTRecordData: method.
-*/
+/// Starts the monitoring of TXT-record updates for the receiver.
+///
+/// The delegate must implement `-netService:didUpdateTXTRecordData:`, which is called when the TXT record for the receiver is updated.
 - (void)startMonitoring;
 
-/* Stops monitoring the NSNetService instance for events.
-*/
+/// Stops the monitoring of TXT-record updates for the receiver.
 - (void)stopMonitoring;
 
 
@@ -197,6 +254,15 @@ If publish: is called on an NSNetService instance initialized with this method, 
 
 #pragma mark -
 
+/// A network service browser that finds published services on a network using multicast DNS.
+///
+/// Services can range from standard services, such as HTTP and FTP, to custom services defined by other applications. You can use a network service browser in your code to obtain the list of accessible domains and then to obtain an ``NetService`` object for each discovered service. Each network service browser performs one search at a time, so if you want to perform multiple simultaneous searches, use multiple network service browsers.
+///
+/// A network service browser performs all searches asynchronously using the current run loop to execute the search in the background. Results from a search are returned through the associated delegate object, which your client application must provide. Searching proceeds in the background until the object receives a ``stop()`` message.
+///
+/// To use an `NSNetServiceBrowser` object to search for services, allocate it, initialize it, and assign a delegate. (If you wish, you can also use the ``schedule(in:forMode:)`` and ``remove(from:forMode:)`` methods to execute searches on a run loop other than the current one.) Once your object is ready, you begin by gathering the list of accessible domains using either the ``searchForRegistrationDomains()`` or ``searchForBrowsableDomains()`` methods. From the list of returned domains, you can pick one and use the ``searchForServices(ofType:inDomain:)`` method to search for services in that domain.
+///
+/// The `NSNetServiceBrowser` class provides two ways to search for domains. In most cases, your client should use the ``searchForRegistrationDomains()`` method to search only for local domains to which the host machine has registration authority. This is the preferred method for accessing domains as it guarantees that the host machine can connect to services in the returned domains. Access to domains outside this list may be more limited.
 API_DEPRECATED("Use nw_browser_t in Network framework instead", macos(10.2, API_TO_BE_DEPRECATED), ios(2.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED)) API_UNAVAILABLE(watchos)
 @interface NSNetServiceBrowser : NSObject {
 @private
@@ -205,124 +271,216 @@ API_DEPRECATED("Use nw_browser_t in Network framework instead", macos(10.2, API_
     void * _reserved;
 }
 
+/// Initializes an allocated `NSNetServiceBrowser` object.
 - (instancetype)init;
 
-/* Set a delegate to receive discovery events.
-*/
+/// The delegate object for this instance.
 @property (nullable, assign) id <NSNetServiceBrowserDelegate> delegate;
 
-/* Initially set to NO. Set to YES to also browse over peer to peer Wi-Fi (if available). Must be set before starting to search.
-*/
+/// Whether to browse over peer-to-peer Bluetooth and Wi-Fi, if available.
+///
+/// This property must be set before initiating a search to have an effect. Initially set to `NO`.
 @property BOOL includesPeerToPeer API_AVAILABLE(macos(10.10), ios(7.0), watchos(2.0), tvos(9.0));
 
-/* NSNetServiceBrowser instances may be scheduled on NSRunLoops to operate in different modes, or in other threads. It is generally not necessary to schedule NSNetServiceBrowsers in other threads. NSNetServiceBrowsers are scheduled in the current thread's NSRunLoop in the NSDefaultRunLoopMode when they are created.
-*/
+/// Adds the receiver to the specified run loop.
+///
+/// - Parameters:
+///   - aRunLoop: Run loop in which to schedule the receiver.
+///   - mode: Run loop mode in which to perform this operation.
+///
+/// You can use this method in conjunction with `-removeFromRunLoop:forMode:` to transfer the receiver to a run loop other than the default one. You should not attempt to run the receiver on multiple run loops.
 - (void)scheduleInRunLoop:(NSRunLoop *)aRunLoop forMode:(NSRunLoopMode)mode;
+
+/// Removes the receiver from the specified run loop.
+///
+/// - Parameters:
+///   - aRunLoop: Run loop from which to remove the receiver.
+///   - mode: Run loop mode in which to perform this operation.
+///
+/// You can use this method in conjunction with `-scheduleInRunLoop:forMode:` to transfer the receiver to a run loop other than the default one. Although it is possible to remove an `NSNetService` object completely from any run loop and then attempt actions on it, you must not do it.
 - (void)removeFromRunLoop:(NSRunLoop *)aRunLoop forMode:(NSRunLoopMode)mode;
 
-/* Starts a search for domains that are browsable via Bonjour and the computer's network configuration. Discovered domains are reported to the delegate's -netServiceBrowser:didFindDomain:moreComing: method. There may be more than one browsable domain.
-*/
+/// Initiates a search for domains visible to the host. This method returns immediately.
+///
+/// The delegate receives a `-netServiceBrowser:didFindDomain:moreComing:` message for each domain discovered.
 - (void)searchForBrowsableDomains;
 
-/* Starts a search for domains in which the network configuration allows registration (i.e. publishing). Most NSNetServiceBrowser clients do not need to use this API, as it is sufficient to publish an NSNetService instance with the empty string (see -[NSNetService initWithDomain:type:name:port:]). Discovered domains are reported to the delegate's -netServiceBrowser:didFindDomain:moreComing: method. There may be more than one registration domain.
-*/
+/// Initiates a search for domains in which the host may register services.
+///
+/// This method returns immediately, sending a `-netServiceBrowserWillSearch:` message to the delegate if the network was ready to initiate the search. The delegate receives a subsequent `-netServiceBrowser:didFindDomain:moreComing:` message for each domain discovered.
+///
+/// Most network service browser clients do not have to use this method -- it is sufficient to publish a service with the empty string, which registers it in any available registration domains automatically.
 - (void)searchForRegistrationDomains;
 
-/* Starts a search for services of the specified type in the domain indicated by domainString. For each service discovered, a -netServiceBrowser:foundService:moreComing: message is sent to the NSNetServiceBrowser instance's delegate.
-*/
+/// Starts a search for services of a particular type within a specific domain.
+///
+/// - Parameters:
+///   - type: Type of the service to search for. Must contain both the service type and transport layer information (e.g. `_http._tcp.`).
+///   - domainString: Domain name in which to perform the search. Pass the empty string (`@""`) to search default registration domains.
+///
+/// This method returns immediately, sending a `-netServiceBrowserWillSearch:` message to the delegate if the network was ready to initiate the search. The delegate receives subsequent `-netServiceBrowser:didFindService:moreComing:` messages for each service discovered.
 - (void)searchForServicesOfType:(NSString *)type inDomain:(NSString *)domainString;
 
-/* Stops the currently running search.
-*/
+/// Halts a currently running search or resolution.
+///
+/// This method sends a `-netServiceBrowserDidStopSearch:` message to the delegate and causes the browser to discard any pending search results.
 - (void)stop;
 
 @end
 
 #pragma mark -
 
+/// The interface a net service uses to inform its delegate about the state of the service it offers.
+///
+/// The ``NetServiceDelegate`` protocol defines the optional methods implemented by delegates of ``NetService`` objects.
 API_AVAILABLE(macos(10.2), ios(2.0), tvos(9.0)) API_UNAVAILABLE(watchos)
 @protocol NSNetServiceDelegate <NSObject>
 @optional
 
-/* Sent to the NSNetService instance's delegate prior to advertising the service on the network. If for some reason the service cannot be published, the delegate will not receive this message, and an error will be delivered to the delegate via the delegate's -netService:didNotPublish: method.
-*/
+/// Notifies the delegate that the network is ready to publish the service.
+///
+/// - Parameters:
+///   - sender: The service that is ready to publish.
+///
+/// Publication of the service proceeds asynchronously and may still generate a call to the delegate's `-netService:didNotPublish:` method if an error occurs.
 - (void)netServiceWillPublish:(NSNetService *)sender;
 
-/* Sent to the NSNetService instance's delegate when the publication of the instance is complete and successful.
-*/
+/// Notifies the delegate that a service was successfully published.
+///
+/// - Parameters:
+///   - sender: The service that was published.
 - (void)netServiceDidPublish:(NSNetService *)sender;
 
-/* Sent to the NSNetService instance's delegate when an error in publishing the instance occurs. The error dictionary will contain two key/value pairs representing the error domain and code (see the NSNetServicesError enumeration above for error code constants). It is possible for an error to occur after a successful publication.
-*/
+/// Notifies the delegate that a service could not be published.
+///
+/// - Parameters:
+///   - sender: The service that could not be published.
+///   - errorDict: A dictionary containing information about the problem. The dictionary contains the keys `NSNetServicesErrorCode` and `NSNetServicesErrorDomain`.
+///
+/// This method may be called long after a `-netServiceWillPublish:` message has been delivered to the delegate.
 - (void)netService:(NSNetService *)sender didNotPublish:(NSDictionary<NSString *, NSNumber *> *)errorDict;
 
-/* Sent to the NSNetService instance's delegate prior to resolving a service on the network. If for some reason the resolution cannot occur, the delegate will not receive this message, and an error will be delivered to the delegate via the delegate's -netService:didNotResolve: method.
-*/
+/// Notifies the delegate that the network is ready to resolve the service.
+///
+/// - Parameters:
+///   - sender: The service that the network is ready to resolve.
+///
+/// Resolution of the service proceeds asynchronously and may still generate a call to the delegate's `-netService:didNotResolve:` method if an error occurs.
 - (void)netServiceWillResolve:(NSNetService *)sender;
 
-/* Sent to the NSNetService instance's delegate when one or more addresses have been resolved for an NSNetService instance. Some NSNetService methods will return different results before and after a successful resolution. An NSNetService instance may get resolved more than once; truly robust clients may wish to resolve again after an error, or to resolve more than once.
-*/
+/// Informs the delegate that the address for a given service was resolved.
+///
+/// - Parameters:
+///   - sender: The service that was resolved.
+///
+/// The delegate can use the `addresses` method to retrieve the service's address. If the delegate needs only one address, it can stop the resolution process using `-stop`. Otherwise, the resolution will continue until the timeout specified in `-resolveWithTimeout:` is reached.
 - (void)netServiceDidResolveAddress:(NSNetService *)sender;
 
-/* Sent to the NSNetService instance's delegate when an error in resolving the instance occurs. The error dictionary will contain two key/value pairs representing the error domain and code (see the NSNetServicesError enumeration above for error code constants).
-*/
+/// Informs the delegate that an error occurred during resolution of a given service.
+///
+/// - Parameters:
+///   - sender: The service that did not resolve.
+///   - errorDict: A dictionary containing information about the problem. The dictionary contains the keys `NSNetServicesErrorCode` and `NSNetServicesErrorDomain`.
+///
+/// Clients may try to resolve again upon receiving this error. For example, a DNS rotary may yield different IP addresses on different resolution requests. A common error condition is that no addresses were resolved during the timeout period specified in `-resolveWithTimeout:`.
 - (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary<NSString *, NSNumber *> *)errorDict;
 
-/* Sent to the NSNetService instance's delegate when the instance's previously running publication or resolution request has stopped.
-*/
+/// Informs the delegate that a `-publish` or `-resolveWithTimeout:` request was stopped.
+///
+/// - Parameters:
+///   - sender: The service that stopped.
 - (void)netServiceDidStop:(NSNetService *)sender;
 
-/* Sent to the NSNetService instance's delegate when the instance is being monitored and the instance's TXT record has been updated. The new record is contained in the data parameter.
-*/
+/// Notifies the delegate that the TXT record for a given service has been updated.
+///
+/// - Parameters:
+///   - sender: The service whose TXT record was updated.
+///   - data: The new TXT record.
 - (void)netService:(NSNetService *)sender didUpdateTXTRecordData:(NSData *)data;
-    
-    
-/* Sent to a published NSNetService instance's delegate when a new connection is
- * received. Before you can communicate with the connecting client, you must -open
- * and schedule the streams. To reject a connection, just -open both streams and
- * then immediately -close them.
- 
- * To enable TLS on the stream, set the various TLS settings using
- * kCFStreamPropertySSLSettings before calling -open. You must also specify
- * kCFBooleanTrue for kCFStreamSSLIsServer in the settings dictionary along with
- * a valid SecIdentityRef as the first entry of kCFStreamSSLCertificates.
- */
+
+
+/// Called when a client connects to a service managed by Bonjour.
+///
+/// - Parameters:
+///   - sender: The net service object that the client connected to.
+///   - inputStream: A stream object for receiving data from the client.
+///   - outputStream: A stream object for sending data to the client.
+///
+/// When you publish a service, if you set the `NSNetServiceListenForConnections` flag in the service options, the service object accepts connections on behalf of your app. Later, when a client connects to that service, the service object calls this method to provide the app with a pair of streams for communicating with that client.
 - (void)netService:(NSNetService *)sender didAcceptConnectionWithInputStream:(NSInputStream *)inputStream outputStream:(NSOutputStream *)outputStream API_AVAILABLE(macos(10.9), ios(7.0), watchos(2.0), tvos(9.0));
 
 @end
 
 #pragma mark -
 
+/// The interface a net service browser uses to inform a delegate about the state of service discovery.
+///
+/// Delegates of ``NetServiceBrowser`` instances optionally implement these methods.
 API_AVAILABLE(macos(10.2), ios(2.0), tvos(9.0)) API_UNAVAILABLE(watchos)
 @protocol NSNetServiceBrowserDelegate <NSObject>
 @optional
 
-/* Sent to the NSNetServiceBrowser instance's delegate before the instance begins a search. The delegate will not receive this message if the instance is unable to begin a search. Instead, the delegate will receive the -netServiceBrowser:didNotSearch: message.
-*/
+/// Tells the delegate that a search is commencing.
+///
+/// - Parameters:
+///   - browser: Sender of this delegate message.
+///
+/// This message is sent to the delegate only if the underlying network layer is ready to begin a search. The delegate can use this notification to prepare its data structures to receive data.
 - (void)netServiceBrowserWillSearch:(NSNetServiceBrowser *)browser;
 
-/* Sent to the NSNetServiceBrowser instance's delegate when the instance's previous running search request has stopped.
-*/
+/// Tells the delegate that a search was stopped.
+///
+/// - Parameters:
+///   - browser: Sender of this delegate message.
+///
+/// When the browser receives a `-stop` message from its client, it sends a `netServiceBrowserDidStopSearch:` message to its delegate. The delegate then performs any necessary cleanup.
 - (void)netServiceBrowserDidStopSearch:(NSNetServiceBrowser *)browser;
 
-/* Sent to the NSNetServiceBrowser instance's delegate when an error in searching for domains or services has occurred. The error dictionary will contain two key/value pairs representing the error domain and code (see the NSNetServicesError enumeration above for error code constants). It is possible for an error to occur after a search has been started successfully.
-*/
+/// Tells the delegate that a search was not successful.
+///
+/// - Parameters:
+///   - browser: Sender of this delegate message.
+///   - errorDict: Dictionary with the reasons the search was unsuccessful. Use the dictionary keys `NSNetServicesErrorCode` and `NSNetServicesErrorDomain` to retrieve the error information from the dictionary.
 - (void)netServiceBrowser:(NSNetServiceBrowser *)browser didNotSearch:(NSDictionary<NSString *, NSNumber *> *)errorDict;
 
-/* Sent to the NSNetServiceBrowser instance's delegate for each domain discovered. If there are more domains, moreComing will be YES. If for some reason handling discovered domains requires significant processing, accumulating domains until moreComing is NO and then doing the processing in bulk fashion may be desirable.
-*/
+/// Tells the delegate the sender found a domain.
+///
+/// - Parameters:
+///   - browser: Sender of this delegate message.
+///   - domainString: Name of the domain found by the browser.
+///   - moreComing: `YES` when the browser is waiting for additional domains. `NO` when there are no additional domains.
+///
+/// The delegate uses this message to compile a list of available domains. It should wait until `moreComing` is `NO` to do a bulk update of user interface elements.
 - (void)netServiceBrowser:(NSNetServiceBrowser *)browser didFindDomain:(NSString *)domainString moreComing:(BOOL)moreComing;
 
-/* Sent to the NSNetServiceBrowser instance's delegate for each service discovered. If there are more services, moreComing will be YES. If for some reason handling discovered services requires significant processing, accumulating services until moreComing is NO and then doing the processing in bulk fashion may be desirable.
-*/
+/// Tells the delegate the sender found a service.
+///
+/// - Parameters:
+///   - browser: Sender of this delegate message.
+///   - service: Network service found by the browser. The delegate can use this object to connect to and use the service.
+///   - moreComing: `YES` when the browser is waiting for additional services. `NO` when there are no additional services.
+///
+/// The delegate uses this message to compile a list of available services. It should wait until `moreComing` is `NO` to do a bulk update of user interface elements.
 - (void)netServiceBrowser:(NSNetServiceBrowser *)browser didFindService:(NSNetService *)service moreComing:(BOOL)moreComing;
 
-/* Sent to the NSNetServiceBrowser instance's delegate when a previously discovered domain is no longer available.
-*/
+/// Tells the delegate the a domain has disappeared or has become unavailable.
+///
+/// - Parameters:
+///   - browser: Sender of this delegate message.
+///   - domainString: Name of the domain that became unavailable.
+///   - moreComing: `YES` when the browser is waiting for additional domains. `NO` when there are no additional domains.
+///
+/// The delegate uses this message to compile a list of unavailable domains. It should wait until `moreComing` is `NO` to do a bulk update of user interface elements.
 - (void)netServiceBrowser:(NSNetServiceBrowser *)browser didRemoveDomain:(NSString *)domainString moreComing:(BOOL)moreComing;
 
-/* Sent to the NSNetServiceBrowser instance's delegate when a previously discovered service is no longer published.
-*/
+/// Tells the delegate a service has disappeared or has become unavailable.
+///
+/// - Parameters:
+///   - browser: Sender of this delegate message.
+///   - service: Network service that has become unavailable.
+///   - moreComing: `YES` when the browser is waiting for additional services. `NO` when there are no additional services.
+///
+/// The delegate uses this message to compile a list of unavailable services. It should wait until `moreComing` is `NO` to do a bulk update of user interface elements.
 - (void)netServiceBrowser:(NSNetServiceBrowser *)browser didRemoveService:(NSNetService *)service moreComing:(BOOL)moreComing;
 
 @end

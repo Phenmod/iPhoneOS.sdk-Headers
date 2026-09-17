@@ -116,6 +116,31 @@ CARPLAY_TEMPLATE_UI_ACTOR
 - (void)dismissTemplateAnimated:(BOOL)animated
                      completion:(nullable void (^)(BOOL success, NSError * _Nullable error))completion API_AVAILABLE(ios(14.0)) API_UNAVAILABLE(tvos);
 
+/**
+ Show a template as an overlay over the current template hierarchy. Only one overlay template may be shown at a time.
+
+ @note Supported template types: @c CPVoiceControlTemplate
+
+ The completion block will be called after the template has been shown. If the template was shown successfully,
+ the boolean parameter will be YES. Otherwise, the boolean parameter will be NO and an @c NSError will be provided describing the failure.
+
+ @note If the template is not successfully shown AND no completion block is specified, an exception will be thrown.
+ */
+- (void)showOverlayTemplate:(__kindof CPTemplate *)templateToShow
+                   animated:(BOOL)animated
+                 completion:(nullable void (^)(BOOL success, NSError * _Nullable error))completion API_AVAILABLE(ios(27.0));
+
+/**
+ Dismiss the current overlay template, optionally animating the dismissal.
+
+ @note If there is no current overlay template, this method will have no effect.
+
+ The completion block will be called after the template has been dismissed. If the template was dismissed successfully,
+ the boolean parameter will be YES. Otherwise, the boolean parameter will be NO and an @c NSError will be provided describing the failure.
+ */
+- (void)hideOverlayTemplateAnimated:(BOOL)animated
+                         completion:(nullable void (^)(BOOL success, NSError * _Nullable error))completion API_AVAILABLE(ios(27.0));
+
 #pragma mark - Template Access
 
 /**
